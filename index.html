@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>روابطي</title>
+  <title>Fly Express</title>
 
   <!-- خط -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -27,9 +27,9 @@
       margin:0;
       color:var(--text);
       background:
-        radial-gradient(1200px 600px at 10% 10%, #222 0%, rgba(0,0,0,0) 70%),
-        radial-gradient(1200px 600px at 90% 90%, #161b22 0%, rgba(0,0,0,0) 70%),
-        linear-gradient(160deg,#0a0d12,#0f1520 60%,#0b0f17);
+        radial-gradient(1200px 600px at 10% 10%, #1c1c1c 0%, rgba(0,0,0,0) 70%),
+        radial-gradient(1200px 600px at 90% 90%, #10131a 0%, rgba(0,0,0,0) 70%),
+        linear-gradient(160deg,#080a0f,#0c1119 60%,#0a0f16);
       display:flex;align-items:center;justify-content:center;padding:28px;
     }
 
@@ -47,11 +47,11 @@
       display:flex;gap:12px;align-items:center;margin-bottom:14px
     }
     .logo img{
-      width:70px;height:70px;object-fit:contain;border-radius:14px;
+      width:85px;height:85px;object-fit:cover;border-radius:14px;
       background:#0f1520;border:1px solid rgba(255,255,255,0.06)
     }
-    .brand .title{font-size:22px;font-weight:800;line-height:1}
-    .brand .subtitle{font-size:13px;color:var(--muted);margin-top:2px}
+    .brand .title{font-size:24px;font-weight:800;line-height:1}
+    .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
 
     .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
 
@@ -83,21 +83,23 @@
       cursor:pointer;font-weight:700
     }
     footer{ margin-top:16px;text-align:center;color:var(--muted);font-size:12px }
-    @media (max-width:440px){ .frame{padding:20px} .logo img{width:64px;height:64px} }
+    @media (max-width:440px){ .frame{padding:20px} .logo img{width:70px;height:70px} }
   </style>
 </head>
 <body>
 
   <div class="frame" role="main">
+    <!-- شعار Fly Express -->
     <div class="logo">
-      <img src="https://via.placeholder.com/200x200.png?text=Logo" alt="شعار">
+      <img src="data:image/jpeg;base64,{{IMAGE_PLACEHOLDER}}" alt="Fly Express Logo">
       <div class="brand">
-        <div class="title">روابطي</div>
-        <div class="subtitle">تواصل معايا بسهولة</div>
+        <div class="title">Fly Express</div>
+        <div class="subtitle">التوصيل الأسرع في نجع حمادي</div>
       </div>
     </div>
 
     <div class="buttons">
+      <!-- زر فيسبوك -->
       <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&amp;mibextid=ZbWKwL" target="_blank" rel="noopener">
         <div class="left">
           <div class="icon"><i class="fa-brands fa-facebook-f"></i></div>
@@ -106,6 +108,7 @@
         <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
       </a>
 
+      <!-- واتساب -->
       <a class="btn whatsapp" href="https://wa.me/201017908076" target="_blank" rel="noopener">
         <div class="left">
           <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
@@ -121,7 +124,7 @@
     </div>
 
     <footer>
-      تقدر تغيّر العنوان والشعار من أعلى الملف. لإضافة زر جديد انسخ كتلة &lt;a class="btn …"&gt; وعدّلها.
+      © Fly Express — أسرع توصيل في نجع حمادي
     </footer>
   </div>
 
