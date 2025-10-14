@@ -26,16 +26,14 @@
     body{
       margin:0;
       color:var(--text);
-      background:
-        radial-gradient(1200px 600px at 10% 10%, #1c1c1c 0%, rgba(0,0,0,0) 70%),
-        radial-gradient(1200px 600px at 90% 90%, #10131a 0%, rgba(0,0,0,0) 70%),
-        linear-gradient(160deg,#080a0f,#0c1119 60%,#0a0f16);
+      background: linear-gradient(160deg,#000814,#001d3d,#003566);
+      background-attachment: fixed;
       display:flex;align-items:center;justify-content:center;padding:28px;
     }
 
     .frame{
       width:100%;max-width:var(--maxw);
-      background: rgba(255,255,255,0.03);
+      background: rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.06);
       backdrop-filter: blur(6px);
       border-radius: 28px;
@@ -75,6 +73,8 @@
     /* ألوان الأزرار */
     .facebook{ background: linear-gradient(90deg,#1877f2,#1462c7); }
     .whatsapp{ background: linear-gradient(90deg,#25D366,#1fb257); }
+    .instagram{ background: linear-gradient(90deg,#f58529,#dd2a7b,#8134af,#515bd4); }
+    .telegram{ background: linear-gradient(90deg,#0088cc,#007ab8); }
 
     .share-row{display:flex;gap:12px;margin-top:16px;align-items:center;justify-content:center}
     .small-btn{
@@ -82,6 +82,18 @@
       color:var(--text);border:1px solid rgba(255,255,255,0.08);
       cursor:pointer;font-weight:700
     }
+
+    .contact{
+      margin-top:18px;
+      text-align:center;
+      color:var(--text);
+      font-weight:600;
+      background:rgba(255,255,255,0.06);
+      padding:10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
     footer{ margin-top:16px;text-align:center;color:var(--muted);font-size:12px }
     @media (max-width:440px){ .frame{padding:20px} .logo img{width:70px;height:70px} }
   </style>
@@ -99,7 +111,7 @@
     </div>
 
     <div class="buttons">
-      <!-- زر فيسبوك -->
+      <!-- فيسبوك -->
       <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&amp;mibextid=ZbWKwL" target="_blank" rel="noopener">
         <div class="left">
           <div class="icon"><i class="fa-brands fa-facebook-f"></i></div>
@@ -116,6 +128,29 @@
         </div>
         <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
       </a>
+
+      <!-- انستجرام -->
+      <a class="btn instagram" href="https://www.instagram.com/fly_express" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="icon"><i class="fa-brands fa-instagram"></i></div>
+          <span class="label">انستجرام</span>
+        </div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+
+      <!-- تليجرام -->
+      <a class="btn telegram" href="https://t.me/flyexpress" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="icon"><i class="fa-brands fa-telegram"></i></div>
+          <span class="label">تليجرام</span>
+        </div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+    </div>
+
+    <!-- رقم الهاتف -->
+    <div class="contact">
+      📞 رقم التواصل: <a href="tel:01017908076" style="color:#25D366;text-decoration:none;">01017908076</a>
     </div>
 
     <div class="share-row">
