@@ -24,7 +24,6 @@
     html,body{height:100%}
     body{
       margin:0;color:var(--text);display:flex;align-items:center;justify-content:center;padding:28px;
-      /* خلفية متحركة */
       background: radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, rgba(0,0,0,0) 65%),
                   radial-gradient(1200px 600px at 90% 90%, #001219 0%, rgba(0,0,0,0) 65%),
                   conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
@@ -72,7 +71,6 @@
     }
     .label{font-size:15px}
 
-    /* الألوان */
     .facebook{ background: linear-gradient(90deg,#1877f2,#1462c7); }
     .whatsapp{ background: linear-gradient(90deg,#25D366,#1fb257); }
     .instagram{ background: linear-gradient(90deg,#f58529,#dd2a7b,#8134af,#515bd4); }
@@ -96,17 +94,20 @@
     footer{ margin-top:16px;text-align:center;color:var(--muted);font-size:12px }
     @media (max-width:520px){ .frame{padding:20px} .logo img{width:70px;height:70px} }
 
-    /* طبقة "اضغط للدخول" */
+    /* طبقة تشغيل الصوت */
     .gate {
       position: fixed; inset: 0; display: grid; place-items: center;
-      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
       z-index: 9999;
     }
     .gate-btn{
       padding:14px 22px; border-radius:18px; border:1px solid rgba(255,255,255,.2);
-      background: rgba(255,255,255,0.08); color:#fff; font-weight:800; font-size:16px;
+      background: rgba(255,255,255,0.1); color:#fff; font-weight:800; font-size:16px;
       box-shadow: 0 10px 24px rgba(0,0,0,.35); cursor:pointer;
     }
+
+    /* إخفاء عنصر الصوت */
+    audio#bgAudio{ display:none; }
   </style>
 </head>
 <body>
@@ -163,48 +164,38 @@
     </footer>
   </div>
 
-  <!-- طبقة تشغيل الصوت لأول مرة -->
-  <div class="gate" id="soundGate" style="display:none;">
+  <!-- عنصر الصوت (مخفي) -->
+  <audio id="bgAudio" preload="auto" src="https://h.uguu.se/kwmAtLDd.mp3"></audio>
+
+  <!-- طبقة البداية (ظاهرة دائمًا حتى ضغطة المستخدم) -->
+  <div class="gate" id="soundGate">
     <button class="gate-btn" id="startSoundBtn">اضغط للدخول 🎵</button>
   </div>
 
   <script>
   (function(){
-    const AUDIO_URL = "https://h.uguu.se/kwmAtLDd.mp3";
-    const LOOP = false; // لو عايزها تعيد نفسها خليه true
+    const audio = document.getElementById('bgAudio');
+    const gate = document.getElementById('soundGate');
+    const startBtn = document.getElementById('startSoundBtn');
 
-    const audio = new Audio(AUDIO_URL);
-    audio.preload = "auto";
-    audio.loop = LOOP;
-
-    // حاول تشغيل تلقائي
-    function tryAutoplay(){
-      audio.play().catch(() => {
-        // لو اترفض التشغيل، فعّل طبقة "اضغط للدخول"
-        document.getElementById('soundGate').style.display = 'grid';
+    // تشغيل الصوت عند أول لمسة/ضغطة
+    function start() {
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        gate.style.display = 'none'; // اخفِ الطبقة بعد نجاح التشغيل
+      }).catch(() => {
+        // لو لسه رافض، جرّب تاني (نادراً ما يحصل)
       });
+      // إزالة المستمعين بعد أول محاولة
+      document.removeEventListener('click', start);
+      document.removeEventListener('touchstart', start);
     }
 
-    // بدء الصوت باللمس/الكليك
-    function startOnGesture(){
-      audio.play().catch(()=>{});
-      document.getElementById('soundGate').style.display = 'none';
-      // بعد ما نبدأ الصوت مرة، مش محتاجين المستمعين دول
-      document.removeEventListener('click', startOnGesture);
-      document.removeEventListener('touchstart', startOnGesture);
-    }
+    startBtn.addEventListener('click', start);
+    document.addEventListener('click', start, { once: true });
+    document.addEventListener('touchstart', start, { once: true });
 
-    // زر الطبقة
-    document.getElementById('startSoundBtn').addEventListener('click', startOnGesture);
-
-    // كمان لو المستخدم لمس/ضغط في أي مكان — شغّل و اخفِ الطبقة
-    document.addEventListener('click', startOnGesture, { once: true });
-    document.addEventListener('touchstart', startOnGesture, { once: true });
-
-    // ابدأ المحاولة بعد تحميل الـ DOM
-    document.addEventListener("DOMContentLoaded", tryAutoplay);
-
-    // أزرار النسخ/المشاركة (زي ما هي)
+    // أزرار النسخ/المشاركة
     const pageLink = window.location.href;
     document.getElementById('copyLink')?.addEventListener('click', async () => {
       try { await navigator.clipboard.writeText(pageLink); alert('تم نسخ الرابط: ' + pageLink); }
