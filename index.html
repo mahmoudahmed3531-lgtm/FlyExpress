@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Fly Express</title>
 
+  <!-- خطوط وأيقونات -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
@@ -99,7 +100,6 @@
 <body>
 
   <div class="frame" role="main">
-    <!-- شعار Fly Express -->
     <div class="logo">
       <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo" onerror="this.style.display='none'">
       <div class="brand">
@@ -109,53 +109,32 @@
     </div>
 
     <div class="buttons">
-      <!-- فيسبوك (الصفحة التجارية) -->
-      <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
-        <div class="left">
-          <div class="icon"><i class="fa-brands fa-facebook-f"></i></div>
-          <span class="label">صفحة فيسبوك</span>
-        </div>
+      <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL">
+        <div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div>
         <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
       </a>
 
-      <!-- واتساب -->
-      <a class="btn whatsapp" href="https://wa.me/201017908076" target="_blank" rel="noopener">
-        <div class="left">
-          <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
-          <span class="label">واتساب</span>
-        </div>
+      <a class="btn whatsapp" href="https://wa.me/201017908076">
+        <div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div>
         <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
       </a>
 
-      <!-- إنستجرام الشخصي (رابط نظيف) -->
-      <a class="btn instagram" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
-        <div class="left">
-          <div class="icon"><i class="fa-brands fa-instagram"></i></div>
-          <span class="label">إنستجرام الشخصي</span>
-        </div>
+      <a class="btn instagram" href="https://www.instagram.com/habis_namla/">
+        <div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div>
         <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
       </a>
 
-      <!-- تليجرام الشخصي -->
-      <a class="btn telegram" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
-        <div class="left">
-          <div class="icon"><i class="fa-brands fa-telegram"></i></div>
-          <span class="label">تليجرام</span>
-        </div>
+      <a class="btn telegram" href="https://t.me/D_M_C0">
+        <div class="left"><div class="icon"><i class="fa-brands fa-telegram"></i></div><span class="label">تليجرام</span></div>
         <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
       </a>
 
-      <!-- فيسبوك الشخصي (حالياً باستخدام رابط المشاركة الذي أرسلته) -->
-      <a class="btn facebook-personal" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
-        <div class="left">
-          <div class="icon"><i class="fa-brands fa-facebook"></i></div>
-          <span class="label">فيسبوك الشخصي</span>
-        </div>
+      <a class="btn facebook-personal" href="https://www.facebook.com/share/16X3GTzQE6/">
+        <div class="left"><div class="icon"><i class="fa-brands fa-facebook"></i></div><span class="label">فيسبوك الشخصي</span></div>
         <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
       </a>
     </div>
 
-    <!-- أرقام الهواتف -->
     <div class="contact">
       📞 للتواصل:
       <a href="tel:+201017908076">+201017908076</a> —
@@ -172,18 +151,24 @@
     </footer>
   </div>
 
+  <!-- تشغيل الأغنية عند فتح الصفحة -->
   <script>
-    const pageLink = window.location.href;
+  document.addEventListener("DOMContentLoaded", () => {
+    const audio = new Audio("https://h.uguu.se/kwmAtLDd.mp3");
+    audio.preload = "auto";
 
-    document.getElementById('copyLink').addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(pageLink); alert('تم نسخ الرابط: ' + pageLink); }
-      catch { prompt('انسخ الرابط يدويًا:', pageLink); }
+    // محاولة التشغيل التلقائي
+    audio.play().catch(() => {
+      console.log("🔇 التشغيل التلقائي تم منعه - في انتظار تفاعل المستخدم");
+      const startAudio = () => {
+        audio.play().catch(()=>{});
+        document.removeEventListener("click", startAudio);
+        document.removeEventListener("touchstart", startAudio);
+      };
+      document.addEventListener("click", startAudio);
+      document.addEventListener("touchstart", startAudio);
     });
-
-    document.getElementById('openShare').addEventListener('click', () => {
-      if (navigator.share) navigator.share({ title: document.title, url: pageLink }).catch(()=>{});
-      else alert('المشاركة غير مدعومة في متصفحك. استخدم زر النسخ.');
-    });
+  });
   </script>
 
 </body>
