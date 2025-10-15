@@ -95,6 +95,18 @@
 
     footer{ margin-top:16px;text-align:center;color:var(--muted);font-size:12px }
     @media (max-width:520px){ .frame{padding:20px} .logo img{width:70px;height:70px} }
+
+    /* طبقة "اضغط للدخول" */
+    .gate {
+      position: fixed; inset: 0; display: grid; place-items: center;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      z-index: 9999;
+    }
+    .gate-btn{
+      padding:14px 22px; border-radius:18px; border:1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,0.08); color:#fff; font-weight:800; font-size:16px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.35); cursor:pointer;
+    }
   </style>
 </head>
 <body>
@@ -151,24 +163,58 @@
     </footer>
   </div>
 
-  <!-- تشغيل الأغنية عند فتح الصفحة -->
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const audio = new Audio("https://h.uguu.se/kwmAtLDd.mp3");
-    audio.preload = "auto";
+  <!-- طبقة تشغيل الصوت لأول مرة -->
+  <div class="gate" id="soundGate" style="display:none;">
+    <button class="gate-btn" id="startSoundBtn">اضغط للدخول 🎵</button>
+  </div>
 
-    // محاولة التشغيل التلقائي
-    audio.play().catch(() => {
-      console.log("🔇 التشغيل التلقائي تم منعه - في انتظار تفاعل المستخدم");
-      const startAudio = () => {
-        audio.play().catch(()=>{});
-        document.removeEventListener("click", startAudio);
-        document.removeEventListener("touchstart", startAudio);
-      };
-      document.addEventListener("click", startAudio);
-      document.addEventListener("touchstart", startAudio);
+  <script>
+  (function(){
+    const AUDIO_URL = "https://h.uguu.se/kwmAtLDd.mp3";
+    const LOOP = false; // لو عايزها تعيد نفسها خليه true
+
+    const audio = new Audio(AUDIO_URL);
+    audio.preload = "auto";
+    audio.loop = LOOP;
+
+    // حاول تشغيل تلقائي
+    function tryAutoplay(){
+      audio.play().catch(() => {
+        // لو اترفض التشغيل، فعّل طبقة "اضغط للدخول"
+        document.getElementById('soundGate').style.display = 'grid';
+      });
+    }
+
+    // بدء الصوت باللمس/الكليك
+    function startOnGesture(){
+      audio.play().catch(()=>{});
+      document.getElementById('soundGate').style.display = 'none';
+      // بعد ما نبدأ الصوت مرة، مش محتاجين المستمعين دول
+      document.removeEventListener('click', startOnGesture);
+      document.removeEventListener('touchstart', startOnGesture);
+    }
+
+    // زر الطبقة
+    document.getElementById('startSoundBtn').addEventListener('click', startOnGesture);
+
+    // كمان لو المستخدم لمس/ضغط في أي مكان — شغّل و اخفِ الطبقة
+    document.addEventListener('click', startOnGesture, { once: true });
+    document.addEventListener('touchstart', startOnGesture, { once: true });
+
+    // ابدأ المحاولة بعد تحميل الـ DOM
+    document.addEventListener("DOMContentLoaded", tryAutoplay);
+
+    // أزرار النسخ/المشاركة (زي ما هي)
+    const pageLink = window.location.href;
+    document.getElementById('copyLink')?.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(pageLink); alert('تم نسخ الرابط: ' + pageLink); }
+      catch { prompt('انسخ الرابط يدويًا:', pageLink); }
     });
-  });
+    document.getElementById('openShare')?.addEventListener('click', () => {
+      if (navigator.share) navigator.share({ title: document.title, url: pageLink }).catch(()=>{});
+      else alert('المشاركة غير مدعومة في متصفحك. استخدم زر النسخ.');
+    });
+  })();
   </script>
 
 </body>
