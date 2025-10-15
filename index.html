@@ -34,6 +34,15 @@
     @keyframes moveBg2 { 0%,100%{background-position:10% 10%, 90% 90%, 0% 50%} 50%{background-position:15% 25%, 85% 75%, 100% 50%} }
     @keyframes hue { 0%{filter:hue-rotate(0deg)} 100%{filter:hue-rotate(360deg)} }
 
+    /* مؤثر دخول ناعم */
+    .fadeInUp {
+      animation: fadeInUp 1.1s ease-out;
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     .frame{
       width:100%;max-width:var(--maxw);
       background: rgba(255,255,255,0.04);
@@ -43,14 +52,34 @@
       box-shadow: var(--shadow);
       overflow:hidden;
       padding:26px;
+      position:relative;
     }
+
+    /* لمعة خلفية متحركة */
+    .frame::before {
+      content:"";
+      position:absolute;
+      top:-50%; left:-50%;
+      width:200%; height:200%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 60%);
+      animation: shineMove 6s infinite linear;
+      z-index:0;
+    }
+    @keyframes shineMove {
+      0% { transform: translate(0,0) rotate(0deg); }
+      100% { transform: translate(20%,20%) rotate(360deg); }
+    }
+
+    .frame > * { position:relative; z-index:1; }
+
     .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
     .logo img{
       width:85px;height:85px;object-fit:cover;border-radius:14px;
       background:#0f1520;border:1px solid rgba(255,255,255,0.06);
-      animation: pulse 4s ease-in-out infinite; /* نبض */
+      animation: pulse 4s ease-in-out infinite;
     }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+
     .brand .title{font-size:26px;font-weight:800;line-height:1}
     .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
 
@@ -66,7 +95,7 @@
     }
     .btn:hover{ transform: translateY(-3px); filter: brightness(1.06);
       box-shadow: 0 24px 40px rgba(0,0,0,.35); }
-    /* لمعان يمر على الزر */
+
     .btn::after{
       content:""; position:absolute; inset:0; width:45%; left:-70%;
       background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.25) 50%, transparent 100%);
@@ -82,7 +111,7 @@
     .label{font-size:15px}
 
     /* ألوان الأزرار */
-    .facebook{ background: linear-gradient(90deg,#1877f2,#2bbf3a); }   /* أخضر خفيف لمطابقة سكرينك */
+    .facebook{ background: linear-gradient(90deg,#1877f2,#2bbf3a); }
     .whatsapp{ background: linear-gradient(90deg,#f39c12,#e67e22); }
     .instagram{ background: linear-gradient(90deg,#b277ff,#2b8cff,#00b894); }
     .telegram{ background: linear-gradient(90deg,#2ecc71,#27ae60); }
@@ -104,7 +133,6 @@
 
     footer{ margin-top:16px;text-align:center;color:var(--muted);font-size:12px }
 
-    /* زر الاتصال العائم */
     .call-btn{
       position:fixed; bottom:22px; right:22px; z-index:999;
       width:60px; height:60px; border-radius:50%;
@@ -115,7 +143,6 @@
     }
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-    /* عنّا */
     .about{
       margin-top:20px;text-align:center;font-size:13px;color:#b8c0c9;
       line-height:1.7
@@ -130,17 +157,15 @@
 </head>
 <body>
 
-  <div class="frame" role="main">
-    <!-- شعار -->
+  <div class="frame fadeInUp" role="main">
     <div class="logo">
-      <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo" onerror="this.style.display='none'">
+      <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo">
       <div class="brand">
         <div class="title">Fly Express</div>
         <div class="subtitle">التوصيل الأسرع في نجع حمادي</div>
       </div>
     </div>
 
-    <!-- الأزرار -->
     <div class="buttons">
       <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL">
         <div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div>
@@ -168,26 +193,17 @@
       </a>
     </div>
 
-    <!-- أرقام الهواتف -->
     <div class="contact">
       📞 للتواصل:
       <a href="tel:+201017908076">+201017908076</a> —
       <a href="tel:+201004769249">+201004769249</a>
     </div>
 
-    <!-- عداد الزيارات -->
     <p id="visits" style="text-align:center;margin-top:10px;color:#b8c0c9;"></p>
 
-    <!-- أزرار إضافية -->
     <div class="share-row">
       <button class="small-btn" id="copyLink">نسخ رابط الصفحة</button>
       <button class="small-btn" id="openShare">مشاركة</button>
-    </div>
-
-    <!-- عنّا -->
-    <div class="about">
-      🚚 <b>Fly Express</b> — نخدمك في أسرع وقت داخل <b>نجع حمادي</b>.<br>
-      نوصلك بسرعة… وبالحب ❤️
     </div>
 
     <footer>
@@ -195,14 +211,11 @@
     </footer>
   </div>
 
-  <!-- زر الاتصال العائم -->
   <a href="tel:+201017908076" class="call-btn" aria-label="اتصل الآن">
     <i class="fa-solid fa-phone"></i>
   </a>
 
-  <!-- سكربتات خفيفة -->
   <script>
-    // نسخ/مشاركة الرابط
     const pageLink = window.location.href;
     document.getElementById('copyLink').addEventListener('click', async () => {
       try { await navigator.clipboard.writeText(pageLink); alert('تم نسخ الرابط: ' + pageLink); }
@@ -213,7 +226,6 @@
       else alert('المشاركة غير مدعومة في متصفحك. استخدم زر النسخ.');
     });
 
-    // عدّاد زيارات (محلي لكل جهاز)
     const visits = localStorage.getItem("visitsCount") || 0;
     const newCount = parseInt(visits,10) + 1;
     localStorage.setItem("visitsCount", newCount);
