@@ -1,48 +1,50 @@
 <script>
 (function () {
-  const SOUND_URL = 'https://h.uguu.se/kwmAtLDd.mp3'; // صوتك المباشر
-  const DELAY_MS = 1200; // مدة الانتظار قبل الانتقال (عدّلها لو حابب)
+  const SOUND_URL = 'https://h.uguu.se/kwmAtLDd.mp3';   // رابط الصوت
+  const MIN_WAIT = 1200;   // زمن الانتظار قبل الانتقال (ms)
 
-  // اجبار الفتح في نفس التبويب
-  const ALWAYS_SAME_TAB = true;
-
-  // عنصر صوت واحد
+  // عنصر صوت واحد مُعاد استخدامه
   const audio = new Audio(SOUND_URL);
   audio.preload = 'auto';
 
+  // ألغِ أي مستمعات قديمة (لو اتكررت)
+  document.querySelectorAll('a.btn[href]').forEach(a => {
+    const clone = a.cloneNode(true);
+    clone.removeAttribute('target');        // إجبار نفس التبويب
+    a.replaceWith(clone);
+  });
+
   function handleClick(e) {
-    const a = e.currentTarget;
-    const href = a.href;
     e.preventDefault();
+    const href = this.href;
 
-    // تشغيل الصوت
+    // شغّل الصوت
     audio.currentTime = 0;
-    audio.play().catch(()=>{});
+    audio.play().catch(()=>{ /* لو اتمنع الصوت هنمشي على التايمر */ });
 
-    // تعطيل النقرات المتعددة مؤقتًا (اختياري)
+    // مانع نقرات متكررة مؤقتًا
     document.body.style.pointerEvents = 'none';
     document.body.style.cursor = 'wait';
 
-    // بعد التأخير انتقل في نفس التبويب
-    setTimeout(() => {
+    let moved = false;
+    const go = () => {
+      if (moved) return;
+      moved = true;
       document.body.style.pointerEvents = '';
       document.body.style.cursor = '';
-      if (ALWAYS_SAME_TAB || !a.target || a.target === '_self') {
-        window.location.assign(href);       // نفس التبويب
-      } else {
-        window.open(href, '_blank', 'noopener'); // لو عايز تسمح بتبويب جديد
-      }
-    }, DELAY_MS);
+      window.location.assign(href);  // نفس التبويب — ولا تبويبات جانبية
+    };
+
+    // انقل بعد MIN_WAIT كحد أقصى
+    const t = setTimeout(go, MIN_WAIT);
+
+    // لو الصوت خلص قبل MIN_WAIT انقل مباشرة
+    audio.onended = () => { clearTimeout(t); go(); };
   }
 
-  // اربط على كل الروابط ذات الكلاس .btn
+  // اربط المستمع بعد التنظيف
   document.querySelectorAll('a.btn[href]').forEach(a => {
-    // لو مُفعّل الفتح في نفس التبويب، تجاهل target
-    if (ALWAYS_SAME_TAB) a.removeAttribute('target');
-    if (!a.dataset.soundBound) {
-      a.addEventListener('click', handleClick);
-      a.dataset.soundBound = '1';
-    }
+    a.addEventListener('click', handleClick, { passive: false });
   });
 })();
 </script>
