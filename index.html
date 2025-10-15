@@ -1,50 +1,190 @@
-<script>
-(function () {
-  const SOUND_URL = 'https://h.uguu.se/kwmAtLDd.mp3';   // رابط الصوت
-  const MIN_WAIT = 1200;   // زمن الانتظار قبل الانتقال (ms)
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fly Express</title>
 
-  // عنصر صوت واحد مُعاد استخدامه
-  const audio = new Audio(SOUND_URL);
-  audio.preload = 'auto';
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-  // ألغِ أي مستمعات قديمة (لو اتكررت)
-  document.querySelectorAll('a.btn[href]').forEach(a => {
-    const clone = a.cloneNode(true);
-    clone.removeAttribute('target');        // إجبار نفس التبويب
-    a.replaceWith(clone);
-  });
+  <style>
+    :root{
+      --radius: 999px;
+      --maxw: 480px;
+      --gap: 14px;
+      --glass: rgba(255,255,255,0.06);
+      --text: #e9eef3;
+      --muted: #b8c0c9;
+      --shadow: 0 18px 50px rgba(0,0,0,0.28);
+      font-family: 'Cairo', system-ui, sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;color:var(--text);display:flex;align-items:center;justify-content:center;padding:28px;
+      /* خلفية متحركة */
+      background: radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, rgba(0,0,0,0) 65%),
+                  radial-gradient(1200px 600px at 90% 90%, #001219 0%, rgba(0,0,0,0) 65%),
+                  conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
+      background-size: 140% 140%, 140% 140%, 200% 200%;
+      animation: moveBg1 16s ease-in-out infinite, moveBg2 18s ease-in-out infinite, hue 28s linear infinite;
+    }
+    @keyframes moveBg1 { 0%,100%{background-position:10% 10%, 90% 90%, 0% 50%} 50%{background-position:30% 20%, 70% 80%, 100% 50%} }
+    @keyframes moveBg2 { 0%,100%{background-position:10% 10%, 90% 90%, 0% 50%} 50%{background-position:15% 25%, 85% 75%, 100% 50%} }
+    @keyframes hue { 0%{filter:hue-rotate(0deg)} 100%{filter:hue-rotate(360deg)} }
 
-  function handleClick(e) {
-    e.preventDefault();
-    const href = this.href;
+    .frame{
+      width:100%;max-width:var(--maxw);
+      background: rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding:26px;
+    }
+    .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+    .logo img{
+      width:85px;height:85px;object-fit:cover;border-radius:14px;
+      background:#0f1520;border:1px solid rgba(255,255,255,0.06)
+    }
+    .brand .title{font-size:26px;font-weight:800;line-height:1}
+    .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
 
-    // شغّل الصوت
-    audio.currentTime = 0;
-    audio.play().catch(()=>{ /* لو اتمنع الصوت هنمشي على التايمر */ });
+    .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
 
-    // مانع نقرات متكررة مؤقتًا
-    document.body.style.pointerEvents = 'none';
-    document.body.style.cursor = 'wait';
+    .btn{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:12px 18px;border-radius:var(--radius);text-decoration:none;
+      color:#fff;font-weight:700;box-shadow: 0 10px 24px rgba(0,0,0,.3);
+      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+      border:1px solid rgba(255,255,255,0.08)
+    }
+    .btn:hover{ transform: translateY(-3px); filter: brightness(1.06);
+      box-shadow: 0 24px 40px rgba(0,0,0,.35); }
 
-    let moved = false;
-    const go = () => {
-      if (moved) return;
-      moved = true;
-      document.body.style.pointerEvents = '';
-      document.body.style.cursor = '';
-      window.location.assign(href);  // نفس التبويب — ولا تبويبات جانبية
-    };
+    .left{display:flex;align-items:center;gap:12px}
+    .icon{
+      width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      background: rgba(255,255,255,0.18);font-size:17px
+    }
+    .label{font-size:15px}
 
-    // انقل بعد MIN_WAIT كحد أقصى
-    const t = setTimeout(go, MIN_WAIT);
+    /* الألوان */
+    .facebook{ background: linear-gradient(90deg,#1877f2,#1462c7); }
+    .whatsapp{ background: linear-gradient(90deg,#25D366,#1fb257); }
+    .instagram{ background: linear-gradient(90deg,#f58529,#dd2a7b,#8134af,#515bd4); }
+    .telegram{ background: linear-gradient(90deg,#0088cc,#007ab8); }
+    .facebook-personal{ background: linear-gradient(90deg,#1773ea,#0f5dc4); }
 
-    // لو الصوت خلص قبل MIN_WAIT انقل مباشرة
-    audio.onended = () => { clearTimeout(t); go(); };
-  }
+    .share-row{display:flex;gap:12px;margin-top:16px;align-items:center;justify-content:center}
+    .small-btn{
+      padding:10px 14px;border-radius:12px;background:var(--glass);
+      color:var(--text);border:1px solid rgba(255,255,255,0.08);
+      cursor:pointer;font-weight:700
+    }
 
-  // اربط المستمع بعد التنظيف
-  document.querySelectorAll('a.btn[href]').forEach(a => {
-    a.addEventListener('click', handleClick, { passive: false });
-  });
-})();
-</script>
+    .contact{
+      margin-top:18px;text-align:center;color:var(--text);font-weight:600;
+      background:rgba(255,255,255,0.06);padding:10px;border-radius:12px;
+      border:1px solid rgba(255,255,255,0.08)
+    }
+    .contact a{ color:#25D366; text-decoration:none; font-weight:800; }
+
+    footer{ margin-top:16px;text-align:center;color:var(--muted);font-size:12px }
+    @media (max-width:520px){ .frame{padding:20px} .logo img{width:70px;height:70px} }
+  </style>
+</head>
+<body>
+
+  <div class="frame" role="main">
+    <!-- شعار Fly Express -->
+    <div class="logo">
+      <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo" onerror="this.style.display='none'">
+      <div class="brand">
+        <div class="title">Fly Express</div>
+        <div class="subtitle">التوصيل الأسرع في نجع حمادي</div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <!-- فيسبوك (الصفحة التجارية) -->
+      <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="icon"><i class="fa-brands fa-facebook-f"></i></div>
+          <span class="label">صفحة فيسبوك</span>
+        </div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+
+      <!-- واتساب -->
+      <a class="btn whatsapp" href="https://wa.me/201017908076" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <span class="label">واتساب</span>
+        </div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+
+      <!-- إنستجرام الشخصي (رابط نظيف) -->
+      <a class="btn instagram" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="icon"><i class="fa-brands fa-instagram"></i></div>
+          <span class="label">إنستجرام الشخصي</span>
+        </div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+
+      <!-- تليجرام الشخصي -->
+      <a class="btn telegram" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="icon"><i class="fa-brands fa-telegram"></i></div>
+          <span class="label">تليجرام</span>
+        </div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+
+      <!-- فيسبوك الشخصي (حالياً باستخدام رابط المشاركة الذي أرسلته) -->
+      <a class="btn facebook-personal" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="icon"><i class="fa-brands fa-facebook"></i></div>
+          <span class="label">فيسبوك الشخصي</span>
+        </div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+    </div>
+
+    <!-- أرقام الهواتف -->
+    <div class="contact">
+      📞 للتواصل:
+      <a href="tel:+201017908076">+201017908076</a> —
+      <a href="tel:+201004769249">+201004769249</a>
+    </div>
+
+    <div class="share-row">
+      <button class="small-btn" id="copyLink">نسخ رابط الصفحة</button>
+      <button class="small-btn" id="openShare">مشاركة</button>
+    </div>
+
+    <footer>
+      © Fly Express — أسرع توصيل في نجع حمادي
+    </footer>
+  </div>
+
+  <script>
+    const pageLink = window.location.href;
+
+    document.getElementById('copyLink').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(pageLink); alert('تم نسخ الرابط: ' + pageLink); }
+      catch { prompt('انسخ الرابط يدويًا:', pageLink); }
+    });
+
+    document.getElementById('openShare').addEventListener('click', () => {
+      if (navigator.share) navigator.share({ title: document.title, url: pageLink }).catch(()=>{});
+      else alert('المشاركة غير مدعومة في متصفحك. استخدم زر النسخ.');
+    });
+  </script>
+
+</body>
+</html>
