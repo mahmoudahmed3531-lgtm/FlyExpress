@@ -1,30 +1,30 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Fly Rider — العب واربح توصيلة مجانية</title>
 <style>
   :root{
-    --sky1:#cceaff; --sky2:#f6fbff;
+    --sky1:#bfe6ff; --sky2:#f7fbff;
     --ground:#8bd17c; --road:#d9dfe8; --lane:#b7c3cf;
-    --text:#063451; --ui:#0e2a3d;
-    --accent:#2ecc71; --danger:#e74c3c;
+    --text:#063451; --ui:#0e2a3d; --accent:#2ecc71;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0; background:linear-gradient(#eaf6ff,#ffffff);
-    font-family:system-ui, -apple-system, "Segoe UI", Cairo, Roboto, sans-serif;
+    margin:0;
+    background:linear-gradient(180deg,#bfe6ff,#f7fbff);
+    font-family:system-ui,-apple-system,"Segoe UI",Cairo,Roboto,sans-serif;
     color:var(--text); overflow:hidden;
   }
 
   /* خلفية نهارية */
   .bg{
-    position:fixed; inset:0; z-index:-1; overflow:hidden;
+    position:fixed; inset:0; z-index:0; overflow:hidden;
     background: linear-gradient(180deg,var(--sky1) 0%, var(--sky2) 60%, var(--road) 60%, var(--lane) 68%, var(--road) 68%, var(--ground) 100%);
   }
-  .cloud{position:absolute; top:10%; width:180px; height:60px; background:#fff; border-radius:40px; filter:blur(.2px); opacity:.9}
+  .cloud{position:absolute; top:10%; width:180px; height:60px; background:#fff; border-radius:40px; opacity:.9}
   .cloud:before,.cloud:after{content:""; position:absolute; background:#fff; border-radius:50%}
   .cloud:before{width:80px;height:80px; left:20px; top:-30px}
   .cloud:after{width:60px;height:60px; left:100px; top:-20px}
@@ -33,33 +33,28 @@
   .cloud.s3{top:26%; left:150%; transform:scale(1.1); animation:cloud 42s linear infinite}
   @keyframes cloud{to{transform:translateX(-260%)}}
 
-  .wrap{max-width:960px; margin:0 auto; padding:18px}
+  .wrap{max-width:960px; margin:0 auto; padding:18px; position:relative; z-index:1}
   h1{
     margin:4px 0 8px; font-size:24px; font-weight:900; color:var(--ui);
     display:flex; gap:8px; align-items:center; justify-content:space-between;
   }
-  .hint{margin:0 0 10px; color:#1b4e6b; font-weight:700}
   .hud{display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap}
   .badge{background:#fff;border:1px solid #e6eef5; padding:8px 12px; border-radius:12px; font-weight:800; color:var(--ui); box-shadow:0 6px 16px rgba(0,0,0,.05)}
   .btn{background:var(--accent); color:#fff; font-weight:900; border:none; border-radius:999px; padding:10px 16px; cursor:pointer; box-shadow:0 10px 20px rgba(46,204,113,.35)}
-  .btn:active{transform:translateY(1px)}
   canvas{display:block; width:100%; max-width:960px; height:280px; border-radius:16px; background:transparent; border:1px solid #dfe8f0; box-shadow:0 12px 30px rgba(0,0,0,.06)}
-  .bar{display:flex; gap:8px; align-items:center; margin:10px 0}
 
-  /* رسالة الفوز */
   .toast{
     position:fixed; inset:auto 12px 12px 12px; margin:auto; max-width:520px;
     background:#fff; border:1px solid #e6eef5; border-radius:16px; padding:14px 16px;
-    box-shadow:0 18px 40px rgba(0,0,0,.12); display:none; text-align:center;
+    box-shadow:0 18px 40px rgba(0,0,0,.12); display:none; text-align:center; z-index:2;
   }
   .toast.show{display:block; animation:pop .35s ease}
   @keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
 
-  /* شاشة البدء / النهاية */
   .overlay{
     position:absolute; inset:0; display:grid; place-items:center; text-align:center;
     background:rgba(255,255,255,.55); backdrop-filter:blur(3px); border-radius:16px; border:1px dashed #cfe0ed;
-    color:var(--ui); font-weight:900;
+    color:var(--ui); font-weight:900; z-index:1;
   }
   .overlay.hidden{display:none}
   .overlay .inner{padding:14px}
@@ -75,7 +70,7 @@
 
   <div class="wrap">
     <h1>🎮 Fly Rider <button id="btnStart" class="btn">ابدأ اللعبة</button></h1>
-    <div class="bar hud">
+    <div class="hud">
       <div class="badge">النقاط: <span id="score">0</span></div>
       <div class="badge">أعلى نتيجة: <span id="best">0</span></div>
       <div class="badge">الهدف: 3000 نقطة</div>
@@ -86,20 +81,28 @@
       <canvas id="game" width="960" height="280" aria-label="Fly Rider Game"></canvas>
       <div id="overlay" class="overlay">
         <div class="inner">
-          <div style="font-size:20px; margin-bottom:6px">اضغط <span style="color:#2ecc71">ابدأ اللعبة</span> أو المس الشاشة</div>
+          <div style="font-size:20px; margin-bottom:6px">
+            اضغط <span style="color:#2ecc71">ابدأ اللعبة</span> أو المس الشاشة
+          </div>
           <div class="small">اقفز فوق العوائق. لو وصلت 3000 نقطة: <span style="color:#e67e22">مبروك توصيلة مجانية!</span></div>
         </div>
       </div>
     </div>
-
-    <p class="hint">لو الموتوسيكل خبط في عائق — تقدر تعيد فورًا وحاول تكسر الرقم! 😉</p>
   </div>
 
   <div id="toast" class="toast"></div>
 
 <script>
-const RIDER_SRC = 'https://i.ibb.co/fG4LmWnD/images-3-5.jpg';
+/* ===== إعداد الصورة + Fallback ===== */
+const RIDER_SRC = 'https://i.ibb.co/fG4LmWnD/images-3-5.jpg'; // صورتك المباشرة
+const riderImg = new Image();
+riderImg.crossOrigin = "anonymous";   // تحسين التحميل منドمين خارجي
+let riderImgReady = false;
+riderImg.onload = () => { riderImgReady = true; };
+riderImg.onerror = () => { riderImgReady = false; }; // لو فشلت هنستخدم رسم بديل
+riderImg.src = RIDER_SRC;
 
+/* ===== الكانفس ===== */
 const canvas = document.getElementById('game');
 const c = canvas.getContext('2d');
 const dpi = window.devicePixelRatio || 1;
@@ -114,6 +117,7 @@ fixDPI(); addEventListener('resize', fixDPI);
 const W = () => canvas.clientWidth;
 const H = () => canvas.clientHeight;
 
+/* ===== حالة اللعبة ===== */
 let running = false, gameOver = false, won = false;
 let score = 0, best = parseInt(localStorage.getItem('flyrider_best')||'0',10);
 document.getElementById('best').textContent = best;
@@ -121,10 +125,10 @@ document.getElementById('best').textContent = best;
 const GROUND_Y = () => H()*0.78;
 let speed = 6;
 
-const riderImg = new Image();
-riderImg.src = RIDER_SRC;
-const rider = { x: 80, y: 0, w: 120, h: 80, vy: 0, onGround: true };
+/* ===== اللاعب ===== */
+const rider = { x:80, y:0, w:120, h:80, vy:0, onGround:true };
 
+/* ===== العوائق ===== */
 const obstacles = [];
 function spawnObstacle(){
   const gap = 140 + Math.random()*120;
@@ -136,8 +140,10 @@ function spawnObstacle(){
 }
 for(let i=0;i<5;i++) spawnObstacle();
 
+/* ===== عناصر أرضية صغيرة ===== */
 const groundDots = Array.from({length:24}, (_,i)=>({x:i*60 + Math.random()*50, y:GROUND_Y()+12+Math.random()*16}));
 
+/* ===== تحكم القفز ===== */
 function jump(){
   if (!running) startGame();
   if (!rider.onGround || gameOver) return;
@@ -150,19 +156,17 @@ addEventListener('keydown', e=>{
 canvas.addEventListener('pointerdown', jump);
 document.getElementById('btnStart').addEventListener('click', jump);
 
+/* ===== رسم الخلفية ===== */
 function drawBackground(){
   const y = GROUND_Y();
   c.strokeStyle = '#c6d0db';
   c.lineWidth = 2;
-  c.beginPath();
-  c.moveTo(0, y); c.lineTo(W(), y); c.stroke();
+  c.beginPath(); c.moveTo(0, y); c.lineTo(W(), y); c.stroke();
 
   c.fillStyle = '#ffffff';
   const segW = 40, gap = 70;
   const offset = - (Date.now()/20 % (segW+gap));
-  for(let x=offset; x<W(); x+=segW+gap){
-    c.fillRect(x, y-6, segW, 3);
-  }
+  for(let x=offset; x<W(); x+=segW+gap){ c.fillRect(x, y-6, segW, 3); }
 
   c.fillStyle = '#a7b4c1';
   groundDots.forEach(d=>{
@@ -171,44 +175,48 @@ function drawBackground(){
   });
 }
 
+/* ===== رسم اللاعب (مع بديل لو الصورة فشلت) ===== */
 function drawRider(){
   const y = rider.y;
+
+  // ظل
   c.fillStyle = 'rgba(0,0,0,.12)';
   c.beginPath();
   c.ellipse(rider.x + rider.w*0.55, GROUND_Y()+6, 46, 10, 0, 0, Math.PI*2);
   c.fill();
-  c.drawImage(riderImg, rider.x, y, rider.w, rider.h);
-}
 
-function drawObstacles(){
-  c.fillStyle = '#2c3e50';
-  obstacles.forEach(o=>{
-    o.x -= speed;
-    c.fillRect(o.x, o.y, o.w, o.h);
-  });
-
-  while(obstacles.length && obstacles[0].x + obstacles[0].w < -20){
-    obstacles.shift(); spawnObstacle();
+  if (riderImgReady){
+    c.drawImage(riderImg, rider.x, y, rider.w, rider.h);
+  }else{
+    // بديل بسيط لو الصورة مش جاهزة
+    c.fillStyle = '#2c3e50';
+    c.fillRect(rider.x, y+10, rider.w, rider.h-20);
+    c.fillStyle = '#e74c3c';
+    c.fillRect(rider.x+10, y+20, rider.w-20, rider.h-40);
   }
 }
 
+/* ===== رسم العوائق ===== */
+function drawObstacles(){
+  c.fillStyle = '#2c3e50';
+  obstacles.forEach(o=>{ o.x -= speed; c.fillRect(o.x, o.y, o.w, o.h); });
+  while(obstacles.length && obstacles[0].x + obstacles[0].w < -20){ obstacles.shift(); spawnObstacle(); }
+}
+
+/* ===== فيزياء وتصادم ===== */
 function physics(){
   rider.vy += 0.7;
   rider.y += rider.vy;
   if (rider.y + rider.h >= GROUND_Y()){
-    rider.y = GROUND_Y() - rider.h;
-    rider.vy = 0; rider.onGround = true;
+    rider.y = GROUND_Y() - rider.h; rider.vy = 0; rider.onGround = true;
   }
-
   const rx = rider.x+18, ry = rider.y+8, rw = rider.w-28, rh = rider.h-12;
   for(const o of obstacles){
-    if (rx < o.x + o.w && rx + rw > o.x && ry < o.y + o.h && ry + rh > o.y){
-      endGame(false);
-      break;
-    }
+    if (rx < o.x + o.w && rx + rw > o.x && ry < o.y + o.h && ry + rh > o.y){ endGame(false); break; }
   }
 }
 
+/* ===== حلقة اللعبة ===== */
 let lastTime = 0;
 function loop(ts){
   if (!running) return;
@@ -222,17 +230,13 @@ function loop(ts){
 
   score += Math.max(1, Math.floor(dt));
   if (score % 100 === 0) speed = Math.min(12, speed + 0.05);
-
   document.getElementById('score').textContent = score;
 
-  if (score >= 3000 && !won){
-    endGame(true);
-    return;
-  }
-
+  if (score >= 3000 && !won){ endGame(true); return; }
   requestAnimationFrame(loop);
 }
 
+/* ===== إدارة الحالات ===== */
 const overlay = document.getElementById('overlay');
 const toast = document.getElementById('toast');
 
@@ -248,11 +252,9 @@ function endGame(isWin){
   best = Math.max(best, score); localStorage.setItem('flyrider_best', best);
   document.getElementById('best').textContent = best;
 
-  if (isWin){
-    showToast('🎉 مبروك! كسبت توصيلة مجانية 🚚 — لقطة شاشة وارسلها على واتساب ✅');
-  }else{
-    showToast('💥 خبطت في عائق — اضغط لإعادة المحاولة');
-  }
+  showToast(isWin
+    ? '🎉 مبروك! كسبت توصيلة مجانية 🚚 — صور النتيجة وابعتها لنا على واتساب'
+    : '💥 خبطت في عائق — اضغط لإعادة المحاولة');
 
   setTimeout(()=>{ overlay.classList.remove('hidden'); }, 200);
 }
@@ -268,11 +270,9 @@ function resetGame(){
 
 overlay.addEventListener('pointerdown', ()=> gameOver ? resetGame() : startGame());
 
-function showToast(msg){
-  toast.textContent = msg;
-  toast.classList.add('show');
-}
+function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); }
 
+/* وضع اللاعب على الأرض مبدئيًا */
 rider.y = GROUND_Y() - rider.h;
 </script>
 </body>
