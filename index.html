@@ -1,291 +1,160 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Fly Rider — العب واكسب توصيلة مجانية</title>
-<style>
-  :root{
-    --ink:#eaf6ff; --muted:#9cc0ff; --panel:#0b1120AA;
-    --brand:#22c55e; --danger:#ef4444;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fly Express — التوصيل الأسرع في نجع حمادي</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Cairo", sans-serif;
+      background: radial-gradient(circle at top, #0a1f3c, #000814);
+      color: #fff;
+      text-align: center;
+      padding: 40px 10px;
+    }
 
-  /* خلفية RGB */
-  body{
-    margin:0; color:var(--ink); font-family:system-ui,"Cairo",Roboto,sans-serif;
-    background:
-      radial-gradient(800px 420px at 15% 15%, #1e293b 0%, transparent 60%),
-      radial-gradient(800px 420px at 85% 85%, #172554 0%, transparent 60%),
-      conic-gradient(from 0deg at 50% 50%, #06131f, #0a1c2c, #102d45, #0a1c2c, #06131f);
-    animation: hue 28s linear infinite;
-    overflow-x:hidden;
-  }
-  @keyframes hue{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+    .card {
+      max-width: 420px;
+      margin: auto;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 18px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      padding: 25px;
+    }
 
-  .wrap{max-width:980px;margin:0 auto;padding:18px}
-  header{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-  h1{margin:0;font-size:36px;font-weight:900;display:flex;gap:10px;align-items:center;
-      text-shadow:0 4px 18px rgba(56,189,248,.25), 0 0 28px rgba(59,130,246,.25)}
-  .statbar{display:flex;gap:10px;flex-wrap:wrap}
-  .badge{
-    background:linear-gradient(180deg,rgba(15,23,42,.85),rgba(15,23,42,.6));
-    border:1px solid rgba(148,163,184,.2); color:#dbeafe;
-    border-radius:14px;padding:10px 14px;font-weight:800;
-    box-shadow:0 6px 22px rgba(2,8,23,.35) inset, 0 8px 24px rgba(2,8,23,.35);
-    backdrop-filter: blur(6px);
-  }
-  .btn{border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer}
-  .btn.green{background:linear-gradient(90deg,#16a34a,#22c55e);color:#031318; box-shadow:0 10px 26px rgba(34,197,94,.35)}
-  .btn:active{transform:translateY(1px)}
+    .logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 18px;
+      margin-bottom: 10px;
+    }
 
-  .frame{
-    position:relative;margin-top:12px;border-radius:18px;
-    background:linear-gradient(180deg,rgba(2,6,23,.55),rgba(2,6,23,.35));
-    border:1px solid rgba(148,163,184,.2);
-    box-shadow:0 14px 40px rgba(2,8,23,.55), 0 0 0 1px rgba(148,163,184,.15) inset;
-    overflow:hidden;
-  }
-  .frame::before{
-    content:""; position:absolute; inset:0;
-    background:radial-gradient(600px 280px at 30% 20%, rgba(56,189,248,.18), transparent 60%),
-               radial-gradient(600px 280px at 70% 70%, rgba(34,197,94,.16), transparent 60%);
-    pointer-events:none;
-  }
+    h1 {
+      font-size: 28px;
+      color: #fff;
+      margin: 0;
+    }
 
-  canvas{display:block;width:100%;height:360px;border-radius:18px}
+    p {
+      color: #ccc;
+      font-size: 15px;
+    }
 
-  .overlay{
-    position:absolute;inset:0;display:grid;place-items:center;text-align:center;
-    background:rgba(2,6,23,.45);border-radius:18px;border:1px dashed rgba(148,163,184,.25);
-    backdrop-filter:blur(4px);color:#e2f3ff
-  }
-  .overlay.hidden{display:none}
-  .overlay .box{
-    background:linear-gradient(180deg,rgba(15,23,42,.9),rgba(15,23,42,.7));
-    border:1px solid rgba(148,163,184,.3);border-radius:14px;padding:16px 18px;
-    box-shadow:0 14px 30px rgba(2,6,23,.6); backdrop-filter: blur(6px)
-  }
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(90deg, #00c853, #009efd);
+      color: #fff;
+      font-size: 18px;
+      padding: 14px 0;
+      border-radius: 12px;
+      margin: 10px 0;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
 
-  .hint{text-align:center;color:#93c5fd;font-weight:800;margin:10px 0 0}
+    .link-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
 
-  .toast{
-    position:fixed;inset:auto 12px 12px 12px;margin:auto;max-width:540px;
-    background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(15,23,42,.8));
-    color:#e5f2ff;border:1px solid rgba(148,163,184,.3);border-radius:14px;padding:14px 16px;
-    box-shadow:0 18px 50px rgba(2,6,23,.7);display:none;text-align:center;font-weight:900
-  }
-  .toast.show{display:block;animation:pop .35s ease}
-  @keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .game-btn {
+      background: linear-gradient(90deg, #2af598, #009efd);
+      font-size: 19px;
+      font-weight: 700;
+    }
 
-  /* سُحب */
-  .cloud{position:absolute;top:12%;width:180px;height:60px;background:#e2e8f0;border-radius:40px;filter:blur(.2px);opacity:.9}
-  .cloud:before,.cloud:after{content:"";position:absolute;background:#e2e8f0;border-radius:50%}
-  .cloud:before{width:80px;height:80px;left:20px;top:-30px}
-  .cloud:after{width:60px;height:60px;left:100px;top:-18px}
-  .c1{left:110%;animation:cloud 28s linear infinite}
-  .c2{left:140%;top:20%;transform:scale(.9);animation:cloud 34s linear infinite}
-  .c3{left:170%;top:26%;transform:scale(1.05);animation:cloud 42s linear infinite}
-  @keyframes cloud{to{transform:translateX(-260%)}}
-</style>
+    .contact-box {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    footer {
+      margin-top: 25px;
+      color: #999;
+      font-size: 14px;
+    }
+
+    button, a {
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <h1>🏍️ Fly Rider — العب واكسب توصيلة مجانية</h1>
-      <div class="statbar">
-        <div class="badge">المسافة: <span id="score">0</span> / 10000</div>
-        <div class="badge">أعلى نتيجة: <span id="best">0</span></div>
-        <button id="btnStart" class="btn green">ابدأ</button>
-      </div>
-    </header>
+  <div class="card">
+    <img src="https://i.ibb.co/q7npq6Z/FLY-LOGO.png" alt="Fly Express Logo" class="logo">
+    <h1>Fly Express</h1>
+    <p>التوصيل الأسرع في نجع حمادي 🚀</p>
 
-    <div class="frame">
-      <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
-      <canvas id="game" width="960" height="360" aria-label="Fly Rider Game"></canvas>
+    <!-- 🎮 زر اللعبة -->
+    <a href="https://udahmed3531-lgtm.github.io/FlyRiderGame/" 
+       target="_blank" 
+       rel="noopener" 
+       class="link-btn game-btn">
+      🎮 العب واكسب — توصيلة مجانية 🏍️
+    </a>
 
-      <!-- شاشة البدء -->
-      <div id="overlay" class="overlay">
-        <div class="box">
-          <div style="font-size:18px;margin-bottom:6px">اضغط <b>ابدأ</b> أو المس الشاشة للانطلاق</div>
-          <div style="color:#86efac;font-weight:900">الهدف: <b>10000</b> نقطة — <u>العب واكسب توصيلة مجانية</u> ✨</div>
-          <div style="font-size:12px;color:#9cc0ff;margin-top:8px">تلميح: عند البدء يوجد <b>مهلة أمان 1.2 ثانية</b> قبل تفعيل الاصطدام</div>
-        </div>
-      </div>
+    <!-- أزرار التواصل -->
+    <a href="https://facebook.com" target="_blank" class="link-btn" style="background: linear-gradient(90deg,#00c853,#009624);">
+      صفحة فيسبوك 📘
+    </a>
+
+    <a href="https://wa.me/201017908076" target="_blank" class="link-btn" style="background: linear-gradient(90deg,#ff9100,#ff6d00);">
+      واتساب 📱
+    </a>
+
+    <a href="https://instagram.com" target="_blank" class="link-btn" style="background: linear-gradient(90deg,#8e2de2,#4a00e0);">
+      إنستجرام الشخصي 📸
+    </a>
+
+    <a href="https://t.me" target="_blank" class="link-btn" style="background: linear-gradient(90deg,#00b09b,#96c93d);">
+      تليجرام 💬
+    </a>
+
+    <a href="https://facebook.com/profile" target="_blank" class="link-btn" style="background: linear-gradient(90deg,#00c853,#009624);">
+      فيسبوك الشخصي 👤
+    </a>
+
+    <!-- صندوق التواصل -->
+    <div class="contact-box">
+      <p>📞 للتواصل: <br>
+        <strong style="color:#ffcc80;">+201017908076 — +201004769249</strong>
+      </p>
     </div>
 
-    <p class="hint">لو خبطت في عائق — اضغط الشاشة لإعادة المحاولة ✨</p>
+    <!-- أزرار النسخ والمشاركة -->
+    <div style="margin-top:15px;">
+      <button class="link-btn" style="background:#444; font-size:16px;" onclick="copyLink()">📋 نسخ رابط الصفحة</button>
+      <button class="link-btn" style="background:#333; font-size:16px;" onclick="sharePage()">🔗 مشاركة</button>
+    </div>
+
+    <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
-  <div id="toast" class="toast"></div>
+  <script>
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href);
+      alert("✅ تم نسخ رابط الصفحة!");
+    }
 
-  <!-- الأصوات -->
-  <audio id="bgm"  src="https://files.catbox.moe/c2gfi5.mp3" loop preload="auto" playsinline></audio>
-  <audio id="lose" src="https://files.catbox.moe/81wdzo.mp3" preload="auto" playsinline></audio>
-  <audio id="win"  src="https://files.catbox.moe/8ob2jc.mp3"  preload="auto" playsinline></audio>
-
-<script>
-/* ========= الكانفس ========= */
-const canvas = document.getElementById('game');
-const c = canvas.getContext('2d');
-const dpi = window.devicePixelRatio || 1;
-function fixDPI(){const w=canvas.clientWidth,h=canvas.clientHeight;canvas.width=Math.round(w*dpi);canvas.height=Math.round(h*dpi);c.setTransform(dpi,0,0,dpi,0,0);}
-fixDPI(); addEventListener('resize', fixDPI);
-const W = () => canvas.clientWidth, H = () => canvas.clientHeight;
-const GROUND_Y = () => Math.round(H()*0.78);
-
-/* ========= الصوت ========= */
-const bgm  = document.getElementById('bgm');
-const sLose= document.getElementById('lose');
-const sWin = document.getElementById('win');
-let soundOn=false;
-
-// منع إشعار Media Session
-if ('mediaSession' in navigator) navigator.mediaSession.metadata = null;
-
-// يشتغل الصوت تلقائيًا عندما نبدأ اللعب
-async function ensureBgm(){
-  try{
-    await bgm.play();
-    soundOn = true;
-  }catch(e){ /* في بعض المتصفحات قد يحتاج أول تفاعل، لكن زر "ابدأ" يعتبر تفاعل */ }
-}
-// قفّل/افتح الصوت عند تبديل التبويب
-window.addEventListener('blur', ()=> bgm.pause());
-window.addEventListener('focus', ()=> { if(soundOn) bgm.play(); });
-
-/* ========= الحالة ========= */
-let running=false, gameOver=false, won=false;
-let score=0, best=parseInt(localStorage.getItem('flyrider_best')||'0',10);
-document.getElementById('best').textContent=best;
-const SAFE_MS=1200; let safeUntil=0;
-let speedBase=6, speed=speedBase;
-
-// صورة المتوسيكل
-const RIDER_SRC="https://i.ibb.co/1tr7xqfR/Picsart-25-10-16-13-30-56-445.png";
-const riderImg=new Image(); riderImg.src=RIDER_SRC;
-const rider={x:82,y:0,w:96,h:68,vy:0,onGround:true,wheelPhase:0};
-
-// العوائق
-const obstacles=[];
-function spawnObstacle(initial=false){
-  const gap=160+Math.random()*140;
-  let x;
-  if(initial){ x=W()+260; } // أول واحد بعيد
-  else { const last=obstacles[obstacles.length-1]; x=(last?last.x:W()+60)+gap+40+Math.random()*80; }
-  const h=26+Math.random()*36, w=24+Math.random()*28;
-  obstacles.push({x,y:GROUND_Y()-h,w,h});
-}
-
-const roadMarks=Array.from({length:24},(_,i)=>({x:i*60+Math.random()*40}));
-
-/* ========= UI ========= */
-const overlay=document.getElementById('overlay');
-const btnStart=document.getElementById('btnStart');
-const toast=document.getElementById('toast');
-
-btnStart.addEventListener('click', startOrJump);
-canvas.addEventListener('pointerdown', startOrJump);
-addEventListener('keydown', e=>{
-  if([' ','ArrowUp','w','W'].includes(e.key)){ e.preventDefault(); startOrJump(); }
-});
-
-function startOrJump(){
-  if(!running){ startGame(); return; }
-  if(rider.onGround && !gameOver){ rider.vy=-13; rider.onGround=false; }
-}
-
-/* ========= رسم ========= */
-function drawBackground(){
-  const y=GROUND_Y();
-  c.strokeStyle='rgba(203,213,225,.7)'; c.lineWidth=2; c.beginPath(); c.moveTo(0,y); c.lineTo(W(),y); c.stroke();
-  c.fillStyle='rgba(255,255,255,.85)'; const seg=44,gap=84,off=-(Date.now()/20%(seg+gap)); for(let x=off;x<W();x+=seg+gap)c.fillRect(x,y-6,seg,3);
-  c.globalAlpha=.10; const oy=y-40, po=(Date.now()/35)%(W()+120);
-  [10,120,240,360,520].forEach((d,i)=>{const w=60+i*12,h=10+i*2;c.fillStyle='rgba(148,163,184,.9)';c.fillRect(W()-po+d,oy-(i*20),w,h);});
-  c.globalAlpha=1;
-  c.fillStyle='rgba(148,163,184,.9)'; roadMarks.forEach(m=>{m.x-=speed*.35; if(m.x<-12)m.x=W()+Math.random()*60; c.fillRect(m.x,y+8+Math.sin(m.x*.05)*2,6,2);});
-}
-function drawRider(){
-  const y=rider.y;
-  c.fillStyle='rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(rider.x+rider.w*.5,GROUND_Y()+6,36,8,0,0,Math.PI*2); c.fill();
-  rider.wheelPhase+=speed*.08; const a=Math.sin(rider.wheelPhase)*.06;
-  c.save(); c.translate(rider.x+rider.w/2,y+rider.h/2); c.rotate(a); c.drawImage(riderImg,-rider.w/2,-rider.h/2,rider.w,rider.h); c.restore();
-}
-function drawObstacles(){
-  c.fillStyle='#111827'; obstacles.forEach(o=>{o.x-=speed; c.fillRect(o.x,o.y,o.w,o.h);});
-  while(obstacles.length && obstacles[0].x+obstacles[0].w<-20){ obstacles.shift(); spawnObstacle(false); }
-}
-
-/* ========= فيزياء ========= */
-function physics(){
-  rider.vy+=0.7; rider.y+=rider.vy;
-  if(rider.y+rider.h>=GROUND_Y()){ rider.y=GROUND_Y()-rider.h; rider.vy=0; rider.onGround=true; }
-  if(performance.now()>safeUntil){
-    const rx=rider.x+12, ry=rider.y+6, rw=rider.w-24, rh=rider.h-12;
-    for(const o of obstacles){ if(rx<o.x+o.w && rx+rw>o.x && ry<o.y+o.h && ry+rh>o.y){ endGame(false); break; } }
-  }
-}
-
-/* ========= الحلقة ========= */
-let last=0;
-function loop(ts){
-  if(!running)return;
-  const dt=(ts-last)/16.67; last=ts;
-  c.clearRect(0,0,W(),H()); drawBackground(); drawObstacles(); physics(); drawRider();
-  score+=Math.max(1,Math.floor(dt)); if(score%100===0) speed=Math.min(12,speed+.05);
-  document.getElementById('score').textContent=score;
-  if(score>=10000 && !won){ endGame(true); return; }
-  requestAnimationFrame(loop);
-}
-
-/* ========= حالات ========= */
-async function startGame(){
-  if(running) return;
-
-  // شغّل موسيقى الخلفية تلقائيًا مع بداية اللعب
-  await ensureBgm();
-
-  speed=speedBase; score=0; won=false; gameOver=false;
-  rider.y=GROUND_Y()-rider.h; rider.vy=0; rider.onGround=true;
-  obstacles.length=0; for(let i=0;i<3;i++) spawnObstacle(i===0);
-  safeUntil=performance.now()+1200; // مهلة أمان
-  overlay.classList.add('hidden'); running=true; last=performance.now();
-  requestAnimationFrame(loop);
-}
-function endGame(isWin){
-  running=false; gameOver=!isWin; won=isWin;
-
-  // وقّف الخلفية وشغّل الصوت المناسب
-  try{ bgm.pause(); }catch(e){}
-  if(isWin){ try{ sWin.currentTime=0; sWin.play(); }catch(e){}; }
-  else{ try{ sLose.currentTime=0; sLose.play(); }catch(e){}; }
-
-  best=Math.max(best,score); localStorage.setItem('flyrider_best',best);
-  document.getElementById('best').textContent=best;
-
-  if(isWin){
-    const msg=encodeURIComponent("أنا كسبت توصيلة مجانية في لعبة Fly Rider! ✅ المسافة: "+score+" نقطة");
-    showToast('🎉 مبروك! كسبت توصيلة مجانية — خُد لقطة شاشة واضغط لإرسالها لنا على واتساب.',
-              'أرسل على واتساب', ()=>window.open('https://wa.me/201017908076?text='+msg,'_blank'));
-  }else{
-    showToast('💥 أوووبس! حاول تاني — اضغط/المس لإعادة المحاولة','إعادة المحاولة', resetGame);
-  }
-  setTimeout(()=>overlay.classList.remove('hidden'),300);
-}
-function resetGame(){
-  toast.classList.remove('show');
-  // رجّع الخلفية تشتغل تاني بعد الريست
-  try{ bgm.currentTime=0; if(soundOn) bgm.play(); }catch(e){}
-  startGame();
-}
-
-function showToast(text,actionLabel,actionFn){
-  toast.innerHTML=text+(actionLabel?`<div style="margin-top:8px"><button id="toastBtn" class="btn green">${actionLabel}</button></div>`:'');
-  toast.classList.add('show'); if(actionLabel) document.getElementById('toastBtn').onclick=actionFn;
-}
-
-overlay.addEventListener('pointerdown', ()=> gameOver ? resetGame() : startGame());
-</script>
+    function sharePage() {
+      if (navigator.share) {
+        navigator.share({
+          title: "Fly Express — التوصيل الأسرع في نجع حمادي",
+          text: "جرب خدمات Fly Express السريعة 🚀",
+          url: window.location.href
+        });
+      } else {
+        alert("المشاركة غير مدعومة على هذا المتصفح.");
+      }
+    }
+  </script>
 </body>
 </html>
