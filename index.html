@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -9,136 +8,50 @@
   :root{
     --sky1:#bfe6ff; --sky2:#f7fbff;
     --ground:#8bd17c; --road:#d9dfe8; --lane:#b7c3cf;
-    --text:#063451; --ui:#0e2a3d; --accent:#2ecc71;
+    --text:#063451; --ui:#0e2a3d; --accent:#2ecc71; --danger:#e74c3c;
   }
-  * { box-sizing: border-box }
-  html, body { height: 100% }
-  body {
-    margin: 0;
-    background: linear-gradient(180deg, #bfe6ff, #f7fbff);
-    font-family: system-ui, -apple-system, "Segoe UI", Cairo, Roboto, sans-serif;
-    color: var(--text);
-    overflow: hidden;
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:linear-gradient(180deg,var(--sky1),var(--sky2));
+    font-family:system-ui,-apple-system,"Segoe UI",Cairo,Roboto,sans-serif;
+    color:var(--text); overflow:hidden;
   }
-  .bg {
-    position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  .bg{
+    position:fixed; inset:0; z-index:0; overflow:hidden;
     background: linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 60%, var(--road) 60%, var(--lane) 68%, var(--road) 68%, var(--ground) 100%);
   }
-  .cloud { position: absolute; top: 10%; width: 180px; height: 60px; background: #fff; border-radius: 40px; opacity: .9; }
-  .cloud:before, .cloud:after { content: ""; position: absolute; background: #fff; border-radius: 50%; }
-  .cloud:before { width: 80px; height: 80px; left: 20px; top: -30px; }
-  .cloud:after { width: 60px; height: 60px; left: 100px; top: -20px; }
-  .cloud.s1 { top: 12%; left: 110%; animation: cloud 28s linear infinite; }
-  .cloud.s2 { top: 20%; left: 130%; transform: scale(.8); animation: cloud 36s linear infinite; }
-  .cloud.s3 { top: 26%; left: 150%; transform: scale(1.1); animation: cloud 42s linear infinite; }
-  @keyframes cloud { to { transform: translateX(-260%) } }
+  .cloud{position:absolute; top:10%; width:180px; height:60px; background:#fff; border-radius:40px; opacity:.9}
+  .cloud:before,.cloud:after{content:""; position:absolute; background:#fff; border-radius:50%}
+  .cloud:before{width:80px;height:80px; left:20px; top:-30px}
+  .cloud:after{width:60px;height:60px; left:100px; top:-20px}
+  .cloud.s1{top:12%; left:110%; animation:cloud 28s linear infinite}
+  .cloud.s2{top:20%; left:130%; transform:scale(.8); animation:cloud 36s linear infinite}
+  .cloud.s3{top:26%; left:150%; transform:scale(1.1); animation:cloud 42s linear infinite}
+  @keyframes cloud{to{transform:translateX(-260%)}}
 
-  .wrap {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 18px;
-    position: relative;
-    z-index: 1;
-  }
-  h1 {
-    margin: 4px 0 8px;
-    font-size: 24px;
-    font-weight: 900;
-    color: var(--ui);
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .hud {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  .badge {
-    background: #fff;
-    border: 1px solid #e6eef5;
-    padding: 8px 12px;
-    border-radius: 12px;
-    font-weight: 800;
-    color: var(--ui);
-    box-shadow: 0 6px 16px rgba(0,0,0,.05);
-  }
-  .btn {
-    background: var(--accent);
-    color: #fff;
-    font-weight: 900;
-    border: none;
-    border-radius: 999px;
-    padding: 10px 16px;
-    cursor: pointer;
-    box-shadow: 0 10px 20px rgba(46,204,113,.35);
-  }
-  .btn:active {
-    transform: translateY(1px);
-  }
-  canvas {
-    display: block;
-    width: 100%;
-    max-width: 960px;
-    height: 280px;
-    border-radius: 16px;
-    background: transparent;
-    border: 1px solid #dfe8f0;
-    box-shadow: 0 12px 30px rgba(0,0,0,.06);
-  }
-  .overlay {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    background: rgba(255,255,255,.55);
-    backdrop-filter: blur(3px);
-    border-radius: 16px;
-    border: 1px dashed #cfe0ed;
-    color: var(--ui);
-    font-weight: 900;
-    z-index: 1;
-  }
-  .overlay.hidden { display: none }
-  .overlay .inner { padding: 14px }
-  .small { font-size: 12px; opacity: .8; margin-top: 6px; }
+  .wrap{max-width:960px; margin:0 auto; padding:18px; position:relative; z-index:1}
+  h1{margin:4px 0 8px; font-size:24px; font-weight:900; color:var(--ui); display:flex; gap:8px; align-items:center; justify-content:space-between;}
+  .hud{display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+  .badge{background:#fff;border:1px solid #e6eef5; padding:8px 12px; border-radius:12px; font-weight:800; color:var(--ui); box-shadow:0 6px 16px rgba(0,0,0,.05)}
+  .btn{background:var(--accent); color:#fff; font-weight:900; border:none; border-radius:999px; padding:10px 16px; cursor:pointer; box-shadow:0 10px 20px rgba(46,204,113,.35)}
+  .btn:active{transform:translateY(1px)}
+  canvas{display:block; width:100%; max-width:960px; height:280px; border-radius:16px; background:transparent; border:1px solid #dfe8f0; box-shadow:0 12px 30px rgba(0,0,0,.06)}
 
-  .toast {
-    position: fixed;
-    inset: auto 12px 12px 12px;
-    margin: auto;
-    max-width: 520px;
-    background: #fff;
-    border: 1px solid #e6eef5;
-    border-radius: 16px;
-    padding: 14px 16px;
-    box-shadow: 0 18px 40px rgba(0,0,0,.12);
-    display: none;
-    text-align: center;
-    z-index: 2;
+  .overlay{
+    position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+    background:rgba(255,255,255,.55); backdrop-filter:blur(3px); border-radius:16px; border:1px dashed #cfe0ed;
+    color:var(--ui); font-weight:900; z-index:1;
   }
-  .toast.show {
-    display: block;
-    animation: pop .35s ease;
-  }
-  @keyframes pop { from { transform: translateY(12px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+  .overlay.hidden{display:none}
+  .overlay .inner{padding:14px}
+  .small{font-size:12px; opacity:.8; margin-top:6px}
 
-  .audio-toggle {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 3;
-    background: #fff;
-    border: 1px solid #e6eef5;
-    border-radius: 999px;
-    padding: 8px 12px;
-    font-weight: 800;
-    cursor: pointer;
-  }
+  .toast{position:fixed; inset:auto 12px 12px 12px; margin:auto; max-width:520px; background:#fff; border:1px solid #e6eef5; border-radius:16px; padding:14px 16px; box-shadow:0 18px 40px rgba(0,0,0,.12); display:none; text-align:center; z-index:2;}
+  .toast.show{display:block; animation:pop .35s ease}
+  @keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+  .audio-toggle{position:fixed; top:10px; left:10px; z-index:3; background:#fff; border:1px solid #e6eef5; border-radius:999px; padding:8px 12px; font-weight:800; cursor:pointer}
 </style>
 </head>
 <body>
@@ -173,219 +86,227 @@
   <div id="toast" class="toast"></div>
 
 <script>
-// رابط الصورة المباشر
-const RIDER_SRC = 'https://i.ibb.co/xPhP1XX/png-clipart-cartoon-child-blue-modern-cartoon-characters-cartoon-character-people.png';
-
-const riderImg = new Image();
-riderImg.crossOrigin = "anonymous";
-let riderImgReady = false;
-riderImg.onload = () => riderImgReady = true;
-riderImg.onerror = () => riderImgReady = false;
-riderImg.src = RIDER_SRC;
-
-// موسيقى خلفية + زر كتم
-const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_20a9db379e.mp3?filename=upbeat-driving-rock-11284.mp3');
-bgMusic.loop = true; bgMusic.volume = 0.28;
-function tryPlayMusic(){ bgMusic.play().catch(()=>{}); }
-['click','touchstart','pointerdown'].forEach(ev=>addEventListener(ev, tryPlayMusic, {once:true}));
-const audioBtn = document.getElementById('audioBtn');
-audioBtn.addEventListener('click', ()=>{
-  bgMusic.muted = !bgMusic.muted;
-  audioBtn.textContent = bgMusic.muted ? '🔇 صامت' : '🔊 صوت';
-  if (!bgMusic.muted) tryPlayMusic();
+/* ===== أصوات WebAudio (تشتغل بعد أول لمسة) ===== */
+let AC, ctx, master;
+function audioInit(){
+  if (ctx) return;
+  AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  ctx = new AC();
+  master = ctx.createGain(); master.gain.value = 0.18; master.connect(ctx.destination);
+}
+function tone(freq=880, dur=0.12, type='square'){
+  if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+  osc.type = type; osc.frequency.value = freq;
+  osc.connect(g); g.connect(master);
+  g.gain.setValueAtTime(0.0001, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.6, ctx.currentTime+0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+dur);
+  osc.start(); osc.stop(ctx.currentTime+dur+0.02);
+}
+const sfx = {
+  jump(){ tone(950, .09, 'square'); },
+  hit(){ tone(180, .2, 'sawtooth'); setTimeout(()=>tone(140,.15,'sawtooth'),80); },
+  win(){ tone(660,.15,'sine'); setTimeout(()=>tone(990,.18,'sine'),120); }
+};
+/* موسيقى خفيفة اختيارية */
+const bg = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_20a9db379e.mp3?filename=upbeat-driving-rock-11284.mp3');
+bg.loop = true; bg.volume = .28;
+function tryPlayBG(){ bg.play().catch(()=>{}); }
+['pointerdown','touchstart','click'].forEach(ev=>addEventListener(ev,()=>{audioInit(); tryPlayBG();},{once:true}));
+document.getElementById('audioBtn').addEventListener('click',()=>{
+  bg.muted = !bg.muted;
+  audioInit();
+  if(!bg.muted) tryPlayBG();
+  document.getElementById('audioBtn').textContent = bg.muted ? '🔇 صامت' : '🔊 صوت';
 });
 
-// إعداد الكانفس
-const canvas = document.getElementById('game');
-const c = canvas.getContext('2d');
-const dpi = window.devicePixelRatio || 1;
+/* ===== Canvas & لعبة ===== */
+const canvas = document.getElementById('game'), c = canvas.getContext('2d');
+const dpi = devicePixelRatio||1;
 function fixDPI(){
-  const cssH = canvas.clientHeight, cssW = canvas.clientWidth;
-  canvas.width = Math.round(cssW * dpi);
-  canvas.height = Math.round(cssH * dpi);
+  const cssH=canvas.clientHeight, cssW=canvas.clientWidth;
+  canvas.width = Math.round(cssW*dpi); canvas.height = Math.round(cssH*dpi);
   c.setTransform(dpi,0,0,dpi,0,0);
 }
 fixDPI(); addEventListener('resize', fixDPI);
-const W = () => canvas.clientWidth, H = () => canvas.clientHeight;
+const W=()=>canvas.clientWidth, H=()=>canvas.clientHeight;
 
 let running=false, gameOver=false, won=false;
 let score=0, best=parseInt(localStorage.getItem('flyrider_best')||'0',10);
 document.getElementById('best').textContent = best;
 
 const GROUND_Y = ()=> H()*0.78;
-let speed = 6;
+let speed=6;
 
-const rider = { x:80, y:0, w:100, h:100, vy:0, onGround:true };
-const obstacles = [];
+/* لاعب مرسوم بالفيكتور (ولد على سكيت) */
+const rider = { x:80, y:0, w:110, h:100, vy:0, onGround:true };
+
+function drawSkater(x,y,w,h,air){
+  // لوح تزلج
+  const boardW=w*0.8, boardH=10, boardX=x+w*0.1, boardY=y+h*0.8;
+  c.save();
+  if(air){
+    c.translate(x+w/2, y+h/2);
+    c.rotate(Math.sin(Date.now()/120)*0.22);
+    c.translate(- (x+w/2), -(y+h/2));
+  }
+  // الظل
+  const shScale = rider.onGround ? 1 : Math.max(.6, 1-((GROUND_Y()-(y+h))/150));
+  c.fillStyle='rgba(0,0,0,.12)';
+  c.beginPath();
+  c.ellipse(x+w*0.52, GROUND_Y()+6, 38*shScale, 9*shScale, 0, 0, Math.PI*2);
+  c.fill();
+  // اللوح
+  c.fillStyle='#222f3e';
+  c.fillRect(boardX, boardY, boardW, boardH);
+  c.fillStyle='#576574';
+  c.fillRect(boardX+6, boardY-3, boardW-12, boardH-4);
+  // العجل
+  c.fillStyle='#111'; c.beginPath();
+  c.arc(boardX+18, boardY+boardH+4, 6, 0, Math.PI*2); c.arc(boardX+boardW-18, boardY+boardH+4, 6, 0, Math.PI*2); c.fill();
+
+  // جسم الولد
+  // رجلين
+  c.fillStyle='#2e86de';
+  c.fillRect(x+w*0.25, y+h*0.55, 16, 32);
+  c.fillRect(x+w*0.55, y+h*0.52, 16, 34);
+  // أحذية
+  c.fillStyle='#0abde3';
+  c.fillRect(x+w*0.22, y+h*0.84, 24, 10);
+  c.fillRect(x+w*0.54, y+h*0.83, 24, 10);
+  // تيشيرت
+  c.fillStyle='#3867d6';
+  c.beginPath();
+  c.roundRect(x+w*0.28, y+h*0.32, w*0.44, h*0.28, 10); c.fill();
+  // ذراعين
+  c.fillStyle='#f8c291';
+  c.fillRect(x+w*0.24, y+h*0.36, 12, 26);
+  c.fillRect(x+w*0.64, y+h*0.36, 12, 26);
+  // راس/خوذة
+  c.fillStyle='#f5cd79'; c.beginPath(); c.arc(x+w*0.5, y+h*0.28, 16, 0, Math.PI*2); c.fill();
+  c.fillStyle='#d1d8e0'; c.beginPath(); c.arc(x+w*0.5, y+h*0.24, 20, 0, Math.PI*2); c.fill();
+  c.fillStyle='#4b7bec'; c.beginPath(); c.arc(x+w*0.5, y+h*0.24, 12, 0, Math.PI*2); c.fill();
+  c.restore();
+}
+
+/* عوائق */
+const obstacles=[];
 function spawnObstacle(){
-  const gap = 140 + Math.random()*120;
-  const last = obstacles[obstacles.length-1];
-  const x = last ? last.x + gap + 40 + Math.random()*80 : W() + 60;
+  const gap=140+Math.random()*120;
+  const last=obstacles[obstacles.length-1];
+  const x = last? last.x + gap + 40 + Math.random()*80 : W()+60;
   const h = 30 + Math.random()*35, w = 26 + Math.random()*30;
-  obstacles.push({ x, y: GROUND_Y()-h, w, h });
+  obstacles.push({x, y:GROUND_Y()-h, w, h});
 }
 for(let i=0;i<5;i++) spawnObstacle();
 
-const groundDots = Array.from({length:24}, (_,i)=>({x:i*60 + Math.random()*50, y:GROUND_Y()+12+Math.random()*16}));
+/* عناصر أرضية */
+const groundDots=Array.from({length:24},(_,i)=>({x:i*60+Math.random()*50, y:GROUND_Y()+12+Math.random()*16}));
+
+function drawBackground(){
+  const y=GROUND_Y();
+  c.strokeStyle='#c6d0db'; c.lineWidth=2;
+  c.beginPath(); c.moveTo(0,y); c.lineTo(W(),y); c.stroke();
+
+  c.fillStyle='#fff';
+  const segW=40, gap=70, off=-(Date.now()/20 % (segW+gap));
+  for(let x=off; x<W(); x+=segW+gap) c.fillRect(x, y-6, segW, 3);
+
+  c.fillStyle='#a7b4c1';
+  groundDots.forEach(d=>{
+    d.x -= speed*.3; if(d.x<-10) d.x=W()+Math.random()*60;
+    c.fillRect(d.x, y+8+Math.sin(d.x*.05)*2, 6, 2);
+  });
+}
+
+function drawObstacles(){
+  c.fillStyle='#2c3e50';
+  obstacles.forEach(o=>{ o.x -= speed; c.fillRect(o.x,o.y,o.w,o.h); });
+  while(obstacles.length && obstacles[0].x+obstacles[0].w<-20){ obstacles.shift(); spawnObstacle(); }
+}
 
 function jump(){
-  if (!running) startGame();
-  if (!rider.onGround || gameOver) return;
-  rider.vy = -13; rider.onGround = false;
+  if(!running) startGame();
+  if(!rider.onGround || gameOver) return;
+  rider.vy=-13; rider.onGround=false;
+  sfx.jump();
 }
-addEventListener('keydown', e=>{
-  if ([' ', 'ArrowUp', 'w', 'W'].includes(e.key)){ e.preventDefault(); jump(); }
-  if ((e.key==='r'||e.key==='R') && gameOver){ resetGame(); }
+addEventListener('keydown',e=>{
+  if([' ','ArrowUp','w','W'].includes(e.key)){ e.preventDefault(); jump(); }
+  if((e.key==='r'||e.key==='R')&&gameOver) resetGame();
 });
 canvas.addEventListener('pointerdown', jump);
 document.getElementById('btnStart').addEventListener('click', jump);
 
-function drawBackground(){
-  const y = GROUND_Y();
-  c.strokeStyle = '#c6d0db'; c.lineWidth = 2;
-  c.beginPath(); c.moveTo(0,y); c.lineTo(W(),y); c.stroke();
-
-  c.fillStyle = '#ffffff';
-  const segW=40, gap=70;
-  const offset = - (Date.now()/20 % (segW+gap));
-  for(let x=offset; x<W(); x+=segW+gap){
-    c.fillRect(x, y-6, segW, 3);
-  }
-
-  c.fillStyle = '#a7b4c1';
-  groundDots.forEach(d=>{
-    d.x -= speed*0.3; if (d.x < -10) d.x = W()+Math.random()*60;
-    c.fillRect(d.x, y+8+Math.sin(d.x*0.05)*2, 6, 2);
-  });
-}
-
-function drawRider(){
-  const shadowScale = rider.onGround ? 1 : Math.max(0.5, 1 - ((GROUND_Y() - (rider.y + rider.h)) / 150));
-  c.fillStyle = 'rgba(0,0,0,.13)';
-  c.beginPath();
-  c.ellipse(rider.x + rider.w * 0.5, GROUND_Y()+6, 36 * shadowScale, 8 * shadowScale, 0, 0, Math.PI*2);
-  c.fill();
-
-  const bob = rider.onGround ? Math.sin(Date.now()/200) * 2 : 0;
-  const y = rider.y + bob;
-
-  if (riderImgReady) {
-    if (!rider.onGround) {
-      c.save();
-      c.translate(rider.x + rider.w/2, y + rider.h/2);
-      c.rotate(Math.sin(Date.now()/120) * 0.2);
-      c.drawImage(riderImg, -rider.w/2, -rider.h/2, rider.w, rider.h);
-      c.restore();
-    } else {
-      c.drawImage(riderImg, rider.x, y, rider.w, rider.h);
-    }
-  } else {
-    c.fillStyle = '#2c3e50';
-    c.fillRect(rider.x, y+10, rider.w, rider.h-20);
-    c.fillStyle = '#e74c3c';
-    c.fillRect(rider.x+10, y+20, rider.w-20, rider.h-40);
-  }
-
-  c.globalAlpha = 0.08;
-  c.fillStyle = '#1f2d3a';
-  for(let i=0; i<4; i++){
-    c.fillRect(rider.x-12 - i*10, GROUND_Y()-4 - i, 10, 2);
-  }
-  c.globalAlpha = 1;
-}
-
-function drawObstacles(){
-  c.fillStyle = '#2c3e50';
-  obstacles.forEach(o => {
-    o.x -= speed;
-    c.fillRect(o.x, o.y, o.w, o.h);
-  });
-  while (obstacles.length && obstacles[0].x + obstacles[0].w < -20) {
-    obstacles.shift();
-    spawnObstacle();
-  }
-}
-
 function physics(){
   rider.vy += 0.7;
   rider.y += rider.vy;
-  if (rider.y + rider.h >= GROUND_Y()) {
-    rider.y = GROUND_Y() - rider.h;
-    rider.vy = 0;
-    rider.onGround = true;
+  if(rider.y + rider.h >= GROUND_Y()){
+    rider.y = GROUND_Y()-rider.h;
+    rider.vy = 0; rider.onGround=true;
   }
-  const rx = rider.x + 15, ry = rider.y + 5, rw = rider.w - 30, rh = rider.h - 20;
-  for (const o of obstacles) {
-    if (rx < o.x + o.w && rx + rw > o.x && ry < o.y + o.h && ry + rh > o.y) {
-      endGame(false);
-      break;
+  // حدود تصادم أصغر شوية لراحة اللعب
+  const rx=rider.x+15, ry=rider.y+8, rw=rider.w-30, rh=rider.h-16;
+  for(const o of obstacles){
+    if (rx < o.x+o.w && rx+rw>o.x && ry < o.y+o.h && ry+rh>o.y){
+      endGame(false); break;
     }
   }
 }
 
-let lastTime = 0;
+let lastTime=0;
 function loop(ts){
-  if (!running) return;
-  const dt = (ts - lastTime) / 16.67;
-  lastTime = ts;
+  if(!running) return;
+  const dt=(ts-lastTime)/16.67; lastTime=ts;
 
   c.clearRect(0,0,W(),H());
-  drawBackground();
-  drawObstacles();
-  physics();
-  drawRider();
+  drawBackground(); drawObstacles(); physics();
+  // Bobbing بسيط على الأرض
+  const bob = rider.onGround? Math.sin(Date.now()/200)*1.8 : 0;
+  drawSkater(rider.x, rider.y + bob, rider.w, rider.h, !rider.onGround);
 
   score += Math.max(1, Math.floor(dt));
-  if (score % 100 === 0) speed = Math.min(12, speed + 0.05);
-  document.getElementById('score').textContent = score;
+  if(score%100===0) speed=Math.min(12, speed+.05);
+  document.getElementById('score').textContent=score;
 
-  if (score >= 3000 && !won) {
-    endGame(true);
-    return;
-  }
+  if(score>=3000 && !won){ endGame(true); return; }
   requestAnimationFrame(loop);
 }
 
-const overlay = document.getElementById('overlay');
-const toast = document.getElementById('toast');
+const overlay=document.getElementById('overlay');
+const toast=document.getElementById('toast');
 
 function startGame(){
-  if (running) return;
+  if(running) return;
   overlay.classList.add('hidden');
-  running = true; gameOver = false; won = false; lastTime = performance.now();
+  running=true; gameOver=false; won=false; lastTime=performance.now();
   requestAnimationFrame(loop);
 }
-
 function endGame(isWin){
-  running = false; gameOver = true; won = isWin;
-  best = Math.max(best, score);
-  localStorage.setItem('flyrider_best', best);
-  document.getElementById('best').textContent = best;
-  showToast(isWin ? '🎉 مبروك! كسبت توصيلة مجانية 🚚'
-                  : '💥 خبطت في عائق — اضغط لإعادة المحاولة');
-  setTimeout(() => overlay.classList.remove('hidden'), 200);
+  running=false; gameOver=true; won=isWin;
+  best=Math.max(best,score); localStorage.setItem('flyrider_best',best);
+  document.getElementById('best').textContent=best;
+  if(isWin){ showToast('🎉 مبروك! كسبت توصيلة مجانية 🚚'); sfx.win(); }
+  else{ showToast('💥 خبطت في عائق — اضغط لإعادة المحاولة'); sfx.hit(); }
+  setTimeout(()=>overlay.classList.remove('hidden'),200);
 }
-
 function resetGame(){
-  score = 0; speed = 6;
-  rider.y = GROUND_Y() - rider.h;
-  rider.vy = 0; rider.onGround = true;
-  obstacles.length = 0;
-  for(let i=0;i<5;i++) spawnObstacle();
-  overlay.classList.add('hidden');
-  toast.classList.remove('show');
-  running = true; gameOver = false; won = false;
-  lastTime = performance.now();
+  score=0; speed=6;
+  rider.y=GROUND_Y()-rider.h; rider.vy=0; rider.onGround=true;
+  obstacles.length=0; for(let i=0;i<5;i++) spawnObstacle();
+  overlay.classList.add('hidden'); toast.classList.remove('show');
+  running=true; gameOver=false; won=false; lastTime=performance.now();
   requestAnimationFrame(loop);
 }
-overlay.addEventListener('pointerdown', () => gameOver ? resetGame() : startGame());
+overlay.addEventListener('pointerdown', ()=> gameOver ? resetGame() : startGame());
 
-function showToast(msg){
-  toast.textContent = msg;
-  toast.classList.add('show');
-}
+function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); }
 
-rider.y = GROUND_Y() - rider.h;
+/* وضع البداية */
+rider.y=GROUND_Y()-rider.h;
 </script>
 </body>
 </html>
