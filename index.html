@@ -1,377 +1,291 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Fly Rider — العب واكسب توصيلة مجانية</title>
 <style>
-:root{
-  --ink:#0a1a28; --ink2:#0e2436; --card:#0f2134; --soft:#e9f2ff;
-  --accent:#15d1a3; --accent2:#5ee1ff; --danger:#ff5d5d; --good:#2ecc71;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0; background:#081521; color:#eaf4ff; font-family:system-ui,"Cairo",Segoe UI,Roboto,Arial;
-}
-.wrap{max-width:980px;margin:0 auto;padding:20px}
-header{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0 10px}
-h1{font-size:40px;line-height:1.1;margin:0;text-shadow:0 6px 22px rgba(0,0,0,.35)}
-h1 .bike{filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
-.stats{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:8px 0 14px}
-.badge{
-  background:linear-gradient(180deg,#0f2a41,#0d2134);
-  border:1px solid rgba(255,255,255,.08); color:#dff2ff;
-  padding:12px 18px; border-radius:16px; font-weight:800; box-shadow:0 10px 28px rgba(1,7,13,.45) inset, 0 10px 30px rgba(0,0,0,.25);
-}
-.btn{
-  border:none; background:linear-gradient(180deg,#22e0b5,#18cfa7);
-  color:#06252a; font-weight:900; padding:12px 18px; border-radius:999px; cursor:pointer;
-  box-shadow:0 12px 30px rgba(21,209,163,.35), inset 0 0 0 1px rgba(255,255,255,.5);
-}
-.btn:active{transform:translateY(1px)}
-.btn.mute{background:linear-gradient(180deg,#5ee1ff,#48c6ff); color:#032336}
+  :root{
+    --ink:#eaf6ff; --muted:#9cc0ff; --panel:#0b1120AA;
+    --brand:#22c55e; --danger:#ef4444;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
 
-.frame{
-  position:relative;border-radius:24px;overflow:hidden;
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:0 30px 80px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
-}
-.canvasWrap{padding:14px;border-radius:24px;background:radial-gradient(120% 140% at 50% 0%,#11263c 0,#0b1b2b 55%,#0a1724 100%)}
-canvas{display:block;width:100%;height:360px;border-radius:18px; background:transparent}
+  /* خلفية RGB */
+  body{
+    margin:0; color:var(--ink); font-family:system-ui,"Cairo",Roboto,sans-serif;
+    background:
+      radial-gradient(800px 420px at 15% 15%, #1e293b 0%, transparent 60%),
+      radial-gradient(800px 420px at 85% 85%, #172554 0%, transparent 60%),
+      conic-gradient(from 0deg at 50% 50%, #06131f, #0a1c2c, #102d45, #0a1c2c, #06131f);
+    animation: hue 28s linear infinite;
+    overflow-x:hidden;
+  }
+  @keyframes hue{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
 
-.note{margin:12px auto 0;max-width:840px;text-align:center;color:#bfe6ff}
-.kbd{padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-weight:800}
+  .wrap{max-width:980px;margin:0 auto;padding:18px}
+  header{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  h1{margin:0;font-size:36px;font-weight:900;display:flex;gap:10px;align-items:center;
+      text-shadow:0 4px 18px rgba(56,189,248,.25), 0 0 28px rgba(59,130,246,.25)}
+  .statbar{display:flex;gap:10px;flex-wrap:wrap}
+  .badge{
+    background:linear-gradient(180deg,rgba(15,23,42,.85),rgba(15,23,42,.6));
+    border:1px solid rgba(148,163,184,.2); color:#dbeafe;
+    border-radius:14px;padding:10px 14px;font-weight:800;
+    box-shadow:0 6px 22px rgba(2,8,23,.35) inset, 0 8px 24px rgba(2,8,23,.35);
+    backdrop-filter: blur(6px);
+  }
+  .btn{border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer}
+  .btn.green{background:linear-gradient(90deg,#16a34a,#22c55e);color:#031318; box-shadow:0 10px 26px rgba(34,197,94,.35)}
+  .btn:active{transform:translateY(1px)}
 
-.toast{
-  position:fixed; inset:auto 12px 14px 12px; margin:auto; max-width:600px; text-align:center;
-  background:linear-gradient(180deg,#102338,#0a1a28); border:1px solid rgba(255,255,255,.08);
-  color:#eaf6ff; padding:12px 14px; border-radius:14px; box-shadow:0 22px 50px rgba(0,0,0,.45); display:none
-}
-.toast.show{display:block; animation:pop .3s ease}
-@keyframes pop{from{transform:translateY(6px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .frame{
+    position:relative;margin-top:12px;border-radius:18px;
+    background:linear-gradient(180deg,rgba(2,6,23,.55),rgba(2,6,23,.35));
+    border:1px solid rgba(148,163,184,.2);
+    box-shadow:0 14px 40px rgba(2,8,23,.55), 0 0 0 1px rgba(148,163,184,.15) inset;
+    overflow:hidden;
+  }
+  .frame::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(600px 280px at 30% 20%, rgba(56,189,248,.18), transparent 60%),
+               radial-gradient(600px 280px at 70% 70%, rgba(34,197,94,.16), transparent 60%);
+    pointer-events:none;
+  }
 
-.cityBanner{
-  position:absolute; left:50%; top:10px; transform:translate(-50%,-140%);
-  background:linear-gradient(180deg,#1b3550,#0f2236); border:1px solid rgba(255,255,255,.15);
-  color:#e9f6ff; padding:10px 14px; border-radius:12px; font-weight:900; letter-spacing:.3px; box-shadow:0 18px 40px rgba(0,0,0,.45);
-}
-.cityBanner.show{animation:slideIn .5s ease forwards}
-@keyframes slideIn{to{transform:translate(-50%,0)}}
+  canvas{display:block;width:100%;height:360px;border-radius:18px}
 
-.hint{margin-top:10px;text-align:center;color:#a9d6ff}
+  .overlay{
+    position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+    background:rgba(2,6,23,.45);border-radius:18px;border:1px dashed rgba(148,163,184,.25);
+    backdrop-filter:blur(4px);color:#e2f3ff
+  }
+  .overlay.hidden{display:none}
+  .overlay .box{
+    background:linear-gradient(180deg,rgba(15,23,42,.9),rgba(15,23,42,.7));
+    border:1px solid rgba(148,163,184,.3);border-radius:14px;padding:16px 18px;
+    box-shadow:0 14px 30px rgba(2,6,23,.6); backdrop-filter: blur(6px)
+  }
+
+  .hint{text-align:center;color:#93c5fd;font-weight:800;margin:10px 0 0}
+
+  .toast{
+    position:fixed;inset:auto 12px 12px 12px;margin:auto;max-width:540px;
+    background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(15,23,42,.8));
+    color:#e5f2ff;border:1px solid rgba(148,163,184,.3);border-radius:14px;padding:14px 16px;
+    box-shadow:0 18px 50px rgba(2,6,23,.7);display:none;text-align:center;font-weight:900
+  }
+  .toast.show{display:block;animation:pop .35s ease}
+  @keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+  /* سُحب */
+  .cloud{position:absolute;top:12%;width:180px;height:60px;background:#e2e8f0;border-radius:40px;filter:blur(.2px);opacity:.9}
+  .cloud:before,.cloud:after{content:"";position:absolute;background:#e2e8f0;border-radius:50%}
+  .cloud:before{width:80px;height:80px;left:20px;top:-30px}
+  .cloud:after{width:60px;height:60px;left:100px;top:-18px}
+  .c1{left:110%;animation:cloud 28s linear infinite}
+  .c2{left:140%;top:20%;transform:scale(.9);animation:cloud 34s linear infinite}
+  .c3{left:170%;top:26%;transform:scale(1.05);animation:cloud 42s linear infinite}
+  @keyframes cloud{to{transform:translateX(-260%)}}
 </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>Fly Rider <span class="bike">🏍️</span></h1>
+      <h1>🏍️ Fly Rider — العب واكسب توصيلة مجانية</h1>
+      <div class="statbar">
+        <div class="badge">المسافة: <span id="score">0</span> / 10000</div>
+        <div class="badge">أعلى نتيجة: <span id="best">0</span></div>
+        <button id="btnStart" class="btn green">ابدأ</button>
+      </div>
     </header>
 
-    <div class="stats">
-      <div class="badge">أعلى نتيجة: <span id="best">0</span></div>
-      <div class="badge">المسافة: <span id="dist">0</span> / 10000</div>
-      <button id="btnStart" class="btn">ابدأ</button>
-      <button id="btnMute" class="btn mute">إيقاف الصوت 🔊</button>
-    </div>
-
-    <div class="frame canvasWrap">
-      <div id="cityBanner" class="cityBanner">🚏 وصلت: <span id="cityName">-</span></div>
+    <div class="frame">
+      <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
       <canvas id="game" width="960" height="360" aria-label="Fly Rider Game"></canvas>
+
+      <!-- شاشة البدء -->
+      <div id="overlay" class="overlay">
+        <div class="box">
+          <div style="font-size:18px;margin-bottom:6px">اضغط <b>ابدأ</b> أو المس الشاشة للانطلاق</div>
+          <div style="color:#86efac;font-weight:900">الهدف: <b>10000</b> نقطة — <u>العب واكسب توصيلة مجانية</u> ✨</div>
+          <div style="font-size:12px;color:#9cc0ff;margin-top:8px">تلميح: عند البدء يوجد <b>مهلة أمان 1.2 ثانية</b> قبل تفعيل الاصطدام</div>
+        </div>
+      </div>
     </div>
 
-    <div class="note">
-      اضغط <span class="kbd">ابدأ</span> أو المس الشاشة للانطلاق — الهدف:
-      <b>10000</b> نقطة — <span class="kbd">القفز</span> بالسهم ↑ أو اللمس.  
-      توجد مهلة أمان قصيرة عند البداية.
-    </div>
-
-    <div id="toast" class="toast"></div>
-    <p class="hint">✨ لو خبطت في عائق — اضغط الشاشة لإعادة المحاولة</p>
+    <p class="hint">لو خبطت في عائق — اضغط الشاشة لإعادة المحاولة ✨</p>
   </div>
 
+  <div id="toast" class="toast"></div>
+
+  <!-- الأصوات -->
+  <audio id="bgm"  src="https://files.catbox.moe/c2gfi5.mp3" loop preload="auto" playsinline></audio>
+  <audio id="lose" src="https://files.catbox.moe/81wdzo.mp3" preload="auto" playsinline></audio>
+  <audio id="win"  src="https://files.catbox.moe/8ob2jc.mp3"  preload="auto" playsinline></audio>
+
 <script>
-/* ====== إعدادات عامة ====== */
-
-// صورة السائق (يمكنك تبديل الرابط هنا)
-const RIDER_IMG = "https://i.ibb.co/1tr7xqfR/Picsart-25-10-16-13-30-56-445.png";
-
-// المدن كل 1000 نقطة
-const CITIES = [
-  "نجع حمادي","قفط","قنا","فرشوط","أبوتشت",
-  "الوقف","سوهاج","جرجا","أخميم","أسيوط"
-];
-
-// عناصر DOM
+/* ========= الكانفس ========= */
 const canvas = document.getElementById('game');
 const c = canvas.getContext('2d');
-const toast = document.getElementById('toast');
-const bestEl = document.getElementById('best');
-const distEl = document.getElementById('dist');
-const btnStart = document.getElementById('btnStart');
-const btnMute = document.getElementById('btnMute');
-const banner = document.getElementById('cityBanner');
-const bannerCity = document.getElementById('cityName');
-
-// DPI fix
-const dpi = Math.max(1, window.devicePixelRatio || 1);
-function fixDPI(){
-  const cssW = canvas.clientWidth, cssH = canvas.clientHeight;
-  canvas.width = Math.round(cssW * dpi);
-  canvas.height = Math.round(cssH * dpi);
-  c.setTransform(dpi,0,0,dpi,0,0);
-}
+const dpi = window.devicePixelRatio || 1;
+function fixDPI(){const w=canvas.clientWidth,h=canvas.clientHeight;canvas.width=Math.round(w*dpi);canvas.height=Math.round(h*dpi);c.setTransform(dpi,0,0,dpi,0,0);}
 fixDPI(); addEventListener('resize', fixDPI);
+const W = () => canvas.clientWidth, H = () => canvas.clientHeight;
+const GROUND_Y = () => Math.round(H()*0.78);
 
-const W = ()=> canvas.clientWidth;
-const H = ()=> canvas.clientHeight;
-const GROUND_Y = ()=> H()*0.80;
+/* ========= الصوت ========= */
+const bgm  = document.getElementById('bgm');
+const sLose= document.getElementById('lose');
+const sWin = document.getElementById('win');
+let soundOn=false;
 
-// الحالة
+// منع إشعار Media Session
+if ('mediaSession' in navigator) navigator.mediaSession.metadata = null;
+
+// يشتغل الصوت تلقائيًا عندما نبدأ اللعب
+async function ensureBgm(){
+  try{
+    await bgm.play();
+    soundOn = true;
+  }catch(e){ /* في بعض المتصفحات قد يحتاج أول تفاعل، لكن زر "ابدأ" يعتبر تفاعل */ }
+}
+// قفّل/افتح الصوت عند تبديل التبويب
+window.addEventListener('blur', ()=> bgm.pause());
+window.addEventListener('focus', ()=> { if(soundOn) bgm.play(); });
+
+/* ========= الحالة ========= */
 let running=false, gameOver=false, won=false;
-let distance=0, score=0, best=+localStorage.getItem('fly-best')||0;
-let speed=6, grace=0; // مهلة أمان
-bestEl.textContent=best; distEl.textContent=distance;
+let score=0, best=parseInt(localStorage.getItem('flyrider_best')||'0',10);
+document.getElementById('best').textContent=best;
+const SAFE_MS=1200; let safeUntil=0;
+let speedBase=6, speed=speedBase;
 
-// الصوت (نستخدم WebAudio لو متاح)
-let AC, ctx, gain, musicGain, sfxGain, musicBuf=null, loseBuf=null, winBuf=null;
-let musicNode=null;
-const audioOn = {value:true};
-
-async function loadBuffer(url){
-  if(!ctx) return null;
-  const res = await fetch(url); const arr=await res.arrayBuffer();
-  return await ctx.decodeAudioData(arr);
-}
-async function audioInit(){
-  if (ctx) return;
-  AC = window.AudioContext || window.webkitAudioContext;
-  if (!AC) return;
-  ctx = new AC();
-  gain = ctx.createGain(); gain.gain.value = .9; gain.connect(ctx.destination);
-  musicGain = ctx.createGain(); musicGain.gain.value=.35; musicGain.connect(gain);
-  sfxGain = ctx.createGain(); sfxGain.gain.value=.6; sfxGain.connect(gain);
-  // لديك روابط الصوت بالفعل سابقاً؛ يمكن ربطها هنا لو رغبت
-  // musicBuf = await loadBuffer("https://files.catbox.moe/c2gfi5.mp3");
-  // loseBuf  = await loadBuffer("https://files.catbox.moe/81wdzo.mp3");
-  // winBuf   = await loadBuffer("https://files.catbox.moe/8ob2jc.mp3");
-}
-function playBuf(buf, dst=musicGain, loop=false){
-  if (!ctx || !buf || !audioOn.value) return null;
-  const src = ctx.createBufferSource();
-  src.buffer = buf; src.loop = loop; src.connect(dst); src.start();
-  return src;
-}
-function beep(freq=800, dur=.08){
-  if (!ctx || !audioOn.value) return;
-  const o=ctx.createOscillator(), g=ctx.createGain();
-  o.type='square'; o.frequency.value=freq; o.connect(g); g.connect(sfxGain);
-  g.gain.setValueAtTime(.0001, ctx.currentTime);
-  g.gain.exponentialRampToValueAtTime(.6, ctx.currentTime+.01);
-  g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime+dur);
-  o.start(); o.stop(ctx.currentTime+dur+.01);
-}
-
-// زر كتم
-btnMute.addEventListener('click', ()=>{
-  audioOn.value = !audioOn.value;
-  btnMute.textContent = audioOn.value ? 'إيقاف الصوت 🔊' : 'تشغيل الصوت 🔈';
-  if (ctx && ctx.state==='suspended') ctx.resume();
-});
-
-// الموارد الرسومية
-const riderImg = new Image(); riderImg.src = RIDER_IMG;
-
-// اللاعب
-const rider = { x: 86, y: 0, w: 86, h: 52, vy:0, onGround:true };
-
-// عوائق بسيطة (مستطيلات)
-const obstacles = [];
-function spawnObstacle(force=false){
-  const gap = 140 + Math.random()*110;
-  const last = obstacles[obstacles.length-1];
-  const baseX = last ? last.x + last.w + gap : W()+60;
-  const h = 24 + Math.random()*40;
-  const w = 26 + Math.random()*36;
-  const y = GROUND_Y() - h;
-  // تأخير أول عائق علشان المهلة
-  obstacles.push({x: (force? baseX : baseX + (obstacles.length?0:220)), y, w, h});
-}
-function resetObstacles(){
-  obstacles.length=0; for(let i=0;i<6;i++) spawnObstacle(true);
-}
-
-// خلفية ديناميكية
-let clouds = [];
-function resetClouds(){
-  clouds = Array.from({length:6},(_,i)=>({
-    x: Math.random()*W(), y: 40+Math.random()*120, r: 60+Math.random()*70, s: .25+.35*Math.random()
-  }));
-}
-resetClouds();
-
-function drawSky(){
-  const p = Math.min(1, distance/10000); // نسبة التقدم
-  // ألوان حسب المرحلة
-  let top,bottom, starAlpha=0;
-  if (p < .25){ top='#9ad6ff'; bottom='#e8f7ff'; }
-  else if (p < .5){ top='#6bc2ff'; bottom='#d8f0ff'; }
-  else if (p < .75){ top='#ffb07a'; bottom='#ffd3a6'; }
-  else { top='#0b1b2b'; bottom='#0a1624'; starAlpha = (p-.75)/.25; }
-
-  const g = c.createLinearGradient(0,0,0,H());
-  g.addColorStop(0, top); g.addColorStop(1, bottom);
-  c.fillStyle=g; c.fillRect(0,0,W(),H());
-
-  // نجوم عند الليل
-  if (starAlpha>0){
-    c.globalAlpha=0.35*starAlpha;
-    c.fillStyle='#ffffff';
-    for(let i=0;i<70;i++){
-      const x = (i*97 + (Date.now()/50)) % W();
-      const y = (i*53)% (H()*0.6);
-      c.fillRect(x,y,1,1);
-    }
-    c.globalAlpha=1;
-  }
-
-  // سحب
-  c.fillStyle='rgba(255,255,255,.9)';
-  clouds.forEach(cl=>{
-    cl.x -= cl.s*(1.2+speed*0.04);
-    if (cl.x < -cl.r*2) { cl.x = W()+cl.r; cl.y= 40+Math.random()*120; cl.r=60+Math.random()*70; }
-    c.beginPath();
-    c.arc(cl.x, cl.y, cl.r*.8, 0, Math.PI*2);
-    c.arc(cl.x+cl.r*.7, cl.y+10, cl.r*.65, 0, Math.PI*2);
-    c.arc(cl.x-cl.r*.6, cl.y+16, cl.r*.5, 0, Math.PI*2);
-    c.fill();
-  });
-
-  // طريق + خطوط
-  const gy = GROUND_Y();
-  c.fillStyle='#cbd7e2';
-  c.fillRect(0, gy, W(), 2);
-  c.fillStyle='#ffffff';
-  const seg=44,gap=80,off=-(Date.now()/20 % (seg+gap));
-  for(let x=off; x<W(); x+=seg+gap) c.fillRect(x, gy-6, seg, 3);
-}
-
-// ظل الموتوسيكل وتوهج
-function drawShadow(){
-  const x = rider.x + rider.w*0.55;
-  c.save();
-  c.fillStyle='rgba(0,0,0,.18)';
-  c.beginPath(); c.ellipse(x, GROUND_Y()+6, 44, 10, 0, 0, Math.PI*2); c.fill();
-  c.restore();
-}
-
-function drawRider(){
-  drawShadow();
-  c.drawImage(riderImg, rider.x, rider.y, rider.w, rider.h);
-}
+// صورة المتوسيكل
+const RIDER_SRC="https://i.ibb.co/1tr7xqfR/Picsart-25-10-16-13-30-56-445.png";
+const riderImg=new Image(); riderImg.src=RIDER_SRC;
+const rider={x:82,y:0,w:96,h:68,vy:0,onGround:true,wheelPhase:0};
 
 // العوائق
+const obstacles=[];
+function spawnObstacle(initial=false){
+  const gap=160+Math.random()*140;
+  let x;
+  if(initial){ x=W()+260; } // أول واحد بعيد
+  else { const last=obstacles[obstacles.length-1]; x=(last?last.x:W()+60)+gap+40+Math.random()*80; }
+  const h=26+Math.random()*36, w=24+Math.random()*28;
+  obstacles.push({x,y:GROUND_Y()-h,w,h});
+}
+
+const roadMarks=Array.from({length:24},(_,i)=>({x:i*60+Math.random()*40}));
+
+/* ========= UI ========= */
+const overlay=document.getElementById('overlay');
+const btnStart=document.getElementById('btnStart');
+const toast=document.getElementById('toast');
+
+btnStart.addEventListener('click', startOrJump);
+canvas.addEventListener('pointerdown', startOrJump);
+addEventListener('keydown', e=>{
+  if([' ','ArrowUp','w','W'].includes(e.key)){ e.preventDefault(); startOrJump(); }
+});
+
+function startOrJump(){
+  if(!running){ startGame(); return; }
+  if(rider.onGround && !gameOver){ rider.vy=-13; rider.onGround=false; }
+}
+
+/* ========= رسم ========= */
+function drawBackground(){
+  const y=GROUND_Y();
+  c.strokeStyle='rgba(203,213,225,.7)'; c.lineWidth=2; c.beginPath(); c.moveTo(0,y); c.lineTo(W(),y); c.stroke();
+  c.fillStyle='rgba(255,255,255,.85)'; const seg=44,gap=84,off=-(Date.now()/20%(seg+gap)); for(let x=off;x<W();x+=seg+gap)c.fillRect(x,y-6,seg,3);
+  c.globalAlpha=.10; const oy=y-40, po=(Date.now()/35)%(W()+120);
+  [10,120,240,360,520].forEach((d,i)=>{const w=60+i*12,h=10+i*2;c.fillStyle='rgba(148,163,184,.9)';c.fillRect(W()-po+d,oy-(i*20),w,h);});
+  c.globalAlpha=1;
+  c.fillStyle='rgba(148,163,184,.9)'; roadMarks.forEach(m=>{m.x-=speed*.35; if(m.x<-12)m.x=W()+Math.random()*60; c.fillRect(m.x,y+8+Math.sin(m.x*.05)*2,6,2);});
+}
+function drawRider(){
+  const y=rider.y;
+  c.fillStyle='rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(rider.x+rider.w*.5,GROUND_Y()+6,36,8,0,0,Math.PI*2); c.fill();
+  rider.wheelPhase+=speed*.08; const a=Math.sin(rider.wheelPhase)*.06;
+  c.save(); c.translate(rider.x+rider.w/2,y+rider.h/2); c.rotate(a); c.drawImage(riderImg,-rider.w/2,-rider.h/2,rider.w,rider.h); c.restore();
+}
 function drawObstacles(){
-  c.fillStyle='#243447';
-  obstacles.forEach(o=>{ o.x -= speed; c.fillRect(o.x, o.y, o.w, o.h); });
-  while(obstacles.length && obstacles[0].x+obstacles[0].w< -10){ obstacles.shift(); spawnObstacle(true); }
+  c.fillStyle='#111827'; obstacles.forEach(o=>{o.x-=speed; c.fillRect(o.x,o.y,o.w,o.h);});
+  while(obstacles.length && obstacles[0].x+obstacles[0].w<-20){ obstacles.shift(); spawnObstacle(false); }
 }
 
-// فيزياء + تصادم
-function physics(dt){
-  rider.vy += 0.68; rider.y += rider.vy;
-  if (rider.y + rider.h >= GROUND_Y()){ rider.y = GROUND_Y()-rider.h; rider.vy=0; rider.onGround=true; }
-
-  if (grace>0){ grace -= dt; return; } // مهلة أمان
-
-  // AABB
-  const rx = rider.x+14, ry=rider.y+8, rw=rider.w-24, rh=rider.h-12;
-  for(const o of obstacles){
-    if (rx < o.x+o.w && rx+rw>o.x && ry < o.y+o.h && ry+rh>o.y){
-      endGame(false);
-      break;
-    }
+/* ========= فيزياء ========= */
+function physics(){
+  rider.vy+=0.7; rider.y+=rider.vy;
+  if(rider.y+rider.h>=GROUND_Y()){ rider.y=GROUND_Y()-rider.h; rider.vy=0; rider.onGround=true; }
+  if(performance.now()>safeUntil){
+    const rx=rider.x+12, ry=rider.y+6, rw=rider.w-24, rh=rider.h-12;
+    for(const o of obstacles){ if(rx<o.x+o.w && rx+rw>o.x && ry<o.y+o.h && ry+rh>o.y){ endGame(false); break; } }
   }
 }
 
-function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),2500); }
-
-// يافطة المدينة
-let lastCityShown = 0;
-function maybeShowCity(){
-  const step = Math.floor(distance/1000);
-  if (step>0 && step<=10 && step!==lastCityShown){
-    lastCityShown = step;
-    bannerCity.textContent = CITIES[step-1] || 'مدينة';
-    banner.classList.remove('show'); // إعادة
-    void banner.offsetWidth;         // reflow
-    banner.classList.add('show');
-    setTimeout(()=>banner.classList.remove('show'), 2200);
-  }
-}
-
-/* ====== حلقة اللعبة ====== */
+/* ========= الحلقة ========= */
 let last=0;
 function loop(ts){
-  if (!running) return;
-  const dt = Math.min(1.6, (ts-last)/16.67); last=ts;
-
-  c.clearRect(0,0,W(),H());
-  drawSky();
-  drawObstacles();
-  physics(dt);
-  drawRider();
-
-  // تقدّم النقاط والسرعة
-  distance += Math.max(1, Math.floor(dt));
-  speed = 6 + Math.min(6, distance/1600);
-  distEl.textContent = distance;
-
-  maybeShowCity();
-
-  if (distance>=10000){ endGame(true); return; }
+  if(!running)return;
+  const dt=(ts-last)/16.67; last=ts;
+  c.clearRect(0,0,W(),H()); drawBackground(); drawObstacles(); physics(); drawRider();
+  score+=Math.max(1,Math.floor(dt)); if(score%100===0) speed=Math.min(12,speed+.05);
+  document.getElementById('score').textContent=score;
+  if(score>=10000 && !won){ endGame(true); return; }
   requestAnimationFrame(loop);
 }
 
-/* ====== التحكم ====== */
-function startGame(){
-  if (running) return;
-  audioInit();
-  running=true; gameOver=false; won=false;
-  toast.classList.remove('show');
-  distance=0; speed=6; lastCityShown=0; grace=1.2; // مهلة أمان
-  rider.y = GROUND_Y()-rider.h; rider.vy=0; rider.onGround=true;
-  resetObstacles(); resetClouds();
-  last=performance.now(); requestAnimationFrame(loop);
+/* ========= حالات ========= */
+async function startGame(){
+  if(running) return;
+
+  // شغّل موسيقى الخلفية تلقائيًا مع بداية اللعب
+  await ensureBgm();
+
+  speed=speedBase; score=0; won=false; gameOver=false;
+  rider.y=GROUND_Y()-rider.h; rider.vy=0; rider.onGround=true;
+  obstacles.length=0; for(let i=0;i<3;i++) spawnObstacle(i===0);
+  safeUntil=performance.now()+1200; // مهلة أمان
+  overlay.classList.add('hidden'); running=true; last=performance.now();
+  requestAnimationFrame(loop);
 }
 function endGame(isWin){
-  running=false; gameOver=true; won=isWin;
-  best=Math.max(best,distance); localStorage.setItem('fly-best',best); bestEl.textContent=best;
-  if (navigator.vibrate) navigator.vibrate(isWin? [40,50,40] : 120);
-  if (isWin){
-    showToast('🎉 مبروك! كسبت توصيلة مجانية — خُد لقطة شاشة وابعتها لنا على واتساب ✅');
+  running=false; gameOver=!isWin; won=isWin;
+
+  // وقّف الخلفية وشغّل الصوت المناسب
+  try{ bgm.pause(); }catch(e){}
+  if(isWin){ try{ sWin.currentTime=0; sWin.play(); }catch(e){}; }
+  else{ try{ sLose.currentTime=0; sLose.play(); }catch(e){}; }
+
+  best=Math.max(best,score); localStorage.setItem('flyrider_best',best);
+  document.getElementById('best').textContent=best;
+
+  if(isWin){
+    const msg=encodeURIComponent("أنا كسبت توصيلة مجانية في لعبة Fly Rider! ✅ المسافة: "+score+" نقطة");
+    showToast('🎉 مبروك! كسبت توصيلة مجانية — خُد لقطة شاشة واضغط لإرسالها لنا على واتساب.',
+              'أرسل على واتساب', ()=>window.open('https://wa.me/201017908076?text='+msg,'_blank'));
   }else{
-    showToast('💥 أوووبس! حاول تاني — اضغط الشاشة لإعادة المحاولة');
+    showToast('💥 أوووبس! حاول تاني — اضغط/المس لإعادة المحاولة','إعادة المحاولة', resetGame);
   }
+  setTimeout(()=>overlay.classList.remove('hidden'),300);
+}
+function resetGame(){
+  toast.classList.remove('show');
+  // رجّع الخلفية تشتغل تاني بعد الريست
+  try{ bgm.currentTime=0; if(soundOn) bgm.play(); }catch(e){}
+  startGame();
 }
 
-function jump(){
-  if (!running){ startGame(); return; }
-  if (!rider.onGround || gameOver) return;
-  rider.vy = -12.8; rider.onGround=false; beep(920,.07);
+function showToast(text,actionLabel,actionFn){
+  toast.innerHTML=text+(actionLabel?`<div style="margin-top:8px"><button id="toastBtn" class="btn green">${actionLabel}</button></div>`:'');
+  toast.classList.add('show'); if(actionLabel) document.getElementById('toastBtn').onclick=actionFn;
 }
 
-btnStart.addEventListener('click', ()=> running? null : startGame());
-addEventListener('keydown', (e)=>{
-  if ([' ','ArrowUp','w','W'].includes(e.key)){ e.preventDefault(); jump(); }
-  if (['r','R'].includes(e.key) && gameOver){ startGame(); }
-});
-canvas.addEventListener('pointerdown', jump);
-banner.addEventListener('pointerdown', (e)=>e.stopPropagation()); // لا تضغط من فوق الكانفس
-
-// ابدأ أول وضعية ساكنة
-rider.y = GROUND_Y()-rider.h;
-
+overlay.addEventListener('pointerdown', ()=> gameOver ? resetGame() : startGame());
 </script>
 </body>
 </html>
