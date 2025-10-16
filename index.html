@@ -6,43 +6,86 @@
 <title>Fly Rider — العب واكسب توصيلة مجانية</title>
 <style>
   :root{
-    --ink:#0c2b3a; --muted:#5d7b8a; --panel:#ffffff;
-    --brand:#16a34a; --danger:#ef4444; --sky1:#eaf6ff; --sky2:#ffffff;
+    --ink:#0c2b3a; --muted:#5d7b8a; --panel:#0b1120AA;
+    --brand:#22c55e; --danger:#ef4444;
+    --glass:#0b1120; /* أساس التدرجات الداكنة */
   }
   *{box-sizing:border-box}
   html,body{height:100%}
+
+  /* خلفية RGB “إضاءة” */
   body{
-    margin:0; font-family:system-ui,"Segoe UI","Cairo",Roboto,sans-serif; color:var(--ink);
-    background:linear-gradient(180deg,var(--sky1),var(--sky2) 55%);
+    margin:0; color:#eaf6ff; font-family:system-ui,"Segoe UI","Cairo",Roboto,sans-serif;
+    background:
+      radial-gradient(800px 420px at 15% 15%, #1e293b 0%, transparent 60%),
+      radial-gradient(800px 420px at 85% 85%, #172554 0%, transparent 60%),
+      conic-gradient(from 0deg at 50% 50%, #06131f, #0a1c2c, #102d45, #0a1c2c, #06131f);
+    animation: hue 28s linear infinite;
+    overflow-x:hidden;
   }
-  .wrap{max-width:980px;margin:0 auto;padding:16px}
+  @keyframes hue{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+
+  .wrap{max-width:980px;margin:0 auto;padding:18px}
+
   header{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-  h1{margin:0;font-size:32px;font-weight:900;display:flex;gap:10px;align-items:center}
+  h1{margin:0;font-size:36px;font-weight:900;display:flex;gap:10px;align-items:center;
+      text-shadow:0 4px 18px rgba(56,189,248,.25), 0 0 28px rgba(59,130,246,.25)}
   .statbar{display:flex;gap:10px;flex-wrap:wrap}
-  .badge{background:var(--panel);border:1px solid #e6eef5;border-radius:14px;padding:10px 14px;font-weight:800;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+  .badge{
+    background:linear-gradient(180deg,rgba(15,23,42,.85),rgba(15,23,42,.6));
+    border:1px solid rgba(148,163,184,.2); color:#dbeafe;
+    border-radius:14px;padding:10px 14px;font-weight:800;
+    box-shadow:0 6px 22px rgba(2,8,23,.35) inset, 0 8px 24px rgba(2,8,23,.35);
+    backdrop-filter: blur(6px);
+  }
   .btn{border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer}
-  .btn.green{background:var(--brand);color:#fff}
-  .btn.gray{background:#eef2f7;color:#1f2937}
+  .btn.green{background:linear-gradient(90deg,#16a34a,#22c55e);color:#031318; box-shadow:0 10px 26px rgba(34,197,94,.35)}
+  .btn.gray{background:linear-gradient(90deg,#0ea5e9,#60a5fa);color:#031318; box-shadow:0 10px 26px rgba(96,165,250,.35)}
   .btn:active{transform:translateY(1px)}
-  .frame{position:relative;margin-top:12px;border-radius:16px;background:#f7fbff;border:1px solid #e6eef5;box-shadow:0 10px 26px rgba(0,0,0,.06)}
-  canvas{display:block;width:100%;height:340px;border-radius:16px}
-  .hint{text-align:center;color:var(--muted);font-weight:800;margin:8px 0 0}
+
+  .frame{
+    position:relative;margin-top:12px;border-radius:18px;
+    background:linear-gradient(180deg,rgba(2,6,23,.55),rgba(2,6,23,.35));
+    border:1px solid rgba(148,163,184,.2);
+    box-shadow:0 14px 40px rgba(2,8,23,.55), 0 0 0 1px rgba(148,163,184,.15) inset;
+    overflow:hidden;
+  }
+  /* سبوت لايت خفيف داخل الإطار */
+  .frame::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(600px 280px at 30% 20%, rgba(56,189,248,.18), transparent 60%),
+               radial-gradient(600px 280px at 70% 70%, rgba(34,197,94,.16), transparent 60%);
+    pointer-events:none;
+  }
+
+  canvas{display:block;width:100%;height:360px;border-radius:18px}
+
   .overlay{
-    position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:rgba(255,255,255,.6);
-    border-radius:16px;border:1px dashed #cfe0ed;backdrop-filter:blur(3px)
+    position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+    background:rgba(2,6,23,.45);border-radius:18px;border:1px dashed rgba(148,163,184,.25);
+    backdrop-filter:blur(4px);color:#e2f3ff
   }
   .overlay.hidden{display:none}
-  .overlay .box{background:#fff;border:1px solid #e6eef5;border-radius:14px;padding:14px 16px;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+  .overlay .box{
+    background:linear-gradient(180deg,rgba(15,23,42,.9),rgba(15,23,42,.7));
+    border:1px solid rgba(148,163,184,.3);border-radius:14px;padding:16px 18px;
+    box-shadow:0 14px 30px rgba(2,6,23,.6); backdrop-filter: blur(6px)
+  }
+
+  .hint{text-align:center;color:#93c5fd;font-weight:800;margin:10px 0 0}
+
   .toast{
     position:fixed;inset:auto 12px 12px 12px;margin:auto;max-width:540px;
-    background:#fff;border:1px solid #e6eef5;border-radius:14px;padding:14px 16px;
-    box-shadow:0 18px 40px rgba(0,0,0,.12);display:none;text-align:center;font-weight:900
+    background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(15,23,42,.8));
+    color:#e5f2ff;border:1px solid rgba(148,163,184,.3);border-radius:14px;padding:14px 16px;
+    box-shadow:0 18px 50px rgba(2,6,23,.7);display:none;text-align:center;font-weight:900
   }
   .toast.show{display:block;animation:pop .35s ease}
   @keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
 
-  .cloud{position:absolute;top:12%;width:180px;height:60px;background:#fff;border-radius:40px;filter:blur(.2px);opacity:.9}
-  .cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}
+  /* سُحب */
+  .cloud{position:absolute;top:12%;width:180px;height:60px;background:#e2e8f0;border-radius:40px;filter:blur(.2px);opacity:.9}
+  .cloud:before,.cloud:after{content:"";position:absolute;background:#e2e8f0;border-radius:50%}
   .cloud:before{width:80px;height:80px;left:20px;top:-30px}
   .cloud:after{width:60px;height:60px;left:100px;top:-18px}
   .c1{left:110%;animation:cloud 28s linear infinite}
@@ -54,24 +97,26 @@
 <body>
   <div class="wrap">
     <header>
-      <h1>Fly Rider 🏍️</h1>
+      <h1>🏍️ Fly Rider</h1>
       <div class="statbar">
         <div class="badge">المسافة: <span id="score">0</span> / 10000</div>
         <div class="badge">أعلى نتيجة: <span id="best">0</span></div>
-        <button id="btnSound" class="btn gray">🔈 تشغيل الصوت</button>
+        <button id="btnSound" class="btn gray">تشغيل الصوت 🔊</button>
         <button id="btnStart" class="btn green">ابدأ</button>
       </div>
     </header>
 
     <div class="frame">
       <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
-      <canvas id="game" width="960" height="340" aria-label="Fly Rider Game"></canvas>
+      <canvas id="game" width="960" height="360" aria-label="Fly Rider Game"></canvas>
 
+      <!-- شاشة البدء -->
       <div id="overlay" class="overlay">
         <div class="box">
-          <div style="font-size:18px;margin-bottom:4px">اضغط <b>ابدأ</b> أو المس الشاشة للانطلاق</div>
-          <div style="color:#0b5d2d;font-weight:900">الهدف: 10000 نقطة — اقفز وتفادى العوائق ✨</div>
-          <div style="font-size:12px;color:#6b7280;margin-top:6px">تلميح: عند البدء يوجد <b>مهلة أمان 1.2 ثانية</b> قبل تفعيل الاصطدام</div>
+          <div style="font-size:18px;margin-bottom:6px">اضغط <b>ابدأ</b> أو المس الشاشة للانطلاق</div>
+          <!-- تم تغيير النص هنا -->
+          <div style="color:#86efac;font-weight:900">الهدف: <b>10000</b> نقطة — <u>العب واكسب توصيلة مجانية</u> ✨</div>
+          <div style="font-size:12px;color:#9cc0ff;margin-top:8px">تلميح: عند البدء يوجد <b>مهلة أمان 1.2 ثانية</b> قبل تفعيل الاصطدام</div>
         </div>
       </div>
     </div>
@@ -98,10 +143,9 @@ const GROUND_Y = () => Math.round(H()*0.78);
 const bgm = document.getElementById('bgm');
 let soundOn=false;
 const btnSound=document.getElementById('btnSound');
-if('mediaSession' in navigator) navigator.mediaSession.metadata=null;
 btnSound.addEventListener('click', async ()=>{
-  try{ if(!soundOn){await bgm.play(); soundOn=true; btnSound.textContent='🔇 إيقاف الصوت';}
-        else{bgm.pause(); soundOn=false; btnSound.textContent='🔈 تشغيل الصوت';} }catch(e){}
+  try{ if(!soundOn){await bgm.play(); soundOn=true; btnSound.textContent='إيقاف الصوت 🔇';}
+        else{bgm.pause(); soundOn=false; btnSound.textContent='تشغيل الصوت 🔊';} }catch(e){}
 });
 window.addEventListener('blur', ()=> bgm.pause());
 window.addEventListener('focus', ()=> { if(soundOn) bgm.play(); });
@@ -115,7 +159,7 @@ let speedBase=6, speed=speedBase;
 
 const RIDER_SRC="https://i.ibb.co/1tr7xqfR/Picsart-25-10-16-13-30-56-445.png";
 const riderImg=new Image(); riderImg.src=RIDER_SRC;
-const rider={x:80,y:0,w:86,h:60,vy:0,onGround:true,wheelPhase:0};
+const rider={x:80,y:0,w:94,h:66,vy:0,onGround:true,wheelPhase:0};
 
 const obstacles=[];
 function spawnObstacle(initial=false){
@@ -132,7 +176,7 @@ const roadMarks=Array.from({length:24},(_,i)=>({x:i*60+Math.random()*40}));
 /* ========= UI ========= */
 const overlay=document.getElementById('overlay');
 const btnStart=document.getElementById('btnStart');
-const toast=document.getElementById('toast');   // ← تعريف واحد فقط
+const toast=document.getElementById('toast');
 
 btnStart.addEventListener('click', startOrJump);
 canvas.addEventListener('pointerdown', startOrJump);
@@ -148,21 +192,21 @@ function startOrJump(){
 /* ========= رسم ========= */
 function drawBackground(){
   const y=GROUND_Y();
-  c.strokeStyle='#cbd5e1'; c.lineWidth=2; c.beginPath(); c.moveTo(0,y); c.lineTo(W(),y); c.stroke();
-  c.fillStyle='#ffffff'; const seg=40,gap=80,off=-(Date.now()/20%(seg+gap)); for(let x=off;x<W();x+=seg+gap)c.fillRect(x,y-6,seg,3);
-  c.globalAlpha=.08; const oy=y-40, po=(Date.now()/35)%(W()+120);
-  [10,120,240,360,520].forEach((d,i)=>{const w=60+i*12,h=10+i*2;c.fillStyle='#94a3b8';c.fillRect(W()-po+d,oy-(i*20),w,h);});
+  c.strokeStyle='rgba(203,213,225,.7)'; c.lineWidth=2; c.beginPath(); c.moveTo(0,y); c.lineTo(W(),y); c.stroke();
+  c.fillStyle='rgba(255,255,255,.85)'; const seg=44,gap=84,off=-(Date.now()/20%(seg+gap)); for(let x=off;x<W();x+=seg+gap)c.fillRect(x,y-6,seg,3);
+  c.globalAlpha=.10; const oy=y-40, po=(Date.now()/35)%(W()+120);
+  [10,120,240,360,520].forEach((d,i)=>{const w=60+i*12,h=10+i*2;c.fillStyle='rgba(148,163,184,.9)';c.fillRect(W()-po+d,oy-(i*20),w,h);});
   c.globalAlpha=1;
-  c.fillStyle='#a7b4c1'; roadMarks.forEach(m=>{m.x-=speed*.35; if(m.x<-12)m.x=W()+Math.random()*60; c.fillRect(m.x,y+8+Math.sin(m.x*.05)*2,6,2);});
+  c.fillStyle='rgba(148,163,184,.9)'; roadMarks.forEach(m=>{m.x-=speed*.35; if(m.x<-12)m.x=W()+Math.random()*60; c.fillRect(m.x,y+8+Math.sin(m.x*.05)*2,6,2);});
 }
 function drawRider(){
   const y=rider.y;
-  c.fillStyle='rgba(0,0,0,.12)'; c.beginPath(); c.ellipse(rider.x+rider.w*.5,GROUND_Y()+6,36,8,0,0,Math.PI*2); c.fill();
+  c.fillStyle='rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(rider.x+rider.w*.5,GROUND_Y()+6,36,8,0,0,Math.PI*2); c.fill();
   rider.wheelPhase+=speed*.08; const a=Math.sin(rider.wheelPhase)*.06;
   c.save(); c.translate(rider.x+rider.w/2,y+rider.h/2); c.rotate(a); c.drawImage(riderImg,-rider.w/2,-rider.h/2,rider.w,rider.h); c.restore();
 }
 function drawObstacles(){
-  c.fillStyle='#1f2937'; obstacles.forEach(o=>{o.x-=speed; c.fillRect(o.x,o.y,o.w,o.h);});
+  c.fillStyle='#111827'; obstacles.forEach(o=>{o.x-=speed; c.fillRect(o.x,o.y,o.w,o.h);});
   while(obstacles.length && obstacles[0].x+obstacles[0].w<-20){ obstacles.shift(); spawnObstacle(false); }
 }
 
@@ -194,7 +238,7 @@ function startGame(){
   speed=speedBase; score=0; won=false; gameOver=false;
   rider.y=GROUND_Y()-rider.h; rider.vy=0; rider.onGround=true;
   obstacles.length=0; for(let i=0;i<3;i++) spawnObstacle(i===0);
-  safeUntil=performance.now()+SAFE_MS;
+  safeUntil=performance.now()+1200; // مهلة أمان
   overlay.classList.add('hidden'); running=true; last=performance.now();
   requestAnimationFrame(loop);
 }
