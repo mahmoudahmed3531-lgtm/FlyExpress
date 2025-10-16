@@ -1,174 +1,171 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Fly Express — روابط التواصل</title>
-<style>
-  :root{
-    --bg1:#0b1420; --bg2:#0f1e2c;
-    --card:#0f2131; --glass:rgba(255,255,255,.06);
-    --text:#eaf6ff; --muted:#a8c3d8;
-    --green1:#00c853; --green2:#009624;
-    --orange1:#ff9100; --orange2:#ff6d00;
-    --ig1:#8e2de2; --ig2:#4a00e0;
-    --tg1:#00b09b; --tg2:#96c93d;
-    --fb1:#2ecc71; --fb2:#27ae60;
-    --game1:#26c6da; --game2:#2979ff;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; font-family:system-ui,-apple-system,"Segoe UI",Cairo,Roboto,sans-serif;
-    color:var(--text);
-    background:radial-gradient(80% 80% at 50% 0%,#12283d 0%, var(--bg1) 60%) fixed,
-               linear-gradient(180deg,var(--bg1),var(--bg2)) fixed;
-  }
-  .wrap{max-width:760px; margin:32px auto; padding:0 16px}
-  .card{
-    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:24px; padding:22px; box-shadow:0 18px 50px rgba(0,0,0,.35)
-  }
-  .head{
-    display:flex; align-items:center; gap:14px; margin-bottom:14px
-  }
-  .logo{
-    width:68px; height:68px; border-radius:16px; flex:0 0 auto;
-    background:#1a2c42 url('https://i.ibb.co/7pbpTnJ/fast-delivery.png') center/60% no-repeat;
-    border:1px solid rgba(255,255,255,.08)
-  }
-  h1{margin:0; font-size:34px; line-height:1.2}
-  .sub{margin:4px 0 0; color:var(--muted); font-weight:700; font-size:15px}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fly Express</title>
 
-  .btn{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    width:100%; padding:18px 20px; border-radius:18px; color:#fff; font-weight:900;
-    text-decoration:none; margin:14px 0; border:1px solid rgba(255,255,255,.08);
-    box-shadow:0 10px 26px rgba(0,0,0,.25); transition:transform .05s ease
-  }
-  .btn:active{transform:translateY(1px)}
-  .btn .l{display:flex; align-items:center; gap:12px}
-  .btn .ic{
-    width:46px; height:46px; border-radius:13px; display:grid; place-items:center;
-    background:rgba(255,255,255,.15); font-size:22px
-  }
-  .btn.game{background:linear-gradient(135deg,var(--game1),var(--game2))}
-  .btn.fb{background:linear-gradient(135deg,var(--green1),var(--green2))}
-  .btn.wa{background:linear-gradient(135deg,var(--orange1),var(--orange2))}
-  .btn.ig{background:linear-gradient(135deg,var(--ig1),var(--ig2))}
-  .btn.tg{background:linear-gradient(135deg,var(--tg1),var(--tg2))}
-  .btn.fb2{background:linear-gradient(135deg,var(--fb1),var(--fb2))}
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-  .box{
-    margin-top:10px; background:var(--glass); border:1px solid rgba(255,255,255,.08);
-    border-radius:18px; padding:16px; text-align:center; color:#cfe9ff; font-weight:800
-  }
-  .nums{font-size:20px; margin-top:8px}
-  .actions{display:flex; gap:12px; margin-top:14px; flex-wrap:wrap}
-  .small{
-    flex:1 1 220px; background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.05));
-    border:1px solid rgba(255,255,255,.1); color:#e8f7ff; font-weight:900;
-    padding:12px 14px; border-radius:14px; text-align:center; cursor:pointer
-  }
-  .footer{margin:18px 0 4px; text-align:center; color:#b2d0e5; font-weight:800}
-  .toast{
-    position:fixed; inset:auto 16px 16px 16px; background:#1b2f45; color:#e9f7ff;
-    border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:12px 14px;
-    display:none; text-align:center; font-weight:900; box-shadow:0 18px 40px rgba(0,0,0,.35)
-  }
-  .toast.show{display:block; animation:pop .3s ease; pointer-events:none}
-  @keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
-</style>
+  <style>
+    :root{
+      --radius: 999px;
+      --maxw: 480px;
+      --gap: 14px;
+      --glass: rgba(255,255,255,0.06);
+      --text: #e9eef3;
+      --muted: #b8c0c9;
+      --shadow: 0 18px 50px rgba(0,0,0,0.28);
+      font-family: 'Cairo', system-ui, sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;color:var(--text);display:flex;align-items:center;justify-content:center;padding:28px;
+      background: radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, rgba(0,0,0,0) 65%),
+                  radial-gradient(1200px 600px at 90% 90%, #001219 0%, rgba(0,0,0,0) 65%),
+                  conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
+      background-size: 140% 140%, 140% 140%, 200% 200%;
+      animation: moveBg1 16s ease-in-out infinite, moveBg2 18s ease-in-out infinite, hue 28s linear infinite;
+    }
+    @keyframes moveBg1 { 0%,100%{background-position:10% 10%, 90% 90%, 0% 50%} 50%{background-position:30% 20%, 70% 80%, 100% 50%} }
+    @keyframes moveBg2 { 0%,100%{background-position:10% 10%, 90% 90%, 0% 50%} 50%{background-position:15% 25%, 85% 75%, 100% 50%} }
+    @keyframes hue { 0%{filter:hue-rotate(0deg)} 100%{filter:hue-rotate(360deg)} }
+
+    /* دخول ناعم للكادر */
+    .fadeInUp {
+      animation: fadeInUp 1.2s ease-out;
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* دخول متدرّج للأزرار */
+    .btn {
+      opacity: 0;
+      animation: btnAppear 0.8s ease forwards;
+    }
+    @keyframes btnAppear {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .buttons .btn:nth-child(1){animation-delay:0.3s}
+    .buttons .btn:nth-child(2){animation-delay:0.5s}
+    .buttons .btn:nth-child(3){animation-delay:0.7s}
+    .buttons .btn:nth-child(4){animation-delay:0.9s}
+    .buttons .btn:nth-child(5){animation-delay:1.1s}
+
+    .frame{
+      width:100%;max-width:var(--maxw);
+      background: rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding:26px;
+      position:relative;
+    }
+
+    /* لمعة خفيفة */
+    .frame::before {
+      content:"";
+      position:absolute;top:-50%;left:-50%;
+      width:200%;height:200%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 60%);
+      animation: shineMove 6s infinite linear;
+      z-index:0;
+    }
+    @keyframes shineMove {0%{transform:translate(0,0)rotate(0deg)}100%{transform:translate(20%,20%)rotate(360deg)}}
+    .frame>*{position:relative;z-index:1}
+
+    .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+    .logo img{width:85px;height:85px;object-fit:cover;border-radius:14px;background:#0f1520;border:1px solid rgba(255,255,255,0.06);animation:pulse 4s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+    .brand .title{font-size:26px;font-weight:800;line-height:1}
+    .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
+
+    .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
+
+    .btn{
+      position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:12px 18px;border-radius:var(--radius);text-decoration:none;color:#fff;font-weight:700;
+      box-shadow:0 10px 24px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,0.08);
+      transition:transform .12s ease,filter .12s ease,box-shadow .12s ease;
+    }
+    .btn:hover{transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 24px 40px rgba(0,0,0,.35);}
+    .btn::after{content:"";position:absolute;inset:0;width:45%;left:-70%;
+      background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.25) 50%,transparent 100%);
+      transform:skewX(-25deg);transition:left .55s ease;pointer-events:none;}
+    .btn:hover::after{left:130%;}
+    .left{display:flex;align-items:center;gap:12px}
+    .icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.18);font-size:17px}
+    .label{font-size:15px}
+
+    /* الألوان */
+    .facebook{background:linear-gradient(90deg,#1877f2,#2bbf3a);}
+    .whatsapp{background:linear-gradient(90deg,#f39c12,#e67e22);}
+    .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894);}
+    .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60);}
+    .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60);}
+
+    .contact{
+      margin-top:18px;text-align:center;color:var(--text);font-weight:600;
+      background:rgba(255,255,255,0.06);padding:10px;border-radius:12px;
+      border:1px solid rgba(255,255,255,0.08)
+    }
+    .contact a{color:#25D366;text-decoration:none;font-weight:800}
+
+    footer{margin-top:16px;text-align:center;color:var(--muted);font-size:12px}
+
+    .call-btn{position:fixed;bottom:22px;right:22px;z-index:999;width:60px;height:60px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;color:#fff;background:#25d366;font-size:24px;
+      box-shadow:0 10px 28px rgba(0,0,0,.45);animation:bounce 2s infinite;}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+    @media(max-width:520px){.frame{padding:20px}.logo img{width:70px;height:70px}.call-btn{width:56px;height:56px;font-size:22px}}
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="head">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>Fly Express</h1>
-          <div class="sub">🚀 التوصيل الأسرع في نجع حمادي</div>
-        </div>
+  <div class="frame fadeInUp" role="main">
+    <div class="logo">
+      <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo">
+      <div class="brand">
+        <div class="title">Fly Express</div>
+        <div class="subtitle">التوصيل الأسرع في نجع حمادي</div>
       </div>
-
-      <!-- زر اللعبة -->
-      <a class="btn game" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
-        <span class="l">🎮 العب و اكسب — <span style="opacity:.92">توصيلة مجانية</span></span>
-        <span class="ic">🏍️</span>
-      </a>
-
-      <!-- روابط التواصل -->
-      <a class="btn fb" href="https://www.facebook.com/YourPage" target="_blank" rel="noopener">
-        <span class="l">📘 صفحة فيسبوك</span><span class="ic">↗</span>
-      </a>
-
-      <a class="btn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener">
-        <span class="l">📱 واتساب</span><span class="ic">↗</span>
-      </a>
-
-      <a class="btn ig" href="https://instagram.com/YourUser" target="_blank" rel="noopener">
-        <span class="l">📸 إنستجرام الشخصي</span><span class="ic">↗</span>
-      </a>
-
-      <a class="btn tg" href="https://t.me/YourUser" target="_blank" rel="noopener">
-        <span class="l">💬 تيليجرام</span><span class="ic">↗</span>
-      </a>
-
-      <a class="btn fb2" href="https://www.facebook.com/YourProfile" target="_blank" rel="noopener">
-        <span class="l">🙍‍♂️ فيسبوك الشخصي</span><span class="ic">↗</span>
-      </a>
-
-      <!-- أرقام التواصل -->
-      <div class="box">
-        للتواصل 📞
-        <div class="nums">+201017908076 — +201004769249</div>
-        <div class="actions">
-          <button class="small" id="btnShare">مشاركة</button>
-          <button class="small" id="btnCopy">نسخ رابط الصفحة 📋</button>
-        </div>
-      </div>
-
-      <div class="footer">أسرع توصيل في نجع حمادي — Fly Express ©</div>
     </div>
+
+    <div class="buttons">
+      <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn whatsapp" href="https://wa.me/201017908076"><div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn instagram" href="https://www.instagram.com/habis_namla/"><div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn telegram" href="https://t.me/D_M_C0"><div class="left"><div class="icon"><i class="fa-brands fa-telegram"></i></div><span class="label">تليجرام</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn facebook-personal" href="https://www.facebook.com/share/16X3GTzQE6/"><div class="left"><div class="icon"><i class="fa-brands fa-facebook"></i></div><span class="label">فيسبوك الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+    </div>
+
+    <div class="contact">
+      📞 للتواصل:
+      <a href="tel:+201017908076">+201017908076</a> —
+      <a href="tel:+201004769249">+201004769249</a>
+    </div>
+
+    <p id="visits" style="text-align:center;margin-top:10px;color:#b8c0c9;"></p>
+
+    <footer>
+      © Fly Express — أسرع توصيل في نجع حمادي
+    </footer>
   </div>
 
-  <div id="toast" class="toast">تم النسخ ✅</div>
+  <a href="tel:+201017908076" class="call-btn"><i class="fa-solid fa-phone"></i></a>
 
-<script>
-  // أزرار المشاركة والنسخ
-  const shareBtn = document.getElementById('btnShare');
-  const copyBtn  = document.getElementById('btnCopy');
-  const toast    = document.getElementById('toast');
-
-  shareBtn.addEventListener('click', async () => {
-    try{
-      if (navigator.share){
-        await navigator.share({
-          title: 'Fly Express — أسرع توصيل في نجع حمادي',
-          text: 'روابط تواصل Fly Express + لعبة العب و اكسب توصيلة مجانية 🎮🏍️',
-          url: location.href
-        });
-      }else{
-        await navigator.clipboard.writeText(location.href);
-        showToast('تم النسخ ✅');
-      }
-    }catch(e){}
-  });
-
-  copyBtn.addEventListener('click', async () => {
-    try{
-      await navigator.clipboard.writeText(location.href);
-      showToast('تم النسخ ✅');
-    }catch(e){
-      showToast('لم يتم النسخ، جرّب يدويًا');
-    }
-  });
-
-  function showToast(msg){
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(()=> toast.classList.remove('show'), 1600);
-  }
-</script>
+  <script>
+    const visits = localStorage.getItem("visitsCount") || 0;
+    const newCount = parseInt(visits,10) + 1;
+    localStorage.setItem("visitsCount", newCount);
+    document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${newCount}`;
+  </script>
 </body>
 </html>
