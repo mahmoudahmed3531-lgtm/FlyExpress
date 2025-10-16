@@ -18,12 +18,14 @@
       --muted: #b8c0c9;
       --shadow: 0 18px 50px rgba(0,0,0,0.28);
       font-family: 'Cairo', system-ui, sans-serif;
+      --brand-1: #2ecc71;
+      --brand-2: #1877f2;
+      --accent: #f39c12;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;color:var(--text);display:flex;align-items:center;justify-content:center;padding:28px;overflow:hidden;
-      /* خلفية أساسية */
       background: radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, rgba(0,0,0,0) 65%),
                   radial-gradient(1200px 600px at 90% 90%, #001219 0%, rgba(0,0,0,0) 65%),
                   conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
@@ -35,27 +37,16 @@
     @keyframes hue { 0%{filter:hue-rotate(0deg)} 100%{filter:hue-rotate(360deg)} }
 
     /* فقاقيع خلفية */
-    .bubbles{
-      position:fixed; inset:0; pointer-events:none; z-index:0;
-      overflow:hidden;
-    }
+    .bubbles{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden}
     .bubbles span{
       position:absolute; bottom:-120px; width:22px; height:22px; border-radius:50%;
-      background: rgba(255,255,255,0.07);
-      box-shadow: 0 0 18px rgba(255,255,255,0.12);
-      filter: blur(0.2px);
-      animation: rise 12s linear infinite;
+      background: rgba(255,255,255,0.07); box-shadow: 0 0 18px rgba(255,255,255,0.12);
+      filter: blur(0.2px); animation: rise 12s linear infinite;
     }
-    @keyframes rise{
-      0%{ transform: translateY(0) scale(1); opacity:.0; }
-      10%{ opacity:.5; }
-      100%{ transform: translateY(-120vh) scale(1.4); opacity:0; }
-    }
-    /* أحجام/تأخيرات متنوعة */
-    .bubbles span:nth-child(odd){ width:16px; height:16px; animation-duration:11s; }
-    .bubbles span:nth-child(3n){ width:28px; height:28px; animation-duration:14s; filter: blur(1px); }
-    .bubbles span:nth-child(5n){ width:12px; height:12px; animation-duration:10s; }
-    /* توزيع أفقي عشوائي تقريبًا */
+    @keyframes rise{ 0%{ transform: translateY(0) scale(1); opacity:.0 } 10%{opacity:.5} 100%{ transform: translateY(-120vh) scale(1.4); opacity:0 } }
+    .bubbles span:nth-child(odd){ width:16px; height:16px; animation-duration:11s }
+    .bubbles span:nth-child(3n){ width:28px; height:28px; animation-duration:14s; filter: blur(1px) }
+    .bubbles span:nth-child(5n){ width:12px; height:12px; animation-duration:10s }
     .bubbles span:nth-child(1){ left:6% ; animation-delay:.2s}
     .bubbles span:nth-child(2){ left:18%; animation-delay:1s}
     .bubbles span:nth-child(3){ left:27%; animation-delay:2.4s}
@@ -68,11 +59,8 @@
     .bubbles span:nth-child(10){left:91%; animation-delay:.6s}
 
     /* دخول ناعم للكادر */
-    .fadeInUp { animation: fadeInUp 1.2s ease-out; }
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(40px) scale(0.98); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
+    .fadeInUp { animation: fadeInUp 1.2s ease-out }
+    @keyframes fadeInUp { 0% { opacity:0; transform:translateY(40px) scale(.98) } 100%{ opacity:1; transform:translateY(0) scale(1) } }
 
     .frame{
       width:100%;max-width:var(--maxw);
@@ -83,32 +71,26 @@
       box-shadow: var(--shadow);
       overflow:hidden;
       padding:26px;
-      position:relative;
-      z-index:1;
+      position:relative; z-index:1;
     }
     /* وهج/نور يتنفس حول الإطار */
     .frame::after{
       content:""; position:absolute; inset:-3px; border-radius:30px;
       background: radial-gradient(120px 120px at 20% 20%, rgba(46, 204, 113, .35), transparent 60%),
                   radial-gradient(160px 160px at 80% 80%, rgba(24, 119, 242, .35), transparent 60%);
-      filter: blur(18px);
-      z-index:-1;
-      animation: glow 6s ease-in-out infinite alternate;
+      filter: blur(18px); z-index:-1; animation: glow 6s ease-in-out infinite alternate;
     }
-    @keyframes glow{
-      from{ opacity:.45; transform: scale(0.98); }
-      to  { opacity:.85; transform: scale(1.02); }
-    }
+    @keyframes glow{ from{ opacity:.45; transform: scale(.98) } to{ opacity:.85; transform: scale(1.02) } }
 
-    /* لمعة داخلية خفيفة تتحرك */
-    .frame::before {
+    /* لمعة داخلية تتحرك */
+    .frame::before{
       content:""; position:absolute; top:-50%; left:-50%;
       width:200%; height:200%;
       background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 60%);
       animation: shineMove 6s infinite linear; z-index:0;
     }
-    @keyframes shineMove { 0%{transform:translate(0,0) rotate(0deg)} 100%{transform:translate(20%,20%) rotate(360deg)} }
-    .frame>*{ position:relative; z-index:1; }
+    @keyframes shineMove { 0%{transform:translate(0,0) rotate(0)} 100%{transform:translate(20%,20%) rotate(360deg)} }
+    .frame>*{ position:relative; z-index:1 }
 
     .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
     .logo img{
@@ -123,7 +105,7 @@
     .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
 
     /* دخول متدرّج للأزرار */
-    .btn { opacity:0; animation: btnAppear .8s ease forwards; }
+    .btn { opacity:0; animation: btnAppear .8s ease forwards }
     @keyframes btnAppear { from{opacity:0;transform:translateY(25px)} to{opacity:1;transform:translateY(0)} }
     .buttons .btn:nth-child(1){animation-delay:.3s}
     .buttons .btn:nth-child(2){animation-delay:.5s}
@@ -137,21 +119,21 @@
       box-shadow:0 10px 24px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,0.08);
       transition:transform .12s ease,filter .12s ease,box-shadow .12s ease;
     }
-    .btn:hover{transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 24px 40px rgba(0,0,0,.35);}
+    .btn:hover{transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 24px 40px rgba(0,0,0,.35)}
     .btn::after{content:"";position:absolute;inset:0;width:45%;left:-70%;
       background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.25) 50%,transparent 100%);
-      transform:skewX(-25deg);transition:left .55s ease;pointer-events:none;}
-    .btn:hover::after{left:130%;}
+      transform:skewX(-25deg);transition:left .55s ease;pointer-events:none}
+    .btn:hover::after{left:130%}
     .left{display:flex;align-items:center;gap:12px}
     .icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.18);font-size:17px}
     .label{font-size:15px}
 
-    /* الألوان */
-    .facebook{background:linear-gradient(90deg,#1877f2,#2bbf3a);}
-    .whatsapp{background:linear-gradient(90deg,#f39c12,#e67e22);}
-    .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894);}
-    .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60);}
-    .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60);}
+    /* ألوان الأزرار */
+    .facebook{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
+    .whatsapp{background:linear-gradient(90deg,#f39c12,#e67e22)}
+    .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894)}
+    .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60)}
+    .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60)}
 
     .contact{
       margin-top:18px;text-align:center;color:var(--text);font-weight:600;
@@ -159,18 +141,80 @@
       border:1px solid rgba(255,255,255,0.08)
     }
     .contact a{color:#25D366;text-decoration:none;font-weight:800}
-
     footer{margin-top:16px;text-align:center;color:var(--muted);font-size:12px}
 
+    /* زر الاتصال العائم */
     .call-btn{position:fixed;bottom:22px;right:22px;z-index:999;width:60px;height:60px;border-radius:50%;
       display:flex;align-items:center;justify-content:center;color:#fff;background:#25d366;font-size:24px;
-      box-shadow:0 10px 28px rgba(0,0,0,.45);animation:bounce 2s infinite;}
+      box-shadow:0 10px 28px rgba(0,0,0,.45);animation:bounce 2s infinite}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-    @media(max-width:520px){
-      .frame{padding:20px}
-      .logo img{width:70px;height:70px}
-      .call-btn{width:56px;height:56px;font-size:22px}
+    /* بانر العروض الخاصة */
+    .promo{
+      display:none; margin-bottom:10px; padding:10px 14px; border-radius:14px;
+      background: linear-gradient(90deg, var(--accent), #e67e22);
+      color:#fff; font-weight:800; text-align:center; box-shadow:0 10px 24px rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.15);
+      animation: promoIn .7s ease forwards;
+    }
+    @keyframes promoIn{ from{ opacity:0; transform: translateY(-12px) } to{ opacity:1; transform: translateY(0) } }
+    .promo small{ display:block; opacity:.9; font-weight:600 }
+
+    /* زر قيّم الخدمة (يظهر بعد 10 ثواني) */
+    .rate-pill{
+      position:fixed; bottom:22px; left:22px; z-index:999; opacity:0; pointer-events:none;
+      background: linear-gradient(90deg, #8e2de2,#4a00e0); color:#fff; border-radius:999px;
+      padding:10px 16px; font-weight:800; box-shadow:0 10px 24px rgba(0,0,0,.35);
+      transition: opacity .3s ease, transform .3s ease;
+      transform: translateY(10px);
+    }
+    .rate-pill.show{ opacity:1; pointer-events:auto; transform: translateY(0) }
+    .rate-pill i{ margin-left:8px }
+
+    /* نافذة التقييم */
+    .modal{
+      position:fixed; inset:0; display:none; place-items:center; z-index:1000;
+      background: rgba(0,0,0,.45); backdrop-filter: blur(3px);
+    }
+    .modal .card{
+      width: min(92vw, 420px);
+      background: rgba(16,20,30,.9);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px; padding:18px; box-shadow: var(--shadow);
+      text-align:center;
+    }
+    .stars{ display:flex; justify-content:center; gap:8px; margin:12px 0 6px }
+    .star{
+      font-size:26px; color:#999; cursor:pointer; transition: transform .12s ease, color .12s ease;
+    }
+    .star.active, .star:hover{ color:#ffd76a; transform: translateY(-2px) }
+    .modal .actions{ display:flex; gap:10px; justify-content:center; margin-top:12px }
+    .btn-ghost, .btn-solid{
+      padding:10px 14px; border-radius:12px; font-weight:800; cursor:pointer; border:1px solid rgba(255,255,255,.15)
+    }
+    .btn-ghost{ background:transparent; color:#fff }
+    .btn-solid{ background:linear-gradient(90deg,#2ecc71,#27ae60); color:#fff }
+    .hint{ color:#b8c0c9; font-size:12px; margin-top:6px }
+
+    /* شاشة التحميل (Splash) */
+    .splash{
+      position:fixed; inset:0; display:grid; place-items:center; z-index:2000;
+      background: radial-gradient(1000px 500px at 50% 50%, #0b1320 0%, #080b12 60%, #05070b 100%);
+      transition: opacity .5s ease, visibility .5s ease;
+    }
+    .splash.hide{ opacity:0; visibility:hidden }
+    .splash .box{
+      display:flex; flex-direction:column; align-items:center; gap:14px;
+      color:#fff;
+    }
+    .spinner{
+      width:34px; height:34px; border-radius:50%;
+      border:3px solid rgba(255,255,255,.25);
+      border-top-color:#2ecc71; animation: spin 1s linear infinite;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg) } }
+    .splash .logo{
+      gap:10px; margin:0;
     }
   </style>
 </head>
@@ -182,7 +226,24 @@
     <span></span><span></span><span></span><span></span><span></span>
   </div>
 
+  <!-- شاشة التحميل بالشعار -->
+  <div class="splash" id="splash">
+    <div class="box">
+      <div class="logo">
+        <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" style="width:72px;height:72px;border-radius:14px;border:1px solid rgba(255,255,255,.1)">
+        <div style="font-weight:900;font-size:22px">Fly Express</div>
+      </div>
+      <div class="spinner" aria-label="جارٍ التحميل"></div>
+      <div style="color:#b8c0c9;font-size:12px">يتم تجهيز صفحتك…</div>
+    </div>
+  </div>
+
   <div class="frame fadeInUp" role="main">
+    <!-- بانر العروض -->
+    <div class="promo" id="promo">
+      🚚 خصم 10% على أول طلب اليوم! <small>اطلب دلوقتي واستلم بسرعة ✨</small>
+    </div>
+
     <div class="logo">
       <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo">
       <div class="brand">
@@ -212,14 +273,82 @@
     </footer>
   </div>
 
+  <!-- زر الاتصال العائم -->
   <a href="tel:+201017908076" class="call-btn" aria-label="اتصل الآن"><i class="fa-solid fa-phone"></i></a>
 
+  <!-- زر قيّم الخدمة -->
+  <button class="rate-pill" id="ratePill" type="button"><i class="fa-solid fa-star"></i> قيّم الخدمة</button>
+
+  <!-- نافذة التقييم -->
+  <div class="modal" id="rateModal" aria-hidden="true">
+    <div class="card">
+      <div style="font-weight:900;font-size:18px;margin-bottom:4px">قيّم تجربتك معنا</div>
+      <div class="stars" id="stars">
+        <span class="star" data-v="1">★</span>
+        <span class="star" data-v="2">★</span>
+        <span class="star" data-v="3">★</span>
+        <span class="star" data-v="4">★</span>
+        <span class="star" data-v="5">★</span>
+      </div>
+      <div class="hint">اختر من 1 إلى 5 نجوم</div>
+      <div class="actions">
+        <button class="btn-ghost" id="closeRate">إلغاء</button>
+        <button class="btn-solid" id="sendRate">إرسال التقييم</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // شاشة التحميل
+    window.addEventListener('load', () => {
+      const splash = document.getElementById('splash');
+      setTimeout(()=> splash.classList.add('hide'), 650);
+    });
+
+    // بانر العروض يظهر ويختفي
+    const promo = document.getElementById('promo');
+    setTimeout(()=> {
+      promo.style.display = 'block';
+      // اخفاء بعد 6 ثواني
+      setTimeout(()=> { promo.style.display = 'none'; }, 6000);
+    }, 600);
+
     // عدّاد زيارات (محلي)
     const visits = localStorage.getItem("visitsCount") || 0;
     const newCount = parseInt(visits,10) + 1;
     localStorage.setItem("visitsCount", newCount);
     document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${newCount}`;
+
+    // زر قيّم الخدمة يظهر بعد 10 ثواني
+    const ratePill = document.getElementById('ratePill');
+    const rateModal = document.getElementById('rateModal');
+    const closeRate = document.getElementById('closeRate');
+    const sendRate = document.getElementById('sendRate');
+    const starsWrap = document.getElementById('stars');
+    let selected = 5;
+
+    setTimeout(()=> ratePill.classList.add('show'), 10000);
+
+    ratePill.addEventListener('click', ()=> { rateModal.style.display = 'grid'; });
+    closeRate.addEventListener('click', ()=> { rateModal.style.display = 'none'; });
+
+    // اختيار النجوم
+    starsWrap.querySelectorAll('.star').forEach(st => {
+      st.addEventListener('click', function(){
+        selected = parseInt(this.dataset.v,10);
+        starsWrap.querySelectorAll('.star').forEach(s => s.classList.toggle('active', parseInt(s.dataset.v,10) <= selected));
+      });
+    });
+    // افتراضي: 5 نجوم مفعّلة
+    starsWrap.querySelectorAll('.star').forEach(s => s.classList.add('active'));
+
+    // إرسال التقييم إلى واتساب
+    sendRate.addEventListener('click', ()=>{
+      const msg = `السلام عليكم 👋\nحبيت أقيم تجربتي مع Fly Express: ${'⭐'.repeat(selected)} (${selected}/5)`;
+      const phone = '201017908076'; // رقم الواتساب الأساسي
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+      window.location.href = url; // نفس التبويب
+    });
   </script>
 
 </body>
