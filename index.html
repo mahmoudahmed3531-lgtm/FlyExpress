@@ -6,16 +6,15 @@
 <title>Fly Rider — العب واكسب توصيلة مجانية</title>
 <style>
   :root{
-    --ink:#0c2b3a; --muted:#5d7b8a; --panel:#0b1120AA;
+    --ink:#eaf6ff; --muted:#9cc0ff; --panel:#0b1120AA;
     --brand:#22c55e; --danger:#ef4444;
-    --glass:#0b1120; /* أساس التدرجات الداكنة */
   }
   *{box-sizing:border-box}
   html,body{height:100%}
 
-  /* خلفية RGB “إضاءة” */
+  /* خلفية RGB */
   body{
-    margin:0; color:#eaf6ff; font-family:system-ui,"Segoe UI","Cairo",Roboto,sans-serif;
+    margin:0; color:var(--ink); font-family:system-ui,"Cairo",Roboto,sans-serif;
     background:
       radial-gradient(800px 420px at 15% 15%, #1e293b 0%, transparent 60%),
       radial-gradient(800px 420px at 85% 85%, #172554 0%, transparent 60%),
@@ -26,7 +25,6 @@
   @keyframes hue{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
 
   .wrap{max-width:980px;margin:0 auto;padding:18px}
-
   header{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
   h1{margin:0;font-size:36px;font-weight:900;display:flex;gap:10px;align-items:center;
       text-shadow:0 4px 18px rgba(56,189,248,.25), 0 0 28px rgba(59,130,246,.25)}
@@ -40,7 +38,6 @@
   }
   .btn{border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer}
   .btn.green{background:linear-gradient(90deg,#16a34a,#22c55e);color:#031318; box-shadow:0 10px 26px rgba(34,197,94,.35)}
-  .btn.gray{background:linear-gradient(90deg,#0ea5e9,#60a5fa);color:#031318; box-shadow:0 10px 26px rgba(96,165,250,.35)}
   .btn:active{transform:translateY(1px)}
 
   .frame{
@@ -50,7 +47,6 @@
     box-shadow:0 14px 40px rgba(2,8,23,.55), 0 0 0 1px rgba(148,163,184,.15) inset;
     overflow:hidden;
   }
-  /* سبوت لايت خفيف داخل الإطار */
   .frame::before{
     content:""; position:absolute; inset:0;
     background:radial-gradient(600px 280px at 30% 20%, rgba(56,189,248,.18), transparent 60%),
@@ -97,11 +93,10 @@
 <body>
   <div class="wrap">
     <header>
-      <h1>🏍️ Fly Rider</h1>
+      <h1>🏍️ Fly Rider — العب واكسب توصيلة مجانية</h1>
       <div class="statbar">
         <div class="badge">المسافة: <span id="score">0</span> / 10000</div>
         <div class="badge">أعلى نتيجة: <span id="best">0</span></div>
-        <button id="btnSound" class="btn gray">تشغيل الصوت 🔊</button>
         <button id="btnStart" class="btn green">ابدأ</button>
       </div>
     </header>
@@ -114,7 +109,6 @@
       <div id="overlay" class="overlay">
         <div class="box">
           <div style="font-size:18px;margin-bottom:6px">اضغط <b>ابدأ</b> أو المس الشاشة للانطلاق</div>
-          <!-- تم تغيير النص هنا -->
           <div style="color:#86efac;font-weight:900">الهدف: <b>10000</b> نقطة — <u>العب واكسب توصيلة مجانية</u> ✨</div>
           <div style="font-size:12px;color:#9cc0ff;margin-top:8px">تلميح: عند البدء يوجد <b>مهلة أمان 1.2 ثانية</b> قبل تفعيل الاصطدام</div>
         </div>
@@ -126,8 +120,10 @@
 
   <div id="toast" class="toast"></div>
 
-  <!-- صوت الخلفية -->
-  <audio id="bgm" src="https://files.catbox.moe/xx1c3u.mp3" loop preload="auto" playsinline></audio>
+  <!-- الأصوات -->
+  <audio id="bgm"  src="https://files.catbox.moe/c2gfi5.mp3" loop preload="auto" playsinline></audio>
+  <audio id="lose" src="https://files.catbox.moe/81wdzo.mp3" preload="auto" playsinline></audio>
+  <audio id="win"  src="https://files.catbox.moe/8ob2jc.mp3"  preload="auto" playsinline></audio>
 
 <script>
 /* ========= الكانفس ========= */
@@ -140,13 +136,22 @@ const W = () => canvas.clientWidth, H = () => canvas.clientHeight;
 const GROUND_Y = () => Math.round(H()*0.78);
 
 /* ========= الصوت ========= */
-const bgm = document.getElementById('bgm');
+const bgm  = document.getElementById('bgm');
+const sLose= document.getElementById('lose');
+const sWin = document.getElementById('win');
 let soundOn=false;
-const btnSound=document.getElementById('btnSound');
-btnSound.addEventListener('click', async ()=>{
-  try{ if(!soundOn){await bgm.play(); soundOn=true; btnSound.textContent='إيقاف الصوت 🔇';}
-        else{bgm.pause(); soundOn=false; btnSound.textContent='تشغيل الصوت 🔊';} }catch(e){}
-});
+
+// منع إشعار Media Session
+if ('mediaSession' in navigator) navigator.mediaSession.metadata = null;
+
+// يشتغل الصوت تلقائيًا عندما نبدأ اللعب
+async function ensureBgm(){
+  try{
+    await bgm.play();
+    soundOn = true;
+  }catch(e){ /* في بعض المتصفحات قد يحتاج أول تفاعل، لكن زر "ابدأ" يعتبر تفاعل */ }
+}
+// قفّل/افتح الصوت عند تبديل التبويب
 window.addEventListener('blur', ()=> bgm.pause());
 window.addEventListener('focus', ()=> { if(soundOn) bgm.play(); });
 
@@ -157,15 +162,17 @@ document.getElementById('best').textContent=best;
 const SAFE_MS=1200; let safeUntil=0;
 let speedBase=6, speed=speedBase;
 
+// صورة المتوسيكل
 const RIDER_SRC="https://i.ibb.co/1tr7xqfR/Picsart-25-10-16-13-30-56-445.png";
 const riderImg=new Image(); riderImg.src=RIDER_SRC;
-const rider={x:80,y:0,w:94,h:66,vy:0,onGround:true,wheelPhase:0};
+const rider={x:82,y:0,w:96,h:68,vy:0,onGround:true,wheelPhase:0};
 
+// العوائق
 const obstacles=[];
 function spawnObstacle(initial=false){
   const gap=160+Math.random()*140;
   let x;
-  if(initial){ x=W()+260; }
+  if(initial){ x=W()+260; } // أول واحد بعيد
   else { const last=obstacles[obstacles.length-1]; x=(last?last.x:W()+60)+gap+40+Math.random()*80; }
   const h=26+Math.random()*36, w=24+Math.random()*28;
   obstacles.push({x,y:GROUND_Y()-h,w,h});
@@ -233,8 +240,12 @@ function loop(ts){
 }
 
 /* ========= حالات ========= */
-function startGame(){
+async function startGame(){
   if(running) return;
+
+  // شغّل موسيقى الخلفية تلقائيًا مع بداية اللعب
+  await ensureBgm();
+
   speed=speedBase; score=0; won=false; gameOver=false;
   rider.y=GROUND_Y()-rider.h; rider.vy=0; rider.onGround=true;
   obstacles.length=0; for(let i=0;i<3;i++) spawnObstacle(i===0);
@@ -244,8 +255,15 @@ function startGame(){
 }
 function endGame(isWin){
   running=false; gameOver=!isWin; won=isWin;
+
+  // وقّف الخلفية وشغّل الصوت المناسب
+  try{ bgm.pause(); }catch(e){}
+  if(isWin){ try{ sWin.currentTime=0; sWin.play(); }catch(e){}; }
+  else{ try{ sLose.currentTime=0; sLose.play(); }catch(e){}; }
+
   best=Math.max(best,score); localStorage.setItem('flyrider_best',best);
   document.getElementById('best').textContent=best;
+
   if(isWin){
     const msg=encodeURIComponent("أنا كسبت توصيلة مجانية في لعبة Fly Rider! ✅ المسافة: "+score+" نقطة");
     showToast('🎉 مبروك! كسبت توصيلة مجانية — خُد لقطة شاشة واضغط لإرسالها لنا على واتساب.',
@@ -255,7 +273,12 @@ function endGame(isWin){
   }
   setTimeout(()=>overlay.classList.remove('hidden'),300);
 }
-function resetGame(){ toast.classList.remove('show'); startGame(); }
+function resetGame(){
+  toast.classList.remove('show');
+  // رجّع الخلفية تشتغل تاني بعد الريست
+  try{ bgm.currentTime=0; if(soundOn) bgm.play(); }catch(e){}
+  startGame();
+}
 
 function showToast(text,actionLabel,actionFn){
   toast.innerHTML=text+(actionLabel?`<div style="margin-top:8px"><button id="toastBtn" class="btn green">${actionLabel}</button></div>`:'');
@@ -263,7 +286,6 @@ function showToast(text,actionLabel,actionFn){
 }
 
 overlay.addEventListener('pointerdown', ()=> gameOver ? resetGame() : startGame());
-rider.y = GROUND_Y() - rider.h;
 </script>
 </body>
 </html>
