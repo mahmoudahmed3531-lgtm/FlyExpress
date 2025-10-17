@@ -45,10 +45,15 @@
 
     .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
     .logo img{width:85px;height:85px;object-fit:cover;border-radius:14px;background:#0f1520;border:1px solid rgba(255,255,255,0.06)}
-    .brand .title{font-size:26px;font-weight:800;line-height:1}
-    .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
+    .brand .title{font-size:26px;font-weight:800;line-height:1;animation:fadeInUp 1.2s ease}
+    .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px;animation:fadeInUp 1.8s ease}
 
-    .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
+    @keyframes fadeInUp {
+      0% {opacity:0; transform:translateY(25px);}
+      100% {opacity:1; transform:translateY(0);}
+    }
+
+    .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px;animation:fadeInUp 2s ease}
 
     .btn{
       position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:12px;
@@ -67,30 +72,25 @@
     .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894);}
     .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60);}
     .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60);}
-
     .dropdown{display:none;flex-direction:column;gap:10px;margin-top:10px;padding:12px;background:rgba(0,0,0,.45);border-radius:16px;border:1px solid rgba(255,255,255,.08)}
     .dropdown a{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-radius:14px;text-decoration:none;color:#fff;font-weight:800}
     .game1{background:linear-gradient(90deg,#9c27b0,#e91e63);}
     .game2{background:linear-gradient(90deg,#00bcd4,#4caf50);}
     .dropdown.show{display:flex}
 
-    .music-control{
-      position:absolute; top:14px; left:14px; background:rgba(0,0,0,.45); color:#fff;
-      border:1px solid rgba(255,255,255,.2); border-radius:999px; padding:8px 14px;
-      display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:700; font-size:14px;
-      transition:all .2s ease; z-index:99;
+    .contact{
+      margin-top:18px;text-align:center;color:var(--text);font-weight:600;
+      background:rgba(255,255,255,0.06);padding:10px;border-radius:12px;
+      border:1px solid rgba(255,255,255,0.08)
     }
-    .music-control:hover{background:rgba(255,255,255,.1)}
+    .contact a{color:#25D366;text-decoration:none;font-weight:800}
+    footer{margin-top:16px;text-align:center;color:var(--muted);font-size:12px}
   </style>
 </head>
 <body>
-  <div class="frame">
-    <!-- زر التحكم بالموسيقى -->
-    <div class="music-control" id="musicBtn">
-      <i class="fa-solid fa-play"></i> <span>تشغيل الموسيقى</span>
-      <audio id="bgm" src="https://files.catbox.moe/sp01yh.mp3" preload="auto" loop></audio>
-    </div>
+  <audio id="bgm" src="https://files.catbox.moe/sp01yh.mp3" preload="auto" loop></audio>
 
+  <div class="frame">
     <div class="logo">
       <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo">
       <div class="brand">
@@ -141,27 +141,14 @@
     localStorage.setItem("visitsCount", visits + 1);
     document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
 
-    // تشغيل/إيقاف الموسيقى
-    const musicBtn = document.getElementById('musicBtn');
+    // تشغيل الموسيقى تلقائيًا
     const audio = document.getElementById('bgm');
-    let playing = false;
-    musicBtn.addEventListener('click', async ()=>{
-      try{
-        if(!playing){
-          await audio.play();
-          playing = true;
-          musicBtn.querySelector('i').className = 'fa-solid fa-pause';
-          musicBtn.querySelector('span').textContent = 'إيقاف الموسيقى';
-        } else {
-          audio.pause();
-          playing = false;
-          musicBtn.querySelector('i').className = 'fa-solid fa-play';
-          musicBtn.querySelector('span').textContent = 'تشغيل الموسيقى';
-        }
-      }catch(err){
-        alert('اضغط مرة أخرى لتفعيل الصوت 🎵');
-      }
-    });
+    const playMusic = () => {
+      audio.volume = 0.6;
+      audio.play().catch(()=>{});
+    };
+    document.addEventListener('click', playMusic, {once:true});
+    window.addEventListener('load', playMusic);
   </script>
 </body>
 </html>
