@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Fly Express</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
@@ -13,7 +13,6 @@
       --radius: 999px;
       --maxw: 480px;
       --gap: 14px;
-      --glass: rgba(255,255,255,0.06);
       --text: #e9eef3;
       --muted: #b8c0c9;
       --shadow: 0 18px 50px rgba(0,0,0,0.28);
@@ -23,16 +22,54 @@
     html,body{height:100%}
     body{
       margin:0;color:var(--text);display:flex;align-items:center;justify-content:center;padding:28px;
-      background: radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, rgba(0,0,0,0) 65%),
-                  radial-gradient(1200px 600px at 90% 90%, #001219 0%, rgba(0,0,0,0) 65%),
-                  conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
-      background-size: 140% 140%, 140% 140%, 200% 200%;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, transparent 65%),
+        radial-gradient(1200px 600px at 90% 90%, #001219 0%, transparent 65%),
+        conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
+      background-size:140% 140%,140% 140%,200% 200%;
       animation: moveBg1 16s ease-in-out infinite, moveBg2 18s ease-in-out infinite, hue 28s linear infinite;
     }
     @keyframes moveBg1 {0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:30% 20%,70% 80%,100% 50%}}
     @keyframes moveBg2 {0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:15% 25%,85% 75%,100% 50%}}
-    @keyframes hue {0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+    @keyframes hue     {0%{filter:hue-rotate(0)}100%{filter:hue-rotate(360deg)}}
 
+    /* ===== Splash ===== */
+    #splash{
+      position:fixed; inset:0; display:grid; place-items:center; z-index:9999;
+      background:
+        radial-gradient(1200px 600px at 20% 20%, rgba(33,245,179,.15) 0%, transparent 60%),
+        radial-gradient(1200px 600px at 80% 80%, rgba(0,168,255,.15) 0%, transparent 60%),
+        #06121a;
+      animation: splashBg 10s ease-in-out infinite alternate;
+    }
+    @keyframes splashBg {0%{filter:hue-rotate(0)}100%{filter:hue-rotate(30deg)}}
+    .splash-card{
+      width:min(420px,92vw);
+      text-align:center;
+      padding:28px 22px;
+      border-radius:22px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:0 30px 70px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06);
+      backdrop-filter: blur(6px);
+      animation: popin .6s ease;
+      cursor:pointer;
+    }
+    @keyframes popin {0%{transform:scale(.96);opacity:0}100%{transform:scale(1);opacity:1}}
+    .splash-logo{
+      width:86px;height:86px;border-radius:18px;object-fit:cover;
+      margin:0 auto 12px; display:block; box-shadow:0 10px 30px rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .splash-title{font-weight:900;font-size:26px;margin:2px 0 6px}
+    .splash-sub{color:#cfe2ee;font-weight:700}
+    .tap{
+      margin-top:14px;font-weight:900;color:#21f5b3;
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    @keyframes blink {0%,100%{opacity:1}50%{opacity:.35}}
+
+    /* ===== Main card ===== */
     .frame{
       width:100%;max-width:var(--maxw);
       background: rgba(255,255,255,0.04);
@@ -42,17 +79,15 @@
       box-shadow: var(--shadow);
       padding:26px; position:relative;
     }
-
     .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
     .logo img{width:85px;height:85px;object-fit:cover;border-radius:14px;background:#0f1520;border:1px solid rgba(255,255,255,0.06)}
     .brand .title{font-size:26px;font-weight:800;line-height:1}
     .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
 
-    .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
-
+    .buttons{display:flex;flex-direction:column;gap:14px;margin-top:10px}
     .btn{
       position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:12px 18px;border-radius:var(--radius);text-decoration:none;color:#fff;font-weight:700;
+      padding:12px 18px;border-radius:999px;text-decoration:none;color:#fff;font-weight:700;
       box-shadow:0 10px 24px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,0.08);
       background:linear-gradient(90deg,#26c6da,#2979ff);
       transition:transform .12s ease,filter .12s ease,box-shadow .12s ease;
@@ -61,14 +96,13 @@
     .left{display:flex;align-items:center;gap:12px}
     .icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.18);font-size:17px}
     .label{font-size:15px}
-
     .facebook{background:linear-gradient(90deg,#1877f2,#2bbf3a);}
     .whatsapp{background:linear-gradient(90deg,#f39c12,#e67e22);}
     .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894);}
     .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60);}
     .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60);}
 
-    /* القائمة المنسدلة للألعاب */
+    /* dropdown games */
     .dropdown{display:none;flex-direction:column;gap:10px;margin-top:10px;padding:12px;background:rgba(0,0,0,.45);border-radius:16px;border:1px solid rgba(255,255,255,.08)}
     .dropdown a{
       display:flex;align-items:center;justify-content:space-between;
@@ -84,12 +118,23 @@
       border:1px solid rgba(255,255,255,0.08)
     }
     .contact a{color:#25D366;text-decoration:none;font-weight:800}
-
     footer{margin-top:16px;text-align:center;color:var(--muted);font-size:12px}
   </style>
 </head>
 <body>
-  <div class="frame">
+
+  <!-- Splash overlay -->
+  <div id="splash">
+    <div class="splash-card" id="splashCard" tabindex="0" role="button" aria-label="اضغط للمتابعة">
+      <img class="splash-logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
+      <div class="splash-title">Fly Express</div>
+      <div class="splash-sub">أسرع توصيل في نجع حمادي</div>
+      <div class="tap">اضغط للمتابعة ▶️</div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="frame" role="main">
     <div class="logo">
       <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo">
       <div class="brand">
@@ -135,7 +180,7 @@
   </div>
 
   <script>
-    // === قائمة الألعاب المنسدلة
+    /* ===== قائمة الألعاب المنسدلة ===== */
     const btn = document.getElementById('toggleGames');
     const menu = document.getElementById('gamesMenu');
     btn.addEventListener('click', ()=> menu.classList.toggle('show'));
@@ -143,38 +188,49 @@
       if(!btn.contains(e.target) && !menu.contains(e.target)) menu.classList.remove('show');
     });
 
-    // عداد الزيارات
+    /* ===== عداد الزيارات ===== */
     const visits = +localStorage.getItem("visitsCount") || 0;
     localStorage.setItem("visitsCount", visits + 1);
     document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
 
-    // === تشغيل الموسيقى بعد أول "تفاعل" فقط، وتوقيفها في الخلفية
+    /* ===== موسيقى + Splash ===== */
     const MUSIC_URL = "https://files.catbox.moe/sp01yh.mp3";
     const bgAudio = new Audio(MUSIC_URL);
-    bgAudio.loop = true;              // لو مش عايزها تعيد نفسها شيل السطر ده
     bgAudio.preload = "auto";
+    bgAudio.loop = true;           // كرر التشغيل
+    bgAudio.volume = 0.7;
+
     let started = false;
+    const splash = document.getElementById('splash');
+    const splashCard = document.getElementById('splashCard');
 
     function startMusicOnce(){
-      if(started) return;
+      if (started) return;
       started = true;
-      // محاولة تشغيل — المتصفح هيسمح لأنها بعد تفاعل
       bgAudio.play().catch(()=>{ started = false; });
     }
+    function closeSplashAndStart(){
+      splash.style.display = 'none';
+      startMusicOnce();
+    }
 
-    // تفاعلات تُمكّن التشغيل
-    const enableEvents = ["pointerdown","click","touchstart","keydown","wheel","scroll"];
-    enableEvents.forEach(ev => {
-      window.addEventListener(ev, startMusicOnce, { once:true, passive: ev==="scroll"||ev==="wheel" });
+    // أول تفاعل حقيقي يقفل الـSplash ويشغّل الموسيقى
+    ["click","touchstart"].forEach(ev=>{
+      splash.addEventListener(ev, closeSplashAndStart, { once:true });
+      splashCard.addEventListener(ev, closeSplashAndStart, { once:true });
     });
+    // للي يضغط Enter من الكيبورد
+    splashCard.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') closeSplashAndStart(); });
 
-    // إيقاف عند الذهاب للخلفية — مفيش تشغيل في الخلفية
-    document.addEventListener("visibilitychange", ()=>{
-      if(document.hidden){ bgAudio.pause(); }
+    // إيقاف الصوت عند مغادرة الصفحة/الخلفية
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        bgAudio.pause();
+        started = false; // لازم لمسة جديدة عند الرجوع
+      }
     });
-    // إيقاف عند مغادرة الصفحة
-    window.addEventListener("pagehide", ()=> bgAudio.pause());
-    window.addEventListener("beforeunload", ()=> bgAudio.pause());
+    window.addEventListener("beforeunload", () => bgAudio.pause());
+    window.addEventListener("pagehide",    () => bgAudio.pause());
   </script>
 </body>
 </html>
