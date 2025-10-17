@@ -23,15 +23,21 @@
     html,body{height:100%}
     body{
       margin:0;color:var(--text);display:flex;align-items:center;justify-content:center;padding:28px;
-      background: radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, rgba(0,0,0,0) 65%),
-                  radial-gradient(1200px 600px at 90% 90%, #001219 0%, rgba(0,0,0,0) 65%),
-                  conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, rgba(0,0,0,0) 65%),
+        radial-gradient(1200px 600px at 90% 90%, #001219 0%, rgba(0,0,0,0) 65%),
+        conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
       background-size: 140% 140%, 140% 140%, 200% 200%;
       animation: moveBg1 16s ease-in-out infinite, moveBg2 18s ease-in-out infinite, hue 28s linear infinite;
     }
     @keyframes moveBg1 {0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:30% 20%,70% 80%,100% 50%}}
     @keyframes moveBg2 {0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:15% 25%,85% 75%,100% 50%}}
     @keyframes hue {0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+
+    /* دخول ناعم متدرّج */
+    .reveal {opacity:0; transform:translateY(18px) scale(.98);}
+    .reveal.show {animation:reveal .7s cubic-bezier(.2,.7,.2,1) forwards}
+    @keyframes reveal {to{opacity:1; transform:translateY(0) scale(1)}}
 
     .frame{
       width:100%;max-width:var(--maxw);
@@ -45,15 +51,10 @@
 
     .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
     .logo img{width:85px;height:85px;object-fit:cover;border-radius:14px;background:#0f1520;border:1px solid rgba(255,255,255,0.06)}
-    .brand .title{font-size:26px;font-weight:800;line-height:1;animation:fadeInUp 1.2s ease}
-    .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px;animation:fadeInUp 1.8s ease}
+    .brand .title{font-size:26px;font-weight:800;line-height:1}
+    .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
 
-    @keyframes fadeInUp {
-      0% {opacity:0; transform:translateY(25px);}
-      100% {opacity:1; transform:translateY(0);}
-    }
-
-    .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px;animation:fadeInUp 2s ease}
+    .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
 
     .btn{
       position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:12px;
@@ -61,6 +62,7 @@
       box-shadow:0 10px 24px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,0.08);
       background:linear-gradient(90deg,#26c6da,#2979ff);
       transition:transform .12s ease,filter .12s ease,box-shadow .12s ease;
+      will-change: transform;
     }
     .btn:hover{transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 24px 40px rgba(0,0,0,.35)}
     .left{display:flex;align-items:center;gap:12px}
@@ -72,8 +74,13 @@
     .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894);}
     .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60);}
     .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60);}
+
+    /* القائمة المنسدلة */
     .dropdown{display:none;flex-direction:column;gap:10px;margin-top:10px;padding:12px;background:rgba(0,0,0,.45);border-radius:16px;border:1px solid rgba(255,255,255,.08)}
-    .dropdown a{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-radius:14px;text-decoration:none;color:#fff;font-weight:800}
+    .dropdown a{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:10px 16px;border-radius:14px;text-decoration:none;color:#fff;font-weight:800;
+    }
     .game1{background:linear-gradient(90deg,#9c27b0,#e91e63);}
     .game2{background:linear-gradient(90deg,#00bcd4,#4caf50);}
     .dropdown.show{display:flex}
@@ -84,14 +91,16 @@
       border:1px solid rgba(255,255,255,0.08)
     }
     .contact a{color:#25D366;text-decoration:none;font-weight:800}
+
     footer{margin-top:16px;text-align:center;color:var(--muted);font-size:12px}
   </style>
 </head>
 <body>
-  <audio id="bgm" src="https://files.catbox.moe/sp01yh.mp3" preload="auto" loop></audio>
+  <!-- موسيقى الخلفية (تشغيل تلقائي) -->
+  <audio id="bgm" src="https://files.catbox.moe/sp01yh.mp3" autoplay loop playsinline></audio>
 
   <div class="frame">
-    <div class="logo">
+    <div class="logo reveal" style="animation-delay:.05s">
       <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo">
       <div class="brand">
         <div class="title">Fly Express</div>
@@ -100,35 +109,101 @@
     </div>
 
     <div class="buttons">
-      <button class="btn" id="toggleGames">
+      <!-- زر الألعاب -->
+      <button class="btn reveal" id="toggleGames" style="animation-delay:.12s">
         <div class="left"><div class="icon"><i class="fa-solid fa-gamepad"></i></div><span class="label">🎮 العب و اكسب توصيلة مجانية</span></div>
         <i class="fa-solid fa-caret-down"></i>
       </button>
 
-      <div class="dropdown" id="gamesMenu">
-        <a class="game1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank"><div class="left"><div class="icon"><i class="fa-solid fa-gift"></i></div><span>🎯 لعبة الطرود — Whack-a-Parcel</span></div><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        <a class="game2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank"><div class="left"><div class="icon"><i class="fa-solid fa-motorcycle"></i></div><span>🛵 لعبة الموتسيكل — Fly Rider</span></div><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <div class="dropdown reveal" id="gamesMenu" style="animation-delay:.18s">
+        <a class="game1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
+          <div class="left"><div class="icon"><i class="fa-solid fa-gift"></i></div><span>🎯 لعبة الطرود — Whack-a-Parcel</span></div>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a class="game2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
+          <div class="left"><div class="icon"><i class="fa-solid fa-motorcycle"></i></div><span>🛵 لعبة الموتسيكل — Fly Rider</span></div>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
       </div>
 
-      <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn whatsapp" href="https://wa.me/201017908076"><div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn instagram" href="https://www.instagram.com/habis_namla/"><div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn telegram" href="https://t.me/D_M_C0"><div class="left"><div class="icon"><i class="fa-brands fa-telegram"></i></div><span class="label">تليجرام</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn facebook-personal" href="https://www.facebook.com/share/16X3GTzQE6/"><div class="left"><div class="icon"><i class="fa-brands fa-facebook"></i></div><span class="label">فيسبوك الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <!-- باقي الروابط -->
+      <a class="btn facebook reveal" style="animation-delay:.24s" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn whatsapp reveal" style="animation-delay:.30s" href="https://wa.me/201017908076"><div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn instagram reveal" style="animation-delay:.36s" href="https://www.instagram.com/habis_namla/"><div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn telegram reveal" style="animation-delay:.42s" href="https://t.me/D_M_C0"><div class="left"><div class="icon"><i class="fa-brands fa-telegram"></i></div><span class="label">تليجرام</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn facebook-personal reveal" style="animation-delay:.48s" href="https://www.facebook.com/share/16X3GTzQE6/"><div class="left"><div class="icon"><i class="fa-brands fa-facebook"></i></div><span class="label">فيسبوك الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
     </div>
 
-    <div class="contact">
+    <div class="contact reveal" style="animation-delay:.54s">
       📞 للتواصل:
       <a href="tel:+201017908076">+201017908076</a> —
       <a href="tel:+201004769249">+201004769249</a>
     </div>
 
-    <p id="visits" style="text-align:center;margin-top:10px;color:#b8c0c9;"></p>
-    <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
+    <p id="visits" class="reveal" style="text-align:center;margin-top:10px;color:#b8c0c9;animation-delay:.6s"></p>
+    <footer class="reveal" style="animation-delay:.66s">© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
   <script>
-    // القائمة المنسدلة
+    /* ====== إظهار أنيميشن الدخول بالتتابع ====== */
+    document.querySelectorAll('.reveal').forEach(el=>{
+      const delay = parseFloat(el.style.animationDelay || '0');
+      setTimeout(()=>el.classList.add('show'), delay*1000);
+    });
+
+    /* ====== موسيقى الخلفية (تشغيل تلقائي + تأكيد عند اللمس) ====== */
+    const bgm = document.getElementById('bgm');
+    bgm.volume = 0.25;
+
+    async function ensureBgm(){
+      try{ await bgm.play(); }catch(e){/* لو المتصفح منع، هنكمل لما المستخدم يلمس الشاشة */ }
+    }
+    ensureBgm();
+    const resume = ()=>{ bgm.muted=false; bgm.volume=0.25; ensureBgm(); window.removeEventListener('touchstart',resume); window.removeEventListener('click',resume); };
+    window.addEventListener('touchstart', resume, {once:true});
+    window.addEventListener('click', resume, {once:true});
+    document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) ensureBgm(); });
+
+    /* ====== صوت الكليك الخفيف لكل الأزرار ====== */
+    let AC = window.AudioContext || window.webkitAudioContext;
+    let actx, out;
+    function initAudio(){
+      if(actx) return;
+      if(!AC) return;
+      actx = new AC();
+      out = actx.createGain();
+      out.gain.value = 0.18;
+      out.connect(actx.destination);
+    }
+    function clickSfx(){
+      if(!actx) return;
+      const t = actx.currentTime;
+      const osc = actx.createOscillator();
+      const gain = actx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(1400, t);
+      osc.frequency.exponentialRampToValueAtTime(600, t+0.06);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.6, t+0.005);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t+0.08);
+      osc.connect(gain); gain.connect(out);
+      osc.start(t); osc.stop(t+0.09);
+    }
+
+    // فعّل الصوت عند أول لمسة
+    ['touchstart','pointerdown','click'].forEach(ev=>{
+      window.addEventListener(ev, ()=>{ initAudio(); }, {once:true});
+    });
+
+    // اربط الصوت بكل الأزرار والروابط
+    function bindClicks(){
+      document.querySelectorAll('a,button').forEach(el=>{
+        el.addEventListener('click', ()=>{ initAudio(); clickSfx(); }, {passive:true});
+      });
+    }
+    bindClicks();
+
+    /* ====== شغل/قفل قائمة الألعاب ====== */
     const btn = document.getElementById('toggleGames');
     const menu = document.getElementById('gamesMenu');
     btn.addEventListener('click', ()=> menu.classList.toggle('show'));
@@ -136,19 +211,10 @@
       if(!btn.contains(e.target) && !menu.contains(e.target)) menu.classList.remove('show');
     });
 
-    // عداد الزيارات
+    /* ====== عداد الزيارات ====== */
     const visits = +localStorage.getItem("visitsCount") || 0;
     localStorage.setItem("visitsCount", visits + 1);
     document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
-
-    // تشغيل الموسيقى تلقائيًا
-    const audio = document.getElementById('bgm');
-    const playMusic = () => {
-      audio.volume = 0.6;
-      audio.play().catch(()=>{});
-    };
-    document.addEventListener('click', playMusic, {once:true});
-    window.addEventListener('load', playMusic);
   </script>
 </body>
 </html>
