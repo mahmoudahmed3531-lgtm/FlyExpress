@@ -13,9 +13,11 @@
       --radius: 999px;
       --maxw: 480px;
       --gap: 14px;
+      --glass: rgba(255,255,255,0.06);
       --text: #e9eef3;
       --muted: #b8c0c9;
       --shadow: 0 18px 50px rgba(0,0,0,0.28);
+      --brand1:#26c6da; --brand2:#2979ff;
       font-family: 'Cairo', system-ui, sans-serif;
     }
     *{box-sizing:border-box}
@@ -26,50 +28,14 @@
         radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, transparent 65%),
         radial-gradient(1200px 600px at 90% 90%, #001219 0%, transparent 65%),
         conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
-      background-size:140% 140%,140% 140%,200% 200%;
-      animation: moveBg1 16s ease-in-out infinite, moveBg2 18s ease-in-out infinite, hue 28s linear infinite;
+      background-size:140% 140%, 140% 140%, 200% 200%;
+      animation: bg1 16s ease-in-out infinite, bg2 18s ease-in-out infinite, hue 28s linear infinite;
     }
-    @keyframes moveBg1 {0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:30% 20%,70% 80%,100% 50%}}
-    @keyframes moveBg2 {0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:15% 25%,85% 75%,100% 50%}}
-    @keyframes hue     {0%{filter:hue-rotate(0)}100%{filter:hue-rotate(360deg)}}
+    @keyframes bg1{0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:30% 20%,70% 80%,100% 50%}}
+    @keyframes bg2{0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:15% 25%,85% 75%,100% 50%}}
+    @keyframes hue{0%{filter:hue-rotate(0)}100%{filter:hue-rotate(360deg)}}
 
-    /* ===== Splash ===== */
-    #splash{
-      position:fixed; inset:0; display:grid; place-items:center; z-index:9999;
-      background:
-        radial-gradient(1200px 600px at 20% 20%, rgba(33,245,179,.15) 0%, transparent 60%),
-        radial-gradient(1200px 600px at 80% 80%, rgba(0,168,255,.15) 0%, transparent 60%),
-        #06121a;
-      animation: splashBg 10s ease-in-out infinite alternate;
-    }
-    @keyframes splashBg {0%{filter:hue-rotate(0)}100%{filter:hue-rotate(30deg)}}
-    .splash-card{
-      width:min(420px,92vw);
-      text-align:center;
-      padding:28px 22px;
-      border-radius:22px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.1);
-      box-shadow:0 30px 70px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06);
-      backdrop-filter: blur(6px);
-      animation: popin .6s ease;
-      cursor:pointer;
-    }
-    @keyframes popin {0%{transform:scale(.96);opacity:0}100%{transform:scale(1);opacity:1}}
-    .splash-logo{
-      width:86px;height:86px;border-radius:18px;object-fit:cover;
-      margin:0 auto 12px; display:block; box-shadow:0 10px 30px rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.1);
-    }
-    .splash-title{font-weight:900;font-size:26px;margin:2px 0 6px}
-    .splash-sub{color:#cfe2ee;font-weight:700}
-    .tap{
-      margin-top:14px;font-weight:900;color:#21f5b3;
-      animation: blink 1.2s ease-in-out infinite;
-    }
-    @keyframes blink {0%,100%{opacity:1}50%{opacity:.35}}
-
-    /* ===== Main card ===== */
+    /* إطار الصفحة */
     .frame{
       width:100%;max-width:var(--maxw);
       background: rgba(255,255,255,0.04);
@@ -78,38 +44,71 @@
       border-radius: 28px;
       box-shadow: var(--shadow);
       padding:26px; position:relative;
+      overflow: hidden;
     }
-    .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
-    .logo img{width:85px;height:85px;object-fit:cover;border-radius:14px;background:#0f1520;border:1px solid rgba(255,255,255,0.06)}
-    .brand .title{font-size:26px;font-weight:800;line-height:1}
-    .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
 
-    .buttons{display:flex;flex-direction:column;gap:14px;margin-top:10px}
+    /* شعار + وميض نبضي */
+    .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+    .logo img{
+      width:85px;height:85px;object-fit:cover;border-radius:14px;background:#0f1520;
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 0 0 0 rgba(38,198,218,.0);
+      animation: pulseGlow 3.2s ease-in-out infinite;
+    }
+    @keyframes pulseGlow{
+      0%,100%{box-shadow:0 0 0 0 rgba(38,198,218,.0)}
+      50%{box-shadow:0 0 26px 6px rgba(38,198,218,.45)}
+    }
+    .brand .title{font-size:26px;font-weight:800;line-height:1}
+    .brand .subtitle{
+      min-height:1.2em; margin-top:4px; color:var(--muted);
+      white-space:nowrap; overflow:hidden; border-right:2px solid rgba(255,255,255,.25);
+      width:0; /* يبدأ فاضي؛ هنملاه بالـ JS */
+      animation: caret .9s step-end infinite;
+    }
+    @keyframes caret{50%{border-color: transparent}}
+
+    .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
+
     .btn{
       position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:12px 18px;border-radius:999px;text-decoration:none;color:#fff;font-weight:700;
+      padding:12px 18px;border-radius:var(--radius);text-decoration:none;color:#fff;font-weight:800;
       box-shadow:0 10px 24px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,0.08);
-      background:linear-gradient(90deg,#26c6da,#2979ff);
+      background:linear-gradient(90deg,var(--brand1),var(--brand2));
       transition:transform .12s ease,filter .12s ease,box-shadow .12s ease;
+      will-change: transform, filter, box-shadow;
     }
     .btn:hover{transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 24px 40px rgba(0,0,0,.35)}
     .left{display:flex;align-items:center;gap:12px}
     .icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.18);font-size:17px}
     .label{font-size:15px}
-    .facebook{background:linear-gradient(90deg,#1877f2,#2bbf3a);}
-    .whatsapp{background:linear-gradient(90deg,#f39c12,#e67e22);}
-    .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894);}
-    .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60);}
-    .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60);}
 
-    /* dropdown games */
+    /* زر الألعاب له وميض خاص */
+    .btn.game{
+      background:linear-gradient(90deg,#ff9f1c,#ff6a00);
+      box-shadow:0 0 0 0 rgba(255,153,0,.0);
+      animation: pulseBtn 3.6s ease-in-out infinite;
+    }
+    @keyframes pulseBtn{
+      0%,100%{box-shadow:0 0 0 0 rgba(255,153,0,.0)}
+      50%{box-shadow:0 0 26px 6px rgba(255,153,0,.45)}
+    }
+
+    /* ألوان باقي الأزرار */
+    .facebook{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
+    .whatsapp{background:linear-gradient(90deg,#1abc9c,#16a085)}
+    .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894)}
+    .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60)}
+    .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60)}
+
+    /* القائمة المنسدلة للألعاب */
     .dropdown{display:none;flex-direction:column;gap:10px;margin-top:10px;padding:12px;background:rgba(0,0,0,.45);border-radius:16px;border:1px solid rgba(255,255,255,.08)}
     .dropdown a{
       display:flex;align-items:center;justify-content:space-between;
       padding:10px 16px;border-radius:14px;text-decoration:none;color:#fff;font-weight:800;
     }
-    .game1{background:linear-gradient(90deg,#9c27b0,#e91e63);}
-    .game2{background:linear-gradient(90deg,#00bcd4,#4caf50);}
+    .game1{background:linear-gradient(90deg,#9c27b0,#e91e63)}
+    .game2{background:linear-gradient(90deg,#00bcd4,#4caf50)}
     .dropdown.show{display:flex}
 
     .contact{
@@ -119,38 +118,44 @@
     }
     .contact a{color:#25D366;text-decoration:none;font-weight:800}
     footer{margin-top:16px;text-align:center;color:var(--muted);font-size:12px}
+
+    /* Ripple عند الضغط */
+    .btn:active::after{
+      content:""; position:absolute; inset:0; background:
+      radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255,255,255,.35) 0%, transparent 45%);
+      animation:ripple .4s ease;
+    }
+    @keyframes ripple{from{opacity:1}to{opacity:0}}
+
+    /* دخول العناصر بتدرّج */
+    .reveal{opacity:0; transform:translateY(16px); animation:reveal .7s ease forwards}
+    .reveal.d2{animation-delay:.12s}.reveal.d3{animation-delay:.24s}.reveal.d4{animation-delay:.36s}
+    @keyframes reveal{to{opacity:1; transform:translateY(0)}}
+
+    @media(max-width:520px){
+      .frame{padding:20px}
+      .logo img{width:70px;height:70px}
+    }
   </style>
 </head>
 <body>
-
-  <!-- Splash overlay -->
-  <div id="splash">
-    <div class="splash-card" id="splashCard" tabindex="0" role="button" aria-label="اضغط للمتابعة">
-      <img class="splash-logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
-      <div class="splash-title">Fly Express</div>
-      <div class="splash-sub">أسرع توصيل في نجع حمادي</div>
-      <div class="tap">اضغط للمتابعة ▶️</div>
-    </div>
-  </div>
-
-  <!-- Main content -->
-  <div class="frame" role="main">
-    <div class="logo">
+  <div class="frame">
+    <div class="logo reveal">
       <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo">
       <div class="brand">
         <div class="title">Fly Express</div>
-        <div class="subtitle">التوصيل الأسرع في نجع حمادي</div>
+        <div class="subtitle" id="typeTarget"></div>
       </div>
     </div>
 
     <div class="buttons">
       <!-- زر الألعاب -->
-      <button class="btn" id="toggleGames">
+      <button class="btn game reveal d2" id="toggleGames">
         <div class="left"><div class="icon"><i class="fa-solid fa-gamepad"></i></div><span class="label">🎮 العب و اكسب توصيلة مجانية</span></div>
         <i class="fa-solid fa-caret-down"></i>
       </button>
 
-      <div class="dropdown" id="gamesMenu">
+      <div class="dropdown reveal d3" id="gamesMenu">
         <a class="game1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
           <div class="left"><div class="icon"><i class="fa-solid fa-gift"></i></div><span>🎯 لعبة الطرود — Whack-a-Parcel</span></div>
           <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -162,75 +167,82 @@
       </div>
 
       <!-- باقي الروابط -->
-      <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn whatsapp" href="https://wa.me/201017908076"><div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn instagram" href="https://www.instagram.com/habis_namla/"><div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn telegram" href="https://t.me/D_M_C0"><div class="left"><div class="icon"><i class="fa-brands fa-telegram"></i></div><span class="label">تليجرام</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn facebook-personal" href="https://www.facebook.com/share/16X3GTzQE6/"><div class="left"><div class="icon"><i class="fa-brands fa-facebook"></i></div><span class="label">فيسبوك الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn facebook reveal d2" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL">
+        <div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+      <a class="btn whatsapp reveal d3" href="https://wa.me/201017908076">
+        <div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+      <a class="btn instagram reveal d4" href="https://www.instagram.com/habis_namla/">
+        <div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+      <a class="btn telegram reveal d4" href="https://t.me/D_M_C0">
+        <div class="left"><div class="icon"><i class="fa-brands fa-telegram"></i></div><span class="label">تليجرام</span></div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+      <a class="btn facebook-personal reveal d4" href="https://www.facebook.com/share/16X3GTzQE6/">
+        <div class="left"><div class="icon"><i class="fa-brands fa-facebook"></i></div><span class="label">فيسبوك الشخصي</span></div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
     </div>
 
-    <div class="contact">
+    <div class="contact reveal d4">
       📞 للتواصل:
       <a href="tel:+201017908076">+201017908076</a> —
       <a href="tel:+201004769249">+201004769249</a>
     </div>
 
-    <p id="visits" style="text-align:center;margin-top:10px;color:#b8c0c9;"></p>
-    <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
+    <p id="visits" style="text-align:center;margin-top:10px;color:#b8c0c9;" class="reveal d4"></p>
+    <footer class="reveal d4">© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
   <script>
-    /* ===== قائمة الألعاب المنسدلة ===== */
+    /* كتابة متحركة (Typewriter) */
+    const target = document.getElementById('typeTarget');
+    const text = 'التوصيل الأسرع في نجع حمادي';
+    let i = 0;
+    function typeNext(){
+      if(i <= text.length){
+        target.textContent = text.slice(0, i++);
+        target.style.width = target.textContent.length + 'ch';
+        setTimeout(typeNext, 55); // سرعة الكتابة
+      }else{
+        target.style.borderRightColor = 'transparent'; // اخفاء المؤشر بعد النهاية
+      }
+    }
+    // نبدأ بعد تحميل الصفحة بقليل
+    window.addEventListener('load', ()=> setTimeout(typeNext, 250));
+
+    /* فتح/إغلاق قائمة الألعاب */
     const btn = document.getElementById('toggleGames');
     const menu = document.getElementById('gamesMenu');
-    btn.addEventListener('click', ()=> menu.classList.toggle('show'));
+    btn.addEventListener('click', (e)=>{
+      // ripple position
+      const rect = btn.getBoundingClientRect();
+      btn.style.setProperty('--x', (e.clientX - rect.left)+'px');
+      btn.style.setProperty('--y', (e.clientY - rect.top)+'px');
+      menu.classList.toggle('show');
+    });
     document.addEventListener('click', e=>{
       if(!btn.contains(e.target) && !menu.contains(e.target)) menu.classList.remove('show');
     });
 
-    /* ===== عداد الزيارات ===== */
+    /* Ripple على كل الأزرار */
+    document.querySelectorAll('.btn').forEach(b=>{
+      b.addEventListener('click', e=>{
+        const r = b.getBoundingClientRect();
+        b.style.setProperty('--x', (e.clientX - r.left)+'px');
+        b.style.setProperty('--y', (e.clientY - r.top)+'px');
+      });
+    });
+
+    /* عداد الزيارات */
     const visits = +localStorage.getItem("visitsCount") || 0;
     localStorage.setItem("visitsCount", visits + 1);
     document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
-
-    /* ===== موسيقى + Splash ===== */
-    const MUSIC_URL = "https://files.catbox.moe/sp01yh.mp3";
-    const bgAudio = new Audio(MUSIC_URL);
-    bgAudio.preload = "auto";
-    bgAudio.loop = true;           // كرر التشغيل
-    bgAudio.volume = 0.7;
-
-    let started = false;
-    const splash = document.getElementById('splash');
-    const splashCard = document.getElementById('splashCard');
-
-    function startMusicOnce(){
-      if (started) return;
-      started = true;
-      bgAudio.play().catch(()=>{ started = false; });
-    }
-    function closeSplashAndStart(){
-      splash.style.display = 'none';
-      startMusicOnce();
-    }
-
-    // أول تفاعل حقيقي يقفل الـSplash ويشغّل الموسيقى
-    ["click","touchstart"].forEach(ev=>{
-      splash.addEventListener(ev, closeSplashAndStart, { once:true });
-      splashCard.addEventListener(ev, closeSplashAndStart, { once:true });
-    });
-    // للي يضغط Enter من الكيبورد
-    splashCard.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') closeSplashAndStart(); });
-
-    // إيقاف الصوت عند مغادرة الصفحة/الخلفية
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        bgAudio.pause();
-        started = false; // لازم لمسة جديدة عند الرجوع
-      }
-    });
-    window.addEventListener("beforeunload", () => bgAudio.pause());
-    window.addEventListener("pagehide",    () => bgAudio.pause());
   </script>
 </body>
 </html>
