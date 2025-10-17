@@ -15,7 +15,6 @@
       --text:#eaf1f6; --muted:#b8c0c9;
       --grad1: linear-gradient(90deg,#7b2fff,#ff2ea6);
       --grad2: linear-gradient(90deg,#00d27a,#00a8ff);
-      --grad3: linear-gradient(90deg,#ff7eb3,#ff758c);
       --ok:#00ffaa; --warn:#ffd166; --brand:#21f5b3;
       --radius:22px;
       font-family:'Cairo',system-ui,sans-serif;
@@ -45,42 +44,46 @@
     .banner b{font-size:18px}
     .banner small{opacity:.9}
 
-    .dropdown-btn{
-      width:100%;
-      background:linear-gradient(90deg,#26c6da,#2979ff);
-      border:none;border-radius:18px;
-      color:#fff;font-weight:900;
-      padding:14px;font-size:16px;
-      cursor:pointer;display:flex;
-      align-items:center;justify-content:space-between;
-    }
-    .games-dropdown{
-      display:none;
-      position:relative;
-      margin-top:8px;
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:14px;
-      overflow:hidden;
-      backdrop-filter:blur(10px);
-    }
-    .games-dropdown a{
-      display:block;
-      padding:12px 16px;
-      text-decoration:none;
-      color:#fff;font-weight:700;
-      border-bottom:1px solid rgba(255,255,255,0.08);
-    }
-    .games-dropdown a:last-child{border-bottom:0}
-    .games-dropdown a:hover{filter:brightness(1.2)}
+    .section{margin-top:18px}
+    .section h2{margin:0 0 10px;font-size:24px;font-weight:900}
 
+    /* أزرار الروابط */
+    .linkbtn{
+      display:flex;align-items:center;justify-content:space-between; gap:12px;
+      padding:16px;border-radius:26px;color:#fff;text-decoration:none;
+      border:1px solid rgba(255,255,255,.08); box-shadow:0 14px 28px rgba(0,0,0,.25)
+    }
+    .linkbtn .left{display:flex;align-items:center;gap:12px}
+    .icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.18);font-size:18px}
+    .link1{background:var(--grad1)}
+    .link2{background:var(--grad2)}
+
+    /* ألعاب — زر قائمـة منسدلة */
+    .games{margin-top:10px}
+    .games .trigger{
+      width:100%; border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(90deg,#2bb7ff,#4b8bff);
+      color:#fff; padding:14px 16px; border-radius:18px; font-weight:900;
+      display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+    }
+    .games .menu{display:none; gap:10px; margin-top:10px}
+    .games .menu.show{display:grid}
+    .games .menu a{
+      display:flex;align-items:center;justify-content:space-between; gap:10px;
+      padding:12px 14px;border-radius:16px;text-decoration:none;color:#fff;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .g1{background:linear-gradient(90deg,#7b2fff,#ff2ea6)}
+    .g2{background:linear-gradient(90deg,#00d27a,#00a8ff)}
+    .g3{background:linear-gradient(90deg,#ff8ad6,#9a7bff)}
+
+    /* إحصائيات */
     .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
     .stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px;text-align:center}
     .stat .v{font-size:28px;font-weight:900}
     .stat .k{color:var(--muted);font-size:13px}
 
-    .section{margin-top:18px}
-    .section h2{margin:0 0 10px;font-size:24px;font-weight:900}
+    /* نموذج الانضمام */
     .form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .form textarea{grid-column:1/-1}
     .input,select,textarea{
@@ -92,9 +95,10 @@
     .btn.whatsapp{background:linear-gradient(90deg,#00e676,#00b0ff);color:#001316}
     .btn.clear{background:linear-gradient(90deg,#e5ecff,#c8ffd9);color:#003b35}
 
+    /* سوشيال */
     .socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;
-          border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
+      border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
     .fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
     .wa{background:linear-gradient(90deg,#25D366,#ffd166)}
     .ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
@@ -103,7 +107,7 @@
 
     footer{margin:18px 0 6px;text-align:center;color:#b8c0c9}
 
-    /* زر الطلبات */
+    /* ===== زر ودرج الطلبات ===== */
     .order-fab{
       position:fixed; right:18px; top:50%; transform:translateY(-50%);
       width:58px;height:58px;border-radius:50%; background:#22c55e;
@@ -111,11 +115,32 @@
       box-shadow:0 14px 28px rgba(0,0,0,.35); z-index:9999; cursor:pointer;
     }
     .order-fab i{color:#fff}
+    .order-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9998}
+    .order-overlay.show{display:block}
+    .order-drawer{
+      position:fixed; top:0; right:-420px; width:min(420px,92vw); height:100vh; z-index:9999;
+      background:rgba(10,20,28,.96); color:#eaf1f6; border-left:1px solid rgba(255,255,255,.06);
+      box-shadow:-20px 0 50px rgba(0,0,0,.45); transition:right .28s ease;
+      display:flex; flex-direction:column;
+    }
+    .order-drawer.open{right:0}
+    .order-head{padding:16px 16px 10px; display:flex; align-items:center; justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
+    .order-title{font-weight:900; font-size:20px}
+    .order-close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
+    .order-body{padding:14px; overflow:auto}
+    .order-card{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:12px; margin-bottom:12px}
+    .order-card a{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.08)}
+    .order-card a:hover{filter:brightness(1.1)}
+
+    @media(max-width:640px){
+      .form{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      .socials{grid-template-columns:1fr}
+    }
   </style>
 </head>
 <body>
   <div class="container">
-
     <!-- الهيدر -->
     <div class="card header">
       <img class="logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
@@ -125,42 +150,87 @@
       </div>
     </div>
 
-    <!-- بانر -->
-    <div class="banner card">
+    <!-- بانر العرض -->
+    <div class="banner card" role="note" aria-label="عرض سريع">
       <div><b>🚀 سريع وسعر خاص:</b> خصم 15 جنيه داخل نجع حمادي!</div>
       <small>لفترة محدودة</small>
     </div>
 
-    <!-- قائمة الألعاب -->
+    <!-- قسم الألعاب -->
     <div class="card section">
-      <h2>🎮 العب و اكسب توصيلة مجانية</h2>
-      <button id="gamesBtn" class="dropdown-btn">
-        <span><i class="fa-solid fa-gamepad"></i> اضغط لاختيار لعبة</span>
-        <i class="fa-solid fa-caret-down"></i>
-      </button>
-      <div id="gamesMenu" class="games-dropdown">
-        <a href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener" style="background:linear-gradient(90deg,#7b2fff,#ff2ea6);">🎯 لعبة الطرود — Whack-a-Parcel</a>
-        <a href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener" style="background:linear-gradient(90deg,#00d27a,#00a8ff);">🛵 لعبة الموتسيكل — Fly Rider</a>
-        <a href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank" rel="noopener" style="background:linear-gradient(90deg,#ff7eb3,#ff758c);">🧠 لعبة الذاكرة — Fly Rush</a>
+      <h2>العب و اكسب توصيلة مجانية 🎮</h2>
+
+      <div class="games">
+        <button id="gamesToggle" class="trigger" aria-expanded="false" aria-controls="gamesMenu">
+          <span>اضغط لاختيار لعبة</span>
+          <i class="fa-solid fa-caret-down"></i>
+        </button>
+
+        <div id="gamesMenu" class="menu" aria-hidden="true">
+          <a class="g1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
+            <span><i class="fa-solid fa-bullseye"></i> لعبة الطرود — Whack-a-Parcel</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+          <a class="g2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
+            <span><i class="fa-solid fa-motorcycle"></i> لعبة الموتسيكل — Fly Rider</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+          <a class="g3" href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank" rel="noopener">
+            <span><i class="fa-regular fa-face-smile-beam"></i> لعبة الذاكرة — Fly Rush</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
       </div>
     </div>
 
-    <!-- إحصائيات -->
+    <!-- إحصائيات صغيرة -->
     <div class="grid3">
-      <div class="stat"><div class="v" id="areas">12</div><div class="k">مناطق مغطاة</div></div>
-      <div class="stat"><div class="v" id="newUsers">19</div><div class="k">عملاء جدد</div></div>
       <div class="stat"><div class="v" id="orders">125</div><div class="k">طلبات هذا الأسبوع</div></div>
+      <div class="stat"><div class="v" id="newUsers">19</div><div class="k">عملاء جدد</div></div>
+      <div class="stat"><div class="v" id="areas">12</div><div class="k">مناطق مغطاة</div></div>
     </div>
 
-    <!-- تواصل -->
+    <!-- خريطة -->
+    <div class="card section">
+      <h2>📍 موقع الخدمة</h2>
+      <iframe title="خريطة نجع حمادي" width="100%" height="320" style="border:0;border-radius:16px"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55486.77094904051!2d32.222!3d26.048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144f77d3f7b8cbe1%3A0x8c4f3c9b0f!2zTmFnIEhhbW1hZGk!5e0!3m2!1sar!2seg!4v1700000000">
+      </iframe>
+    </div>
+
+    <!-- انضم لفريق التوصيل -->
+    <div class="card section">
+      <h2>🚀 انضم إلى فريق التوصيل</h2>
+      <div class="form" id="joinForm">
+        <input class="input" id="fullName" placeholder="الاسم الكامل">
+        <select class="input" id="vehicle">
+          <option>موتوسيكل</option><option>عجلة</option><option>سيارة</option>
+        </select>
+        <input class="input" id="phone" placeholder="رقم الموبايل" inputmode="tel">
+        <select class="input" id="shift">
+          <option>دوام كامل</option><option>جزئي</option><option>ساعات مرنة</option>
+        </select>
+        <input class="input" id="area" placeholder="المنطقة/الأحياء التي تَخدمها">
+        <input class="input" id="age" placeholder="السن (اختياري)" inputmode="numeric">
+        <textarea class="input" id="exp" placeholder="خبرة سابقة أو ملاحظات (اختياري)"></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn whatsapp" id="sendJoin">إرسال على واتساب</button>
+        <button class="btn clear" id="clearJoin">مسح</button>
+      </div>
+      <div style="color:#b8c0c9;margin-top:6px">بالضغط على إرسال، هنبعت بياناتك على واتساب للإدارة — هنتواصل معاك في أقرب وقت ✅</div>
+    </div>
+
+    <!-- منصات التواصل -->
     <div class="card section">
       <h2>🔗 منصّات التواصل</h2>
       <div class="socials">
-        <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        <a class="sbtn wa" href="https://wa.me/201017908076"><span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        <a class="sbtn ig" href="https://www.instagram.com/habis_namla/"><span><i class="fa-brands fa-instagram"></i> إنستجرام الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        <a class="sbtn tg" href="https://t.me/D_M_C0"><span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/"><span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener"><span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener"><span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener"><span><i class="fa-brands fa-instagram"></i> إنستجرام الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener"><span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener"><span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
       </div>
     </div>
 
@@ -168,21 +238,96 @@
     <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
+  <!-- زر القائمة الجانبية -->
   <button class="order-fab" id="orderFab" title="قائمة الطلبات"><i class="fa-solid fa-list-ul"></i></button>
 
+  <!-- Overlay + Drawer -->
+  <div class="order-overlay" id="orderOverlay"></div>
+  <aside class="order-drawer" id="orderDrawer" dir="rtl">
+    <div class="order-head">
+      <div class="order-title">قائمة الطلبات</div>
+      <button class="order-close" id="orderClose" aria-label="إغلاق">&times;</button>
+    </div>
+    <div class="order-body">
+      <div class="order-card">
+        <h3>اختَر نوع الطلب</h3>
+        <a href="https://wa.me/201017908076?text=%D8%B7%D9%84%D8%A8%20%D8%AA%D9%88%D8%B5%D9%8A%D9%84%20%D8%A7%D8%A8%D9%86%D9%8A%20%D9%84%D9%84%D9%85%D8%AF%D8%B1%D8%B3%D8%A9%20%F0%9F%8F%AB" target="_blank" rel="noopener">
+          🏫 توصيل ابني المدرسة <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a href="https://wa.me/201017908076?text=%D8%AA%D9%88%D8%B5%D9%8A%D9%84%20%D8%A3%D9%88%D8%B1%D8%AF%D8%B1%2F%D8%B7%D8%B1%D8%AF%20%F0%9F%93%A6" target="_blank" rel="noopener">
+          📦 توصيل أوردر / طرد <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a href="https://wa.me/201017908076?text=%D8%B7%D9%84%D8%A8%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B3%D9%88%D9%82%20%F0%9F%9B%8F%EF%B8%8F" target="_blank" rel="noopener">
+          🛒 طلبات السوق <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a href="https://wa.me/201017908076?text=%D8%AA%D9%88%D8%B5%D9%8A%D9%84%20%D8%B7%D8%B1%D8%AF%20%D9%85%D8%AE%D8%B5%D8%B5%20%F0%9F%93%AE" target="_blank" rel="noopener">
+          📮 توصيل طرد (مخصص) <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
+    </div>
+  </aside>
+
   <script>
-    // قائمة الألعاب
-    const btn = document.getElementById('gamesBtn');
-    const menu = document.getElementById('gamesMenu');
-    btn.addEventListener('click', ()=> menu.style.display = menu.style.display === 'block' ? 'none' : 'block');
-    document.addEventListener('click', e=>{
-      if(!btn.contains(e.target) && !menu.contains(e.target)) menu.style.display='none';
+    // رقم واتساب للإرسال
+    const ADMIN_PHONE = "201017908076";
+    const enc = s => encodeURIComponent(s||"");
+    const waSend = txt => window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank');
+
+    // قائمة الألعاب المنسدلة
+    const gamesToggle = document.getElementById('gamesToggle');
+    const gamesMenu = document.getElementById('gamesMenu');
+    gamesToggle.addEventListener('click', ()=>{
+      const open = gamesMenu.classList.toggle('show');
+      gamesToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      gamesMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
     });
+    document.addEventListener('click', (e)=>{
+      if(!gamesToggle.contains(e.target) && !gamesMenu.contains(e.target)){
+        gamesMenu.classList.remove('show');
+        gamesToggle.setAttribute('aria-expanded','false');
+        gamesMenu.setAttribute('aria-hidden','true');
+      }
+    });
+
+    // انضم لفريق التوصيل → واتساب
+    document.getElementById('sendJoin').addEventListener('click', ()=>{
+      const n = document.getElementById('fullName').value;
+      const v = document.getElementById('vehicle').value;
+      const p = document.getElementById('phone').value;
+      const s = document.getElementById('shift').value;
+      const a = document.getElementById('area').value;
+      const g = document.getElementById('age').value;
+      const e = document.getElementById('exp').value;
+      const text = `طلب انضمام سائق 🚀
+الاسم: ${n}
+المركبة: ${v}
+الهاتف: ${p}
+النظام: ${s}
+المناطق: ${a}
+السن: ${g || '—'}
+ملاحظات: ${e || '—'}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    });
+    document.getElementById('clearJoin').addEventListener('click', ()=>['fullName','phone','area','age','exp'].forEach(id=>document.getElementById(id).value=""));
 
     // عداد الزيارات
     const visits = +localStorage.getItem("visitsCount") || 0;
     localStorage.setItem("visitsCount", visits + 1);
     document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
+
+    // فتح/غلق درج الطلبات
+    const orderFab    = document.getElementById('orderFab');
+    const orderDrawer = document.getElementById('orderDrawer');
+    const orderOverlay= document.getElementById('orderOverlay');
+    const orderClose  = document.getElementById('orderClose');
+
+    function openDrawer(){ orderDrawer.classList.add('open'); orderOverlay.classList.add('show'); }
+    function closeDrawer(){ orderDrawer.classList.remove('open'); orderOverlay.classList.remove('show'); }
+
+    orderFab.addEventListener('click', openDrawer);
+    orderOverlay.addEventListener('click', closeDrawer);
+    orderClose.addEventListener('click', closeDrawer);
   </script>
 </body>
 </html>
