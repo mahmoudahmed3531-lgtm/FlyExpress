@@ -56,6 +56,7 @@
       animation: shineMove 6s infinite linear;
       z-index:0;
     }
+    @keyframes shineMove {0%{transform:translate(0,0)rotate(0deg)}100%{transform:translate(20%,20%)rotate(360deg)}}
     .frame>*{position:relative;z-index:1}
 
     .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
@@ -63,8 +64,6 @@
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
     .brand .title{font-size:26px;font-weight:800;line-height:1}
     .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
-
-    .section-title{margin-top:6px;margin-bottom:2px;color:#a9ffea;font-weight:800;font-size:14px;opacity:.9}
 
     .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
 
@@ -83,14 +82,12 @@
     .icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.18);font-size:17px}
     .label{font-size:15px}
 
-    /* الألوان */
-    .game1{background:linear-gradient(90deg,#ff7eb3,#ff758c);}   /* Whack-a-Parcel */
-    .game2{background:linear-gradient(90deg,#26c6da,#2979ff);}   /* Fly Rider */
     .facebook{background:linear-gradient(90deg,#1877f2,#2bbf3a);}
     .whatsapp{background:linear-gradient(90deg,#f39c12,#e67e22);}
     .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894);}
     .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60);}
     .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60);}
+    .game{background:linear-gradient(90deg,#a56bff,#ff5ea0);}
 
     .contact{
       margin-top:18px;text-align:center;color:var(--text);font-weight:600;
@@ -106,6 +103,14 @@
       box-shadow:0 10px 28px rgba(0,0,0,.45);animation:bounce 2s infinite;}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
+    /* bottom sheet */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:1000}
+    .sheet{width:100%;max-width:var(--maxw);background:#08141c;border-radius:22px 22px 0 0;border:1px solid rgba(255,255,255,.08);padding:16px}
+    .sheet h3{margin:0 0 12px;font-size:18px}
+    .sheet .subbtn{display:flex;gap:10px;flex-direction:column}
+    .sub{background:linear-gradient(90deg,#26c6da,#2979ff)}
+    .sub2{background:linear-gradient(90deg,#2ecc71,#00b894)}
+    .closeX{position:absolute;top:10px;right:14px;color:#fff;cursor:pointer}
     @media(max-width:520px){.frame{padding:20px}.logo img{width:70px;height:70px}.call-btn{width:56px;height:56px;font-size:22px}}
   </style>
 </head>
@@ -119,27 +124,17 @@
       </div>
     </div>
 
-    <div class="section-title">🎮 اختار لعبتك واكسب توصيلة مجانية:</div>
     <div class="buttons">
-      <!-- لعبة الطرود Whack-a-Parcel -->
-      <a class="btn game1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/whack.html" target="_blank" rel="noopener">
+      <!-- زر موحد يفتح منيو اللعب -->
+      <button class="btn game" id="playMenuBtn" type="button">
         <div class="left">
-          <div class="icon"><i class="fa-solid fa-gift"></i></div>
-          <span class="label">🎯 لعبة الطرود — Whack-a-Parcel</span>
+          <div class="icon"><i class="fa-solid fa-gamepad"></i></div>
+          <span class="label">🎮 العب و اكسب توصيلة مجانية</span>
         </div>
-        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-      </a>
+        <div><i class="fa-solid fa-chevron-up"></i></div>
+      </button>
 
-      <!-- لعبة الموتسيكل Fly Rider -->
-      <a class="btn game2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
-        <div class="left">
-          <div class="icon"><i class="fa-solid fa-motorcycle"></i></div>
-          <span class="label">🏍️ لعبة الموتسيكل — Fly Rider</span>
-        </div>
-        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-      </a>
-
-      <!-- باقي الأزرار -->
+      <!-- باقي الروابط -->
       <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
       <a class="btn whatsapp" href="https://wa.me/201017908076"><div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
       <a class="btn instagram" href="https://www.instagram.com/habis_namla/"><div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
@@ -155,18 +150,57 @@
 
     <p id="visits" style="text-align:center;margin-top:10px;color:#b8c0c9;"></p>
 
-    <footer>
-      © Fly Express — أسرع توصيل في نجع حمادي
-    </footer>
+    <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
   <a href="tel:+201017908076" class="call-btn"><i class="fa-solid fa-phone"></i></a>
 
+  <!-- Bottom Sheet: اختيار اللعبة -->
+  <div class="overlay" id="sheet">
+    <div class="sheet">
+      <div class="closeX" id="closeSheet"><i class="fa-solid fa-xmark"></i></div>
+      <h3>اختر لعبتك واكسب توصيلة مجانية:</h3>
+      <div class="subbtn">
+        <a id="openWhack" class="btn sub" href="./FlyExpress2/whack.html" target="_blank" rel="noopener">
+          <div class="left"><div class="icon"><i class="fa-solid fa-gift"></i></div><span class="label">Whack-a-Parcel — لعبة الطرود 🎯</span></div>
+          <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a class="btn sub2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
+          <div class="left"><div class="icon"><i class="fa-solid fa-motorcycle"></i></div><span class="label">Fly Rider — لعبة الموتسيكل 🛵</span></div>
+          <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const visits = localStorage.getItem("visitsCount") || 0;
-    const newCount = parseInt(visits,10) + 1;
-    localStorage.setItem("visitsCount", newCount);
-    document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${newCount}`;
+    // عداد زيارات الجهاز
+    const visits = +localStorage.getItem("visitsCount") || 0;
+    localStorage.setItem("visitsCount", visits + 1);
+    document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
+
+    // افتح/اقفل منيو الألعاب
+    const sheet = document.getElementById('sheet');
+    document.getElementById('playMenuBtn').addEventListener('click', ()=> sheet.style.display='flex');
+    document.getElementById('closeSheet').addEventListener('click', ()=> sheet.style.display='none');
+    sheet.addEventListener('click', (e)=>{ if(e.target===sheet) sheet.style.display='none'; });
+
+    // Fallback للعبة الطرود عشان 404
+    (function () {
+      const rel = "./FlyExpress2/whack.html";
+      const alt = "https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/whack.html";
+      const a = document.getElementById("openWhack");
+      a.addEventListener("click", async (e) => {
+        e.preventDefault();
+        try {
+          const res = await fetch(rel, { method: "HEAD", cache: "no-store" });
+          const url = res.ok ? rel : alt;
+          window.open(url, "_blank");
+        } catch {
+          window.open(alt, "_blank");
+        }
+      });
+    })();
   </script>
 </body>
 </html>
