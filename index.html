@@ -56,7 +56,6 @@
       animation: shineMove 6s infinite linear;
       z-index:0;
     }
-    @keyframes shineMove {0%{transform:translate(0,0)rotate(0deg)}100%{transform:translate(20%,20%)rotate(360deg)}}
     .frame>*{position:relative;z-index:1}
 
     .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
@@ -64,6 +63,8 @@
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
     .brand .title{font-size:26px;font-weight:800;line-height:1}
     .brand .subtitle{font-size:14px;color:var(--muted);margin-top:4px}
+
+    .section-title{margin-top:6px;margin-bottom:2px;color:#a9ffea;font-weight:800;font-size:14px;opacity:.9}
 
     .buttons{display:flex;flex-direction:column;gap:var(--gap);margin-top:10px}
 
@@ -82,12 +83,14 @@
     .icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.18);font-size:17px}
     .label{font-size:15px}
 
+    /* الألوان */
+    .game1{background:linear-gradient(90deg,#ff7eb3,#ff758c);}   /* Whack-a-Parcel */
+    .game2{background:linear-gradient(90deg,#26c6da,#2979ff);}   /* Fly Rider */
     .facebook{background:linear-gradient(90deg,#1877f2,#2bbf3a);}
     .whatsapp{background:linear-gradient(90deg,#f39c12,#e67e22);}
     .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894);}
     .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60);}
     .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60);}
-    .game{background:linear-gradient(90deg,#26c6da,#2979ff);}
 
     .contact{
       margin-top:18px;text-align:center;color:var(--text);font-weight:600;
@@ -116,13 +119,27 @@
       </div>
     </div>
 
+    <div class="section-title">🎮 اختار لعبتك واكسب توصيلة مجانية:</div>
     <div class="buttons">
-      <!-- زر اللعبة -->
-      <a class="btn game" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank">
-        <div class="left"><div class="icon"><i class="fa-solid fa-motorcycle"></i></div><span class="label">🎮 العب و اكسب توصيلة مجانية</span></div>
+      <!-- لعبة الطرود Whack-a-Parcel -->
+      <a class="btn game1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/whack.html" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="icon"><i class="fa-solid fa-gift"></i></div>
+          <span class="label">🎯 لعبة الطرود — Whack-a-Parcel</span>
+        </div>
         <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
       </a>
 
+      <!-- لعبة الموتسيكل Fly Rider -->
+      <a class="btn game2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="icon"><i class="fa-solid fa-motorcycle"></i></div>
+          <span class="label">🏍️ لعبة الموتسيكل — Fly Rider</span>
+        </div>
+        <div><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+      </a>
+
+      <!-- باقي الأزرار -->
       <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
       <a class="btn whatsapp" href="https://wa.me/201017908076"><div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
       <a class="btn instagram" href="https://www.instagram.com/habis_namla/"><div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
