@@ -216,153 +216,7 @@
   localStorage.setItem('visitsCount', visits + 1);
   document.getElementById('visits').textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
 </script>
-  <!-- ====== زر + قائمة الطلبات الجانبية ====== -->
-<style>
-  /* كل الستايلات باسم order- لتفادي التعارض */
-  .order-fab{
-    position:fixed; right:18px; top:50%; transform:translateY(-50%);
-    width:56px;height:56px;border-radius:50%; background:#22c55e; color:#001;
-    display:flex;align-items:center;justify-content:center; font-size:22px;
-    box-shadow:0 14px 28px rgba(0,0,0,.35); z-index:9999; cursor:pointer;
-  }
-  .order-fab i{color:#fff}
-
-  .order-overlay{position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:9998}
-  .order-drawer{
-    position:fixed; top:0; right:-420px; width:min(420px,92vw); height:100vh; z-index:9999;
-    background:rgba(10,20,28,.96); color:#eaf1f6; border-left:1px solid rgba(255,255,255,.06);
-    box-shadow:-20px 0 50px rgba(0,0,0,.45);
-    transition:right .28s ease;
-    display:flex; flex-direction:column;
-  }
-  .order-drawer.open{ right:0 }
-  .order-overlay.show{ display:block }
-
-  .order-head{
-    padding:16px 16px 10px; display:flex; align-items:center; justify-content:space-between;
-    border-bottom:1px solid rgba(255,255,255,.06);
-  }
-  .order-title{font-weight:900; font-size:20px}
-  .order-close{background:transparent;border:0;color:#fff;font-size:22px;cursor:pointer}
-
-  .order-body{padding:14px; overflow:auto}
-  .order-card{
-    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
-    border-radius:14px; padding:12px; margin-bottom:12px;
-  }
-  .order-card h3{margin:0 0 8px; font-size:16px}
-  .order-row{display:grid; grid-template-columns:1fr 1fr; gap:8px}
-  .order-row.single{grid-template-columns:1fr}
-  .order-input, .order-select, .order-textarea{
-    width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.06); color:#fff; font-family:inherit; font-size:14px;
-  }
-  .order-textarea{min-height:68px; resize:vertical}
-  .order-actions{display:flex; gap:8px; margin-top:10px}
-  .order-btn{
-    flex:1; border:0; cursor:pointer; padding:10px 14px; border-radius:999px; font-weight:900;
-    color:#001316; background:linear-gradient(90deg,#00ffaa,#00a8ff);
-  }
-  .order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8); color:#003b35}
-  .order-hint{font-size:12px; color:#b8c0c9; margin-top:6px}
-  .order-badge{display:inline-flex; gap:6px; align-items:center; background:#0ea5e9; color:#001316;
-    padding:4px 10px; border-radius:999px; font-weight:900; font-size:12px}
-  .order-price{display:flex; gap:8px; align-items:center}
-  .order-price span{white-space:nowrap; color:#cbd5e1}
-</style>
-
-<!-- زر عائم -->
-<button class="order-fab" id="orderFab" title="قائمة الطلبات">
-  <i class="fa-solid fa-list-ul"></i>
-</button>
-
-<!-- أوفرلاي + دراور -->
-<div class="order-overlay" id="orderOverlay"></div>
-<aside class="order-drawer" id="orderDrawer" dir="rtl">
-  <div class="order-head">
-    <div class="order-title">قائمة الطلبات</div>
-    <button class="order-close" id="orderClose" aria-label="إغلاق">&times;</button>
-  </div>
-
-  <div class="order-body">
-
-    <!-- 1) توصيل ابني المدرسة -->
-    <div class="order-card" id="card-school">
-      <h3>🏫 توصيل ابني المدرسة <span class="order-badge">جديد</span></h3>
-      <div class="order-row">
-        <select class="order-select" id="schoolType">
-          <option value="ذهاب فقط">ذهاب فقط</option>
-          <option value="ذهاب وعودة">ذهاب وعودة</option>
-        </select>
-        <div class="order-price">
-          <input class="order-input" id="schoolPrice" type="number" inputmode="numeric" placeholder="السعر (جنيه)">
-          <span>ج/اليوم</span>
-        </div>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolChild" placeholder="اسم الطالب">
-        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolFrom" placeholder="العنوان: من">
-        <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)">
-      </div>
-      <textarea class="order-textarea" id="schoolNote" placeholder="ملاحظات إضافية (اختياري)"></textarea>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
-      </div>
-      <div class="order-hint">نرسل لك ملخص الطلب في واتساب للتأكيد السريع ✅</div>
-    </div>
-
-    <!-- 2) توصيل أوردر / طرد (خيار عام) -->
-    <div class="order-card" id="card-order">
-      <h3>📦 توصيل أوردر / طرد</h3>
-      <div class="order-row">
-        <select class="order-select" id="orderKind">
-          <option value="أوردر">أوردر</option>
-          <option value="طرد">طرد</option>
-        </select>
-        <select class="order-select" id="orderAction">
-          <option value="هنجيبه">هنجيبه</option>
-          <option value="هنوديه">هنوّصله</option>
-        </select>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderFrom" placeholder="العنوان: من">
-        <input class="order-input" id="orderTo" placeholder="العنوان: إلى">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderName" placeholder="اسمك">
-        <input class="order-input" id="orderPhone" placeholder="رقم الموبايل">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderPrice" type="number" inputmode="numeric" placeholder="السعر (جنيه)">
-        <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن/5 مساء)">
-      </div>
-      <textarea class="order-textarea" id="orderNote" placeholder="وصف المحتوى/ملاحظات (اختياري)"></textarea>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
-      </div>
-    </div>
-
-    <!-- 3) طلبات السوق -->
-    <div class="order-card" id="card-market">
-      <h3>🛒 طلبات السوق</h3>
-      <div class="order-row single">
-        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل"></textarea>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketFrom" placeholder="من أي سوق/محل؟ (اختياري)">
-        <input class="order-input" id="marketTo" placeholder="عنوان التوصيل">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketName" placeholder="اسمك">
-        <input class="order-input" id="marketPhone" placeholder="رقم الموبايل">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketPrice" type="number" inputmode="numeric" placeholder="سعر التوصيل (ج)">
+der="سعر التوصيل (ج)">
         <input class="order-input" id="marketWhen" placeholder="الوقت المفضل">
       </div>
       <div class="order-actions">
@@ -400,138 +254,171 @@
 </aside>
 
 <script>
-  // رقم الواتساب الأساسي لاستقبال الطلبات
-  const ADMIN_PHONE = "201017908076"; // غيّره لو حبيت
-
-  // فتح/غلق القائمة
-  const fab = document.getElementById('orderFab');
-  const drawer = document.getElementById('orderDrawer');
-  const overlay = document.getElementById('orderOverlay');
-  const closeBtn = document.getElementById('orderClose');
-
-  function openDrawer(){
-    drawer.classList.add('open'); overlay.classList.add('show');
+<!-- ====== زر + قائمة الطلبات الجانبية ====== -->
+<style>
+  .order-fab{
+    position:fixed; right:18px; top:50%; transform:translateY(-50%);
+    width:56px;height:56px;border-radius:50%; background:#22c55e;
+    display:flex;align-items:center;justify-content:center; font-size:22px;
+    box-shadow:0 14px 28px rgba(0,0,0,.35); z-index:9999; cursor:pointer;
   }
-  function closeDrawer(){
-    drawer.classList.remove('open'); overlay.classList.remove('show');
+  .order-fab i{color:#fff}
+  .order-overlay{position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:9998}
+  .order-drawer{
+    position:fixed; top:0; right:-420px; width:min(420px,92vw); height:100vh; z-index:9999;
+    background:rgba(10,20,28,.96); color:#eaf1f6; border-left:1px solid rgba(255,255,255,.06);
+    box-shadow:-20px 0 50px rgba(0,0,0,.45);
+    transition:right .28s ease;
+    display:flex; flex-direction:column;
   }
-  fab.addEventListener('click', openDrawer);
-  overlay.addEventListener('click', closeDrawer);
-  closeBtn.addEventListener('click', closeDrawer);
-
-  // مساعدات
-  const enc = (s)=> encodeURIComponent(s || "");
-  function waSend(text){
-    const link = `https://wa.me/${ADMIN_PHONE}?text=${enc(text)}`;
-    window.open(link, '_blank');
+  .order-drawer.open{ right:0 }
+  .order-overlay.show{ display:block }
+  .order-head{padding:16px 16px 10px; display:flex; align-items:center; justify-content:space-between;}
+  .order-title{font-weight:900; font-size:20px}
+  .order-close{background:transparent;border:0;color:#fff;font-size:22px;cursor:pointer}
+  .order-body{padding:14px; overflow:auto}
+  .order-card{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+    border-radius:14px; padding:12px; margin-bottom:12px;}
+  .order-card h3{margin:0 0 8px; font-size:16px}
+  .order-row{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+  .order-input, .order-select, .order-textarea{
+    width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.06); color:#fff; font-family:inherit; font-size:14px;
   }
+  .order-textarea{min-height:68px; resize:vertical}
+  .order-actions{display:flex; gap:8px; margin-top:10px}
+  .order-btn{flex:1; border:0; cursor:pointer; padding:10px 14px; border-radius:999px; font-weight:900;
+    color:#001316; background:linear-gradient(90deg,#00ffaa,#00a8ff);}
+  .order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8); color:#003b35}
+</style>
 
-  // 1) المدرسة
-  function sendSchool(){
-    const type  = document.getElementById('schoolType').value;
-    const price = document.getElementById('schoolPrice').value;
-    const child = document.getElementById('schoolChild').value;
-    const phone = document.getElementById('schoolPhone').value;
-    const from  = document.getElementById('schoolFrom').value;
-    const to    = document.getElementById('schoolTo').value;
-    const note  = document.getElementById('schoolNote').value;
+<button class="order-fab" id="orderFab"><i class="fa-solid fa-list-ul"></i></button>
+<div class="order-overlay" id="orderOverlay"></div>
+<aside class="order-drawer" id="orderDrawer" dir="rtl">
+  <div class="order-head">
+    <div class="order-title">قائمة الطلبات</div>
+    <button class="order-close" id="orderClose">&times;</button>
+  </div>
 
-    const text = `طلب توصيل مدرسة 🏫
-النوع: ${type}
-الطالب: ${child}
-ولي الأمر: ${phone}
-من: ${from}
-إلى: ${to}
-ملاحظات: ${note}
-— أُرسل من موقع Fly Express`;
+  <div class="order-body">
 
-    waSend(text);
-  }
-  function clearSchool(){
-    ['schoolPrice','schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote']
-      .forEach(id=>document.getElementById(id).value="");
-  }
+    <!-- 1) توصيل ابني المدرسة -->
+    <div class="order-card">
+      <h3>🏫 توصيل ابني المدرسة</h3>
+      <div class="order-row">
+        <select class="order-select" id="schoolType">
+          <option value="ذهاب فقط">ذهاب فقط</option>
+          <option value="ذهاب وعودة">ذهاب وعودة</option>
+        </select>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="schoolChild" placeholder="اسم الطالب">
+        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر">
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="schoolFrom" placeholder="العنوان: من">
+        <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)">
+      </div>
+      <textarea class="order-textarea" id="schoolNote" placeholder="ملاحظات إضافية (اختياري)"></textarea>
+      <div class="order-actions">
+        <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
+        <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
+      </div>
+    </div>
 
-  // 2) أوردر/طرد عام
-  function sendOrder(){
-    const kind  = document.getElementById('orderKind').value;
-    const act   = document.getElementById('orderAction').value;
-    const from  = document.getElementById('orderFrom').value;
-    const to    = document.getElementById('orderTo').value;
-    const name  = document.getElementById('orderName').value;
-    const phone = document.getElementById('orderPhone').value;
-    const price = document.getElementById('orderPrice').value;
-    const when  = document.getElementById('orderWhen').value;
-    const note  = document.getElementById('orderNote').value;
+    <!-- 2) توصيل أوردر / طرد -->
+    <div class="order-card">
+      <h3>📦 توصيل أوردر / طرد</h3>
+      <div class="order-row">
+        <select class="order-select" id="orderKind">
+          <option value="أوردر">أوردر</option>
+          <option value="طرد">طرد</option>
+        </select>
+        <select class="order-select" id="orderAction">
+          <option value="هنجيبه">هنجيبه</option>
+          <option value="هنوديه">هنوديه</option>
+        </select>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="orderFrom" placeholder="من">
+        <input class="order-input" id="orderTo" placeholder="إلى">
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="orderName" placeholder="اسمك">
+        <input class="order-input" id="orderPhone" placeholder="رقم الموبايل">
+      </div>
+      <textarea class="order-textarea" id="orderNote" placeholder="ملاحظات (اختياري)"></textarea>
+      <div class="order-actions">
+        <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
+        <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
+      </div>
+    </div>
 
-    const text = `طلب ${kind} ${act} 📦
-الاسم: ${name} — الموبايل: ${phone}
-من: ${from}
-إلى: ${to}
-الوقت: ${when}
-السعر المقترح: ${price} ج
-ملاحظات: ${note}
-— أُرسل من موقع Fly Express`;
+    <!-- 3) طلبات السوق -->
+    <div class="order-card">
+      <h3>🛒 طلبات السوق</h3>
+      <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات"></textarea>
+      <div class="order-row">
+        <input class="order-input" id="marketFrom" placeholder="من">
+        <input class="order-input" id="marketTo" placeholder="إلى">
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="marketName" placeholder="اسمك">
+        <input class="order-input" id="marketPhone" placeholder="رقم الموبايل">
+      </div>
+      <div class="order-actions">
+        <button class="order-btn" onclick="sendMarket()">تأكيد وإرسال على واتساب</button>
+        <button class="order-btn secondary" onclick="clearMarket()">مسح</button>
+      </div>
+    </div>
 
-    waSend(text);
-  }
-  function clearOrder(){
-    ['orderFrom','orderTo','orderName','orderPhone','orderPrice','orderWhen','orderNote']
-      .forEach(id=>document.getElementById(id).value="");
-  }
+  </div>
+</aside>
 
-  // 3) السوق
-  function sendMarket(){
-    const list  = document.getElementById('marketList').value;
-    const from  = document.getElementById('marketFrom').value;
-    const to    = document.getElementById('marketTo').value;
-    const name  = document.getElementById('marketName').value;
-    const phone = document.getElementById('marketPhone').value;
-    const price = document.getElementById('marketPrice').value;
-    const when  = document.getElementById('marketWhen').value;
+<script>
+const ADMIN_PHONE = "201017908076";
+const fab = document.getElementById('orderFab');
+const drawer = document.getElementById('orderDrawer');
+const overlay = document.getElementById('orderOverlay');
+const closeBtn = document.getElementById('orderClose');
 
-    const text = `طلبات سوق 🛒
-العميل: ${name} — ${phone}
-القائمة:
-${list}
+fab.onclick=()=>{drawer.classList.add('open');overlay.classList.add('show')}
+overlay.onclick=closeBtn.onclick=()=>{drawer.classList.remove('open');overlay.classList.remove('show')}
+const waSend=(t)=>window.open(`https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(t)}`);
 
-من: ${from || '—'}
-إلى: ${to}
-الوقت: ${when}
-سعر التوصيل: ${price} ج
-— أُرسل من موقع Fly Express`;
+// المدرسة
+function sendSchool(){
+  const type=document.getElementById('schoolType').value;
+  const child=document.getElementById('schoolChild').value;
+  const phone=document.getElementById('schoolPhone').value;
+  const from=document.getElementById('schoolFrom').value;
+  const to=document.getElementById('schoolTo').value;
+  const note=document.getElementById('schoolNote').value;
+  waSend(`🏫 توصيل مدرسة\n${type}\n${child}\n${phone}\nمن: ${from}\nإلى: ${to}\nملاحظات: ${note}`);
+}
+function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(i=>document.getElementById(i).value="")}
 
-    waSend(text);
-  }
-  function clearMarket(){
-    ['marketList','marketFrom','marketTo','marketName','marketPhone','marketPrice','marketWhen']
-      .forEach(id=>document.getElementById(id).value="");
-  }
+// أوردر
+function sendOrder(){
+  const kind=document.getElementById('orderKind').value;
+  const act=document.getElementById('orderAction').value;
+  const from=document.getElementById('orderFrom').value;
+  const to=document.getElementById('orderTo').value;
+  const name=document.getElementById('orderName').value;
+  const phone=document.getElementById('orderPhone').value;
+  const note=document.getElementById('orderNote').value;
+  waSend(`📦 ${kind} ${act}\nمن: ${from}\nإلى: ${to}\n${name} - ${phone}\nملاحظات: ${note}`);
+}
+function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderNote'].forEach(i=>document.getElementById(i).value="")}
 
-  // 4) طرد مخصص
-  function sendParcel(){
-    const act   = document.getElementById('parcelAction').value;
-    const price = document.getElementById('parcelPrice').value;
-    const from  = document.getElementById('parcelFrom').value;
-    const to    = document.getElementById('parcelTo').value;
-    const name  = document.getElementById('parcelName').value;
-    const phone = document.getElementById('parcelPhone').value;
-    const note  = document.getElementById('parcelNote').value;
-
-    const text = `توصيل طرد (${act}) 📮
-العميل: ${name} — ${phone}
-من: ${from}
-إلى: ${to}
-السعر المقترح: ${price} ج
-ملاحظات: ${note}
-— أُرسل من موقع Fly Express`;
-
-    waSend(text);
-  }
-  function clearParcel(){
-    ['parcelPrice','parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote']
-      .forEach(id=>document.getElementById(id).value="");
-  }
+// السوق
+function sendMarket(){
+  const list=document.getElementById('marketList').value;
+  const from=document.getElementById('marketFrom').value;
+  const to=document.getElementById('marketTo').value;
+  const name=document.getElementById('marketName').value;
+  const phone=document.getElementById('marketPhone').value;
+  waSend(`🛒 طلبات السوق\n${list}\nمن: ${from}\nإلى: ${to}\n${name} - ${phone}`);
+}
+function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone'].forEach(i=>document.getElementById(i).value="")}
 </script>
-</body>
-</html>
