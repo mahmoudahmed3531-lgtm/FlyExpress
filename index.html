@@ -32,9 +32,6 @@
     @keyframes moveBg2 {0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:15% 25%,85% 75%,100% 50%}}
     @keyframes hue {0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
 
-    .fadeInUp {animation: fadeInUp 1.0s ease-out;}
-    @keyframes fadeInUp {0%{opacity:0;transform:translateY(40px) scale(0.98);}100%{opacity:1;transform:translateY(0) scale(1);}}
-
     .frame{
       width:100%;max-width:var(--maxw);
       background: rgba(255,255,255,0.04);
@@ -43,6 +40,11 @@
       border-radius: 28px;
       box-shadow: var(--shadow);
       padding:26px; position:relative;
+      animation: showUp .8s ease-out both;
+    }
+    @keyframes showUp{
+      from{opacity:0; transform: translateY(18px) scale(.98)}
+      to{opacity:1; transform: translateY(0) scale(1)}
     }
 
     .logo{display:flex;gap:12px;align-items:center;margin-bottom:14px}
@@ -54,7 +56,7 @@
 
     .btn{
       position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:12px 18px;border-radius:999px;text-decoration:none;color:#fff;font-weight:700;
+      padding:12px 18px;border-radius:var(--radius);text-decoration:none;color:#fff;font-weight:700;
       box-shadow:0 10px 24px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,0.08);
       background:linear-gradient(90deg,#26c6da,#2979ff);
       transition:transform .12s ease,filter .12s ease,box-shadow .12s ease;
@@ -65,12 +67,12 @@
     .label{font-size:15px}
 
     .facebook{background:linear-gradient(90deg,#1877f2,#2bbf3a);}
-    .whatsapp{background:linear-gradient(90deg,#f39c12,#e67e22);}
+    .whatsapp{background:linear-gradient(90deg,#4c9eff,#25D366);}
     .instagram{background:linear-gradient(90deg,#b277ff,#2b8cff,#00b894);}
     .telegram{background:linear-gradient(90deg,#2ecc71,#27ae60);}
     .facebook-personal{background:linear-gradient(90deg,#2ecc71,#27ae60);}
 
-    /* القائمة المنسدلة */
+    /* القائمة المنسدلة للألعاب */
     .dropdown{display:none;flex-direction:column;gap:10px;margin-top:10px;padding:12px;background:rgba(0,0,0,.45);border-radius:16px;border:1px solid rgba(255,255,255,.08)}
     .dropdown a{
       display:flex;align-items:center;justify-content:space-between;
@@ -89,39 +91,37 @@
 
     footer{margin-top:16px;text-align:center;color:var(--muted);font-size:12px}
 
-    /* شاشة الترحيب */
+    /* شاشة ترحيب صغيرة أثناء تجهيز الصوت */
     #splash{
-      position:fixed; inset:0; display:grid; place-items:center;
-      background:rgba(1,10,16,.88); backdrop-filter: blur(4px); z-index:9999;
-      animation: fadeOut .8s ease forwards; animation-delay:1.2s;
+      position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,.58);
+      backdrop-filter: blur(3px); z-index:50; animation:fadeIn .25s ease both;
     }
-    @keyframes fadeOut {to{opacity:0;visibility:hidden}}
-    .splash-box{
-      text-align:center; padding:26px 28px; border-radius:20px;
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
-      box-shadow:0 18px 48px rgba(0,0,0,.4);
-      animation: pop .7s ease-out;
+    #splash .box{
+      width:min(440px,92vw); text-align:center; padding:20px 18px;
+      background:rgba(10,20,28,.92); border:1px solid rgba(255,255,255,.08);
+      border-radius:18px; box-shadow:0 30px 60px rgba(0,0,0,.5);
+      animation: pop .35s ease both;
     }
-    @keyframes pop{0%{transform:scale(.96);opacity:.2}100%{transform:scale(1);opacity:1}}
-    .logo-emoji{font-size:40px;filter:drop-shadow(0 0 10px #00ffaa)}
-    .splash-title{font-weight:900;margin:6px 0 4px}
-    .splash-note{color:#cfe2ee;font-weight:700;font-size:14px}
+    #splash h3{margin:0 0 6px; font-weight:900}
+    #splash p{margin:0; color:#cfe2ee; font-weight:700}
+    @keyframes pop{from{transform:scale(.96);opacity:.6}to{transform:scale(1);opacity:1}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   </style>
 </head>
 <body>
-  <!-- شاشة ترحيب سريعة -->
+  <!-- موسيقى الخلفية (تشغيل تلقائي بعد جاهزية الملف) -->
+  <audio id="bgm" src="https://files.catbox.moe/sp01yh.mp3" preload="auto" loop playsinline></audio>
+
+  <!-- شاشة ترحيب قصيرة -->
   <div id="splash">
-    <div class="splash-box">
-      <div class="logo-emoji">🎵</div>
-      <div class="splash-title">Fly Express</div>
-      <div class="splash-note">يتم تشغيل الموسيقى… استمتع! </div>
+    <div class="box">
+      <div style="font-size:44px;line-height:1;margin-bottom:6px">🎵</div>
+      <h3>أهلًا بيكم في Fly Express</h3>
+      <p>بنجهّز الصوت... استمتع!</p>
     </div>
   </div>
 
-  <!-- موسيقى الخلفية (مخفية) -->
-  <audio id="bgm" src="https://files.catbox.moe/sp01yh.mp3" preload="auto" loop></audio>
-
-  <div class="frame fadeInUp" role="main">
+  <div class="frame">
     <div class="logo">
       <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo">
       <div class="brand">
@@ -167,7 +167,7 @@
   </div>
 
   <script>
-    // القائمة المنسدلة للألعاب
+    // فتح/غلق قائمة الألعاب
     const btn = document.getElementById('toggleGames');
     const menu = document.getElementById('gamesMenu');
     btn.addEventListener('click', ()=> menu.classList.toggle('show'));
@@ -180,8 +180,10 @@
     localStorage.setItem("visitsCount", visits + 1);
     document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
 
-    // ===== تشغيل الموسيقى تلقائيًا مع شاشة الترحيب =====
+    // ===== تشغيل الموسيقى تلقائيًا بعد جاهزية الملف =====
     const audioEl = document.getElementById('bgm');
+    audioEl.preload = 'auto';
+    audioEl.loop = true;
 
     function rampVolume(target=0.6, ms=1200){
       try{
@@ -195,30 +197,34 @@
       }catch(e){}
     }
 
-    function tryPlay(){
-      // محاولة تشغيل فورية
-      audioEl.play().then(()=>{
+    let started = false;
+    function startAudio(){
+      if (started) return;
+      started = true;
+      audioEl.play().then(()=> {
         rampVolume(0.55, 1200);
-      }).catch(()=>{
-        // لو المتصفح مانع، شغّل عند أول تفاعل
-        const unlock = ()=>{
-          audioEl.play().then(()=>{ rampVolume(0.55, 800); });
-          window.removeEventListener('pointerdown', unlock);
-          window.removeEventListener('keydown', unlock);
-          window.removeEventListener('touchstart', unlock);
-        };
-        window.addEventListener('pointerdown', unlock, {once:true});
-        window.addEventListener('keydown', unlock, {once:true});
-        window.addEventListener('touchstart', unlock, {once:true});
-      });
+      }).catch(setUnlock); // لو رفض التشغيل التلقائي نطلب لمسة واحدة
     }
 
-    // إخفاء شاشة الترحيب بعد 1.2 ثانية ومحاولة تشغيل الصوت
+    function setUnlock(){
+      const unlock = ()=>{
+        audioEl.play().then(()=> rampVolume(0.55, 800));
+        ['pointerdown','touchstart','keydown'].forEach(ev=>window.removeEventListener(ev, unlock));
+      };
+      ['pointerdown','touchstart','keydown'].forEach(ev=>window.addEventListener(ev, unlock, {once:true}));
+    }
+
+    // ابدأ التشغيل بعد ما الملف يبقى جاهز بالكامل
+    audioEl.addEventListener('canplaythrough', startAudio, {once:true});
+
     window.addEventListener('load', ()=>{
-      setTimeout(()=>{ 
-        document.getElementById('splash').style.display='none';
-        tryPlay();
-      }, 1200);
+      const splash = document.getElementById('splash');
+      // نحمل الملف ونجهّزه
+      audioEl.load();
+      // احتياطي: لو بعض المتصفحات ما بترسلش canplaythrough، نجرب بعد 3.5 ثانية
+      setTimeout(startAudio, 3500);
+      // اخفاء شاشة الترحيب بعد ثانية وربع
+      setTimeout(()=>{ if(splash) splash.style.display='none'; }, 1250);
     });
   </script>
 </body>
