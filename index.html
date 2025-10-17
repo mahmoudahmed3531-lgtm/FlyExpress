@@ -13,7 +13,6 @@
       --radius: 999px;
       --maxw: 480px;
       --gap: 14px;
-      --glass: rgba(255,255,255,0.06);
       --text: #e9eef3;
       --muted: #b8c0c9;
       --shadow: 0 18px 50px rgba(0,0,0,0.28);
@@ -23,10 +22,9 @@
     html,body{height:100%}
     body{
       margin:0;color:var(--text);display:flex;align-items:center;justify-content:center;padding:28px;
-      background:
-        radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, rgba(0,0,0,0) 65%),
-        radial-gradient(1200px 600px at 90% 90%, #001219 0%, rgba(0,0,0,0) 65%),
-        conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
+      background: radial-gradient(1200px 600px at 10% 10%, #0d1b2a 0%, rgba(0,0,0,0) 65%),
+                  radial-gradient(1200px 600px at 90% 90%, #001219 0%, rgba(0,0,0,0) 65%),
+                  conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
       background-size: 140% 140%, 140% 140%, 200% 200%;
       animation: moveBg1 16s ease-in-out infinite, moveBg2 18s ease-in-out infinite, hue 28s linear infinite;
     }
@@ -34,10 +32,8 @@
     @keyframes moveBg2 {0%,100%{background-position:10% 10%,90% 90%,0% 50%}50%{background-position:15% 25%,85% 75%,100% 50%}}
     @keyframes hue {0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
 
-    /* دخول ناعم متدرّج */
-    .reveal {opacity:0; transform:translateY(18px) scale(.98);}
-    .reveal.show {animation:reveal .7s cubic-bezier(.2,.7,.2,1) forwards}
-    @keyframes reveal {to{opacity:1; transform:translateY(0) scale(1)}}
+    .fadeInUp {animation: fadeInUp 1.0s ease-out;}
+    @keyframes fadeInUp {0%{opacity:0;transform:translateY(40px) scale(0.98);}100%{opacity:1;transform:translateY(0) scale(1);}}
 
     .frame{
       width:100%;max-width:var(--maxw);
@@ -58,11 +54,10 @@
 
     .btn{
       position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:12px 18px;border-radius:var(--radius);text-decoration:none;color:#fff;font-weight:700;
+      padding:12px 18px;border-radius:999px;text-decoration:none;color:#fff;font-weight:700;
       box-shadow:0 10px 24px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,0.08);
       background:linear-gradient(90deg,#26c6da,#2979ff);
       transition:transform .12s ease,filter .12s ease,box-shadow .12s ease;
-      will-change: transform;
     }
     .btn:hover{transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 24px 40px rgba(0,0,0,.35)}
     .left{display:flex;align-items:center;gap:12px}
@@ -93,14 +88,41 @@
     .contact a{color:#25D366;text-decoration:none;font-weight:800}
 
     footer{margin-top:16px;text-align:center;color:var(--muted);font-size:12px}
+
+    /* شاشة الترحيب */
+    #splash{
+      position:fixed; inset:0; display:grid; place-items:center;
+      background:rgba(1,10,16,.88); backdrop-filter: blur(4px); z-index:9999;
+      animation: fadeOut .8s ease forwards; animation-delay:1.2s;
+    }
+    @keyframes fadeOut {to{opacity:0;visibility:hidden}}
+    .splash-box{
+      text-align:center; padding:26px 28px; border-radius:20px;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+      box-shadow:0 18px 48px rgba(0,0,0,.4);
+      animation: pop .7s ease-out;
+    }
+    @keyframes pop{0%{transform:scale(.96);opacity:.2}100%{transform:scale(1);opacity:1}}
+    .logo-emoji{font-size:40px;filter:drop-shadow(0 0 10px #00ffaa)}
+    .splash-title{font-weight:900;margin:6px 0 4px}
+    .splash-note{color:#cfe2ee;font-weight:700;font-size:14px}
   </style>
 </head>
 <body>
-  <!-- موسيقى الخلفية (تشغيل تلقائي) -->
-  <audio id="bgm" src="https://files.catbox.moe/sp01yh.mp3" autoplay loop playsinline></audio>
+  <!-- شاشة ترحيب سريعة -->
+  <div id="splash">
+    <div class="splash-box">
+      <div class="logo-emoji">🎵</div>
+      <div class="splash-title">Fly Express</div>
+      <div class="splash-note">يتم تشغيل الموسيقى… استمتع! </div>
+    </div>
+  </div>
 
-  <div class="frame">
-    <div class="logo reveal" style="animation-delay:.05s">
+  <!-- موسيقى الخلفية (مخفية) -->
+  <audio id="bgm" src="https://files.catbox.moe/sp01yh.mp3" preload="auto" loop></audio>
+
+  <div class="frame fadeInUp" role="main">
+    <div class="logo">
       <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express Logo">
       <div class="brand">
         <div class="title">Fly Express</div>
@@ -109,13 +131,13 @@
     </div>
 
     <div class="buttons">
-      <!-- زر الألعاب -->
-      <button class="btn reveal" id="toggleGames" style="animation-delay:.12s">
+      <!-- زر الألعاب (قائمة منسدلة) -->
+      <button class="btn" id="toggleGames">
         <div class="left"><div class="icon"><i class="fa-solid fa-gamepad"></i></div><span class="label">🎮 العب و اكسب توصيلة مجانية</span></div>
         <i class="fa-solid fa-caret-down"></i>
       </button>
 
-      <div class="dropdown reveal" id="gamesMenu" style="animation-delay:.18s">
+      <div class="dropdown" id="gamesMenu">
         <a class="game1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
           <div class="left"><div class="icon"><i class="fa-solid fa-gift"></i></div><span>🎯 لعبة الطرود — Whack-a-Parcel</span></div>
           <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -127,83 +149,25 @@
       </div>
 
       <!-- باقي الروابط -->
-      <a class="btn facebook reveal" style="animation-delay:.24s" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn whatsapp reveal" style="animation-delay:.30s" href="https://wa.me/201017908076"><div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn instagram reveal" style="animation-delay:.36s" href="https://www.instagram.com/habis_namla/"><div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn telegram reveal" style="animation-delay:.42s" href="https://t.me/D_M_C0"><div class="left"><div class="icon"><i class="fa-brands fa-telegram"></i></div><span class="label">تليجرام</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
-      <a class="btn facebook-personal reveal" style="animation-delay:.48s" href="https://www.facebook.com/share/16X3GTzQE6/"><div class="left"><div class="icon"><i class="fa-brands fa-facebook"></i></div><span class="label">فيسبوك الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn facebook" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><div class="left"><div class="icon"><i class="fa-brands fa-facebook-f"></i></div><span class="label">صفحة فيسبوك</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn whatsapp" href="https://wa.me/201017908076"><div class="left"><div class="icon"><i class="fa-brands fa-whatsapp"></i></div><span class="label">واتساب</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn instagram" href="https://www.instagram.com/habis_namla/"><div class="left"><div class="icon"><i class="fa-brands fa-instagram"></i></div><span class="label">إنستجرام الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn telegram" href="https://t.me/D_M_C0"><div class="left"><div class="icon"><i class="fa-brands fa-telegram"></i></div><span class="label">تليجرام</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
+      <a class="btn facebook-personal" href="https://www.facebook.com/share/16X3GTzQE6/"><div class="left"><div class="icon"><i class="fa-brands fa-facebook"></i></div><span class="label">فيسبوك الشخصي</span></div><div><i class="fa-solid fa-arrow-up-right-from-square"></i></div></a>
     </div>
 
-    <div class="contact reveal" style="animation-delay:.54s">
+    <div class="contact">
       📞 للتواصل:
       <a href="tel:+201017908076">+201017908076</a> —
       <a href="tel:+201004769249">+201004769249</a>
     </div>
 
-    <p id="visits" class="reveal" style="text-align:center;margin-top:10px;color:#b8c0c9;animation-delay:.6s"></p>
-    <footer class="reveal" style="animation-delay:.66s">© Fly Express — أسرع توصيل في نجع حمادي</footer>
+    <p id="visits" style="text-align:center;margin-top:10px;color:#b8c0c9;"></p>
+    <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
   <script>
-    /* ====== إظهار أنيميشن الدخول بالتتابع ====== */
-    document.querySelectorAll('.reveal').forEach(el=>{
-      const delay = parseFloat(el.style.animationDelay || '0');
-      setTimeout(()=>el.classList.add('show'), delay*1000);
-    });
-
-    /* ====== موسيقى الخلفية (تشغيل تلقائي + تأكيد عند اللمس) ====== */
-    const bgm = document.getElementById('bgm');
-    bgm.volume = 0.25;
-
-    async function ensureBgm(){
-      try{ await bgm.play(); }catch(e){/* لو المتصفح منع، هنكمل لما المستخدم يلمس الشاشة */ }
-    }
-    ensureBgm();
-    const resume = ()=>{ bgm.muted=false; bgm.volume=0.25; ensureBgm(); window.removeEventListener('touchstart',resume); window.removeEventListener('click',resume); };
-    window.addEventListener('touchstart', resume, {once:true});
-    window.addEventListener('click', resume, {once:true});
-    document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) ensureBgm(); });
-
-    /* ====== صوت الكليك الخفيف لكل الأزرار ====== */
-    let AC = window.AudioContext || window.webkitAudioContext;
-    let actx, out;
-    function initAudio(){
-      if(actx) return;
-      if(!AC) return;
-      actx = new AC();
-      out = actx.createGain();
-      out.gain.value = 0.18;
-      out.connect(actx.destination);
-    }
-    function clickSfx(){
-      if(!actx) return;
-      const t = actx.currentTime;
-      const osc = actx.createOscillator();
-      const gain = actx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(1400, t);
-      osc.frequency.exponentialRampToValueAtTime(600, t+0.06);
-      gain.gain.setValueAtTime(0.0001, t);
-      gain.gain.exponentialRampToValueAtTime(0.6, t+0.005);
-      gain.gain.exponentialRampToValueAtTime(0.0001, t+0.08);
-      osc.connect(gain); gain.connect(out);
-      osc.start(t); osc.stop(t+0.09);
-    }
-
-    // فعّل الصوت عند أول لمسة
-    ['touchstart','pointerdown','click'].forEach(ev=>{
-      window.addEventListener(ev, ()=>{ initAudio(); }, {once:true});
-    });
-
-    // اربط الصوت بكل الأزرار والروابط
-    function bindClicks(){
-      document.querySelectorAll('a,button').forEach(el=>{
-        el.addEventListener('click', ()=>{ initAudio(); clickSfx(); }, {passive:true});
-      });
-    }
-    bindClicks();
-
-    /* ====== شغل/قفل قائمة الألعاب ====== */
+    // القائمة المنسدلة للألعاب
     const btn = document.getElementById('toggleGames');
     const menu = document.getElementById('gamesMenu');
     btn.addEventListener('click', ()=> menu.classList.toggle('show'));
@@ -211,10 +175,51 @@
       if(!btn.contains(e.target) && !menu.contains(e.target)) menu.classList.remove('show');
     });
 
-    /* ====== عداد الزيارات ====== */
+    // عداد الزيارات
     const visits = +localStorage.getItem("visitsCount") || 0;
     localStorage.setItem("visitsCount", visits + 1);
     document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
+
+    // ===== تشغيل الموسيقى تلقائيًا مع شاشة الترحيب =====
+    const audioEl = document.getElementById('bgm');
+
+    function rampVolume(target=0.6, ms=1200){
+      try{
+        audioEl.volume = 0;
+        const steps = 20, step = target/steps, dt = ms/steps;
+        let v = 0;
+        const iv = setInterval(()=>{
+          v += step; audioEl.volume = Math.min(target, v);
+          if(v >= target) clearInterval(iv);
+        }, dt);
+      }catch(e){}
+    }
+
+    function tryPlay(){
+      // محاولة تشغيل فورية
+      audioEl.play().then(()=>{
+        rampVolume(0.55, 1200);
+      }).catch(()=>{
+        // لو المتصفح مانع، شغّل عند أول تفاعل
+        const unlock = ()=>{
+          audioEl.play().then(()=>{ rampVolume(0.55, 800); });
+          window.removeEventListener('pointerdown', unlock);
+          window.removeEventListener('keydown', unlock);
+          window.removeEventListener('touchstart', unlock);
+        };
+        window.addEventListener('pointerdown', unlock, {once:true});
+        window.addEventListener('keydown', unlock, {once:true});
+        window.addEventListener('touchstart', unlock, {once:true});
+      });
+    }
+
+    // إخفاء شاشة الترحيب بعد 1.2 ثانية ومحاولة تشغيل الصوت
+    window.addEventListener('load', ()=>{
+      setTimeout(()=>{ 
+        document.getElementById('splash').style.display='none';
+        tryPlay();
+      }, 1200);
+    });
   </script>
 </body>
 </html>
