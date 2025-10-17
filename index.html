@@ -1,333 +1,349 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Fly Express — أسرع توصيل في نجع حمادي</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Fly Express — أسرع توصيل في نجع حمادي</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-<style>
-:root{
-  --glass: rgba(255,255,255,.06);
-  --card: rgba(255,255,255,.08);
-  --text:#eaf1f6; --muted:#b8c0c9;
-  --grad1: linear-gradient(90deg,#7b2fff,#ff2ea6);
-  --grad2: linear-gradient(90deg,#00d27a,#00a8ff);
-  --ok:#00ffaa; --warn:#ffd166; --brand:#21f5b3;
-  --radius:22px;
-  font-family:'Cairo',system-ui,sans-serif;
-}
-*{box-sizing:border-box}
-body{
-  margin:0; color:var(--text); background:
-   radial-gradient(1100px 600px at 10% 10%, #0d1b2a 0%, transparent 65%),
-   radial-gradient(1100px 600px at 90% 90%, #001219 0%, transparent 65%),
-   conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
-  min-height:100svh; padding:22px;
-}
-.container{max-width:940px;margin:0 auto}
+  <style>
+    :root{
+      --glass: rgba(255,255,255,.06);
+      --card: rgba(255,255,255,.08);
+      --text:#eaf1f6; --muted:#b8c0c9;
+      --grad1: linear-gradient(90deg,#7b2fff,#ff2ea6);
+      --grad2: linear-gradient(90deg,#00d27a,#00a8ff);
+      --grad3: linear-gradient(90deg,#ff7eb3,#ff758c);
+      --ok:#00ffaa; --warn:#ffd166; --brand:#21f5b3;
+      --radius:22px;
+      font-family:'Cairo',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--text);
+      background:
+        radial-gradient(1100px 600px at 10% 10%, #0d1b2a 0%, transparent 65%),
+        radial-gradient(1100px 600px at 90% 90%, #001219 0%, transparent 65%),
+        conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
+      min-height:100svh; padding:22px;
+    }
+    .container{max-width:940px;margin:0 auto}
 
-.card{
-  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06);
-  border-radius:24px; padding:18px; box-shadow:0 18px 50px rgba(0,0,0,.28);
-}
+    .card{
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06);
+      border-radius:24px; padding:18px; box-shadow:0 18px 50px rgba(0,0,0,.28);
+    }
 
-.header{display:flex; gap:16px; align-items:center}
-.logo{width:84px;height:84px;border-radius:16px;object-fit:cover;border:1px solid rgba(255,255,255,.1)}
-.brand h1{margin:0;font-weight:900;font-size:38px;line-height:1}
-.brand p{margin:6px 0 0;color:#cfe2ee}
+    .header{display:flex; gap:16px; align-items:center}
+    .logo{width:84px;height:84px;border-radius:16px;object-fit:cover;border:1px solid rgba(255,255,255,.1)}
+    .brand h1{margin:0;font-weight:900;font-size:38px;line-height:1}
+    .brand p{margin:6px 0 0;color:#cfe2ee}
 
-.banner{margin:16px 0;padding:14px 18px;border-radius:18px;background:var(--grad2);display:flex;gap:12px;align-items:center;justify-content:space-between}
-.banner b{font-size:18px}
-.banner small{opacity:.9}
+    .banner{margin:16px 0;padding:14px 18px;border-radius:18px;background:var(--grad2);display:flex;gap:12px;align-items:center;justify-content:space-between}
+    .banner b{font-size:18px}
+    .banner small{opacity:.9}
 
-.linkbtn{display:flex;align-items:center;justify-content:space-between; gap:12px; padding:16px;border-radius:26px;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.08); box-shadow:0 14px 28px rgba(0,0,0,.25)}
-.linkbtn .left{display:flex;align-items:center;gap:12px}
-.icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.18);font-size:18px}
-.link1{background:var(--grad1)} .link2{background:var(--grad2)}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
-.stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px;text-align:center}
-.stat .v{font-size:28px;font-weight:900} .stat .k{color:var(--muted);font-size:13px}
+    .linkbtn{display:flex;align-items:center;justify-content:space-between;
+      gap:12px; padding:16px;border-radius:26px;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 14px 28px rgba(0,0,0,.25)}
+    .linkbtn .left{display:flex;align-items:center;gap:12px}
+    .icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.18);font-size:18px}
+    .link1{background:var(--grad1)}
+    .link2{background:var(--grad2)}
+    .link3{background:var(--grad3)}
 
-.section{margin-top:18px}
-.section h2{margin:0 0 10px;font-size:24px;font-weight:900}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.form textarea{grid-column:1/-1}
-.input,select,textarea{
-  width:100%;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06); color:#fff; font-family:inherit;
-}
-.actions{display:flex;gap:10px;margin-top:6px}
-.btn{flex:1;border:0;border-radius:999px;padding:12px 16px;font-weight:900;cursor:pointer}
-.btn.whatsapp{background:linear-gradient(90deg,#00e676,#00b0ff);color:#001316}
-.btn.clear{background:linear-gradient(90deg,#e5ecff,#c8ffd9);color:#003b35}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+    .stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px;text-align:center}
+    .stat .v{font-size:28px;font-weight:900}
+    .stat .k{color:var(--muted);font-size:13px}
 
-.socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;
-      border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
-.fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
-.wa{background:linear-gradient(90deg,#25D366,#ffd166)}
-.ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
-.tg{background:linear-gradient(90deg,#2b8cff,#27ae60)}
-.fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
+    .section{margin-top:18px}
+    .section h2{margin:0 0 10px;font-size:24px;font-weight:900}
+    .form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .form textarea{grid-column:1/-1}
+    .input,select,textarea{
+      width:100%;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06); color:#fff; font-family:inherit;
+    }
+    .actions{display:flex;gap:10px;margin-top:6px}
+    .btn{flex:1;border:0;border-radius:999px;padding:12px 16px;font-weight:900;cursor:pointer}
+    .btn.whatsapp{background:linear-gradient(90deg,#00e676,#00b0ff);color:#001316}
+    .btn.clear{background:linear-gradient(90deg,#e5ecff,#c8ffd9);color:#003b35}
 
-footer{margin:18px 0 6px;text-align:center;color:#b8c0c9}
+    .socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;
+          border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
+    .fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
+    .wa{background:linear-gradient(90deg,#25D366,#ffd166)}
+    .ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
+    .tg{background:linear-gradient(90deg,#2b8cff,#27ae60)}
+    .fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
 
-/* ===== زر ودرج الطلبات (بدون أسعار) ===== */
-.order-fab{
-  position:fixed; right:18px; top:50%; transform:translateY(-50%);
-  width:58px;height:58px;border-radius:50%; background:#22c55e; color:#001;
-  display:flex;align-items:center;justify-content:center; font-size:22px;
-  box-shadow:0 14px 28px rgba(0,0,0,.35); z-index:9999; cursor:pointer;
-}
-.order-fab i{color:#fff}
-.order-overlay{position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:9998}
-.order-drawer{
-  position:fixed; top:0; right:-420px; width:min(420px,92vw); height:100vh; z-index:9999;
-  background:rgba(10,20,28,.96); color:#eaf1f6; border-left:1px solid rgba(255,255,255,.06);
-  box-shadow:-20px 0 50px rgba(0,0,0,.45);
-  transition:right .28s ease; display:flex; flex-direction:column;
-}
-.order-drawer.open{ right:0 } .order-overlay.show{ display:block }
-.order-head{padding:16px 16px 10px; display:flex; align-items:center; justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
-.order-title{font-weight:900; font-size:20px} .order-close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
-.order-body{padding:14px; overflow:auto}
-.order-card{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:12px; margin-bottom:12px}
-.order-card h3{margin:0 0 8px; font-size:16px}
-.order-row{display:grid; grid-template-columns:1fr 1fr; gap:8px}
-.order-row.single{grid-template-columns:1fr}
-.order-input,.order-select,.order-textarea{width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:#fff; font-family:inherit; font-size:14px}
-.order-textarea{min-height:68px; resize:vertical}
-.order-actions{display:flex; gap:8px; margin-top:10px}
-.order-btn{flex:1; border:0; cursor:pointer; padding:10px 14px; border-radius:999px; font-weight:900; color:#001316; background:linear-gradient(90deg,#00ffaa,#00a8ff)}
-.order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8); color:#003b35}
-.order-hint{font-size:12px; color:#b8c0c9; margin-top:6px}
-.order-badge{display:inline-flex; gap:6px; align-items:center; background:#0ea5e9; color:#001316; padding:4px 10px; border-radius:999px; font-weight:900; font-size:12px}
+    footer{margin:18px 0 6px;text-align:center;color:#b8c0c9}
 
-@media(max-width:640px){
-  .form{grid-template-columns:1fr}
-  .grid3{grid-template-columns:1fr}
-  .socials{grid-template-columns:1fr}
-}
-</style>
+    /* ===== زر ودرج الطلبات (بدون أسعار) ===== */
+    .order-fab{
+      position:fixed; right:18px; top:50%; transform:translateY(-50%);
+      width:58px;height:58px;border-radius:50%; background:#22c55e; color:#001;
+      display:flex;align-items:center;justify-content:center; font-size:22px;
+      box-shadow:0 14px 28px rgba(0,0,0,.35); z-index:9999; cursor:pointer;
+    }
+    .order-fab i{color:#fff}
+    .order-overlay{position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:9998}
+    .order-drawer{
+      position:fixed; top:0; right:-420px; width:min(420px,92vw); height:100vh; z-index:9999;
+      background:rgba(10,20,28,.96); color:#eaf1f6; border-left:1px solid rgba(255,255,255,.06);
+      box-shadow:-20px 0 50px rgba(0,0,0,.45);
+      transition:right .28s ease; display:flex; flex-direction:column;
+    }
+    .order-drawer.open{ right:0 }
+    .order-overlay.show{ display:block }
+    .order-head{padding:16px 16px 10px; display:flex; align-items:center; justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
+    .order-title{font-weight:900; font-size:20px}
+    .order-close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
+    .order-body{padding:14px; overflow:auto}
+    .order-card{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:12px; margin-bottom:12px}
+    .order-card h3{margin:0 0 8px; font-size:16px}
+    .order-row{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+    .order-row.single{grid-template-columns:1fr}
+    .order-input,.order-select,.order-textarea{width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:#fff; font-family:inherit; font-size:14px}
+    .order-textarea{min-height:68px; resize:vertical}
+    .order-actions{display:flex; gap:8px; margin-top:10px}
+    .order-btn{flex:1; border:0; cursor:pointer; padding:10px 14px; border-radius:999px; font-weight:900; color:#001316; background:linear-gradient(90deg,#00ffaa,#00a8ff)}
+    .order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8); color:#003b35}
+    .order-hint{font-size:12px; color:#b8c0c9; margin-top:6px}
+    .order-badge{display:inline-flex; gap:6px; align-items:center; background:#0ea5e9; color:#001316; padding:4px 10px; border-radius:999px; font-weight:900; font-size:12px}
+
+    @media(max-width:640px){
+      .form{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      .socials{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
-<div class="container">
+  <div class="container">
 
-  <!-- الهيدر -->
-  <div class="card header">
-    <img class="logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
-    <div class="brand">
-      <h1>Fly Express</h1>
-      <p>التوصيل الأسرع في نجع حمادي</p>
-    </div>
-  </div>
-
-  <!-- بانر العرض -->
-  <div class="banner card" role="note" aria-label="عرض سريع">
-    <div><b>🚀 سريع وسعر خاص:</b> خصم 15 جنيه داخل نجع حمادي!</div>
-    <small>لفترة محدودة</small>
-  </div>
-
-  <!-- الألعاب -->
-  <a class="linkbtn link1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
-    <div class="left"><div class="icon"><i class="fa-solid fa-bullseye"></i></div><div><b>لعبة الطرود</b><div>Whack-a-Parcel</div></div></div>
-    <i class="fa-solid fa-gift"></i>
-  </a>
-
-  <a class="linkbtn link2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener" style="margin-top:12px">
-    <div class="left"><div class="icon"><i class="fa-solid fa-motorcycle"></i></div><div><b>لعبة الموتسيكل</b><div>Fly Rider</div></div></div>
-    <i class="fa-solid fa-motorcycle"></i>
-  </a>
-
-  <!-- إحصائيات صغيرة -->
-  <div class="grid3">
-    <div class="stat"><div class="v" id="areas">12</div><div class="k">مناطق مغطاة</div></div>
-    <div class="stat"><div class="v" id="newUsers">19</div><div class="k">عملاء جدد</div></div>
-    <div class="stat"><div class="v" id="orders">125</div><div class="k">طلبات هذا الأسبوع</div></div>
-  </div>
-
-  <!-- خريطة -->
-  <div class="card section">
-    <h2>📍 موقع الخدمة</h2>
-    <iframe title="خريطة نجع حمادي" width="100%" height="320" style="border:0;border-radius:16px"
-      loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55486.77094904051!2d32.222!3d26.048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144f77d3f7b8cbe1%3A0x8c4f3c9b0f!2zTmFnIEhhbW1hZGk!5e0!3m2!1sar!2seg!4v1700000000">
-    </iframe>
-  </div>
-
-  <!-- انضم لفريق التوصيل -->
-  <div class="card section">
-    <h2>🚀 انضم إلى فريق التوصيل</h2>
-    <div class="form" id="joinForm">
-      <input class="input" id="fullName" placeholder="الاسم الكامل">
-      <select class="input" id="vehicle">
-        <option>موتوسيكل</option><option>عجلة</option><option>سيارة</option>
-      </select>
-      <input class="input" id="phone" placeholder="رقم الموبايل" inputmode="tel">
-      <select class="input" id="shift">
-        <option>دوام كامل</option><option>جزئي</option><option>ساعات مرنة</option>
-      </select>
-      <input class="input" id="area" placeholder="المنطقة/الأحياء التي تَخدمها">
-      <input class="input" id="age" placeholder="السن (اختياري)" inputmode="numeric">
-      <textarea class="input" id="exp" placeholder="خبرة سابقة أو ملاحظات (اختياري)"></textarea>
-    </div>
-    <div class="actions">
-      <button class="btn whatsapp" id="sendJoin">إرسال على واتساب</button>
-      <button class="btn clear" id="clearJoin">مسح</button>
-    </div>
-    <div style="color:#b8c0c9;margin-top:6px">بالضغط على إرسال، هنبعت بياناتك على واتساب للإدارة — هنتواصل معاك في أقرب وقت ✅</div>
-  </div>
-
-  <!-- منصات التواصل -->
-  <div class="card section">
-    <h2>🔗 منصّات التواصل</h2>
-    <div class="socials">
-      <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn wa" href="https://wa.me/201017908076"><span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn ig" href="https://www.instagram.com/habis_namla/"><span><i class="fa-brands fa-instagram"></i> إنستجرام الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn tg" href="https://t.me/D_M_C0"><span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/"><span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-    </div>
-  </div>
-
-  <p id="visits" style="text-align:center;margin:8px 0;color:#b8c0c9;"></p>
-  <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
-</div>
-
-<!-- ===== زر الطلبات الجانبي ===== -->
-<button class="order-fab" id="orderFab" title="قائمة الطلبات"><i class="fa-solid fa-list-ul"></i></button>
-<div class="order-overlay" id="orderOverlay"></div>
-<aside class="order-drawer" id="orderDrawer" dir="rtl">
-  <div class="order-head">
-    <div class="order-title">قائمة الطلبات</div>
-    <button class="order-close" id="orderClose" aria-label="إغلاق">&times;</button>
-  </div>
-
-  <div class="order-body">
-    <!-- 1) مدرسة (بدون سعر) -->
-    <div class="order-card">
-      <h3>🏫 توصيل ابني المدرسة <span class="order-badge">جديد</span></h3>
-      <div class="order-row">
-        <select class="order-select" id="schoolType"><option>ذهاب فقط</option><option>ذهاب وعودة</option></select>
-        <input class="order-input" id="schoolChild" placeholder="اسم الطالب">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر">
-        <input class="order-input" id="schoolFrom" placeholder="العنوان: من">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)">
-        <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
+    <!-- الهيدر -->
+    <div class="card header">
+      <img class="logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
+      <div class="brand">
+        <h1>Fly Express</h1>
+        <p>التوصيل الأسرع في نجع حمادي</p>
       </div>
     </div>
 
-    <!-- 2) أوردر/طرد عام (بدون سعر) -->
-    <div class="order-card">
-      <h3>📦 توصيل أوردر / طرد</h3>
-      <div class="order-row">
-        <select class="order-select" id="orderKind"><option>أوردر</option><option>طرد</option></select>
-        <select class="order-select" id="orderAction"><option>هنجيبه</option><option>هنوّصله</option></select>
+    <!-- بانر العرض -->
+    <div class="banner card" role="note" aria-label="عرض سريع">
+      <div><b>🚀 سريع وسعر خاص:</b> خصم 15 جنيه داخل نجع حمادي!</div>
+      <small>لفترة محدودة</small>
+    </div>
+
+    <!-- الألعاب -->
+    <a class="linkbtn link1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
+      <div class="left"><div class="icon"><i class="fa-solid fa-bullseye"></i></div><div><b>لعبة الطرود</b><div>Whack-a-Parcel</div></div></div>
+      <i class="fa-solid fa-gift"></i>
+    </a>
+
+    <a class="linkbtn link2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener" style="margin-top:12px">
+      <div class="left"><div class="icon"><i class="fa-solid fa-motorcycle"></i></div><div><b>لعبة الموتسيكل</b><div>Fly Rider</div></div></div>
+      <i class="fa-solid fa-motorcycle"></i>
+    </a>
+
+    <!-- اللعبة الجديدة -->
+    <a class="linkbtn link3" href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank" rel="noopener" style="margin-top:12px">
+      <div class="left"><div class="icon"><i class="fa-solid fa-brain"></i></div><div><b>لعبة الذاكرة</b><div>Fly Rush (Memory)</div></div></div>
+      <i class="fa-solid fa-puzzle-piece"></i>
+    </a>
+
+    <!-- إحصائيات صغيرة -->
+    <div class="grid3">
+      <div class="stat"><div class="v" id="areas">12</div><div class="k">مناطق مغطاة</div></div>
+      <div class="stat"><div class="v" id="newUsers">19</div><div class="k">عملاء جدد</div></div>
+      <div class="stat"><div class="v" id="orders">125</div><div class="k">طلبات هذا الأسبوع</div></div>
+    </div>
+
+    <!-- خريطة -->
+    <div class="card section">
+      <h2>📍 موقع الخدمة</h2>
+      <iframe title="خريطة نجع حمادي" width="100%" height="320" style="border:0;border-radius:16px"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55486.77094904051!2d32.222!3d26.048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144f77d3f7b8cbe1%3A0x8c4f3c9b0f!2zTmFnIEhhbW1hZGk!5e0!3m2!1sar!2seg!4v1700000000">
+      </iframe>
+    </div>
+
+    <!-- انضم لفريق التوصيل -->
+    <div class="card section">
+      <h2>🚀 انضم إلى فريق التوصيل</h2>
+      <div class="form" id="joinForm">
+        <input class="input" id="fullName" placeholder="الاسم الكامل">
+        <select class="input" id="vehicle">
+          <option>موتوسيكل</option><option>عجلة</option><option>سيارة</option>
+        </select>
+        <input class="input" id="phone" placeholder="رقم الموبايل" inputmode="tel">
+        <select class="input" id="shift">
+          <option>دوام كامل</option><option>جزئي</option><option>ساعات مرنة</option>
+        </select>
+        <input class="input" id="area" placeholder="المنطقة/الأحياء التي تَخدمها">
+        <input class="input" id="age" placeholder="السن (اختياري)" inputmode="numeric">
+        <textarea class="input" id="exp" placeholder="خبرة سابقة أو ملاحظات (اختياري)"></textarea>
       </div>
-      <div class="order-row">
-        <input class="order-input" id="orderFrom" placeholder="العنوان: من">
-        <input class="order-input" id="orderTo" placeholder="العنوان: إلى">
+      <div class="actions">
+        <button class="btn whatsapp" id="sendJoin">إرسال على واتساب</button>
+        <button class="btn clear" id="clearJoin">مسح</button>
       </div>
-      <div class="order-row">
-        <input class="order-input" id="orderName" placeholder="اسمك">
-        <input class="order-input" id="orderPhone" placeholder="رقم الموبايل">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن/5 مساء)">
-        <input class="order-input" id="orderNote" placeholder="وصف/ملاحظات (اختياري)">
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
+      <div style="color:#b8c0c9;margin-top:6px">بالضغط على إرسال، هنبعت بياناتك على واتساب للإدارة — هنتواصل معاك في أقرب وقت ✅</div>
+    </div>
+
+    <!-- منصات التواصل -->
+    <div class="card section">
+      <h2>🔗 منصّات التواصل</h2>
+      <div class="socials">
+        <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL"><span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn wa" href="https://wa.me/201017908076"><span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn ig" href="https://www.instagram.com/habis_namla/"><span><i class="fa-brands fa-instagram"></i> إنستجرام الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn tg" href="https://t.me/D_M_C0"><span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/"><span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
       </div>
     </div>
 
-    <!-- 3) طلبات السوق (بدون سعر) -->
-    <div class="order-card">
-      <h3>🛒 طلبات السوق</h3>
-      <div class="order-row single">
-        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل"></textarea>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketFrom" placeholder="من أي سوق/محل؟ (اختياري)">
-        <input class="order-input" id="marketTo" placeholder="عنوان التوصيل">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketName" placeholder="اسمك">
-        <input class="order-input" id="marketPhone" placeholder="رقم الموبايل">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketWhen" placeholder="الوقت المفضل">
-        <input class="order-input" id="marketNote" placeholder="ملاحظات (اختياري)">
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendMarket()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearMarket()">مسح</button>
-      </div>
-    </div>
-
-    <!-- 4) طرد مخصص (بدون سعر) -->
-    <div class="order-card">
-      <h3>📮 توصيل طرد</h3>
-      <div class="order-row">
-        <select class="order-select" id="parcelAction"><option>هنجيبه</option><option>هنوديه</option></select>
-        <input class="order-input" id="parcelName" placeholder="اسمك">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="parcelPhone" placeholder="رقم الموبايل">
-        <input class="order-input" id="parcelFrom" placeholder="العنوان: من">
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="parcelTo" placeholder="العنوان: إلى">
-        <input class="order-input" id="parcelNote" placeholder="وصف الطرد/تعليمات (اختياري)">
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendParcel()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearParcel()">مسح</button>
-      </div>
-    </div>
+    <p id="visits" style="text-align:center;margin:8px 0;color:#b8c0c9;"></p>
+    <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
-</aside>
 
-<script>
-/* إعداد عام */
-const ADMIN_PHONE = "201017908076";
+  <!-- ===== زر الطلبات الجانبي ===== -->
+  <button class="order-fab" id="orderFab" title="قائمة الطلبات"><i class="fa-solid fa-list-ul"></i></button>
+  <div class="order-overlay" id="orderOverlay"></div>
+  <aside class="order-drawer" id="orderDrawer" dir="rtl">
+    <div class="order-head">
+      <div class="order-title">قائمة الطلبات</div>
+      <button class="order-close" id="orderClose" aria-label="إغلاق">&times;</button>
+    </div>
 
-/* زر الطلبات الجانبي */
-const fab = document.getElementById('orderFab');
-const drawer = document.getElementById('orderDrawer');
-const overlay = document.getElementById('orderOverlay');
-const closeBtn = document.getElementById('orderClose');
-function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('show'); }
-function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('show'); }
-fab.addEventListener('click', openDrawer);
-overlay.addEventListener('click', closeDrawer);
-closeBtn.addEventListener('click', closeDrawer);
+    <div class="order-body">
+      <!-- 1) مدرسة (بدون سعر) -->
+      <div class="order-card">
+        <h3>🏫 توصيل ابني المدرسة <span class="order-badge">جديد</span></h3>
+        <div class="order-row">
+          <select class="order-select" id="schoolType"><option>ذهاب فقط</option><option>ذهاب وعودة</option></select>
+          <input class="order-input" id="schoolChild" placeholder="اسم الطالب">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر">
+          <input class="order-input" id="schoolFrom" placeholder="العنوان: من">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)">
+          <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
+        </div>
+      </div>
 
-/* واتساب مساعد */
-const enc = s => encodeURIComponent(s||"");
-function waSend(txt){ window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank'); }
+      <!-- 2) أوردر/طرد عام (بدون سعر) -->
+      <div class="order-card">
+        <h3>📦 توصيل أوردر / طرد</h3>
+        <div class="order-row">
+          <select class="order-select" id="orderKind"><option>أوردر</option><option>طرد</option></select>
+          <select class="order-select" id="orderAction"><option>هنجيبه</option><option>هنوّصله</option></select>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderFrom" placeholder="العنوان: من">
+          <input class="order-input" id="orderTo" placeholder="العنوان: إلى">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderName" placeholder="اسمك">
+          <input class="order-input" id="orderPhone" placeholder="رقم الموبايل">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن/5 مساء)">
+          <input class="order-input" id="orderNote" placeholder="وصف/ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
+        </div>
+      </div>
 
-/* نماذج الطلبات (بدون أسعار) */
-function sendSchool(){
-  const type  = document.getElementById('schoolType').value;
-  const child = document.getElementById('schoolChild').value;
-  const phone = document.getElementById('schoolPhone').value;
-  const from  = document.getElementById('schoolFrom').value;
-  const to    = document.getElementById('schoolTo').value;
-  const note  = document.getElementById('schoolNote').value;
-  const text = `طلب توصيل مدرسة 🏫
+      <!-- 3) طلبات السوق (بدون سعر) -->
+      <div class="order-card">
+        <h3>🛒 طلبات السوق</h3>
+        <div class="order-row single">
+          <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل"></textarea>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketFrom" placeholder="من أي سوق/محل؟ (اختياري)">
+          <input class="order-input" id="marketTo" placeholder="عنوان التوصيل">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketName" placeholder="اسمك">
+          <input class="order-input" id="marketPhone" placeholder="رقم الموبايل">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketWhen" placeholder="الوقت المفضل">
+          <input class="order-input" id="marketNote" placeholder="ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendMarket()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearMarket()">مسح</button>
+        </div>
+      </div>
+
+      <!-- 4) طرد مخصص (بدون سعر) -->
+      <div class="order-card">
+        <h3>📮 توصيل طرد</h3>
+        <div class="order-row">
+          <select class="order-select" id="parcelAction"><option>هنجيبه</option><option>هنوديه</option></select>
+          <input class="order-input" id="parcelName" placeholder="اسمك">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="parcelPhone" placeholder="رقم الموبايل">
+          <input class="order-input" id="parcelFrom" placeholder="العنوان: من">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="parcelTo" placeholder="العنوان: إلى">
+          <input class="order-input" id="parcelNote" placeholder="وصف الطرد/تعليمات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendParcel()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearParcel()">مسح</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <script>
+    /* إعداد عام */
+    const ADMIN_PHONE = "201017908076";
+
+    /* زر الطلبات الجانبي */
+    const fab = document.getElementById('orderFab');
+    const drawer = document.getElementById('orderDrawer');
+    const overlay = document.getElementById('orderOverlay');
+    const closeBtn = document.getElementById('orderClose');
+    function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('show'); }
+    function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('show'); }
+    fab.addEventListener('click', openDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+
+    /* واتساب مساعد */
+    const enc = s => encodeURIComponent(s||"");
+    function waSend(txt){ window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank'); }
+
+    /* نماذج الطلبات (بدون أسعار) */
+    function sendSchool(){
+      const type  = document.getElementById('schoolType').value;
+      const child = document.getElementById('schoolChild').value;
+      const phone = document.getElementById('schoolPhone').value;
+      const from  = document.getElementById('schoolFrom').value;
+      const to    = document.getElementById('schoolTo').value;
+      const note  = document.getElementById('schoolNote').value;
+      const text = `طلب توصيل مدرسة 🏫
 النوع: ${type}
 الطالب: ${child}
 ولي الأمر: ${phone}
@@ -335,79 +351,78 @@ function sendSchool(){
 إلى: ${to}
 ملاحظات: ${note}
 — أُرسل من موقع Fly Express`;
-  waSend(text);
-}
-function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(id=>document.getElementById(id).value="");}
+      waSend(text);
+    }
+    function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(id=>document.getElementById(id).value="");}
 
-function sendOrder(){
-  const kind  = document.getElementById('orderKind').value;
-  const act   = document.getElementById('orderAction').value;
-  const from  = document.getElementById('orderFrom').value;
-  const to    = document.getElementById('orderTo').value;
-  const name  = document.getElementById('orderName').value;
-  const phone = document.getElementById('orderPhone').value;
-  const when  = document.getElementById('orderWhen').value;
-  const note  = document.getElementById('orderNote').value;
-  const text = `طلب ${kind} ${act} 📦
+    function sendOrder(){
+      const kind  = document.getElementById('orderKind').value;
+      const act   = document.getElementById('orderAction').value;
+      const from  = document.getElementById('orderFrom').value;
+      const to    = document.getElementById('orderTo').value;
+      const name  = document.getElementById('orderName').value;
+      const phone = document.getElementById('orderPhone').value;
+      const when  = document.getElementById('orderWhen').value;
+      const note  = document.getElementById('orderNote').value;
+      const text = `طلب ${kind} ${act} 📦
 الاسم: ${name} — ${phone}
 من: ${from}
 إلى: ${to}
 الوقت: ${when}
 ملاحظات: ${note}
 — أُرسل من موقع Fly Express`;
-  waSend(text);
-}
-function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen','orderNote'].forEach(id=>document.getElementById(id).value="");}
+      waSend(text);
+    }
+    function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen','orderNote'].forEach(id=>document.getElementById(id).value="");}
 
-function sendMarket(){
-  const list  = document.getElementById('marketList').value;
-  const from  = document.getElementById('marketFrom').value;
-  const to    = document.getElementById('marketTo').value;
-  const name  = document.getElementById('marketName').value;
-  const phone = document.getElementById('marketPhone').value;
-  const when  = document.getElementById('marketWhen').value;
-  const note  = document.getElementById('marketNote').value;
-  const text = `طلبات سوق 🛒
+    function sendMarket(){
+      const list  = document.getElementById('marketList').value;
+      const from  = document.getElementById('marketFrom').value;
+      const to    = document.getElementById('marketTo').value;
+      const name  = document.getElementById('marketName').value;
+      const phone = document.getElementById('marketPhone').value;
+      const when  = document.getElementById('marketWhen').value;
+      const note  = document.getElementById('marketNote').value;
+      const text = `طلبات سوق 🛒
 العميل: ${name} — ${phone}
-القائمة:
-${list}
+القائمة: ${list}
 
 من: ${from || '—'}
 إلى: ${to}
 الوقت: ${when}
 ملاحظات: ${note}
 — أُرسل من موقع Fly Express`;
-  waSend(text);
-}
-function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone','marketWhen','marketNote'].forEach(id=>document.getElementById(id).value="");}
+      waSend(text);
+    }
+    function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone','marketWhen','marketNote'].forEach(id=>document.getElementById(id).value="");}
 
-function sendParcel(){
-  const act   = document.getElementById('parcelAction').value;
-  const from  = document.getElementById('parcelFrom').value;
-  const to    = document.getElementById('parcelTo').value;
-  const name  = document.getElementById('parcelName').value;
-  const phone = document.getElementById('parcelPhone').value;
-  const note  = document.getElementById('parcelNote').value;
-  const text = `توصيل طرد (${act}) 📮
+    function sendParcel(){
+      const act   = document.getElementById('parcelAction').value;
+      const from  = document.getElementById('parcelFrom').value;
+      const to    = document.getElementById('parcelTo').value;
+      const name  = document.getElementById('parcelName').value;
+      const phone = document.getElementById('parcelPhone').value;
+      const note  = document.getElementById('parcelNote').value;
+      const text = `توصيل طرد (${act}) 📮
 العميل: ${name} — ${phone}
 من: ${from}
 إلى: ${to}
 ملاحظات: ${note}
 — أُرسل من موقع Fly Express`;
-  waSend(text);
-}
-function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
+      waSend(text);
+    }
+    function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
 
-/* انضم لفريق التوصيل → واتساب */
-document.getElementById('sendJoin').addEventListener('click', ()=>{
-  const n = document.getElementById('fullName').value;
-  const v = document.getElementById('vehicle').value;
-  const p = document.getElementById('phone').value;
-  const s = document.getElementById('shift').value;
-  const a = document.getElementById('area').value;
-  const g = document.getElementById('age').value;
-  const e = document.getElementById('exp').value;
-  const text = `طلب انضمام سائق 🚀
+    /* انضم لفريق التوصيل → واتساب */
+    document.getElementById('sendJoin').addEventListener('click', ()=>{
+      const n = document.getElementById('fullName').value;
+      const v = document.getElementById('vehicle').value;
+      const p = document.getElementById('phone').value;
+      const s = document.getElementById('shift').value;
+      const a = document.getElementById('area').value;
+      const g = document.getElementById('age').value;
+      const e = document.getElementById('exp').value;
+      const text = `طلب انضمام سائق 🚀
 الاسم: ${n}
 المركبة: ${v}
 الهاتف: ${p}
@@ -416,14 +431,14 @@ document.getElementById('sendJoin').addEventListener('click', ()=>{
 السن: ${g || '—'}
 ملاحظات: ${e || '—'}
 — أُرسل من موقع Fly Express`;
-  waSend(text);
-});
-document.getElementById('clearJoin').addEventListener('click', ()=>['fullName','phone','area','age','exp'].forEach(id=>document.getElementById(id).value=""));
+      waSend(text);
+    });
+    document.getElementById('clearJoin').addEventListener('click', ()=>['fullName','phone','area','age','exp'].forEach(id=>document.getElementById(id).value=""));
 
-/* عداد الزيارات */
-const visits = +localStorage.getItem("visitsCount") || 0;
-localStorage.setItem("visitsCount", visits + 1);
-document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
-</script>
+    /* عداد الزيارات */
+    const visits = +localStorage.getItem("visitsCount") || 0;
+    localStorage.setItem("visitsCount", visits + 1);
+    document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
+  </script>
 </body>
 </html>
