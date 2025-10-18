@@ -496,11 +496,21 @@ ${list}
     orderFab.addEventListener('click', openDrawer);
     orderOverlay.addEventListener('click', closeDrawer);
     orderClose.addEventListener('click', closeDrawer);
+    
 
-    // عداد الزيارات
-    const visits = +localStorage.getItem("visitsCount") || 0;
-    localStorage.setItem("visitsCount", visits + 1);
-    document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
-  </script>
+<!-- باقي الأكواد فوق -->
+
+<script>
+  // عداد الزيارات
+  const visits = +localStorage.getItem("visitsCount") || 0;
+  localStorage.setItem("visitsCount", visits + 1);
+  document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
+
+  // تشغيل Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/FlyExpress/sw.js').catch(console.error);
+  }
+</script>
+
 </body>
 </html>
