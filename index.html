@@ -47,7 +47,7 @@
     .section{margin-top:18px}
     .section h2{margin:0 0 10px;font-size:24px;font-weight:900}
 
-    /* أزرار الروابط */
+    /* روابط */
     .linkbtn{
       display:flex;align-items:center;justify-content:space-between; gap:12px;
       padding:16px;border-radius:26px;color:#fff;text-decoration:none;
@@ -58,7 +58,7 @@
     .link1{background:var(--grad1)}
     .link2{background:var(--grad2)}
 
-    /* ألعاب — زر قائمـة منسدلة */
+    /* قسم الألعاب (قائمة منسدلة) */
     .games{margin-top:10px}
     .games .trigger{
       width:100%; border:1px solid rgba(255,255,255,.08);
@@ -107,7 +107,7 @@
 
     footer{margin:18px 0 6px;text-align:center;color:#b8c0c9}
 
-    /* ===== زر ودرج الطلبات ===== */
+    /* ===== زر ودرج الطلبات (النموذج القديم) ===== */
     .order-fab{
       position:fixed; right:18px; top:50%; transform:translateY(-50%);
       width:58px;height:58px;border-radius:50%; background:#22c55e;
@@ -129,8 +129,19 @@
     .order-close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
     .order-body{padding:14px; overflow:auto}
     .order-card{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:12px; margin-bottom:12px}
-    .order-card a{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.08)}
-    .order-card a:hover{filter:brightness(1.1)}
+    .order-card h3{margin:0 0 8px; font-size:16px}
+    .order-row{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+    .order-row.single{grid-template-columns:1fr}
+    .order-input,.order-select,.order-textarea{
+      width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06); color:#fff; font-family:inherit; font-size:14px
+    }
+    .order-textarea{min-height:68px; resize:vertical}
+    .order-actions{display:flex; gap:8px; margin-top:10px}
+    .order-btn{flex:1; border:0; cursor:pointer; padding:10px 14px; border-radius:999px; font-weight:900; color:#001316; background:linear-gradient(90deg,#00ffaa,#00a8ff)}
+    .order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8); color:#003b35}
+    .order-hint{font-size:12px; color:#b8c0c9; margin-top:6px}
+    .order-badge{display:inline-flex; gap:6px; align-items:center; background:#0ea5e9; color:#001316; padding:4px 10px; border-radius:999px; font-weight:900; font-size:12px}
 
     @media(max-width:640px){
       .form{grid-template-columns:1fr}
@@ -150,7 +161,7 @@
       </div>
     </div>
 
-    <!-- بانر العرض -->
+    <!-- بانر -->
     <div class="banner card" role="note" aria-label="عرض سريع">
       <div><b>🚀 سريع وسعر خاص:</b> خصم 15 جنيه داخل نجع حمادي!</div>
       <small>لفترة محدودة</small>
@@ -159,13 +170,11 @@
     <!-- قسم الألعاب -->
     <div class="card section">
       <h2>العب و اكسب توصيلة مجانية 🎮</h2>
-
       <div class="games">
         <button id="gamesToggle" class="trigger" aria-expanded="false" aria-controls="gamesMenu">
           <span>اضغط لاختيار لعبة</span>
           <i class="fa-solid fa-caret-down"></i>
         </button>
-
         <div id="gamesMenu" class="menu" aria-hidden="true">
           <a class="g1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
             <span><i class="fa-solid fa-bullseye"></i> لعبة الطرود — Whack-a-Parcel</span>
@@ -183,7 +192,7 @@
       </div>
     </div>
 
-    <!-- إحصائيات صغيرة -->
+    <!-- إحصائيات -->
     <div class="grid3">
       <div class="stat"><div class="v" id="orders">125</div><div class="k">طلبات هذا الأسبوع</div></div>
       <div class="stat"><div class="v" id="newUsers">19</div><div class="k">عملاء جدد</div></div>
@@ -204,13 +213,9 @@
       <h2>🚀 انضم إلى فريق التوصيل</h2>
       <div class="form" id="joinForm">
         <input class="input" id="fullName" placeholder="الاسم الكامل">
-        <select class="input" id="vehicle">
-          <option>موتوسيكل</option><option>عجلة</option><option>سيارة</option>
-        </select>
+        <select class="input" id="vehicle"><option>موتوسيكل</option><option>عجلة</option><option>سيارة</option></select>
         <input class="input" id="phone" placeholder="رقم الموبايل" inputmode="tel">
-        <select class="input" id="shift">
-          <option>دوام كامل</option><option>جزئي</option><option>ساعات مرنة</option>
-        </select>
+        <select class="input" id="shift"><option>دوام كامل</option><option>جزئي</option><option>ساعات مرنة</option></select>
         <input class="input" id="area" placeholder="المنطقة/الأحياء التي تَخدمها">
         <input class="input" id="age" placeholder="السن (اختياري)" inputmode="numeric">
         <textarea class="input" id="exp" placeholder="خبرة سابقة أو ملاحظات (اختياري)"></textarea>
@@ -241,34 +246,123 @@
   <!-- زر القائمة الجانبية -->
   <button class="order-fab" id="orderFab" title="قائمة الطلبات"><i class="fa-solid fa-list-ul"></i></button>
 
-  <!-- Overlay + Drawer -->
+  <!-- Overlay + Drawer (النموذج القديم) -->
   <div class="order-overlay" id="orderOverlay"></div>
   <aside class="order-drawer" id="orderDrawer" dir="rtl">
     <div class="order-head">
       <div class="order-title">قائمة الطلبات</div>
       <button class="order-close" id="orderClose" aria-label="إغلاق">&times;</button>
     </div>
+
     <div class="order-body">
+      <!-- 1) توصيل ابني المدرسة -->
       <div class="order-card">
-        <h3>اختَر نوع الطلب</h3>
-        <a href="https://wa.me/201017908076?text=%D8%B7%D9%84%D8%A8%20%D8%AA%D9%88%D8%B5%D9%8A%D9%84%20%D8%A7%D8%A8%D9%86%D9%8A%20%D9%84%D9%84%D9%85%D8%AF%D8%B1%D8%B3%D8%A9%20%F0%9F%8F%AB" target="_blank" rel="noopener">
-          🏫 توصيل ابني المدرسة <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a href="https://wa.me/201017908076?text=%D8%AA%D9%88%D8%B5%D9%8A%D9%84%20%D8%A3%D9%88%D8%B1%D8%AF%D8%B1%2F%D8%B7%D8%B1%D8%AF%20%F0%9F%93%A6" target="_blank" rel="noopener">
-          📦 توصيل أوردر / طرد <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a href="https://wa.me/201017908076?text=%D8%B7%D9%84%D8%A8%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B3%D9%88%D9%82%20%F0%9F%9B%8F%EF%B8%8F" target="_blank" rel="noopener">
-          🛒 طلبات السوق <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a href="https://wa.me/201017908076?text=%D8%AA%D9%88%D8%B5%D9%8A%D9%84%20%D8%B7%D8%B1%D8%AF%20%D9%85%D8%AE%D8%B5%D8%B5%20%F0%9F%93%AE" target="_blank" rel="noopener">
-          📮 توصيل طرد (مخصص) <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
+        <h3>🏫 توصيل ابني المدرسة <span class="order-badge">جديد</span></h3>
+        <div class="order-row">
+          <select class="order-select" id="schoolType">
+            <option value="ذهاب فقط">ذهاب فقط</option>
+            <option value="ذهاب وعودة">ذهاب وعودة</option>
+          </select>
+          <input class="order-input" id="schoolChild" placeholder="اسم الطالب">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر">
+          <input class="order-input" id="schoolFrom" placeholder="العنوان: من">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)">
+          <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
+        </div>
+        <div class="order-hint">نرسل لك ملخص الطلب في واتساب للتأكيد السريع ✅</div>
+      </div>
+
+      <!-- 2) توصيل أوردر / طرد -->
+      <div class="order-card">
+        <h3>📦 توصيل أوردر / طرد</h3>
+        <div class="order-row">
+          <select class="order-select" id="orderKind">
+            <option value="أوردر">أوردر</option>
+            <option value="طرد">طرد</option>
+          </select>
+          <select class="order-select" id="orderAction">
+            <option value="هنجيبه">هنجيبه</option>
+            <option value="هنوّصله">هنوّصله</option>
+          </select>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderFrom" placeholder="العنوان: من">
+          <input class="order-input" id="orderTo" placeholder="العنوان: إلى">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderName" placeholder="اسمك">
+          <input class="order-input" id="orderPhone" placeholder="رقم الموبايل">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن/5 مساء)">
+          <input class="order-input" id="orderNote" placeholder="وصف المحتوى/ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
+        </div>
+      </div>
+
+      <!-- 3) طلبات السوق -->
+      <div class="order-card">
+        <h3>🛒 طلبات السوق</h3>
+        <div class="order-row single">
+          <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل"></textarea>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketFrom" placeholder="من أي سوق/محل؟ (اختياري)">
+          <input class="order-input" id="marketTo" placeholder="عنوان التوصيل">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketName" placeholder="اسمك">
+          <input class="order-input" id="marketPhone" placeholder="رقم الموبايل">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketWhen" placeholder="الوقت المفضل">
+          <input class="order-input" id="marketNote" placeholder="ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendMarket()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearMarket()">مسح</button>
+        </div>
+      </div>
+
+      <!-- 4) توصيل طرد (مخصص) -->
+      <div class="order-card">
+        <h3>📮 توصيل طرد</h3>
+        <div class="order-row">
+          <select class="order-select" id="parcelAction">
+            <option value="هنجيبه">هنجيبه</option>
+            <option value="هنوديه">هنوديه</option>
+          </select>
+          <input class="order-input" id="parcelName" placeholder="اسمك">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="parcelPhone" placeholder="رقم الموبايل">
+          <input class="order-input" id="parcelFrom" placeholder="العنوان: من">
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="parcelTo" placeholder="العنوان: إلى">
+          <input class="order-input" id="parcelNote" placeholder="وصف الطرد/تعليمات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendParcel()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearParcel()">مسح</button>
+        </div>
       </div>
     </div>
   </aside>
 
   <script>
-    // رقم واتساب للإرسال
+    // إعداد عام
     const ADMIN_PHONE = "201017908076";
     const enc = s => encodeURIComponent(s||"");
     const waSend = txt => window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank');
@@ -289,7 +383,86 @@
       }
     });
 
-    // انضم لفريق التوصيل → واتساب
+    // واتساب — نماذج الطلبات
+    function sendSchool(){
+      const type  = document.getElementById('schoolType').value;
+      const child = document.getElementById('schoolChild').value;
+      const phone = document.getElementById('schoolPhone').value;
+      const from  = document.getElementById('schoolFrom').value;
+      const to    = document.getElementById('schoolTo').value;
+      const note  = document.getElementById('schoolNote').value;
+      const text = `طلب توصيل مدرسة 🏫
+النوع: ${type}
+الطالب: ${child}
+ولي الأمر: ${phone}
+من: ${from}
+إلى: ${to}
+ملاحظات: ${note}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(id=>document.getElementById(id).value="");}
+
+    function sendOrder(){
+      const kind  = document.getElementById('orderKind').value;
+      const act   = document.getElementById('orderAction').value;
+      const from  = document.getElementById('orderFrom').value;
+      const to    = document.getElementById('orderTo').value;
+      const name  = document.getElementById('orderName').value;
+      const phone = document.getElementById('orderPhone').value;
+      const when  = document.getElementById('orderWhen').value;
+      const note  = document.getElementById('orderNote').value;
+      const text = `طلب ${kind} ${act} 📦
+الاسم: ${name} — ${phone}
+من: ${from}
+إلى: ${to}
+الوقت: ${when}
+ملاحظات: ${note}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen','orderNote'].forEach(id=>document.getElementById(id).value="");}
+
+    function sendMarket(){
+      const list  = document.getElementById('marketList').value;
+      const from  = document.getElementById('marketFrom').value;
+      const to    = document.getElementById('marketTo').value;
+      const name  = document.getElementById('marketName').value;
+      const phone = document.getElementById('marketPhone').value;
+      const when  = document.getElementById('marketWhen').value;
+      const note  = document.getElementById('marketNote').value;
+      const text = `طلبات سوق 🛒
+العميل: ${name} — ${phone}
+القائمة:
+${list}
+
+من: ${from || '—'}
+إلى: ${to}
+الوقت: ${when}
+ملاحظات: ${note}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone','marketWhen','marketNote'].forEach(id=>document.getElementById(id).value="");}
+
+    function sendParcel(){
+      const act   = document.getElementById('parcelAction').value;
+      const from  = document.getElementById('parcelFrom').value;
+      const to    = document.getElementById('parcelTo').value;
+      const name  = document.getElementById('parcelName').value;
+      const phone = document.getElementById('parcelPhone').value;
+      const note  = document.getElementById('parcelNote').value;
+      const text = `توصيل طرد (${act}) 📮
+العميل: ${name} — ${phone}
+من: ${from}
+إلى: ${to}
+ملاحظات: ${note}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
+
+    // انضم لفريق التوصيل
     document.getElementById('sendJoin').addEventListener('click', ()=>{
       const n = document.getElementById('fullName').value;
       const v = document.getElementById('vehicle').value;
@@ -311,11 +484,6 @@
     });
     document.getElementById('clearJoin').addEventListener('click', ()=>['fullName','phone','area','age','exp'].forEach(id=>document.getElementById(id).value=""));
 
-    // عداد الزيارات
-    const visits = +localStorage.getItem("visitsCount") || 0;
-    localStorage.setItem("visitsCount", visits + 1);
-    document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
-
     // فتح/غلق درج الطلبات
     const orderFab    = document.getElementById('orderFab');
     const orderDrawer = document.getElementById('orderDrawer');
@@ -328,6 +496,11 @@
     orderFab.addEventListener('click', openDrawer);
     orderOverlay.addEventListener('click', closeDrawer);
     orderClose.addEventListener('click', closeDrawer);
+
+    // عداد الزيارات
+    const visits = +localStorage.getItem("visitsCount") || 0;
+    localStorage.setItem("visitsCount", visits + 1);
+    document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
   </script>
 </body>
 </html>
