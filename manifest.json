@@ -1,18 +1,22 @@
 {
   "name": "Fly Express",
   "short_name": "FlyExpress",
-  "description": "تطبيق Fly Express — أسرع توصيل في نجع حمادي! اطلب خدمتك بسرعة، والعب واكسب توصيلات مجانية.",
-  "lang": "ar",
-  "dir": "rtl",
-  "start_url": "/FlyExpress/",
-  "scope": "/FlyExpress/",
+  "description": "🚀 أسرع توصيل في نجع حمادي - اطلب دلوقتي واستمتع بخدمة مميزة من Fly Express.",
+  "start_url": "/FlyExpress/index.html",
   "display": "standalone",
-  "background_color": "#0d1b2a",
-  "theme_color": "#0d1b2a",
+  "background_color": "#0B132B",
+  "theme_color": "#33654F",
   "orientation": "portrait",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable any" }
+    {
+      "src": "https://mahmoudahmed3531-lgtm.github.io/FlyExpress/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://mahmoudahmed3531-lgtm.github.io/FlyExpress/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }
