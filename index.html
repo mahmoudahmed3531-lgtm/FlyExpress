@@ -23,7 +23,7 @@
       min-height:100svh;padding:22px;
     }
     .container{max-width:940px;margin:0 auto}
-    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.28);position:relative;overflow:hidden}
     .header{display:flex;gap:16px;align-items:center}
     .logo{width:84px;height:84px;border-radius:16px;object-fit:cover;border:1px solid rgba(255,255,255,.1)}
     .brand h1{margin:0;font-weight:900;font-size:38px;line-height:1}
@@ -91,6 +91,34 @@
     .menu-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;color:#001316;background:linear-gradient(90deg,#e7ffef,#c8ffd9);font-weight:900;cursor:pointer;margin:6px 0;white-space:nowrap}
     .menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
 
+    /* ===== RGB Lighting ===== */
+    /* خلفية RGB عامة */
+    body.rgb-on::after{
+      content:"";position:fixed;inset:-25%;
+      background:conic-gradient(from 0deg at 50% 50%, #ff4d4d, #ffd24d, #4dff4d, #4dd5ff, #7b5bff, #ff4dd2, #ff4d4d);
+      filter:blur(100px) saturate(140%);opacity:.20;mix-blend-mode:screen;z-index:0;pointer-events:none;
+      animation:spin 24s linear infinite;
+    }
+    /* هالة بسيطة حوالين كل كارد */
+    body.rgb-on .card::before{
+      content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:-1;
+      background:conic-gradient(from 0deg at 50% 50%, #ff4d4d, #ffd24d, #4dff4d, #4dd5ff, #7b5bff, #ff4dd2, #ff4d4d);
+      filter:blur(20px);opacity:.20;animation:spin 10s linear infinite;
+    }
+    /* الزر الأصفر ياخد هيو متغير */
+    body.rgb-on .menu-fab{animation:hue 8s linear infinite;box-shadow:0 0 18px rgba(255,255,255,.35), 0 0 42px rgba(255,255,255,.15)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes hue{to{filter:hue-rotate(360deg)}}
+
+    /* زر تشغيل/إيقاف RGB */
+    .rgb-toggle{
+      position:fixed;left:18px;top:50%;transform:translateY(-50%);
+      width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.08);color:#fff;display:flex;align-items:center;justify-content:center;
+      font-size:18px;cursor:pointer;z-index:10002;box-shadow:0 10px 24px rgba(0,0,0,.35)
+    }
+    .rgb-toggle.active{background:linear-gradient(90deg,#6ee7ff,#a7f3d0)}
+
     @media(max-width:640px){.grid3{grid-template-columns:1fr}.socials{grid-template-columns:1fr}}
   </style>
 </head>
@@ -105,7 +133,7 @@
       </div>
     </div>
 
-    <!-- بانر بدون خصم -->
+    <!-- بانر -->
     <div class="banner card">
       <div><b>🚀 أسرع خدمة توصيل في نجع حمادي.</b></div>
       <small>خدمة يومية طوال الأسبوع</small>
@@ -180,6 +208,9 @@
     <div class="menu-item secondary" id="miMonthly"><i class="fa-solid fa-calendar-days"></i> جدول شهري</div>
   </div>
 
+  <!-- زر تشغيل/إيقاف RGB -->
+  <button class="rgb-toggle" id="rgbToggle" title="إضاءة RGB"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+
   <!-- أوفرلاي موحد -->
   <div class="overlay" id="overlay"></div>
 
@@ -190,7 +221,6 @@
       <button class="drawer-close" data-close>&times;</button>
     </div>
     <div class="drawer-body">
-
       <!-- 1) توصيل ابني المدرسة -->
       <div class="order-card">
         <h3>🏫 توصيل ابني المدرسة <span class="order-badge">جديد</span></h3>
@@ -498,6 +528,17 @@ ${list}
     const visits=+localStorage.getItem("visitsCount")||0;
     localStorage.setItem("visitsCount",visits+1);
     document.getElementById("visits").textContent=`👀 عدد زياراتك من هذا الجهاز: ${visits+1}`;
+
+    // ===== RGB Toggle =====
+    const rgbToggle=document.getElementById('rgbToggle');
+    // استرجاع آخر حالة
+    if(localStorage.getItem('rgbOn')==='1'){ document.body.classList.add('rgb-on'); rgbToggle.classList.add('active'); }
+    rgbToggle.addEventListener('click',()=>{
+      document.body.classList.toggle('rgb-on');
+      const on=document.body.classList.contains('rgb-on');
+      rgbToggle.classList.toggle('active', on);
+      localStorage.setItem('rgbOn', on?'1':'0');
+    });
   </script>
 </body>
 </html>
