@@ -95,13 +95,12 @@
 
     footer{margin:18px 0 6px;text-align:center;color:#b8c0c9}
 
-    /* === CTA Row === */
-    .ctas{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+    /* === CTA Row (بدون الاتجاهات) === */
+    .ctas{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
     .cta{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;text-decoration:none;color:#001316;font-weight:900}
     .cta i{margin-inline-start:8px}
     .cta.tel{background:linear-gradient(90deg,#e7ffef,#c8ffd9)}
     .cta.wa{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
-    .cta.dir{background:linear-gradient(90deg,#fef3c7,#fde68a)}
     .geo-hint{font-size:12px;color:#b8c0c9;margin-top:6px}
 
     /* ===== زر ودرج الطلبات ===== */
@@ -127,6 +126,13 @@
     .order-hint{font-size:12px; color:#b8c0c9; margin-top:6px}
     .order-badge{display:inline-flex; gap:6px; align-items:center; background:#0ea5e9; color:#001316; padding:4px 10px; border-radius:999px; font-weight:900; font-size:12px}
 
+    /* === زر منيو “طلباتك هنا” === */
+    .menu-fab{position:fixed; right:18px; top:calc(50% + 72px); transform:translateY(-50%); width:58px;height:58px;border-radius:50%; background:#f59e0b; display:flex;align-items:center;justify-content:center; font-size:22px; color:#fff; box-shadow:0 14px 28px rgba(0,0,0,.35); z-index:10000; cursor:pointer; border:0}
+    .menu-pop{position:fixed; right:86px; top:calc(50% + 72px); transform:translateY(-50%); background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:8px; display:none; z-index:10001; backdrop-filter:blur(8px)}
+    .menu-pop.show{display:block}
+    .menu-item{display:flex;align-items:center; gap:8px; padding:10px 12px; border-radius:12px; color:#001316; background:linear-gradient(90deg,#e7ffef,#c8ffd9); font-weight:900; cursor:pointer; margin:6px 0; white-space:nowrap}
+    .menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
+
     @media(max-width:640px){ .form{grid-template-columns:1fr} .grid3{grid-template-columns:1fr} .socials{grid-template-columns:1fr} }
   </style>
 </head>
@@ -147,11 +153,10 @@
       <small>لفترة محدودة</small>
     </div>
 
-    <!-- CTA quick actions -->
+    <!-- CTA quick actions (بدون الاتجاهات) -->
     <div class="section ctas">
       <a class="cta tel" href="tel:+201017908076" aria-label="اتصال مباشر"><span>📞 اتصال مباشر</span><i class="fa-solid fa-phone"></i></a>
       <a class="cta wa" href="https://wa.me/201017908076" target="_blank" rel="noopener" aria-label="راسلنا واتساب"><span>💬 راسلنا واتساب</span><i class="fa-brands fa-whatsapp"></i></a>
-      <a class="cta dir" id="openDirections" href="#" aria-label="افتح الاتجاهات"><span>🗺️ افتح الاتجاهات</span><i class="fa-solid fa-location-arrow"></i></a>
     </div>
 
     <!-- قسم الألعاب -->
@@ -190,16 +195,7 @@
       <div class="stat"><div class="v" id="areas">12</div><div class="k">مناطق مغطاة</div></div>
     </div>
 
-    <!-- خريطة -->
-    <div class="card section">
-      <h2>📍 موقع الخدمة</h2>
-      <iframe title="خريطة نجع حمادي" width="100%" height="320" style="border:0;border-radius:16px"
-        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55486.77094904051!2d32.222!3d26.048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144f77d3f7b8cbe1%3A0x8c4f3c9b0f!2zTmFnIEhhbW1hZGk!5e0!3m2!1sar!2seg!4v1700000000">
-      </iframe>
-    </div>
-
-    <!-- ✨ جديد: جدول توصيل الأبناء (شهري) -->
+    <!-- ✨ جدول توصيل الأبناء (شهري) -->
     <div class="card section" id="monthly">
       <h2>📘 جدول توصيل الأبناء (شهري)</h2>
       <div class="form" id="monthlyForm">
@@ -213,7 +209,7 @@
         <select class="input" id="pmDirection" aria-label="الاتجاه">
           <option value="هتوصلهم وترجعهم">هتوصلهم وتجيبهم</option>
           <option value="هتوصلهم فقط">هتوصلهم فقط</option>
-          <option value="هترجعهم فقط">هتجيبهم فقط</option>
+          <option value="هتجيبهم فقط">هتجيبهم فقط</option>
         </select>
         <input class="input" id="pmLessonsPerWeek" placeholder="كم حصة في الأسبوع" inputmode="numeric" required>
 
@@ -261,8 +257,15 @@
     <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
-  <!-- زر القائمة الجانبية -->
+  <!-- زر القائمة الجانبية (القديم) -->
   <button class="order-fab" id="orderFab" title="قائمة الطلبات"><i class="fa-solid fa-list-ul"></i></button>
+
+  <!-- زر منيو “طلباتك هنا” -->
+  <button class="menu-fab" id="menuFab" title="طلباتك هنا"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+  <div class="menu-pop" id="menuPop" role="menu" aria-hidden="true">
+    <div class="menu-item" id="miFast"><i class="fa-solid fa-bolt"></i> طلب توصيل (سريع)</div>
+    <div class="menu-item secondary" id="miMonthly"><i class="fa-solid fa-calendar-days"></i> جدول شهري</div>
+  </div>
 
   <!-- Overlay + Drawer -->
   <div class="order-overlay" id="orderOverlay"></div>
@@ -381,30 +384,9 @@
 
   <script>
     // ===== إعداد عام =====
-    const ADMIN_PHONE = "201017908076"; // بدون +
+    const ADMIN_PHONE = "201017908076";
     const enc = s => encodeURIComponent(s||"");
     const waSend = txt => window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank','noopener');
-
-    // PWA بسيط + Manifest
-    if('serviceWorker' in navigator){
-      const swCode = `self.addEventListener('install',e=>{e.waitUntil(caches.open('fx-v1').then(c=>c.addAll(['./'])))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`;
-      const blob = new Blob([swCode],{type:'text/javascript'});
-      navigator.serviceWorker.register(URL.createObjectURL(blob));
-
-      const manifest = { name:"Fly Express", short_name:"FlyExpress", start_url:"./", display:"standalone", background_color:"#0a1622", theme_color:"#0a1622", icons:[{src:"https://i.ibb.co/B5MQWCWF/fly-express.jpg", sizes:"512x512", type:"image/jpeg"}] };
-      const mBlob = new Blob([JSON.stringify(manifest)], {type:'application/manifest+json'});
-      const link = document.createElement('link'); link.rel='manifest'; link.href=URL.createObjectURL(mBlob); document.head.appendChild(link);
-    }
-
-    // اتجاهات + تحديد موقعي
-    const openDirections = document.getElementById('openDirections');
-    openDirections?.addEventListener('click',(e)=>{ e.preventDefault();
-      if(!navigator.geolocation){ return window.open('https://maps.google.com/?q=Fly%20Express%20Nag%20Hammadi','_blank'); }
-      navigator.geolocation.getCurrentPosition(pos=>{
-        const {latitude,longitude} = pos.coords; const dest = '26.048,32.222';
-        window.open(`https://www.google.com/maps/dir/${latitude},${longitude}/${dest}`,'_blank');
-      },()=> window.open('https://maps.google.com/?q=Fly%20Express%20Nag%20Hammadi','_blank'));
-    });
 
     // قائمة الألعاب المنسدلة
     const gamesToggle = document.getElementById('gamesToggle');
@@ -431,7 +413,7 @@
       return true;
     }
 
-    // إرسال طلبات الواتساب (الليست القديمة)
+    // إرسال طلبات الواتساب
     function sendSchool(){
       if(!ensureRequired(['schoolChild','schoolPhone','schoolFrom','schoolTo'])) return;
       const type  = document.getElementById('schoolType').value;
@@ -549,6 +531,28 @@ ${list}
     orderFab.addEventListener('click', openDrawer);
     orderOverlay.addEventListener('click', closeDrawer);
     orderClose.addEventListener('click', closeDrawer);
+
+    // ===== زر “طلباتك هنا” =====
+    const menuFab = document.getElementById('menuFab');
+    const menuPop = document.getElementById('menuPop');
+    const miFast  = document.getElementById('miFast');
+    const miMonthly = document.getElementById('miMonthly');
+
+    menuFab.addEventListener('click', ()=>{
+      const open = !menuPop.classList.contains('show');
+      menuPop.classList.toggle('show', open);
+      menuPop.setAttribute('aria-hidden', open ? 'false' : 'true');
+    });
+    document.addEventListener('click', (e)=>{
+      if(!menuFab.contains(e.target) && !menuPop.contains(e.target)){
+        menuPop.classList.remove('show'); menuPop.setAttribute('aria-hidden','true');
+      }
+    });
+    miFast.addEventListener('click', ()=>{ menuPop.classList.remove('show'); orderFab.click(); });
+    miMonthly.addEventListener('click', ()=>{
+      menuPop.classList.remove('show');
+      document.getElementById('monthly').scrollIntoView({behavior:'smooth', block:'start'});
+    });
 
     // عداد الزيارات
     const visits = +localStorage.getItem("visitsCount") || 0;
