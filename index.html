@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ar" dir="rtl" class="rgb-on">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -57,7 +57,7 @@
     .socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
     .fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
-    .wa{background:linear-gradient(90deg,#25D366,#ffd166))}
+    .wa{background:linear-gradient(90deg,#25D366,#ffd166)} /* تم تصحيح القوس هنا */
     .ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
     .tg{background:linear-gradient(90deg,#2b8cff,#27ae60)}
     .fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
@@ -92,30 +92,26 @@
     .menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
 
     /* ===== RGB القوية والمبهرة ===== */
-    /* طبقتين على كامل الصفحة */
     body.rgb-on::before,
     body.rgb-on::after{
       content:"";position:fixed;inset:-30%;
       background:conic-gradient(from 0deg at 50% 50%,
-        #ff004c, #ff7a00, #ffef00, #3dff00, #00ffd5, #007bff, #7b00ff, #ff00c8, #ff004c);
+        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
       pointer-events:none;mix-blend-mode:screen;border-radius:50%;
     }
     body.rgb-on::before{filter:blur(160px) saturate(160%);opacity:.35;animation:spin 18s linear infinite;}
     body.rgb-on::after{filter:blur(220px) saturate(180%);opacity:.28;animation:spinReverse 26s linear infinite;}
 
-    /* هالة حدود متحركة للكروت */
     body.rgb-on .card::before{
       content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:-1;
       background:conic-gradient(from 0deg at 50% 50%,
-        #ff004c, #ff7a00, #ffef00, #3dff00, #00ffd5, #007bff, #7b00ff, #ff00c8, #ff004c);
+        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
       filter:blur(20px);opacity:.35;animation:spin 8s linear infinite;
     }
-    /* توهج داخلي رقيق يبرز المحتوى */
     body.rgb-on .card::after{
       content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
       box-shadow:inset 0 0 60px rgba(255,255,255,.06);
     }
-    /* الزر الأصفر: دوران Hue + نبض */
     body.rgb-on .menu-fab{animation:hue 6s linear infinite, pulse 2.2s ease-in-out infinite;box-shadow:0 0 24px rgba(255,255,255,.35), 0 0 60px rgba(255,255,255,.18)}
     @keyframes spin{to{transform:rotate(360deg)}}
     @keyframes spinReverse{to{transform:rotate(-360deg)}}
@@ -125,7 +121,8 @@
     @media(max-width:640px){.grid3{grid-template-columns:1fr}.socials{grid-template-columns:1fr}}
   </style>
 </head>
-<body>
+
+<body class="rgb-on">
   <div class="container">
     <!-- الهيدر -->
     <div class="card header">
@@ -221,7 +218,6 @@
       <button class="drawer-close" data-close>&times;</button>
     </div>
     <div class="drawer-body">
-
       <!-- 1) توصيل ابني المدرسة -->
       <div class="order-card">
         <h3>🏫 توصيل ابني المدرسة <span class="order-badge">جديد</span></h3>
