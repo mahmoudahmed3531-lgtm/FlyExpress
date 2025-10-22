@@ -57,14 +57,14 @@
     .socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
     .fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
-    .wa{background:linear-gradient(90deg,#25D366,#ffd166)}
+    .wa{background:linear-gradient(90deg,#25D366,#ffd166)} /* تم تصحيح القوس هنا */
     .ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
     .tg{background:linear-gradient(90deg,#2b8cff,#27ae60)}
     .fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
 
     footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 
-    /* الأدراج */
+    /* ===== الأدراج (مشتركة) ===== */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9998}
     .overlay.show{display:block}
     .drawer{position:fixed;top:0;right:-420px;width:min(420px,92vw);height:100vh;z-index:9999;background:rgba(10,20,28,.96);color:#eaf1f6;border-left:1px solid rgba(255,255,255,.06);box-shadow:-20px 0 50px rgba(0,0,0,.45);transition:right .28s ease;display:flex;flex-direction:column}
@@ -84,24 +84,45 @@
     .order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8);color:#003b35}
     .order-badge{display:inline-flex;gap:6px;align-items:center;background:#0ea5e9;color:#001316;padding:4px 10px;border-radius:999px;font-weight:900;font-size:12px}
 
-    /* زر القائمة */
+    /* زر الأصفر + المنيو */
     .menu-fab{position:fixed;right:18px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;z-index:10000;cursor:pointer;border:0;box-shadow:0 0 20px rgba(255,255,255,.25)}
     .menu-pop{position:fixed;right:86px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:8px;display:none;z-index:10001;backdrop-filter:blur(8px)}
     .menu-pop.show{display:block}
     .menu-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;color:#001316;background:linear-gradient(90deg,#e7ffef,#c8ffd9);font-weight:900;cursor:pointer;margin:6px 0;white-space:nowrap}
     .menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
 
-    /* تلميح التشغيل */
-    .autoplay-hint{
-      position:fixed;left:50%;transform:translateX(-50%);
-      bottom:14px;background:rgba(255,255,255,.08);color:#fff;
-      border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);
-      padding:6px 10px;border-radius:10px;font-size:12px;z-index:10005;display:none
+    /* ===== RGB القوية والمبهرة ===== */
+    body.rgb-on::before,
+    body.rgb-on::after{
+      content:"";position:fixed;inset:-30%;
+      background:conic-gradient(from 0deg at 50% 50%,
+        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
+      pointer-events:none;mix-blend-mode:screen;border-radius:50%;
     }
+    body.rgb-on::before{filter:blur(160px) saturate(160%);opacity:.35;animation:spin 18s linear infinite;}
+    body.rgb-on::after{filter:blur(220px) saturate(180%);opacity:.28;animation:spinReverse 26s linear infinite;}
+
+    body.rgb-on .card::before{
+      content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:-1;
+      background:conic-gradient(from 0deg at 50% 50%,
+        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
+      filter:blur(20px);opacity:.35;animation:spin 8s linear infinite;
+    }
+    body.rgb-on .card::after{
+      content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      box-shadow:inset 0 0 60px rgba(255,255,255,.06);
+    }
+    body.rgb-on .menu-fab{animation:hue 6s linear infinite, pulse 2.2s ease-in-out infinite;box-shadow:0 0 24px rgba(255,255,255,.35), 0 0 60px rgba(255,255,255,.18)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes spinReverse{to{transform:rotate(-360deg)}}
+    @keyframes hue{to{filter:hue-rotate(360deg)}}
+    @keyframes pulse{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.06)}}
+
+    @media(max-width:640px){.grid3{grid-template-columns:1fr}.socials{grid-template-columns:1fr}}
   </style>
 </head>
 
-<body>
+<body class="rgb-on">
   <div class="container">
     <!-- الهيدر -->
     <div class="card header">
@@ -158,11 +179,21 @@
     <div class="card section">
       <h2>منصّات التواصل 🔗</h2>
       <div class="socials">
-        <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener"><span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener"><span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener"><span><i class="fa-brands fa-instagram"></i> إنستجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener"><span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener"><span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-instagram"></i> إنستجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
       </div>
     </div>
 
@@ -170,55 +201,162 @@
     <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
-  <!-- زر القائمة + المنيو -->
+  <!-- الزر الأصفر + المنيو -->
   <button class="menu-fab" id="menuFab" title="طلباتك هنا"><i class="fa-solid fa-ellipsis-vertical"></i></button>
   <div class="menu-pop" id="menuPop" role="menu" aria-hidden="true">
     <div class="menu-item" id="miFast"><i class="fa-solid fa-bolt"></i> طلب توصيل (سريع)</div>
     <div class="menu-item secondary" id="miMonthly"><i class="fa-solid fa-calendar-days"></i> جدول شهري</div>
   </div>
 
-  <!-- أوفرلاي -->
+  <!-- أوفرلاي موحد -->
   <div class="overlay" id="overlay"></div>
 
-  <!-- درج الطلبات السريعة (مختصر هنا لو الكود عندك جاهز؛ خليه كما في نسختك الأخيرة) -->
+  <!-- درج الطلبات السريعة -->
   <aside class="drawer" id="orderDrawer" dir="rtl" aria-label="درج الطلبات">
-    <div class="drawer-head"><div class="drawer-title">قائمة الطلبات</div><button class="drawer-close" data-close>&times;</button></div>
+    <div class="drawer-head">
+      <div class="drawer-title">قائمة الطلبات</div>
+      <button class="drawer-close" data-close>&times;</button>
+    </div>
     <div class="drawer-body">
-      <!-- ضيف نفس النماذج اللي كانت عندك بدون تغيير -->
+      <!-- 1) توصيل ابني المدرسة -->
+      <div class="order-card">
+        <h3>🏫 توصيل ابني المدرسة <span class="order-badge">جديد</span></h3>
+        <div class="order-row">
+          <select class="order-select" id="schoolType">
+            <option value="ذهاب فقط">ذهاب فقط</option>
+            <option value="ذهاب وعودة">ذهاب وعودة</option>
+          </select>
+          <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+          <input class="order-input" id="schoolFrom" placeholder="العنوان: من" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)" required>
+          <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
+        </div>
+      </div>
+
+      <!-- 2) توصيل أوردر / طرد -->
+      <div class="order-card">
+        <h3>📦 توصيل أوردر / طرد</h3>
+        <div class="order-row">
+          <select class="order-select" id="orderKind"><option value="أوردر">أوردر</option><option value="طرد">طرد</option></select>
+          <select class="order-select" id="orderAction"><option value="هنجيبه">هنجيبه</option><option value="هنوّصله">هنوّصله</option></select>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderFrom" placeholder="العنوان: من" required>
+          <input class="order-input" id="orderTo" placeholder="العنوان: إلى" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderName" placeholder="اسمك" required>
+          <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن/5 مساء)">
+          <input class="order-input" id="orderNote" placeholder="وصف المحتوى/ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
+        </div>
+      </div>
+
+      <!-- 3) طلبات السوق -->
+      <div class="order-card">
+        <h3>🛒 طلبات السوق</h3>
+        <div class="order-row single">
+          <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل" required></textarea>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketFrom" placeholder="من أي سوق/محل؟ (اختياري)">
+          <input class="order-input" id="marketTo" placeholder="عنوان التوصيل" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketName" placeholder="اسمك" required>
+          <input class="order-input" id="marketPhone" placeholder="رقم الموبايل" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketWhen" placeholder="الوقت المفضل">
+          <input class="order-input" id="marketNote" placeholder="ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendMarket()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearMarket()">مسح</button>
+        </div>
+      </div>
+
+      <!-- 4) توصيل طرد -->
+      <div class="order-card">
+        <h3>📮 توصيل طرد</h3>
+        <div class="order-row">
+          <select class="order-select" id="parcelAction"><option value="هنجيبه">هنجيبه</option><option value="هنوديه">هنوديه</option></select>
+          <input class="order-input" id="parcelName" placeholder="اسمك" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="parcelPhone" placeholder="رقم الموبايل" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+          <input class="order-input" id="parcelFrom" placeholder="العنوان: من" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="parcelTo" placeholder="العنوان: إلى" required>
+          <input class="order-input" id="parcelNote" placeholder="وصف الطرد/تعليمات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendParcel()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearParcel()">مسح</button>
+        </div>
+      </div>
+
     </div>
   </aside>
 
-  <!-- درج الجدول الشهري (مختصر) -->
+  <!-- درج الجدول الشهري -->
   <aside class="drawer" id="monthlyDrawer" dir="rtl" aria-label="الجدول الشهري">
-    <div class="drawer-head"><div class="drawer-title">📘 جدول توصيل الأبناء (شهري)</div><button class="drawer-close" data-close>&times;</button></div>
+    <div class="drawer-head">
+      <div class="drawer-title">📘 جدول توصيل الأبناء (شهري)</div>
+      <button class="drawer-close" data-close>&times;</button>
+    </div>
     <div class="drawer-body">
-      <!-- ضيف نفس الحقول اللي كانت عندك -->
+      <div class="order-row single" style="margin-bottom:10px;color:#b8c0c9">املأ البيانات وسيتم إرسالها على واتساب للإدارة.</div>
+      <div class="order-row">
+        <input class="order-input" id="pmName" placeholder="اسم ولي الأمر" required>
+        <input class="order-input" id="pmPhone" placeholder="رقم موبايل ولي الأمر" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="pmChildrenCount" placeholder="عدد الأبناء" inputmode="numeric" required>
+        <input class="order-input" id="pmStreet" placeholder="شارع كام (اسم/رقم)" required>
+      </div>
+      <div class="order-row">
+        <select class="order-select" id="pmDirection">
+          <option value="هتوصلهم وتجيبهم">هتوصلهم وتجيبهم</option>
+          <option value="هتوصلهم فقط">هتوصلهم فقط</option>
+          <option value="هتجيبهم فقط">هتجيبهم فقط</option>
+        </select>
+        <input class="order-input" id="pmLessonsPerWeek" placeholder="كم حصة في الأسبوع" inputmode="numeric" required>
+      </div>
+      <div class="order-row single">
+        <textarea class="order-textarea" id="pmLessonsTime" placeholder="ميعاد الحصص (مثال: سبت-اتنين-أربع 7:30 صباحًا)" required></textarea>
+      </div>
+      <div class="order-actions">
+        <button class="order-btn" id="sendMonthly">تأكيد وإرسال واتساب</button>
+        <button class="order-btn secondary" id="clearMonthly">مسح</button>
+      </div>
+      <div style="font-size:12px;color:#b8c0c9;margin-top:6px">لو عندك أكتر من شارع/أيام مختلفة اكتبهم في خانة المواعيد.</div>
     </div>
   </aside>
-
-  <!-- الصوت: mp3 مباشر من Vocaroo -->
-  <audio id="bgm" src="https://media1.vocaroo.com/mp3/1oelwoF9NuRN" preload="auto" loop playsinline></audio>
-  <div class="autoplay-hint" id="autoplayHint">لو الموسيقى ما اشتغلتش تلقائيًا، حرّك الشاشة أو انزل بالسّكرول مرة واحدة 🎵</div>
 
   <script>
-    // أساسيات
-    const overlay=document.getElementById('overlay');
-    const orderDrawer=document.getElementById('orderDrawer');
-    const monthlyDrawer=document.getElementById('monthlyDrawer');
+    // إعداد عام
+    const ADMIN_PHONE="201017908076";
+    const enc=s=>encodeURIComponent(s||"");
+    const waSend=txt=>window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank','noopener');
 
-    function openDrawer(el){ el.classList.add('open'); overlay.classList.add('show'); }
-    function closeAll(){ orderDrawer.classList.remove('open'); monthlyDrawer.classList.remove('open'); overlay.classList.remove('show'); }
-    overlay.addEventListener('click', closeAll);
-    document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAll));
-
-    const menuFab=document.getElementById('menuFab');
-    const menuPop=document.getElementById('menuPop');
-    document.addEventListener('click',(e)=>{ if(!menuFab.contains(e.target) && !menuPop.contains(e.target)) menuPop.classList.remove('show'); });
-    menuFab.addEventListener('click',(e)=>{ e.stopPropagation(); menuPop.classList.toggle('show'); });
-    document.getElementById('miFast').addEventListener('click',()=>{ menuPop.classList.remove('show'); openDrawer(orderDrawer); });
-    document.getElementById('miMonthly').addEventListener('click',()=>{ menuPop.classList.remove('show'); openDrawer(monthlyDrawer); });
-
-    // ألعاب
+    // ألعاب: فتح/غلق قائمة الألعاب
     const gamesToggle=document.getElementById('gamesToggle');
     const gamesMenu=document.getElementById('gamesMenu');
     gamesToggle.addEventListener('click',()=>{
@@ -226,52 +364,164 @@
       gamesToggle.setAttribute('aria-expanded',open?'true':'false');
       gamesMenu.setAttribute('aria-hidden',open?'false':'true');
     });
-
-    // الموسيقى التلقائية
-    const bgm = document.getElementById('bgm');
-    const hint = document.getElementById('autoplayHint');
-
-    bgm.volume = 0.0;
-    const targetVol = 0.35;
-
-    function fadeIn(){
-      const step = 0.03;
-      const iv = setInterval(()=>{
-        bgm.volume = Math.min(targetVol, bgm.volume + step);
-        if(bgm.volume >= targetVol) clearInterval(iv);
-      }, 150);
-    }
-
-    async function tryPlay(){
-      try{
-        await bgm.play();
-        hint.style.display='none';
-        fadeIn();
-        removeTriggers();
-      }catch(e){
-        hint.style.display='block';
-        addTriggers();
+    document.addEventListener('click',(e)=>{
+      if(!gamesToggle.contains(e.target) && !gamesMenu.contains(e.target)){
+        gamesMenu.classList.remove('show');
+        gamesToggle.setAttribute('aria-expanded','false');
+        gamesMenu.setAttribute('aria-hidden','true');
       }
+    });
+
+    // الأدراج المشتركة
+    const overlay=document.getElementById('overlay');
+    const orderDrawer=document.getElementById('orderDrawer');
+    const monthlyDrawer=document.getElementById('monthlyDrawer');
+
+    function openDrawer(el){ el.classList.add('open'); overlay.classList.add('show'); }
+    function closeAll(){ orderDrawer.classList.remove('open'); monthlyDrawer.classList.remove('open'); overlay.classList.remove('show'); }
+
+    overlay.addEventListener('click', closeAll);
+    document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAll));
+
+    // زر الأصفر + منيو
+    const menuFab=document.getElementById('menuFab');
+    const menuPop=document.getElementById('menuPop');
+    const miFast=document.getElementById('miFast');
+    const miMonthly=document.getElementById('miMonthly');
+
+    menuFab.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      const open=!menuPop.classList.contains('show');
+      menuPop.classList.toggle('show',open);
+      menuPop.setAttribute('aria-hidden',open?'false':'true');
+    });
+    document.addEventListener('click',(e)=>{
+      if(!menuFab.contains(e.target) && !menuPop.contains(e.target)){
+        menuPop.classList.remove('show');
+        menuPop.setAttribute('aria-hidden','true');
+      }
+    });
+    miFast.addEventListener('click',()=>{ menuPop.classList.remove('show'); openDrawer(orderDrawer); });
+    miMonthly.addEventListener('click',()=>{ menuPop.classList.remove('show'); openDrawer(monthlyDrawer); });
+
+    // فحص الحقول المطلوبة
+    function ensureRequired(ids){
+      for(const id of ids){
+        const el=document.getElementById(id);
+        if(el && !el.value.trim()){ el.focus(); alert('من فضلك أكمل الحقول المطلوبة'); return false; }
+      }
+      return true;
     }
 
-    function addTriggers(){
-      window.addEventListener('pointerdown', tryPlay, {once:true});
-      window.addEventListener('wheel', tryPlay, {once:true});
-      window.addEventListener('keydown', tryPlay, {once:true});
-      window.addEventListener('touchstart', tryPlay, {once:true});
-      window.addEventListener('scroll', tryPlay, {once:true});
+    // واتساب — الطلبات السريعة
+    function sendSchool(){
+      if(!ensureRequired(['schoolChild','schoolPhone','schoolFrom','schoolTo'])) return;
+      const t=document.getElementById('schoolType').value;
+      const child=document.getElementById('schoolChild').value;
+      const phone=document.getElementById('schoolPhone').value;
+      const from=document.getElementById('schoolFrom').value;
+      const to=document.getElementById('schoolTo').value;
+      const note=document.getElementById('schoolNote').value;
+      const text=`طلب توصيل مدرسة 🏫
+النوع: ${t}
+الطالب: ${child}
+ولي الأمر: ${phone}
+من: ${from}
+إلى: ${to}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
     }
-    function removeTriggers(){
-      window.removeEventListener('pointerdown', tryPlay);
-      window.removeEventListener('wheel', tryPlay);
-      window.removeEventListener('keydown', tryPlay);
-      window.removeEventListener('touchstart', tryPlay);
-      window.removeEventListener('scroll', tryPlay);
+    function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(id=>document.getElementById(id).value="");}
+
+    function sendOrder(){
+      if(!ensureRequired(['orderFrom','orderTo','orderName','orderPhone'])) return;
+      const kind=document.getElementById('orderKind').value;
+      const act=document.getElementById('orderAction').value;
+      const from=document.getElementById('orderFrom').value;
+      const to=document.getElementById('orderTo').value;
+      const name=document.getElementById('orderName').value;
+      const phone=document.getElementById('orderPhone').value;
+      const when=document.getElementById('orderWhen').value;
+      const note=document.getElementById('orderNote').value;
+      const text=`طلب ${kind} ${act} 📦
+الاسم: ${name} — ${phone}
+من: ${from}
+إلى: ${to}
+الوقت: ${when||'أقرب وقت'}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
     }
+    function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen','orderNote'].forEach(id=>document.getElementById(id).value="");}
 
-    window.addEventListener('load', tryPlay);
+    function sendMarket(){
+      if(!ensureRequired(['marketList','marketTo','marketName','marketPhone'])) return;
+      const list=document.getElementById('marketList').value;
+      const from=document.getElementById('marketFrom').value;
+      const to=document.getElementById('marketTo').value;
+      const name=document.getElementById('marketName').value;
+      const phone=document.getElementById('marketPhone').value;
+      const when=document.getElementById('marketWhen').value;
+      const note=document.getElementById('marketNote').value;
+      const text=`طلبات سوق 🛒
+العميل: ${name} — ${phone}
+القائمة:
+${list}
 
-    // عداد زيارات بسيط
+من: ${from||'—'}
+إلى: ${to}
+الوقت: ${when||'أقرب وقت'}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone','marketWhen','marketNote'].forEach(id=>document.getElementById(id).value="");}
+
+    function sendParcel(){
+      if(!ensureRequired(['parcelName','parcelPhone','parcelFrom','parcelTo'])) return;
+      const act=document.getElementById('parcelAction').value;
+      const from=document.getElementById('parcelFrom').value;
+      const to=document.getElementById('parcelTo').value;
+      const name=document.getElementById('parcelName').value;
+      const phone=document.getElementById('parcelPhone').value;
+      const note=document.getElementById('parcelNote').value;
+      const text=`توصيل طرد (${act}) 📮
+العميل: ${name} — ${phone}
+من: ${from}
+إلى: ${to}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
+
+    // واتساب — الجدول الشهري
+    document.getElementById('sendMonthly').addEventListener('click',()=>{
+      if(!ensureRequired(['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'])) return;
+      const name=document.getElementById('pmName').value;
+      const phone=document.getElementById('pmPhone').value;
+      const count=document.getElementById('pmChildrenCount').value;
+      const street=document.getElementById('pmStreet').value;
+      const dir=document.getElementById('pmDirection').value;
+      const perW=document.getElementById('pmLessonsPerWeek').value;
+      const times=document.getElementById('pmLessonsTime').value;
+      const text=`جدول توصيل الأبناء (شهري) 📘
+ولي الأمر: ${name} — ${phone}
+عدد الأبناء: ${count}
+الشارع: ${street}
+الاتجاه: ${dir}
+عدد الحصص/الأسبوع: ${perW}
+مواعيد الحصص: ${times}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    });
+    document.getElementById('clearMonthly').addEventListener('click',()=>{
+      ['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'].forEach(id=>document.getElementById(id).value="");
+      document.getElementById('pmDirection').selectedIndex=0;
+    });
+
+    // عداد الزيارات
     const visits=+localStorage.getItem("visitsCount")||0;
     localStorage.setItem("visitsCount",visits+1);
     document.getElementById("visits").textContent=`👀 عدد زياراتك من هذا الجهاز: ${visits+1}`;
