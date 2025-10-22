@@ -7,7 +7,6 @@
 
   <!-- SEO + Social -->
   <meta name="description" content="Fly Express: دليفري سريع في نجع حمادي — اطلب مشوارك أو انضم لفريق السائقين. خصم خاص داخل المدينة، واتساب فوري.">
-  <link rel="canonical" href="https://flyexpress.example/">
   <meta name="theme-color" content="#0a1622">
   <meta property="og:title" content="Fly Express — أسرع توصيل في نجع حمادي">
   <meta property="og:description" content="اطلب دليفري فوري أو انضم لأسطول السائقين. خصومات داخل نجع حمادي.">
@@ -17,8 +16,6 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
@@ -27,8 +24,7 @@
     :root{
       --glass: rgba(255,255,255,.06);
       --card: rgba(255,255,255,.08);
-      --text:#eaf1f6; --muted:#b8c0c9; --brand:#21f5b3;
-      --radius:22px;
+      --text:#eaf1f6; --muted:#b8c0c9;
       font-family:'Cairo',system-ui,sans-serif;
     }
     *{box-sizing:border-box}
@@ -55,7 +51,7 @@
     .section{margin-top:18px}
     .section h2{margin:0 0 10px;font-size:24px;font-weight:900}
 
-    /* روابط + ألعاب */
+    /* ألعاب */
     .games{margin-top:10px}
     .games .trigger{width:100%; border:1px solid rgba(255,255,255,.08); background:linear-gradient(90deg,#2bb7ff,#4b8bff); color:#fff; padding:14px 16px; border-radius:18px; font-weight:900; display:flex; align-items:center; justify-content:space-between; cursor:pointer}
     .games .menu{display:none; gap:10px; margin-top:10px}
@@ -95,17 +91,14 @@
 
     footer{margin:18px 0 6px;text-align:center;color:#b8c0c9}
 
-    /* === CTA Row (بدون الاتجاهات) === */
+    /* CTA (اتصال + واتساب فقط) */
     .ctas{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
     .cta{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;text-decoration:none;color:#001316;font-weight:900}
     .cta i{margin-inline-start:8px}
     .cta.tel{background:linear-gradient(90deg,#e7ffef,#c8ffd9)}
     .cta.wa{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
-    .geo-hint{font-size:12px;color:#b8c0c9;margin-top:6px}
 
-    /* ===== زر ودرج الطلبات ===== */
-    .order-fab{position:fixed; right:18px; top:50%; transform:translateY(-50%); width:58px;height:58px;border-radius:50%; background:#22c55e; display:flex;align-items:center;justify-content:center; font-size:22px; box-shadow:0 14px 28px rgba(0,0,0,.35); z-index:9999; cursor:pointer}
-    .order-fab i{color:#fff}
+    /* ===== الدرج الجانبي للطلبات ===== */
     .order-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9998}
     .order-overlay.show{display:block}
     .order-drawer{position:fixed; top:0; right:-420px; width:min(420px,92vw); height:100vh; z-index:9999; background:rgba(10,20,28,.96); color:#eaf1f6; border-left:1px solid rgba(255,255,255,.06); box-shadow:-20px 0 50px rgba(0,0,0,.45); transition:right .28s ease; display:flex; flex-direction:column}
@@ -126,9 +119,9 @@
     .order-hint{font-size:12px; color:#b8c0c9; margin-top:6px}
     .order-badge{display:inline-flex; gap:6px; align-items:center; background:#0ea5e9; color:#001316; padding:4px 10px; border-radius:999px; font-weight:900; font-size:12px}
 
-    /* === زر منيو “طلباتك هنا” === */
-    .menu-fab{position:fixed; right:18px; top:calc(50% + 72px); transform:translateY(-50%); width:58px;height:58px;border-radius:50%; background:#f59e0b; display:flex;align-items:center;justify-content:center; font-size:22px; color:#fff; box-shadow:0 14px 28px rgba(0,0,0,.35); z-index:10000; cursor:pointer; border:0}
-    .menu-pop{position:fixed; right:86px; top:calc(50% + 72px); transform:translateY(-50%); background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:8px; display:none; z-index:10001; backdrop-filter:blur(8px)}
+    /* === زر الأصفر “طلباتك هنا” + المنيو === */
+    .menu-fab{position:fixed; right:18px; top:50%; transform:translateY(-50%); width:58px;height:58px;border-radius:50%; background:#f59e0b; display:flex;align-items:center;justify-content:center; font-size:22px; color:#fff; box-shadow:0 14px 28px rgba(0,0,0,.35); z-index:10000; cursor:pointer; border:0}
+    .menu-pop{position:fixed; right:86px; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:8px; display:none; z-index:10001; backdrop-filter:blur(8px)}
     .menu-pop.show{display:block}
     .menu-item{display:flex;align-items:center; gap:8px; padding:10px 12px; border-radius:12px; color:#001316; background:linear-gradient(90deg,#e7ffef,#c8ffd9); font-weight:900; cursor:pointer; margin:6px 0; white-space:nowrap}
     .menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
@@ -195,7 +188,7 @@
       <div class="stat"><div class="v" id="areas">12</div><div class="k">مناطق مغطاة</div></div>
     </div>
 
-    <!-- ✨ جدول توصيل الأبناء (شهري) -->
+    <!-- جدول توصيل الأبناء (شهري) -->
     <div class="card section" id="monthly">
       <h2>📘 جدول توصيل الأبناء (شهري)</h2>
       <div class="form" id="monthlyForm">
@@ -257,17 +250,14 @@
     <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
-  <!-- زر القائمة الجانبية (القديم) -->
-  <button class="order-fab" id="orderFab" title="قائمة الطلبات"><i class="fa-solid fa-list-ul"></i></button>
-
-  <!-- زر منيو “طلباتك هنا” -->
+  <!-- زر الأصفر “طلباتك هنا” -->
   <button class="menu-fab" id="menuFab" title="طلباتك هنا"><i class="fa-solid fa-ellipsis-vertical"></i></button>
   <div class="menu-pop" id="menuPop" role="menu" aria-hidden="true">
     <div class="menu-item" id="miFast"><i class="fa-solid fa-bolt"></i> طلب توصيل (سريع)</div>
     <div class="menu-item secondary" id="miMonthly"><i class="fa-solid fa-calendar-days"></i> جدول شهري</div>
   </div>
 
-  <!-- Overlay + Drawer -->
+  <!-- Overlay + Drawer (موجود لكن بدون زر أخضر) -->
   <div class="order-overlay" id="orderOverlay"></div>
   <aside class="order-drawer" id="orderDrawer" dir="rtl" aria-label="درج الطلبات">
     <div class="order-head">
@@ -356,7 +346,7 @@
         </div>
       </div>
 
-      <!-- 4) توصيل طرد (مخصص) -->
+      <!-- 4) توصيل طرد -->
       <div class="order-card">
         <h3>📮 توصيل طرد</h3>
         <div class="order-row">
@@ -388,7 +378,16 @@
     const enc = s => encodeURIComponent(s||"");
     const waSend = txt => window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank','noopener');
 
-    // قائمة الألعاب المنسدلة
+    // drower helpers
+    const orderDrawer = document.getElementById('orderDrawer');
+    const orderOverlay= document.getElementById('orderOverlay');
+    const orderClose  = document.getElementById('orderClose');
+    function openDrawer(){ orderDrawer.classList.add('open'); orderOverlay.classList.add('show'); }
+    function closeDrawer(){ orderDrawer.classList.remove('open'); orderOverlay.classList.remove('show'); }
+    orderOverlay.addEventListener('click', closeDrawer);
+    orderClose.addEventListener('click', closeDrawer);
+
+    // ألعاب
     const gamesToggle = document.getElementById('gamesToggle');
     const gamesMenu = document.getElementById('gamesMenu');
     gamesToggle.addEventListener('click', ()=>{
@@ -404,7 +403,7 @@
       }
     });
 
-    // تحقق بسيط للحقول المطلوبة
+    // تحقق بسيط
     function ensureRequired(ids){
       for(const id of ids){
         const el = document.getElementById(id);
@@ -413,7 +412,7 @@
       return true;
     }
 
-    // إرسال طلبات الواتساب
+    // إرسال الواتساب
     function sendSchool(){
       if(!ensureRequired(['schoolChild','schoolPhone','schoolFrom','schoolTo'])) return;
       const type  = document.getElementById('schoolType').value;
@@ -496,7 +495,7 @@ ${list}
     }
     function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
 
-    // ✨ إرسال جدول التوصيل الشهري
+    // ✨ جدول شهري
     document.getElementById('sendMonthly').addEventListener('click', ()=>{
       if(!ensureRequired(['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'])) return;
       const name   = document.getElementById('pmName').value;
@@ -521,17 +520,6 @@ ${list}
       document.getElementById('pmDirection').selectedIndex = 0;
     });
 
-    // فتح/غلق درج الطلبات
-    const orderFab    = document.getElementById('orderFab');
-    const orderDrawer = document.getElementById('orderDrawer');
-    const orderOverlay= document.getElementById('orderOverlay');
-    const orderClose  = document.getElementById('orderClose');
-    function openDrawer(){ orderDrawer.classList.add('open'); orderOverlay.classList.add('show'); }
-    function closeDrawer(){ orderDrawer.classList.remove('open'); orderOverlay.classList.remove('show'); }
-    orderFab.addEventListener('click', openDrawer);
-    orderOverlay.addEventListener('click', closeDrawer);
-    orderClose.addEventListener('click', closeDrawer);
-
     // ===== زر “طلباتك هنا” =====
     const menuFab = document.getElementById('menuFab');
     const menuPop = document.getElementById('menuPop');
@@ -548,7 +536,7 @@ ${list}
         menuPop.classList.remove('show'); menuPop.setAttribute('aria-hidden','true');
       }
     });
-    miFast.addEventListener('click', ()=>{ menuPop.classList.remove('show'); orderFab.click(); });
+    miFast.addEventListener('click', ()=>{ menuPop.classList.remove('show'); openDrawer(); });
     miMonthly.addEventListener('click', ()=>{
       menuPop.classList.remove('show');
       document.getElementById('monthly').scrollIntoView({behavior:'smooth', block:'start'});
@@ -558,20 +546,6 @@ ${list}
     const visits = +localStorage.getItem("visitsCount") || 0;
     localStorage.setItem("visitsCount", visits + 1);
     document.getElementById("visits").textContent = `👀 عدد زياراتك من هذا الجهاز: ${visits + 1}`;
-  </script>
-
-  <!-- JSON-LD: نشاط محلي -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Fly Express",
-    "image": "https://i.ibb.co/B5MQWCWF/fly-express.jpg",
-    "telephone": "+20 101 790 8076",
-    "address": {"@type":"PostalAddress","addressLocality":"Nag Hammadi","addressRegion":"Qena","addressCountry":"EG"},
-    "areaServed": "Nag Hammadi",
-    "url": "https://flyexpress.example/"
-  }
   </script>
 </body>
 </html>
