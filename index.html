@@ -57,7 +57,7 @@
     .socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
     .fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
-    .wa{background:linear-gradient(90deg,#25D366,#ffd166)} /* تم تصحيح القوس هنا */
+    .wa{background:linear-gradient(90deg,#25D366,#ffd166)}
     .ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
     .tg{background:linear-gradient(90deg,#2b8cff,#27ae60)}
     .fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
@@ -91,38 +91,22 @@
     .menu-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;color:#001316;background:linear-gradient(90deg,#e7ffef,#c8ffd9);font-weight:900;cursor:pointer;margin:6px 0;white-space:nowrap}
     .menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
 
-    /* ===== RGB القوية والمبهرة ===== */
-    body.rgb-on::before,
-    body.rgb-on::after{
-      content:"";position:fixed;inset:-30%;
-      background:conic-gradient(from 0deg at 50% 50%,
-        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
-      pointer-events:none;mix-blend-mode:screen;border-radius:50%;
+    @media(max-width:640px){
+      .grid3{grid-template-columns:1fr}
+      .socials{grid-template-columns:1fr}
     }
-    body.rgb-on::before{filter:blur(160px) saturate(160%);opacity:.35;animation:spin 18s linear infinite;}
-    body.rgb-on::after{filter:blur(220px) saturate(180%);opacity:.28;animation:spinReverse 26s linear infinite;}
 
-    body.rgb-on .card::before{
-      content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:-1;
-      background:conic-gradient(from 0deg at 50% 50%,
-        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
-      filter:blur(20px);opacity:.35;animation:spin 8s linear infinite;
+    /* إشعار صغير يظهر لو منع المتصفح التشغيل */
+    .autoplay-hint{
+      position:fixed;left:50%;transform:translateX(-50%);
+      bottom:14px;background:rgba(255,255,255,.08);color:#fff;
+      border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);
+      padding:6px 10px;border-radius:10px;font-size:12px;z-index:10005;display:none
     }
-    body.rgb-on .card::after{
-      content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-      box-shadow:inset 0 0 60px rgba(255,255,255,.06);
-    }
-    body.rgb-on .menu-fab{animation:hue 6s linear infinite, pulse 2.2s ease-in-out infinite;box-shadow:0 0 24px rgba(255,255,255,.35), 0 0 60px rgba(255,255,255,.18)}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes spinReverse{to{transform:rotate(-360deg)}}
-    @keyframes hue{to{filter:hue-rotate(360deg)}}
-    @keyframes pulse{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.06)}}
-
-    @media(max-width:640px){.grid3{grid-template-columns:1fr}.socials{grid-template-columns:1fr}}
   </style>
 </head>
 
-<body class="rgb-on">
+<body>
   <div class="container">
     <!-- الهيدر -->
     <div class="card header">
@@ -201,7 +185,7 @@
     <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
-  <!-- الزر الأصفر + المنيو -->
+  <!-- زر القائمة (ثابت) -->
   <button class="menu-fab" id="menuFab" title="طلباتك هنا"><i class="fa-solid fa-ellipsis-vertical"></i></button>
   <div class="menu-pop" id="menuPop" role="menu" aria-hidden="true">
     <div class="menu-item" id="miFast"><i class="fa-solid fa-bolt"></i> طلب توصيل (سريع)</div>
@@ -311,7 +295,6 @@
           <button class="order-btn secondary" onclick="clearParcel()">مسح</button>
         </div>
       </div>
-
     </div>
   </aside>
 
@@ -350,8 +333,18 @@
     </div>
   </aside>
 
+  <!-- عنصر الصوت (مخفي) + مصادر متعددة لنفس المقطع -->
+  <audio id="bgm" preload="auto" loop playsinline>
+    <!-- لو عندك لينك التحميل المباشر من Vocaroo حطه هنا كأول مصدر -->
+    <source src="https://media.vocaroo.com/mp3/1oelwoF9NuRN" type="audio/mpeg">
+    <source src="https://media1.vocaroo.com/mp3/1oelwoF9NuRN" type="audio/mpeg">
+    <!-- آخر حل: صفحة المشاركة (مش مثالي للصوت المباشر) -->
+    <source src="https://voca.ro/1oelwoF9NuRN" type="audio/mpeg">
+  </audio>
+  <div class="autoplay-hint" id="autoplayHint">لو الموسيقى ما اشتغلتش تلقائيًا، حرّك الشاشة أو انزل بالسّكرول مرة واحدة 🎵</div>
+
   <script>
-    // إعداد عام
+    // ===== إعدادات أساسية =====
     const ADMIN_PHONE="201017908076";
     const enc=s=>encodeURIComponent(s||"");
     const waSend=txt=>window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank','noopener');
@@ -413,7 +406,7 @@
       return true;
     }
 
-    // واتساب — الطلبات السريعة
+    // واتساب — الطلبات
     function sendSchool(){
       if(!ensureRequired(['schoolChild','schoolPhone','schoolFrom','schoolTo'])) return;
       const t=document.getElementById('schoolType').value;
@@ -496,30 +489,57 @@ ${list}
     }
     function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
 
-    // واتساب — الجدول الشهري
-    document.getElementById('sendMonthly').addEventListener('click',()=>{
-      if(!ensureRequired(['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'])) return;
-      const name=document.getElementById('pmName').value;
-      const phone=document.getElementById('pmPhone').value;
-      const count=document.getElementById('pmChildrenCount').value;
-      const street=document.getElementById('pmStreet').value;
-      const dir=document.getElementById('pmDirection').value;
-      const perW=document.getElementById('pmLessonsPerWeek').value;
-      const times=document.getElementById('pmLessonsTime').value;
-      const text=`جدول توصيل الأبناء (شهري) 📘
-ولي الأمر: ${name} — ${phone}
-عدد الأبناء: ${count}
-الشارع: ${street}
-الاتجاه: ${dir}
-عدد الحصص/الأسبوع: ${perW}
-مواعيد الحصص: ${times}
-— أُرسل من موقع Fly Express`;
-      waSend(text);
+    // ===== موسيقى تلقائية بدون أزرار =====
+    const bgm = document.getElementById('bgm');
+    const hint = document.getElementById('autoplayHint');
+
+    // مستوى الصوت + تلاشي دخول بسيط
+    bgm.volume = 0.0;
+    const targetVol = 0.35;
+    function fadeIn(){
+      const step = 0.03;
+      const iv = setInterval(()=>{
+        bgm.volume = Math.min(targetVol, bgm.volume + step);
+        if(bgm.volume >= targetVol) clearInterval(iv);
+      }, 150);
+    }
+
+    window.addEventListener('load', () => {
+      tryPlay();
+      setTimeout(() => { if (bgm.paused) hint.style.display = 'block'; }, 800);
     });
-    document.getElementById('clearMonthly').addEventListener('click',()=>{
-      ['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'].forEach(id=>document.getElementById(id).value="");
-      document.getElementById('pmDirection').selectedIndex=0;
-    });
+
+    async function tryPlay(){
+      try{
+        await bgm.play();
+        hint.style.display = 'none';
+        fadeIn();
+      }catch(e){
+        const oncePlay = async () => {
+          try{
+            await bgm.play();
+            hint.style.display = 'none';
+            fadeIn();
+            removeTriggers();
+          }catch(_){}
+        };
+        function addTriggers(){
+          window.addEventListener('pointerdown', oncePlay, {once:true});
+          window.addEventListener('wheel', oncePlay, {once:true});
+          window.addEventListener('keydown', oncePlay, {once:true});
+          window.addEventListener('touchstart', oncePlay, {once:true});
+          window.addEventListener('scroll', oncePlay, {once:true});
+        }
+        function removeTriggers(){
+          window.removeEventListener('pointerdown', oncePlay);
+          window.removeEventListener('wheel', oncePlay);
+          window.removeEventListener('keydown', oncePlay);
+          window.removeEventListener('touchstart', oncePlay);
+          window.removeEventListener('scroll', oncePlay);
+        }
+        addTriggers();
+      }
+    }
 
     // عداد الزيارات
     const visits=+localStorage.getItem("visitsCount")||0;
