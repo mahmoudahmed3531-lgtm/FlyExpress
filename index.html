@@ -25,29 +25,7 @@
     .container{max-width:940px;margin:0 auto;position:relative;z-index:2}
     .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.28);position:relative;overflow:hidden}
     .header{display:flex;gap:16px;align-items:center}
-
-    /* ===== اللوجو: ألوان تمشي جوّا الصورة + توهج ===== */
-    .logo-wrap{position:relative;width:84px;height:84px;border-radius:16px;overflow:hidden;flex:0 0 auto}
-    .logo{
-      width:100%;height:100%;object-fit:cover;display:block;
-      filter:hue-rotate(0deg) saturate(115%);
-      animation:logoHue 8s linear infinite;
-    }
-    .logo-wrap::after{
-      content:"";position:absolute;inset:-20%;
-      background:conic-gradient(from 0deg at 50% 50%,
-        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
-      mix-blend-mode:color; /* تمويه لون يتحرك جوّا الصورة */
-      animation:spin 10s linear infinite;
-      opacity:.55;pointer-events:none;
-    }
-    .logo-wrap::before{
-      content:"";position:absolute;inset:0;border-radius:16px;
-      box-shadow:inset 0 0 18px rgba(255,255,255,.14),0 0 24px rgba(255,255,255,.18);
-      pointer-events:none;
-    }
-    @keyframes logoHue{to{filter:hue-rotate(360deg) saturate(115%)}}
-
+    .logo{width:84px;height:84px;border-radius:16px;object-fit:cover;border:1px solid rgba(255,255,255,.1)}
     .brand h1{margin:0;font-weight:900;font-size:38px;line-height:1}
     .brand p{margin:6px 0 0;color:#cfe2ee}
 
@@ -75,28 +53,14 @@
     .stat .v{font-size:28px;font-weight:900}
     .stat .k{color:var(--muted);font-size:13px}
 
-    /* ===== أزرار التواصل: RGB بالكامل ===== */
+    /* سوشيال */
     .socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .sbtn{
-      display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);text-decoration:none;color:#fff;position:relative;overflow:hidden;
-      background:conic-gradient(from 0deg at 50% 50%,
-        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
-      animation:spin 7s linear infinite;
-      box-shadow:0 0 24px rgba(0,0,0,.2), inset 0 0 24px rgba(255,255,255,.06);
-    }
-    .sbtn::after{
-      content:"";position:absolute;inset:0;border-radius:18px;
-      background:radial-gradient(120% 60% at 20% 20%,rgba(255,255,255,.22),transparent 40%);
-      mix-blend-mode:screen;pointer-events:none;
-      animation:glint 2.8s ease-in-out infinite;
-    }
-    .sbtn i{filter:drop-shadow(0 0 6px rgba(255,255,255,.35))}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes glint{
-      0%,100%{opacity:.25;transform:translateX(-8%)}
-      50%{opacity:.55;transform:translateX(8%)}
-    }
+    .sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
+    .fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
+    .wa{background:linear-gradient(90deg,#25D366,#ffd166)} /* تم تصحيح القوس هنا */
+    .ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
+    .tg{background:linear-gradient(90deg,#2b8cff,#27ae60)}
+    .fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
 
     footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 
@@ -127,17 +91,42 @@
     .menu-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;color:#001316;background:linear-gradient(90deg,#e7ffef,#c8ffd9);font-weight:900;cursor:pointer;margin:6px 0;white-space:nowrap}
     .menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
 
+    /* ===== RGB القوية والمبهرة ===== */
+    body.rgb-on::before,
+    body.rgb-on::after{
+      content:"";position:fixed;inset:-30%;
+      background:conic-gradient(from 0deg at 50% 50%,
+        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
+      pointer-events:none;mix-blend-mode:screen;border-radius:50%;
+    }
+    body.rgb-on::before{filter:blur(160px) saturate(160%);opacity:.35;animation:spin 18s linear infinite;}
+    body.rgb-on::after{filter:blur(220px) saturate(180%);opacity:.28;animation:spinReverse 26s linear infinite;}
+
+    body.rgb-on .card::before{
+      content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:-1;
+      background:conic-gradient(from 0deg at 50% 50%,
+        #ff004c,#ff7a00,#ffef00,#3dff00,#00ffd5,#007bff,#7b00ff,#ff00c8,#ff004c);
+      filter:blur(20px);opacity:.35;animation:spin 8s linear infinite;
+    }
+    body.rgb-on .card::after{
+      content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      box-shadow:inset 0 0 60px rgba(255,255,255,.06);
+    }
+    body.rgb-on .menu-fab{animation:hue 6s linear infinite, pulse 2.2s ease-in-out infinite;box-shadow:0 0 24px rgba(255,255,255,.35), 0 0 60px rgba(255,255,255,.18)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes spinReverse{to{transform:rotate(-360deg)}}
+    @keyframes hue{to{filter:hue-rotate(360deg)}}
+    @keyframes pulse{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.06)}}
+
     @media(max-width:640px){.grid3{grid-template-columns:1fr}.socials{grid-template-columns:1fr}}
   </style>
 </head>
 
-<body>
+<body class="rgb-on">
   <div class="container">
     <!-- الهيدر -->
     <div class="card header">
-      <div class="logo-wrap">
-        <img class="logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
-      </div>
+      <img class="logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="brand">
         <h1>Fly Express</h1>
         <p>التوصيل الأسرع في نجع حمادي</p>
@@ -190,19 +179,19 @@
     <div class="card section">
       <h2>منصّات التواصل 🔗</h2>
       <div class="socials">
-        <a class="sbtn" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
+        <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
           <span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
         </a>
-        <a class="sbtn" href="https://wa.me/201017908076" target="_blank" rel="noopener">
+        <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener">
           <span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
         </a>
-        <a class="sbtn" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
+        <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
           <span><i class="fa-brands fa-instagram"></i> إنستجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
         </a>
-        <a class="sbtn" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
+        <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
           <span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
         </a>
-        <a class="sbtn" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
+        <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
           <span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
         </a>
       </div>
