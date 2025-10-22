@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Fly Express — أسرع توصيل في نجع حمادي</title>
 
-  <meta name="description" content="Fly Express: دليفري سريع في نجع حمادي — اطلب مشوارك أو انضم لفريق السائقين. واتساب فوري.">
+  <meta name="description" content="Fly Express: دليفري سريع في نجع حمادي — اطلب مشوارك فورًا عبر واتساب.">
   <meta name="theme-color" content="#0a1622">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -64,7 +64,7 @@
 
     footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 
-    /* ===== الدرج الجانبي ===== */
+    /* ===== الأدراج (مشتركة) ===== */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9998}
     .overlay.show{display:block}
     .drawer{position:fixed;top:0;right:-420px;width:min(420px,92vw);height:100vh;z-index:9999;background:rgba(10,20,28,.96);color:#eaf1f6;border-left:1px solid rgba(255,255,255,.06);box-shadow:-20px 0 50px rgba(0,0,0,.45);transition:right .28s ease;display:flex;flex-direction:column}
@@ -84,7 +84,7 @@
     .order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8);color:#003b35}
     .order-badge{display:inline-flex;gap:6px;align-items:center;background:#0ea5e9;color:#001316;padding:4px 10px;border-radius:999px;font-weight:900;font-size:12px}
 
-    /* زر الأصفر */
+    /* زر الأصفر + المنيو */
     .menu-fab{position:fixed;right:18px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 14px 28px rgba(0,0,0,.35);z-index:10000;cursor:pointer;border:0}
     .menu-pop{position:fixed;right:86px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:8px;display:none;z-index:10001;backdrop-filter:blur(8px)}
     .menu-pop.show{display:block}
@@ -96,6 +96,7 @@
 </head>
 <body>
   <div class="container">
+    <!-- الهيدر -->
     <div class="card header">
       <img class="logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="brand">
@@ -104,52 +105,399 @@
       </div>
     </div>
 
+    <!-- بانر بدون خصم -->
     <div class="banner card">
       <div><b>🚀 أسرع خدمة توصيل في نجع حمادي.</b></div>
       <small>خدمة يومية طوال الأسبوع</small>
     </div>
 
+    <!-- قسم الألعاب -->
     <div class="card section">
       <h2>العب و اكسب توصيلة مجانية 🎮</h2>
       <div class="games">
-        <button id="gamesToggle" class="trigger"><span>اضغط لاختيار لعبة</span><i class="fa-solid fa-caret-down"></i></button>
-        <div id="gamesMenu" class="menu">
-          <a class="g1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank"><span><i class="fa-solid fa-bullseye"></i> لعبة الطرود</span></a>
-          <a class="g2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank"><span><i class="fa-solid fa-motorcycle"></i> لعبة الموتسيكل</span></a>
-          <a class="g3" href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank"><span><i class="fa-regular fa-face-smile-beam"></i> لعبة الذاكرة</span></a>
-          <a class="g4" href="https://mahmoudahmed3531-lgtm.github.io/Super-mario-/" target="_blank"><span><i class="fa-solid fa-circle-question"></i> لعبة الأسئلة</span></a>
+        <button id="gamesToggle" class="trigger" aria-expanded="false" aria-controls="gamesMenu">
+          <span>اضغط لاختيار لعبة</span>
+          <i class="fa-solid fa-caret-down"></i>
+        </button>
+        <div id="gamesMenu" class="menu" aria-hidden="true">
+          <a class="g1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
+            <span><i class="fa-solid fa-bullseye"></i> لعبة الطرود — Whack-a-Parcel</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+          <a class="g2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
+            <span><i class="fa-solid fa-motorcycle"></i> لعبة الموتسيكل — Fly Rider</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+          <a class="g3" href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank" rel="noopener">
+            <span><i class="fa-regular fa-face-smile-beam"></i> لعبة الذاكرة — Fly Rush</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+          <a class="g4" href="https://mahmoudahmed3531-lgtm.github.io/Super-mario-/" target="_blank" rel="noopener">
+            <span><i class="fa-solid fa-circle-question"></i> لعبة الأسئلة — من سيربح التوصيلات</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
         </div>
       </div>
     </div>
 
-    <div class="grid3">
-      <div class="stat"><div class="v">125</div><div class="k">طلبات هذا الأسبوع</div></div>
-      <div class="stat"><div class="v">19</div><div class="k">عملاء جدد</div></div>
-      <div class="stat"><div class="v">12</div><div class="k">مناطق مغطاة</div></div>
+    <!-- إحصائيات -->
+    <div class="grid3" aria-label="إحصائيات أسبوعية">
+      <div class="stat"><div class="v" id="orders">125</div><div class="k">طلبات هذا الأسبوع</div></div>
+      <div class="stat"><div class="v" id="newUsers">19</div><div class="k">عملاء جدد</div></div>
+      <div class="stat"><div class="v" id="areas">12</div><div class="k">مناطق مغطاة</div></div>
     </div>
 
+    <!-- منصات التواصل -->
     <div class="card section">
-      <h2>🔗 منصّات التواصل</h2>
+      <h2>منصّات التواصل 🔗</h2>
       <div class="socials">
-        <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944" target="_blank"><span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span></a>
-        <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank"><span><i class="fa-brands fa-whatsapp"></i> واتساب</span></a>
-        <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank"><span><i class="fa-brands fa-instagram"></i> إنستجرام</span></a>
+        <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-instagram"></i> إنستجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
+          <span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
       </div>
     </div>
 
+    <p id="visits" style="text-align:center;margin:8px 0;color:#b8c0c9;"></p>
     <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
 
-  <!-- زر الطلبات -->
-  <button class="menu-fab" id="menuFab"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-  <div class="menu-pop" id="menuPop">
+  <!-- الزر الأصفر + المنيو -->
+  <button class="menu-fab" id="menuFab" title="طلباتك هنا"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+  <div class="menu-pop" id="menuPop" role="menu" aria-hidden="true">
     <div class="menu-item" id="miFast"><i class="fa-solid fa-bolt"></i> طلب توصيل (سريع)</div>
     <div class="menu-item secondary" id="miMonthly"><i class="fa-solid fa-calendar-days"></i> جدول شهري</div>
   </div>
 
+  <!-- أوفرلاي موحد -->
   <div class="overlay" id="overlay"></div>
 
-  <!-- Drawer (طلب سريع + جدول شهري) -->
-  <!-- تقدر تسيب نفس الدرجات القديمة هنا لو حبيت أرجعها -->
+  <!-- درج الطلبات السريعة -->
+  <aside class="drawer" id="orderDrawer" dir="rtl" aria-label="درج الطلبات">
+    <div class="drawer-head">
+      <div class="drawer-title">قائمة الطلبات</div>
+      <button class="drawer-close" data-close>&times;</button>
+    </div>
+    <div class="drawer-body">
+
+      <!-- 1) توصيل ابني المدرسة -->
+      <div class="order-card">
+        <h3>🏫 توصيل ابني المدرسة <span class="order-badge">جديد</span></h3>
+        <div class="order-row">
+          <select class="order-select" id="schoolType">
+            <option value="ذهاب فقط">ذهاب فقط</option>
+            <option value="ذهاب وعودة">ذهاب وعودة</option>
+          </select>
+          <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+          <input class="order-input" id="schoolFrom" placeholder="العنوان: من" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)" required>
+          <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
+        </div>
+      </div>
+
+      <!-- 2) توصيل أوردر / طرد -->
+      <div class="order-card">
+        <h3>📦 توصيل أوردر / طرد</h3>
+        <div class="order-row">
+          <select class="order-select" id="orderKind"><option value="أوردر">أوردر</option><option value="طرد">طرد</option></select>
+          <select class="order-select" id="orderAction"><option value="هنجيبه">هنجيبه</option><option value="هنوّصله">هنوّصله</option></select>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderFrom" placeholder="العنوان: من" required>
+          <input class="order-input" id="orderTo" placeholder="العنوان: إلى" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderName" placeholder="اسمك" required>
+          <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن/5 مساء)">
+          <input class="order-input" id="orderNote" placeholder="وصف المحتوى/ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
+        </div>
+      </div>
+
+      <!-- 3) طلبات السوق -->
+      <div class="order-card">
+        <h3>🛒 طلبات السوق</h3>
+        <div class="order-row single">
+          <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل" required></textarea>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketFrom" placeholder="من أي سوق/محل؟ (اختياري)">
+          <input class="order-input" id="marketTo" placeholder="عنوان التوصيل" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketName" placeholder="اسمك" required>
+          <input class="order-input" id="marketPhone" placeholder="رقم الموبايل" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="marketWhen" placeholder="الوقت المفضل">
+          <input class="order-input" id="marketNote" placeholder="ملاحظات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendMarket()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearMarket()">مسح</button>
+        </div>
+      </div>
+
+      <!-- 4) توصيل طرد -->
+      <div class="order-card">
+        <h3>📮 توصيل طرد</h3>
+        <div class="order-row">
+          <select class="order-select" id="parcelAction"><option value="هنجيبه">هنجيبه</option><option value="هنوديه">هنوديه</option></select>
+          <input class="order-input" id="parcelName" placeholder="اسمك" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="parcelPhone" placeholder="رقم الموبايل" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+          <input class="order-input" id="parcelFrom" placeholder="العنوان: من" required>
+        </div>
+        <div class="order-row">
+          <input class="order-input" id="parcelTo" placeholder="العنوان: إلى" required>
+          <input class="order-input" id="parcelNote" placeholder="وصف الطرد/تعليمات (اختياري)">
+        </div>
+        <div class="order-actions">
+          <button class="order-btn" onclick="sendParcel()">تأكيد وإرسال على واتساب</button>
+          <button class="order-btn secondary" onclick="clearParcel()">مسح</button>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- درج الجدول الشهري -->
+  <aside class="drawer" id="monthlyDrawer" dir="rtl" aria-label="الجدول الشهري">
+    <div class="drawer-head">
+      <div class="drawer-title">📘 جدول توصيل الأبناء (شهري)</div>
+      <button class="drawer-close" data-close>&times;</button>
+    </div>
+    <div class="drawer-body">
+      <div class="order-row single" style="margin-bottom:10px;color:#b8c0c9">املأ البيانات وسيتم إرسالها على واتساب للإدارة.</div>
+      <div class="order-row">
+        <input class="order-input" id="pmName" placeholder="اسم ولي الأمر" required>
+        <input class="order-input" id="pmPhone" placeholder="رقم موبايل ولي الأمر" inputmode="tel" pattern="^(\+?20)?1[0-9]{9}$" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="pmChildrenCount" placeholder="عدد الأبناء" inputmode="numeric" required>
+        <input class="order-input" id="pmStreet" placeholder="شارع كام (اسم/رقم)" required>
+      </div>
+      <div class="order-row">
+        <select class="order-select" id="pmDirection">
+          <option value="هتوصلهم وتجيبهم">هتوصلهم وتجيبهم</option>
+          <option value="هتوصلهم فقط">هتوصلهم فقط</option>
+          <option value="هتجيبهم فقط">هتجيبهم فقط</option>
+        </select>
+        <input class="order-input" id="pmLessonsPerWeek" placeholder="كم حصة في الأسبوع" inputmode="numeric" required>
+      </div>
+      <div class="order-row single">
+        <textarea class="order-textarea" id="pmLessonsTime" placeholder="ميعاد الحصص (مثال: سبت-اتنين-أربع 7:30 صباحًا)" required></textarea>
+      </div>
+      <div class="order-actions">
+        <button class="order-btn" id="sendMonthly">تأكيد وإرسال واتساب</button>
+        <button class="order-btn secondary" id="clearMonthly">مسح</button>
+      </div>
+      <div style="font-size:12px;color:#b8c0c9;margin-top:6px">لو عندك أكتر من شارع/أيام مختلفة اكتبهم في خانة المواعيد.</div>
+    </div>
+  </aside>
+
+  <script>
+    // إعداد عام
+    const ADMIN_PHONE="201017908076";
+    const enc=s=>encodeURIComponent(s||"");
+    const waSend=txt=>window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank','noopener');
+
+    // ألعاب: فتح/غلق قائمة الألعاب
+    const gamesToggle=document.getElementById('gamesToggle');
+    const gamesMenu=document.getElementById('gamesMenu');
+    gamesToggle.addEventListener('click',()=>{
+      const open=gamesMenu.classList.toggle('show');
+      gamesToggle.setAttribute('aria-expanded',open?'true':'false');
+      gamesMenu.setAttribute('aria-hidden',open?'false':'true');
+    });
+    document.addEventListener('click',(e)=>{
+      if(!gamesToggle.contains(e.target) && !gamesMenu.contains(e.target)){
+        gamesMenu.classList.remove('show');
+        gamesToggle.setAttribute('aria-expanded','false');
+        gamesMenu.setAttribute('aria-hidden','true');
+      }
+    });
+
+    // الأدراج المشتركة
+    const overlay=document.getElementById('overlay');
+    const orderDrawer=document.getElementById('orderDrawer');
+    const monthlyDrawer=document.getElementById('monthlyDrawer');
+
+    function openDrawer(el){ el.classList.add('open'); overlay.classList.add('show'); }
+    function closeAll(){ orderDrawer.classList.remove('open'); monthlyDrawer.classList.remove('open'); overlay.classList.remove('show'); }
+
+    overlay.addEventListener('click', closeAll);
+    document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAll));
+
+    // زر الأصفر + منيو
+    const menuFab=document.getElementById('menuFab');
+    const menuPop=document.getElementById('menuPop');
+    const miFast=document.getElementById('miFast');
+    const miMonthly=document.getElementById('miMonthly');
+
+    menuFab.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      const open=!menuPop.classList.contains('show');
+      menuPop.classList.toggle('show',open);
+      menuPop.setAttribute('aria-hidden',open?'false':'true');
+    });
+    document.addEventListener('click',(e)=>{
+      if(!menuFab.contains(e.target) && !menuPop.contains(e.target)){
+        menuPop.classList.remove('show');
+        menuPop.setAttribute('aria-hidden','true');
+      }
+    });
+    miFast.addEventListener('click',()=>{ menuPop.classList.remove('show'); openDrawer(orderDrawer); });
+    miMonthly.addEventListener('click',()=>{ menuPop.classList.remove('show'); openDrawer(monthlyDrawer); });
+
+    // فحص الحقول المطلوبة
+    function ensureRequired(ids){
+      for(const id of ids){
+        const el=document.getElementById(id);
+        if(el && !el.value.trim()){ el.focus(); alert('من فضلك أكمل الحقول المطلوبة'); return false; }
+      }
+      return true;
+    }
+
+    // واتساب — الطلبات السريعة
+    function sendSchool(){
+      if(!ensureRequired(['schoolChild','schoolPhone','schoolFrom','schoolTo'])) return;
+      const t=document.getElementById('schoolType').value;
+      const child=document.getElementById('schoolChild').value;
+      const phone=document.getElementById('schoolPhone').value;
+      const from=document.getElementById('schoolFrom').value;
+      const to=document.getElementById('schoolTo').value;
+      const note=document.getElementById('schoolNote').value;
+      const text=`طلب توصيل مدرسة 🏫
+النوع: ${t}
+الطالب: ${child}
+ولي الأمر: ${phone}
+من: ${from}
+إلى: ${to}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(id=>document.getElementById(id).value="");}
+
+    function sendOrder(){
+      if(!ensureRequired(['orderFrom','orderTo','orderName','orderPhone'])) return;
+      const kind=document.getElementById('orderKind').value;
+      const act=document.getElementById('orderAction').value;
+      const from=document.getElementById('orderFrom').value;
+      const to=document.getElementById('orderTo').value;
+      const name=document.getElementById('orderName').value;
+      const phone=document.getElementById('orderPhone').value;
+      const when=document.getElementById('orderWhen').value;
+      const note=document.getElementById('orderNote').value;
+      const text=`طلب ${kind} ${act} 📦
+الاسم: ${name} — ${phone}
+من: ${from}
+إلى: ${to}
+الوقت: ${when||'أقرب وقت'}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen','orderNote'].forEach(id=>document.getElementById(id).value="");}
+
+    function sendMarket(){
+      if(!ensureRequired(['marketList','marketTo','marketName','marketPhone'])) return;
+      const list=document.getElementById('marketList').value;
+      const from=document.getElementById('marketFrom').value;
+      const to=document.getElementById('marketTo').value;
+      const name=document.getElementById('marketName').value;
+      const phone=document.getElementById('marketPhone').value;
+      const when=document.getElementById('marketWhen').value;
+      const note=document.getElementById('marketNote').value;
+      const text=`طلبات سوق 🛒
+العميل: ${name} — ${phone}
+القائمة:
+${list}
+
+من: ${from||'—'}
+إلى: ${to}
+الوقت: ${when||'أقرب وقت'}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone','marketWhen','marketNote'].forEach(id=>document.getElementById(id).value="");}
+
+    function sendParcel(){
+      if(!ensureRequired(['parcelName','parcelPhone','parcelFrom','parcelTo'])) return;
+      const act=document.getElementById('parcelAction').value;
+      const from=document.getElementById('parcelFrom').value;
+      const to=document.getElementById('parcelTo').value;
+      const name=document.getElementById('parcelName').value;
+      const phone=document.getElementById('parcelPhone').value;
+      const note=document.getElementById('parcelNote').value;
+      const text=`توصيل طرد (${act}) 📮
+العميل: ${name} — ${phone}
+من: ${from}
+إلى: ${to}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    }
+    function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
+
+    // واتساب — الجدول الشهري
+    document.getElementById('sendMonthly').addEventListener('click',()=>{
+      if(!ensureRequired(['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'])) return;
+      const name=document.getElementById('pmName').value;
+      const phone=document.getElementById('pmPhone').value;
+      const count=document.getElementById('pmChildrenCount').value;
+      const street=document.getElementById('pmStreet').value;
+      const dir=document.getElementById('pmDirection').value;
+      const perW=document.getElementById('pmLessonsPerWeek').value;
+      const times=document.getElementById('pmLessonsTime').value;
+      const text=`جدول توصيل الأبناء (شهري) 📘
+ولي الأمر: ${name} — ${phone}
+عدد الأبناء: ${count}
+الشارع: ${street}
+الاتجاه: ${dir}
+عدد الحصص/الأسبوع: ${perW}
+مواعيد الحصص: ${times}
+— أُرسل من موقع Fly Express`;
+      waSend(text);
+    });
+    document.getElementById('clearMonthly').addEventListener('click',()=>{
+      ['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'].forEach(id=>document.getElementById(id).value="");
+      document.getElementById('pmDirection').selectedIndex=0;
+    });
+
+    // عداد الزيارات
+    const visits=+localStorage.getItem("visitsCount")||0;
+    localStorage.setItem("visitsCount",visits+1);
+    document.getElementById("visits").textContent=`👀 عدد زياراتك من هذا الجهاز: ${visits+1}`;
+  </script>
 </body>
 </html>
