@@ -12,99 +12,25 @@
   <link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 
   <style>
-    :root{--text:#eaf1f6;--muted:#b8c0c9;font-family:'Cairo',system-ui,sans-serif}
-    *{box-sizing:border-box}
-    body{
-      margin:0;color:var(--text);
-      background:
-        radial-gradient(1100px 600px at 10% 10%, #0d1b2a 0%, transparent 65%),
-        radial-gradient(1100px 600px at 90% 90%, #001219 0%, transparent 65%),
-        conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
-      min-height:100svh;padding:22px;position:relative;overflow-x:hidden;
-    }
-    .container{max-width:940px;margin:0 auto;position:relative;z-index:2}
-    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.28);position:relative;overflow:hidden}
-    .section{margin-top:18px}
-    .section h2{margin:0 0 10px;font-size:24px;font-weight:900}
-
-    .header{display:flex;gap:16px;align-items:center}
-    .logo{width:84px;height:84px;border-radius:16px;object-fit:cover;border:1px solid rgba(255,255,255,.1)}
-    .brand h1{margin:0;font-weight:900;font-size:38px;line-height:1}
-    .brand p{margin:6px 0 0;color:#cfe2ee}
-
-    .banner{margin:16px 0;padding:14px 18px;border-radius:18px;background:linear-gradient(90deg,#00d27a,#00a8ff);display:flex;gap:12px;align-items:center;justify-content:space-between}
-    .banner b{font-size:18px}
-    .banner small{opacity:.9}
-
-    /* ألعاب */
-    .games{margin-top:10px}
-    .games .trigger{width:100%;border:1px solid rgba(255,255,255,.08);background:linear-gradient(90deg,#2bb7ff,#4b8bff);color:#fff;padding:14px 16px;border-radius:18px;font-weight:900;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-    .games .menu{display:none;gap:10px;margin-top:10px}
-    .games .menu.show{display:grid}
-    .games .menu a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:16px;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.08)}
-    .g1{background:linear-gradient(90deg,#7b2fff,#ff2ea6)}
-    .g2{background:linear-gradient(90deg,#00d27a,#00a8ff)}
-    .g3{background:linear-gradient(90deg,#ff8ad6,#9a7bff)}
-    .g4{background:linear-gradient(90deg,#22d3ee,#34d399)}
-
-    /* منصّات التواصل */
-    .socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
-    .fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
-    .wa{background:linear-gradient(90deg,#25D366,#ffd166)}
-    .ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
-    .tg{background:linear-gradient(90deg,#2b8cff,#27ae60)}
-    .fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
-
-    footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
-
-    /* الأدراج */
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9998}
-    .overlay.show{display:block}
-    .drawer{position:fixed;top:0;right:-420px;width:min(420px,92vw);height:100vh;z-index:9999;background:rgba(10,20,28,.96);color:#eaf1f6;border-left:1px solid rgba(255,255,255,.06);box-shadow:-20px 0 50px rgba(0,0,0,.45);transition:right .28s ease;display:flex;flex-direction:column}
-    .drawer.open{right:0}
-    .drawer-head{padding:16px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
-    .drawer-title{font-weight:900;font-size:20px}
-    .drawer-close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
-    .drawer-body{padding:14px;overflow:auto}
-
-    .order-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;margin-bottom:12px}
-    .order-card h3{margin:0 0 8px;font-size:16px}
-    .order-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .order-row.single{grid-template-columns:1fr}
-    .order-input,.order-select,.order-textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:14px}
-    .order-textarea{min-height:68px;resize:vertical}
-    .order-actions{display:flex;gap:8px;margin-top:10px}
-    .order-btn{flex:1;border:0;cursor:pointer;padding:10px 14px;border-radius:999px;font-weight:900;color:#001316;background:linear-gradient(90deg,#00ffaa,#00a8ff)}
-    .order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8);color:#003b35}
-
-    /* زر القائمة */
-    .menu-fab{position:fixed;right:18px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;z-index:10000;cursor:pointer;border:0;box-shadow:0 0 20px rgba(255,255,255,.25)}
-    .menu-pop{position:fixed;right:86px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:8px;display:none;z-index:10001;backdrop-filter:blur(8px)}
-    .menu-pop.show{display:block}
-    .menu-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;color:#001316;background:linear-gradient(90deg,#e7ffef,#c8ffd9);font-weight:900;cursor:pointer;margin:6px 0;white-space:nowrap}
-    .menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
-
-    /* تلميح التشغيل */
-    .autoplay-hint{
-      position:fixed;left:50%;transform:translateX(-50%);
-      bottom:14px;background:rgba(255,255,255,.08);color:#fff;
-      border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);
-      padding:6px 10px;border-radius:10px;font-size:12px;z-index:10005;display:none
-    }
-
-    /* ======= تقييم الخدمة (نجوم + تعليقات) ======= */
-    .rate-wrap{display:flex;align-items:center;gap:8px}
-    .star{
-      font-size:28px;cursor:pointer;transition:transform .12s ease; color:#777;
-    }
-    .star.filled{color:#ffd166;text-shadow:0 0 10px rgba(255,209,102,.45)}
-    .star:hover{transform:scale(1.1)}
-    .review-item{
-      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-      border-radius:14px;padding:12px
-    }
-    .review-item .meta{font-size:12px;color:#b8c0c9;margin-bottom:6px}
+    body{margin:0;background:#00111a;color:#eaf1f6;font-family:'Cairo',sans-serif;min-height:100vh;padding:20px;}
+    .container{max-width:900px;margin:auto}
+    .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:18px;border-radius:18px;margin:12px 0}
+    .header{display:flex;align-items:center;gap:14px}
+    .header img{width:80px;height:80px;border-radius:14px}
+    .header h1{margin:0;font-size:32px}
+    .banner{background:linear-gradient(90deg,#00d27a,#00a8ff);padding:12px 16px;border-radius:18px;color:#fff;margin-top:14px}
+    h2{margin:8px 0 12px}
+    button{cursor:pointer}
+    .stars span{font-size:28px;color:#999;cursor:pointer;transition:.2s}
+    .stars span.active{color:#ffcc00;transform:scale(1.2)}
+    .feedbacks{margin-top:10px;max-height:250px;overflow:auto}
+    .feedback{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:10px;border-radius:10px;margin-bottom:8px}
+    .feedback strong{color:#00ffaa}
+    .popup-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center}
+    .popup{background:#0a1a25;border-radius:18px;padding:20px;max-width:400px;width:90%;max-height:80vh;overflow:auto;box-shadow:0 0 25px rgba(0,0,0,.5)}
+    .popup h3{text-align:center}
+    .popup button{background:linear-gradient(90deg,#00d27a,#00a8ff);color:#001316;border:0;padding:10px 16px;border-radius:10px;margin-top:10px;width:100%;font-weight:900}
+    .popup-close{background:transparent;color:#fff;font-size:22px;border:0;position:absolute;top:10px;right:14px;cursor:pointer}
   </style>
 </head>
 
@@ -112,8 +38,8 @@
   <div class="container">
     <!-- الهيدر -->
     <div class="card header">
-      <img class="logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
-      <div class="brand">
+      <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
+      <div>
         <h1>Fly Express</h1>
         <p>التوصيل الأسرع في نجع حمادي</p>
       </div>
@@ -121,251 +47,86 @@
 
     <!-- بانر -->
     <div class="banner card">
-      <div><b>🚀 أسرع خدمة توصيل في نجع حمادي.</b></div>
-      <small>خدمة يومية طوال الأسبوع</small>
+      <b>🚀 أسرع خدمة توصيل في نجع حمادي.</b> <br> خدمة يومية طوال الأسبوع
     </div>
 
-    <!-- الألعاب -->
-    <div class="card section">
-      <h2>العب و اكسب توصيلة مجانية 🎮</h2>
-      <div class="games">
-        <button id="gamesToggle" class="trigger" aria-expanded="false" aria-controls="gamesMenu">
-          <span>اضغط لاختيار لعبة</span>
-          <i class="fa-solid fa-caret-down"></i>
-        </button>
-        <div id="gamesMenu" class="menu" aria-hidden="true">
-          <a class="g1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
-            <span><i class="fa-solid fa-bullseye"></i> لعبة الطرود — Whack-a-Parcel</span>
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          </a>
-          <a class="g2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
-            <span><i class="fa-solid fa-motorcycle"></i> لعبة الموتسيكل — Fly Rider</span>
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          </a>
-          <a class="g3" href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank" rel="noopener">
-            <span><i class="fa-regular fa-face-smile-beam"></i> لعبة الذاكرة — Fly Rush</span>
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          </a>
-          <a class="g4" href="https://mahmoudahmed3531-lgtm.github.io/Super-mario-/" target="_blank" rel="noopener">
-            <span><i class="fa-solid fa-circle-question"></i> لعبة الأسئلة — من سيربح التوصيلات</span>
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          </a>
-        </div>
+    <!-- تقييم الخدمة -->
+    <div class="card">
+      <h2>⭐ قيم خدمتنا</h2>
+      <div class="stars" id="stars">
+        <span data-val="1">★</span>
+        <span data-val="2">★</span>
+        <span data-val="3">★</span>
+        <span data-val="4">★</span>
+        <span data-val="5">★</span>
+      </div>
+      <input id="name" placeholder="اسمك (اختياري)" style="width:100%;margin:8px 0;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff">
+      <textarea id="comment" placeholder="اكتب رأيك في الخدمة..." style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;min-height:80px"></textarea>
+      <button id="submit" style="width:100%;margin-top:10px;background:linear-gradient(90deg,#00ffaa,#00a8ff);border:0;border-radius:999px;padding:12px;font-weight:900;color:#001316">إرسال التقييم</button>
+      <button id="showAll" style="width:100%;margin-top:10px;background:linear-gradient(90deg,#d4e4ff,#bfffd8);border:0;border-radius:999px;padding:12px;font-weight:900;color:#001316">عرض كل التقييمات</button>
+      <div class="feedbacks" id="feedbacks"></div>
+    </div>
+
+    <!-- Popup عرض التقييمات -->
+    <div class="popup-bg" id="popupBg">
+      <div class="popup">
+        <button class="popup-close" id="popupClose">&times;</button>
+        <h3>كل التقييمات 🗒️</h3>
+        <div id="allFeedbacks"></div>
       </div>
     </div>
 
-    <!-- ======= تقييم الخدمة (بديل الإحصائيات) ======= -->
-    <div class="card section" id="ratingCard">
-      <h2>قيِّم خدمتنا ✨</h2>
-      <div class="rate-wrap" aria-label="اختر التقييم">
-        <i class="fa-solid fa-star star" data-v="1"></i>
-        <i class="fa-solid fa-star star" data-v="2"></i>
-        <i class="fa-solid fa-star star" data-v="3"></i>
-        <i class="fa-solid fa-star star" data-v="4"></i>
-        <i class="fa-solid fa-star star" data-v="5"></i>
-        <span id="rateLabel" style="margin-right:8px;color:#b8c0c9">اختر عدد النجوم</span>
-      </div>
-      <div class="order-row" style="margin-top:10px">
-        <input class="order-input" id="revName" placeholder="اسمك (اختياري)">
-        <input class="order-input" id="revPhone" placeholder="رقم الموبايل (اختياري)">
-      </div>
-      <div class="order-row single" style="margin-top:8px">
-        <textarea class="order-textarea" id="revText" placeholder="اكتب رأيك/تجربتك معانا (مطلوب)"></textarea>
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" id="sendReview"><i class="fa-brands fa-whatsapp"></i> إرسال التقييم واتساب</button>
-        <button class="order-btn secondary" id="clearReview">مسح</button>
-      </div>
-
-      <div style="margin-top:14px;color:#b8c0c9">آخر الآراء</div>
-      <div id="reviewsList" class="order-row single" style="margin-top:6px;gap:10px"></div>
-    </div>
-
-    <!-- منصّات التواصل -->
-    <div class="card section">
+    <!-- منصات التواصل -->
+    <div class="card">
       <h2>منصّات التواصل 🔗</h2>
-      <div class="socials">
-        <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
-          <span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener">
-          <span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
-          <span><i class="fa-brands fa-instagram"></i> إنستجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
-          <span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
-          <span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-      </div>
+      <a href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank">📘 صفحة فيسبوك</a><br>
+      <a href="https://wa.me/201017908076" target="_blank">💬 واتساب</a><br>
+      <a href="https://www.instagram.com/habis_namla/" target="_blank">📸 إنستجرام</a>
     </div>
 
-    <p id="visits" style="text-align:center;margin:8px 0;color:#b8c0c9;"></p>
-    <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
+    <footer style="text-align:center;margin:18px 0;color:#b8c0c9">© Fly Express — أسرع توصيل في نجع حمادي</footer>
   </div>
-
-  <!-- زر القائمة + المنيو (الطلبات السريعة / الشهري) -->
-  <button class="menu-fab" id="menuFab" title="طلباتك هنا"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-  <div class="menu-pop" id="menuPop" role="menu" aria-hidden="true">
-    <div class="menu-item" id="miFast"><i class="fa-solid fa-bolt"></i> طلب توصيل (سريع)</div>
-    <div class="menu-item secondary" id="miMonthly"><i class="fa-solid fa-calendar-days"></i> جدول شهري</div>
-  </div>
-  <div class="overlay" id="overlay"></div>
-
-  <!-- درج الطلبات السريعة (اختصرته؛ خليه زي آخر نسخة عندك) -->
-  <aside class="drawer" id="orderDrawer" dir="rtl" aria-label="درج الطلبات">
-    <div class="drawer-head"><div class="drawer-title">قائمة الطلبات</div><button class="drawer-close" data-close>&times;</button></div>
-    <div class="drawer-body">
-      <!-- نماذج الطلبات هنا بدون تغيير -->
-    </div>
-  </aside>
-
-  <!-- درج الجدول الشهري (اختصرته؛ خليه زي آخر نسخة عندك) -->
-  <aside class="drawer" id="monthlyDrawer" dir="rtl" aria-label="الجدول الشهري">
-    <div class="drawer-head"><div class="drawer-title">📘 جدول توصيل الأبناء (شهري)</div><button class="drawer-close" data-close>&times;</button></div>
-    <div class="drawer-body">
-      <!-- حقول الجدول الشهري هنا -->
-    </div>
-  </aside>
-
-  <!-- الصوت: mp3 مباشر -->
-  <audio id="bgm" src="https://media1.vocaroo.com/mp3/1oelwoF9NuRN" preload="auto" loop playsinline></audio>
-  <div class="autoplay-hint" id="autoplayHint">لو الموسيقى ما اشتغلتش تلقائيًا، حرّك الشاشة أو انزل بالسّكرول مرة واحدة 🎵</div>
 
   <script>
-    // إعدادات أساسية
-    const ADMIN_PHONE="201017908076";
-    const enc=s=>encodeURIComponent(s||"");
-    const waSend=txt=>window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank','noopener');
-
-    // القائمة الجانبية
-    const overlay=document.getElementById('overlay');
-    const orderDrawer=document.getElementById('orderDrawer');
-    const monthlyDrawer=document.getElementById('monthlyDrawer');
-    function openDrawer(el){ el.classList.add('open'); overlay.classList.add('show'); }
-    function closeAll(){ orderDrawer.classList.remove('open'); monthlyDrawer.classList.remove('open'); overlay.classList.remove('show'); }
-    overlay.addEventListener('click', closeAll);
-    document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAll));
-    const menuFab=document.getElementById('menuFab');
-    const menuPop=document.getElementById('menuPop');
-    document.addEventListener('click',(e)=>{ if(!menuFab.contains(e.target) && !menuPop.contains(e.target)) menuPop.classList.remove('show'); });
-    menuFab.addEventListener('click',(e)=>{ e.stopPropagation(); menuPop.classList.toggle('show'); });
-    document.getElementById('miFast').addEventListener('click',()=>{ menuPop.classList.remove('show'); openDrawer(orderDrawer); });
-    document.getElementById('miMonthly').addEventListener('click',()=>{ menuPop.classList.remove('show'); openDrawer(monthlyDrawer); });
-
-    // ألعاب
-    const gamesToggle=document.getElementById('gamesToggle');
-    const gamesMenu=document.getElementById('gamesMenu');
-    gamesToggle.addEventListener('click',()=>{
-      const open=gamesMenu.classList.toggle('show');
-      gamesToggle.setAttribute('aria-expanded',open?'true':'false');
-      gamesMenu.setAttribute('aria-hidden',open?'false':'true');
-    });
-    document.addEventListener('click',(e)=>{
-      if(!gamesToggle.contains(e.target) && !gamesMenu.contains(e.target)){
-        gamesMenu.classList.remove('show');
-        gamesToggle.setAttribute('aria-expanded','false');
-        gamesMenu.setAttribute('aria-hidden','true');
-      }
-    });
-
-    // ===== تقييم الخدمة =====
-    const stars=[...document.querySelectorAll('.star')];
-    const rateLabel=document.getElementById('rateLabel');
+    const stars=document.querySelectorAll('#stars span');
     let rating=0;
+    stars.forEach(s=>s.addEventListener('click',()=>{
+      rating=s.dataset.val;
+      stars.forEach(st=>st.classList.toggle('active',st.dataset.val<=rating));
+    }));
 
-    function paintStars(val){
-      stars.forEach(s=>s.classList.toggle('filled', Number(s.dataset.v) <= val));
-      rateLabel.textContent = val ? `تقييمك: ${val}/5` : 'اختر عدد النجوم';
+    const submit=document.getElementById('submit');
+    const nameInput=document.getElementById('name');
+    const commentInput=document.getElementById('comment');
+    const feedbacks=document.getElementById('feedbacks');
+    const popupBg=document.getElementById('popupBg');
+    const popupClose=document.getElementById('popupClose');
+    const allFeedbacks=document.getElementById('allFeedbacks');
+    const showAll=document.getElementById('showAll');
+
+    function loadFeedbacks(){
+      const data=JSON.parse(localStorage.getItem('feedbackList')||'[]');
+      feedbacks.innerHTML=data.slice(-3).reverse().map(f=>`<div class="feedback"><strong>${f.name||'زائر'}</strong> (${f.rate}⭐): ${f.comment}</div>`).join('')||'<p>لا توجد تقييمات بعد.</p>';
+      allFeedbacks.innerHTML=data.reverse().map(f=>`<div class="feedback"><strong>${f.name||'زائر'}</strong> (${f.rate}⭐): ${f.comment}</div>`).join('')||'<p>لا توجد تقييمات بعد.</p>';
     }
-    stars.forEach(s=>{
-      s.addEventListener('mouseenter',()=>paintStars(Number(s.dataset.v)));
-      s.addEventListener('mouseleave',()=>paintStars(rating));
-      s.addEventListener('click',()=>{ rating=Number(s.dataset.v); paintStars(rating); });
-    });
 
-    const REV_KEY='fx_reviews';
-    const reviewsList=document.getElementById('reviewsList');
-    function loadReviews(){
-      const arr=JSON.parse(localStorage.getItem(REV_KEY)||'[]');
-      reviewsList.innerHTML='';
-      arr.slice(-3).reverse().forEach(r=>{
-        const box=document.createElement('div');
-        box.className='review-item';
-        const stars='★'.repeat(r.rating) + '☆'.repeat(5-r.rating);
-        const name=r.name?.trim()? r.name : 'عميل';
-        const when=new Date(r.ts).toLocaleDateString('ar-EG');
-        box.innerHTML=`<div class="meta">${name} • ${when} • ${stars}</div><div>${r.text}</div>`;
-        reviewsList.appendChild(box);
-      });
-      if(!reviewsList.childNodes.length){
-        reviewsList.innerHTML='<div class="review-item"><div class="meta">لسه مفيش آراء</div><div>كن أول واحد يقيّم تجربتك معانا ✨</div></div>';
-      }
-    }
-    loadReviews();
+    submit.onclick=()=>{
+      const name=nameInput.value.trim();
+      const comment=commentInput.value.trim();
+      if(!rating||!comment){alert('من فضلك اختر تقييم واكتب تعليق.');return;}
+      const list=JSON.parse(localStorage.getItem('feedbackList')||'[]');
+      list.push({name,comment,rate:rating,date:new Date().toLocaleString()});
+      localStorage.setItem('feedbackList',JSON.stringify(list));
+      nameInput.value='';commentInput.value='';rating=0;
+      stars.forEach(st=>st.classList.remove('active'));
+      loadFeedbacks();
+      alert('✅ تم إضافة تقييمك بنجاح!');
+    };
 
-    document.getElementById('sendReview').addEventListener('click',()=>{
-      const name=document.getElementById('revName').value;
-      const phone=document.getElementById('revPhone').value;
-      const text=document.getElementById('revText').value.trim();
-      if(!rating){ alert('من فضلك اختر التقييم بالنجوم'); return; }
-      if(!text){ alert('اكتب رأيك في خانة التعليق'); return; }
-
-      // خزّن محليًا
-      const arr=JSON.parse(localStorage.getItem(REV_KEY)||'[]');
-      arr.push({name,phone,text,rating,ts:Date.now()});
-      localStorage.setItem(REV_KEY, JSON.stringify(arr));
-      loadReviews();
-
-      // ابعت واتساب للإدارة
-      const msg=`تقييم خدمة Fly Express ⭐
-الاسم: ${name||'—'} ${phone?(' — '+phone):''}
-التقييم: ${rating}/5
-التعليق:
-${text}
-— أُرسل من الموقع`;
-      waSend(msg);
-    });
-
-    document.getElementById('clearReview').addEventListener('click',()=>{
-      ['revName','revPhone','revText'].forEach(id=>document.getElementById(id).value='');
-      rating=0; paintStars(0);
-    });
-
-    // ===== الموسيقى التلقائية =====
-    const bgm=document.getElementById('bgm');
-    const hint=document.getElementById('autoplayHint');
-    bgm.volume=0.0; const targetVol=0.35;
-    function fadeIn(){
-      const iv=setInterval(()=>{ bgm.volume=Math.min(targetVol, bgm.volume+0.03); if(bgm.volume>=targetVol) clearInterval(iv); },150);
-    }
-    async function tryPlay(){
-      try{ await bgm.play(); hint.style.display='none'; fadeIn(); removeTriggers(); }
-      catch{ hint.style.display='block'; addTriggers(); }
-    }
-    function addTriggers(){
-      window.addEventListener('pointerdown', tryPlay, {once:true});
-      window.addEventListener('wheel', tryPlay, {once:true});
-      window.addEventListener('keydown', tryPlay, {once:true});
-      window.addEventListener('touchstart', tryPlay, {once:true});
-      window.addEventListener('scroll', tryPlay, {once:true});
-    }
-    function removeTriggers(){
-      window.removeEventListener('pointerdown', tryPlay);
-      window.removeEventListener('wheel', tryPlay);
-      window.removeEventListener('keydown', tryPlay);
-      window.removeEventListener('touchstart', tryPlay);
-      window.removeEventListener('scroll', tryPlay);
-    }
-    window.addEventListener('load', tryPlay);
-
-    // عداد زيارات بسيط
-    const visits=+localStorage.getItem("visitsCount")||0;
-    localStorage.setItem("visitsCount",visits+1);
-    document.getElementById("visits").textContent=`👀 عدد زياراتك من هذا الجهاز: ${visits+1}`;
+    showAll.onclick=()=>popupBg.style.display='flex';
+    popupClose.onclick=()=>popupBg.style.display='none';
+    popupBg.onclick=e=>{if(e.target===popupBg)popupBg.style.display='none';};
+    loadFeedbacks();
   </script>
 </body>
 </html>
