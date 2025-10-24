@@ -29,7 +29,7 @@ body{margin:0;color:var(--text);
 .section{margin-top:18px}
 .section h2{margin:0 0 10px;font-size:24px;font-weight:900}
 
-/* ألعاب */
+/* الألعاب */
 .games{margin-top:10px}
 .games .trigger{width:100%;border:1px solid rgba(255,255,255,.08);background:linear-gradient(90deg,#2bb7ff,#4b8bff);color:#fff;padding:14px 16px;border-radius:18px;font-weight:900;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .games .menu{display:none;gap:10px;margin-top:10px}
@@ -40,60 +40,36 @@ body{margin:0;color:var(--text);
 .g3{background:linear-gradient(90deg,#ff8ad6,#9a7bff)}
 .g4{background:linear-gradient(90deg,#22d3ee,#34d399)}
 
-/* سوشيال */
-.socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
+/* === رجوع شكل منصّات التواصل للأزرار الطويلة === */
+.socials{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.sbtn{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  text-decoration: none;
+  color: #fff;
+}
 .fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
 .wa{background:linear-gradient(90deg,#25D366,#ffd166)}
 .ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
 .tg{background:linear-gradient(90deg,#2b8cff,#27ae60)}
 .fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
+
 footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
-
-/* الأدراج + الزر الأصفر */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9998}
-.overlay.show{display:block}
-.drawer{position:fixed;top:0;right:-420px;width:min(420px,92vw);height:100vh;z-index:9999;background:rgba(10,20,28,.96);color:#eaf1f6;border-left:1px solid rgba(255,255,255,.06);box-shadow:-20px 0 50px rgba(0,0,0,.45);transition:right .28s ease;display:flex;flex-direction:column}
-.drawer.open{right:0}
-.drawer-head{padding:16px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
-.drawer-title{font-weight:900;font-size:22px}
-.drawer-close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
-.drawer-body{padding:14px;overflow:auto}
-.order-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;margin-bottom:12px}
-.order-card h3{margin:0 0 8px;font-size:16px}
-.order-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.order-row.single{grid-template-columns:1fr}
-.order-input,.order-select,.order-textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:14px}
-.order-textarea{min-height:68px;resize:vertical}
-.order-actions{display:flex;gap:8px;margin-top:10px}
-.order-btn{flex:1;border:0;cursor:pointer;padding:10px 14px;border-radius:999px;font-weight:900;color:#001316;background:linear-gradient(90deg,#00ffaa,#00a8ff)}
-.order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8);color:#003b35}
-.menu-fab{position:fixed;right:18px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;z-index:10000;cursor:pointer;border:0;box-shadow:0 0 20px rgba(255,255,255,.25)}
-.menu-pop{position:fixed;right:86px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:8px;display:none;z-index:10001;backdrop-filter:blur(8px)}
-.menu-pop.show{display:block}
-.menu-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;color:#001316;background:linear-gradient(90deg,#e7ffef,#c8ffd9);font-weight:900;cursor:pointer;margin:6px 0;white-space:nowrap}
-.menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
-
-/* الأسعار */
-.price-note{color:#b8c0c9;margin:4px 0 12px}
-.price-item{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 16px;margin:10px 0}
-.badge{min-width:98px;text-align:center;font-weight:900;color:#001316;background:linear-gradient(90deg,#22d3ee,#34d399);padding:10px 12px;border-radius:999px}
-
-/* التقييمات */
-.stars{display:flex;gap:8px;font-size:28px;cursor:pointer;user-select:none}
-.star{opacity:.35;transition:opacity .2s, transform .1s}
-.star.active{opacity:1;transform:scale(1.05)}
-.rev-meta{display:flex;gap:10px;align-items:center;color:#cfe2ee;font-size:13px}
-.rev-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;margin:8px 0}
-.rev-list.more{max-height:320px;overflow:auto;border-top:1px dashed rgba(255,255,255,.15);margin-top:8px;padding-top:8px}
-.avg-badge{display:inline-flex;gap:8px;align-items:center;font-weight:900;background:#22d3ee;color:#001316;border-radius:999px;padding:6px 12px}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-  <!-- الهيدر -->
   <div class="card header">
     <img class="logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
     <div class="brand">
@@ -102,21 +78,19 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
     </div>
   </div>
 
-  <!-- بانر -->
   <div class="banner card">
     <div><b>🚀 أسرع خدمة توصيل في نجع حمادي.</b></div>
     <small>خدمة يومية طوال الأسبوع</small>
   </div>
 
-  <!-- الألعاب -->
   <div class="card section">
     <h2>العب و اكسب توصيلة مجانية 🎮</h2>
     <div class="games">
-      <button id="gamesToggle" class="trigger" aria-expanded="false" aria-controls="gamesMenu">
+      <button id="gamesToggle" class="trigger">
         <span>اضغط لاختيار لعبة</span>
         <i class="fa-solid fa-caret-down"></i>
       </button>
-      <div id="gamesMenu" class="menu" aria-hidden="true">
+      <div id="gamesMenu" class="menu">
         <a class="g1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
           <span><i class="fa-solid fa-bullseye"></i> لعبة الطرود — Whack-a-Parcel</span>
           <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -141,11 +115,16 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
   <div class="card section">
     <h2>منصّات التواصل 🔗</h2>
     <div class="socials">
-      <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener"><span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener"><span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener"><span><i class="fa-brands fa-instagram"></i> إنستجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener"><span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener"><span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
+        <span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener">
+        <span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
+        <span><i class="fa-brands fa-instagram"></i> إنستجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
+        <span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
+        <span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
     </div>
   </div>
 
@@ -153,422 +132,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
   <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
 </div>
 
-<!-- زر القائمة العائم -->
-<button class="menu-fab" id="menuFab" title="القائمة"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-<div class="menu-pop" id="menuPop" role="menu" aria-hidden="true">
-  <div class="menu-item" id="miFast"><i class="fa-solid fa-bolt"></i> طلب توصيل (سريع)</div>
-  <div class="menu-item secondary" id="miMonthly"><i class="fa-solid fa-calendar-days"></i> جدول شهري</div>
-  <div class="menu-item" id="miPrices"><i class="fa-solid fa-sack-dollar"></i> قائمة الأسعار</div>
-  <div class="menu-item secondary" id="miReview"><i class="fa-solid fa-star"></i> قيِّم خدمتنا</div>
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<!-- 🔙 درج الطلبات القديم -->
-<aside class="drawer" id="orderDrawer" dir="rtl" aria-label="درج الطلبات">
-  <div class="drawer-head"><div class="drawer-title">قائمة الطلبات</div><button class="drawer-close" data-close>&times;</button></div>
-  <div class="drawer-body">
-    <!-- 1) توصيل ابني المدرسة -->
-    <div class="order-card">
-      <h3>🏫 توصيل ابني المدرسة <span style="background:#0ea5e9;color:#001316;padding:3px 8px;border-radius:999px;font-size:12px">جديد</span></h3>
-      <div class="order-row">
-        <select class="order-select" id="schoolType">
-          <option value="ذهاب فقط">ذهاب فقط</option>
-          <option value="ذهاب وعودة">ذهاب وعودة</option>
-        </select>
-        <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" required>
-        <input class="order-input" id="schoolFrom" placeholder="العنوان: من" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)" required>
-        <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
-      </div>
-    </div>
-
-    <!-- 2) توصيل أوردر / طرد -->
-    <div class="order-card">
-      <h3>📦 توصيل أوردر / طرد</h3>
-      <div class="order-row">
-        <select class="order-select" id="orderKind"><option value="أوردر">أوردر</option><option value="طرد">طرد</option></select>
-        <select class="order-select" id="orderAction"><option value="هنجيبه">هنجيبه</option><option value="هنوّصله">هنوّصله</option></select>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderFrom" placeholder="العنوان: من" required>
-        <input class="order-input" id="orderTo" placeholder="العنوان: إلى" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderName" placeholder="اسمك" required>
-        <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن/5 مساء)">
-        <input class="order-input" id="orderNote" placeholder="وصف المحتوى/ملاحظات (اختياري)">
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
-      </div>
-    </div>
-
-    <!-- 3) طلبات السوق -->
-    <div class="order-card">
-      <h3>🛒 طلبات السوق</h3>
-      <div class="order-row single">
-        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل" required></textarea>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketFrom" placeholder="من أي سوق/محل؟ (اختياري)">
-        <input class="order-input" id="marketTo" placeholder="عنوان التوصيل" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketName" placeholder="اسمك" required>
-        <input class="order-input" id="marketPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketWhen" placeholder="الوقت المفضل">
-        <input class="order-input" id="marketNote" placeholder="ملاحظات (اختياري)">
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendMarket()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearMarket()">مسح</button>
-      </div>
-    </div>
-
-    <!-- 4) توصيل طرد -->
-    <div class="order-card">
-      <h3>📮 توصيل طرد</h3>
-      <div class="order-row">
-        <select class="order-select" id="parcelAction"><option value="هنجيبه">هنجيبه</option><option value="هنوديه">هنوديه</option></select>
-        <input class="order-input" id="parcelName" placeholder="اسمك" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="parcelPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-        <input class="order-input" id="parcelFrom" placeholder="العنوان: من" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="parcelTo" placeholder="العنوان: إلى" required>
-        <input class="order-input" id="parcelNote" placeholder="وصف الطرد/تعليمات (اختياري)">
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendParcel()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearParcel()">مسح</button>
-      </div>
-    </div>
-
-  </div>
-</aside>
-
-<!-- درج الجدول الشهري -->
-<aside class="drawer" id="monthlyDrawer" dir="rtl" aria-label="الجدول الشهري">
-  <div class="drawer-head"><div class="drawer-title">📘 جدول توصيل الأبناء (شهري)</div><button class="drawer-close" data-close>&times;</button></div>
-  <div class="drawer-body">
-    <div class="order-row">
-      <input class="order-input" id="pmName" placeholder="اسم ولي الأمر" required>
-      <input class="order-input" id="pmPhone" placeholder="رقم موبايل ولي الأمر" inputmode="tel" required>
-    </div>
-    <div class="order-row">
-      <input class="order-input" id="pmChildrenCount" placeholder="عدد الأبناء" inputmode="numeric" required>
-      <input class="order-input" id="pmStreet" placeholder="شارع كام (اسم/رقم)" required>
-    </div>
-    <div class="order-row">
-      <select class="order-select" id="pmDirection">
-        <option value="هتوصلهم وتجيبهم">هتوصلهم وتجيبهم</option>
-        <option value="هتوصلهم فقط">هتوصلهم فقط</option>
-        <option value="هتجيبهم فقط">هتجيبهم فقط</option>
-      </select>
-      <input class="order-input" id="pmLessonsPerWeek" placeholder="كم حصة في الأسبوع" inputmode="numeric" required>
-    </div>
-    <div class="order-row single">
-      <textarea class="order-textarea" id="pmLessonsTime" placeholder="ميعاد الحصص" required></textarea>
-    </div>
-    <div class="order-actions">
-      <button class="order-btn" id="sendMonthly">تأكيد وإرسال واتساب</button>
-      <button class="order-btn secondary" id="clearMonthly">مسح</button>
-    </div>
-  </div>
-</aside>
-
-<!-- درج الأسعار -->
-<aside class="drawer" id="pricesDrawer" dir="rtl" aria-label="قائمة الأسعار">
-  <div class="drawer-head">
-    <div class="drawer-title">💰 قائمة الأسعار</div>
-    <button class="drawer-close" data-close>&times;</button>
-  </div>
-  <div class="drawer-body">
-    <div class="price-note">* الأسعار التالية تقديرية وقد تختلف حسب المسافة والوقت. للتأكيد النهائي تواصل معنا على واتساب.</div>
-    <div class="price-item"><div class="badge">20–25 ج</div><div style="font-weight:900">داخل نجع حمادي</div></div>
-    <div class="price-item"><div class="badge">10 ج</div><div style="font-weight:900">قرية داخل بركة</div></div>
-    <div class="price-item"><div class="badge">20 ج</div><div style="font-weight:900">من بركة إلى الالمنيوم</div></div>
-    <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من بركة إلى نجع حمادي</div></div>
-    <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من الالمنيوم إلى نجع حمادي</div></div>
-    <div class="order-actions" style="margin-top:14px">
-      <button class="order-btn" onclick="window.open('https://wa.me/201017908076','_blank')">تواصل لتأكيد السعر على واتساب</button>
-    </div>
-  </div>
-</aside>
-
-<!-- 🟡 درج التقييمات -->
-<aside class="drawer" id="reviewsDrawer" dir="rtl" aria-label="تقييم الخدمة">
-  <div class="drawer-head">
-    <div class="drawer-title">⭐ قيّم خدمتنا</div>
-    <button class="drawer-close" data-close>&times;</button>
-  </div>
-  <div class="drawer-body">
-    <div class="rev-meta" style="justify-content:space-between;margin-bottom:8px">
-      <span class="avg-badge"><i class="fa-solid fa-star"></i> <span id="avgScore">0.0</span> / 5</span>
-      <span id="revCount">0 تقييم</span>
-    </div>
-
-    <div class="order-card">
-      <h3 style="margin-bottom:8px">اختَر النجوم</h3>
-      <div class="stars" id="starsInput" aria-label="اختر تقييم من 1 إلى 5">
-        <i class="fa-solid fa-star star" data-v="1"></i>
-        <i class="fa-solid fa-star star" data-v="2"></i>
-        <i class="fa-solid fa-star star" data-v="3"></i>
-        <i class="fa-solid fa-star star" data-v="4"></i>
-        <i class="fa-solid fa-star star" data-v="5"></i>
-      </div>
-      <div class="order-row" style="margin-top:10px">
-        <input class="order-input" id="revName" placeholder="اسمك (اختياري)">
-        <input class="order-input" id="revCity" placeholder="المنطقة/القرية (اختياري)">
-      </div>
-      <div class="order-row single">
-        <textarea class="order-textarea" id="revText" placeholder="اكتب رأيك في الخدمة..."></textarea>
-      </div>
-      <div class="order-actions">
-        <button class="order-btn" id="sendReview">إرسال التقييم</button>
-        <button class="order-btn secondary" id="clearReview">مسح</button>
-      </div>
-    </div>
-
-    <h3 style="margin:6px 0 4px">أحدث التقييمات</h3>
-    <div id="revList" class="rev-list more"></div>
-  </div>
-</aside>
-
 <script>
-// إعداد عام
-const ADMIN_PHONE="201017908076";
-const enc=s=>encodeURIComponent(s||"");
-const waSend=txt=>window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank','noopener');
-
-// ألعاب
-const gamesToggle=document.getElementById('gamesToggle');
-const gamesMenu=document.getElementById('gamesMenu');
-gamesToggle.addEventListener('click',()=>{
-  const open=gamesMenu.classList.toggle('show');
-  gamesToggle.setAttribute('aria-expanded',open?'true':'false');
-  gamesMenu.setAttribute('aria-hidden',open?'false':'true');
-});
-document.addEventListener('click',(e)=>{
-  if(!gamesToggle.contains(e.target)&&!gamesMenu.contains(e.target)){
-    gamesMenu.classList.remove('show');
-    gamesToggle.setAttribute('aria-expanded','false');
-    gamesMenu.setAttribute('aria-hidden','true');
-  }
-});
-
-// الأدراج
-const overlay=document.getElementById('overlay');
-const orderDrawer=document.getElementById('orderDrawer');
-const monthlyDrawer=document.getElementById('monthlyDrawer');
-const pricesDrawer=document.getElementById('pricesDrawer');
-const reviewsDrawer=document.getElementById('reviewsDrawer');
-function openDrawer(el){el.classList.add('open');overlay.classList.add('show')}
-function closeAll(){[orderDrawer,monthlyDrawer,pricesDrawer,reviewsDrawer].forEach(d=>d.classList.remove('open'));overlay.classList.remove('show')}
-overlay.addEventListener('click',closeAll);
-document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAll));
-
-// منيو الزر الأصفر
-const menuFab=document.getElementById('menuFab');
-const menuPop=document.getElementById('menuPop');
-const miFast=document.getElementById('miFast');
-const miMonthly=document.getElementById('miMonthly');
-const miPrices=document.getElementById('miPrices');
-const miReview=document.getElementById('miReview');
-menuFab.addEventListener('click',(e)=>{
-  e.stopPropagation();
-  const open=!menuPop.classList.contains('show');
-  menuPop.classList.toggle('show',open);
-  menuPop.setAttribute('aria-hidden',open?'false':'true');
-});
-document.addEventListener('click',(e)=>{
-  if(!menuFab.contains(e.target)&&!menuPop.contains(e.target)){
-    menuPop.classList.remove('show');
-    menuPop.setAttribute('aria-hidden','true');
-  }
-});
-miFast.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(orderDrawer)});
-miMonthly.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(monthlyDrawer)});
-miPrices.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(pricesDrawer)});
-miReview.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(reviewsDrawer)});
-
-// فحص الحقول المطلوبة
-function ensureRequired(ids){for(const id of ids){const el=document.getElementById(id);if(el && !el.value.trim()){el.focus();alert('من فضلك أكمل الحقول المطلوبة');return false}}return true}
-
-// واتساب — المدرسة
-function sendSchool(){
-  if(!ensureRequired(['schoolChild','schoolPhone','schoolFrom','schoolTo'])) return;
-  const t=schoolType.value, child=schoolChild.value, phone=schoolPhone.value, from=schoolFrom.value, to=schoolTo.value, note=schoolNote.value;
-  const text=`طلب توصيل مدرسة 🏫
-النوع: ${t}
-الطالب: ${child}
-ولي الأمر: ${phone}
-من: ${from}
-إلى: ${to}
-ملاحظات: ${note||'—'}
-— أُرسل من موقع Fly Express`;
-  waSend(text);
-}
-function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(id=>document.getElementById(id).value="");}
-
-// واتساب — أوردر/طرد
-function sendOrder(){
-  if(!ensureRequired(['orderFrom','orderTo','orderName','orderPhone'])) return;
-  const kind=orderKind.value, act=orderAction.value, from=orderFrom.value, to=orderTo.value, name=orderName.value, phone=orderPhone.value, when=orderWhen.value, note=orderNote.value;
-  const text=`طلب ${kind} ${act} 📦
-الاسم: ${name} — ${phone}
-من: ${from}
-إلى: ${to}
-الوقت: ${when||'أقرب وقت'}
-ملاحظات: ${note||'—'}
-— أُرسل من موقع Fly Express`;
-  waSend(text);
-}
-function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen','orderNote'].forEach(id=>document.getElementById(id).value="");}
-
-// واتساب — طلبات السوق
-function sendMarket(){
-  if(!ensureRequired(['marketList','marketTo','marketName','marketPhone'])) return;
-  const list=marketList.value, from=marketFrom.value, to=marketTo.value, name=marketName.value, phone=marketPhone.value, when=marketWhen.value, note=marketNote.value;
-  const text=`طلبات سوق 🛒
-العميل: ${name} — ${phone}
-القائمة:
-${list}
-
-من: ${from||'—'}
-إلى: ${to}
-الوقت: ${when||'أقرب وقت'}
-ملاحظات: ${note||'—'}
-— أُرسل من موقع Fly Express`;
-  waSend(text);
-}
-function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone','marketWhen','marketNote'].forEach(id=>document.getElementById(id).value="");}
-
-// واتساب — توصيل طرد
-function sendParcel(){
-  if(!ensureRequired(['parcelName','parcelPhone','parcelFrom','parcelTo'])) return;
-  const act=parcelAction.value, from=parcelFrom.value, to=parcelTo.value, name=parcelName.value, phone=parcelPhone.value, note=parcelNote.value;
-  const text=`توصيل طرد (${act}) 📮
-العميل: ${name} — ${phone}
-من: ${from}
-إلى: ${to}
-ملاحظات: ${note||'—'}
-— أُرسل من موقع Fly Express`;
-  waSend(text);
-}
-function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
-
-// شهري
-document.getElementById('sendMonthly').addEventListener('click',()=>{
-  if(!ensureRequired(['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'])) return;
-  const n=pmName.value,p=pmPhone.value,c=pmChildrenCount.value,s=pmStreet.value,d=pmDirection.value,w=pmLessonsPerWeek.value,t=pmLessonsTime.value;
-  const text=`جدول توصيل الأبناء (شهري) 📘
-ولي الأمر: ${n} — ${p}
-عدد الأبناء: ${c}
-الشارع: ${s}
-الاتجاه: ${d}
-عدد الحصص/الأسبوع: ${w}
-مواعيد الحصص: ${t}
-— أُرسل من موقع Fly Express`;
-  waSend(text);
-});
-document.getElementById('clearMonthly').addEventListener('click',()=>{
-  ['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'].forEach(id=>document.getElementById(id).value="");
-  document.getElementById('pmDirection').selectedIndex=0;
-});
-
-// ===== تقييمات (localStorage) =====
-const LS_KEY='fx_reviews_v1';
-
-function getReviews(){
-  try{ return JSON.parse(localStorage.getItem(LS_KEY))||[] }catch{ return [] }
-}
-function saveReviews(arr){
-  localStorage.setItem(LS_KEY, JSON.stringify(arr));
-}
-function avgOf(arr){
-  if(!arr.length) return 0;
-  return (arr.reduce((s,r)=>s+Number(r.stars||0),0)/arr.length).toFixed(1);
-}
-function renderReviews(){
-  const list=getReviews().sort((a,b)=>b.ts-a.ts);
-  document.getElementById('avgScore').textContent=avgOf(list);
-  document.getElementById('revCount').textContent=list.length+' تقييم';
-  const wrap=document.getElementById('revList');
-  wrap.innerHTML='';
-  if(!list.length){wrap.innerHTML='<div class="rev-item">لا توجد تقييمات بعد — كن أول من يقيّمنا! ⭐</div>';return;}
-  list.forEach(r=>{
-    const item=document.createElement('div');
-    item.className='rev-item';
-    const stars='⭐'.repeat(r.stars)+'☆'.repeat(5-r.stars);
-    const name=r.name?`<b>${r.name}</b>`:'عميل';
-    const city=r.city?` — <span>${r.city}</span>`:'';
-    const date=new Date(r.ts).toLocaleDateString('ar-EG');
-    item.innerHTML=`
-      <div class="rev-meta"><span>${name}${city}</span><span>${date}</span></div>
-      <div style="margin:6px 0">${stars}</div>
-      <div>${(r.text||'').replace(/\n/g,'<br>')}</div>`;
-    wrap.appendChild(item);
-  });
-}
-
-let picked=0;
-const starsInput=document.getElementById('starsInput');
-starsInput.querySelectorAll('.star').forEach(el=>{
-  el.addEventListener('mouseenter',()=>highlight(+el.dataset.v));
-  el.addEventListener('click',()=>{picked=+el.dataset.v;highlight(picked)});
-});
-starsInput.addEventListener('mouseleave',()=>highlight(picked));
-function highlight(n){
-  starsInput.querySelectorAll('.star').forEach((s,i)=>{
-    s.classList.toggle('active', i< n);
-  });
-}
-
-document.getElementById('sendReview').addEventListener('click',()=>{
-  if(picked===0){alert('اختَر عدد النجوم أولاً');return;}
-  const name=document.getElementById('revName').value.trim();
-  const city=document.getElementById('revCity').value.trim();
-  const text=document.getElementById('revText').value.trim();
-  const arr=getReviews();
-  arr.push({stars:picked,name,city,text,ts:Date.now()});
-  saveReviews(arr);
-  document.getElementById('revName').value='';
-  document.getElementById('revCity').value='';
-  document.getElementById('revText').value='';
-  picked=0; highlight(0);
-  renderReviews();
-  alert('تم حفظ تقييمك على الموقع، شكرًا لك ❤️');
-});
-document.getElementById('clearReview').addEventListener('click',()=>{
-  document.getElementById('revName').value='';
-  document.getElementById('revCity').value='';
-  document.getElementById('revText').value='';
-  picked=0; highlight(0);
-});
-
-// أول تحميل
-renderReviews();
-
-// عداد الزيارات
 const visits=+localStorage.getItem("visitsCount")||0;
 localStorage.setItem("visitsCount",visits+1);
 document.getElementById("visits").textContent=`👀 عدد زياراتك من هذا الجهاز: ${visits+1}`;
