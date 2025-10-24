@@ -60,6 +60,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 .drawer-close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
 .drawer-body{padding:14px;overflow:auto}
 .order-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;margin-bottom:12px}
+.order-card h3{margin:0 0 8px;font-size:16px}
 .order-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .order-row.single{grid-template-columns:1fr}
 .order-input,.order-select,.order-textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:14px}
@@ -154,10 +155,36 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 
 <div class="overlay" id="overlay"></div>
 
-<!-- درج الطلبات السريعة (مختصر) -->
+<!-- 🔙 درج الطلبات القديم (4 أقسام) -->
 <aside class="drawer" id="orderDrawer" dir="rtl" aria-label="درج الطلبات">
   <div class="drawer-head"><div class="drawer-title">قائمة الطلبات</div><button class="drawer-close" data-close>&times;</button></div>
   <div class="drawer-body">
+
+    <!-- 1) توصيل ابني المدرسة -->
+    <div class="order-card">
+      <h3>🏫 توصيل ابني المدرسة <span style="background:#0ea5e9;color:#001316;padding:3px 8px;border-radius:999px;font-size:12px">جديد</span></h3>
+      <div class="order-row">
+        <select class="order-select" id="schoolType">
+          <option value="ذهاب فقط">ذهاب فقط</option>
+          <option value="ذهاب وعودة">ذهاب وعودة</option>
+        </select>
+        <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" required>
+        <input class="order-input" id="schoolFrom" placeholder="العنوان: من" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)" required>
+        <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
+      </div>
+      <div class="order-actions">
+        <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
+        <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
+      </div>
+    </div>
+
+    <!-- 2) توصيل أوردر / طرد -->
     <div class="order-card">
       <h3>📦 توصيل أوردر / طرد</h3>
       <div class="order-row">
@@ -172,11 +199,61 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
         <input class="order-input" id="orderName" placeholder="اسمك" required>
         <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
       </div>
+      <div class="order-row">
+        <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن/5 مساء)">
+        <input class="order-input" id="orderNote" placeholder="وصف المحتوى/ملاحظات (اختياري)">
+      </div>
       <div class="order-actions">
         <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
         <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
       </div>
     </div>
+
+    <!-- 3) طلبات السوق -->
+    <div class="order-card">
+      <h3>🛒 طلبات السوق</h3>
+      <div class="order-row single">
+        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل" required></textarea>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="marketFrom" placeholder="من أي سوق/محل؟ (اختياري)">
+        <input class="order-input" id="marketTo" placeholder="عنوان التوصيل" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="marketName" placeholder="اسمك" required>
+        <input class="order-input" id="marketPhone" placeholder="رقم الموبايل" inputmode="tel" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="marketWhen" placeholder="الوقت المفضل">
+        <input class="order-input" id="marketNote" placeholder="ملاحظات (اختياري)">
+      </div>
+      <div class="order-actions">
+        <button class="order-btn" onclick="sendMarket()">تأكيد وإرسال على واتساب</button>
+        <button class="order-btn secondary" onclick="clearMarket()">مسح</button>
+      </div>
+    </div>
+
+    <!-- 4) توصيل طرد -->
+    <div class="order-card">
+      <h3>📮 توصيل طرد</h3>
+      <div class="order-row">
+        <select class="order-select" id="parcelAction"><option value="هنجيبه">هنجيبه</option><option value="هنوديه">هنوديه</option></select>
+        <input class="order-input" id="parcelName" placeholder="اسمك" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="parcelPhone" placeholder="رقم الموبايل" inputmode="tel" required>
+        <input class="order-input" id="parcelFrom" placeholder="العنوان: من" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="parcelTo" placeholder="العنوان: إلى" required>
+        <input class="order-input" id="parcelNote" placeholder="وصف الطرد/تعليمات (اختياري)">
+      </div>
+      <div class="order-actions">
+        <button class="order-btn" onclick="sendParcel()">تأكيد وإرسال على واتساب</button>
+        <button class="order-btn secondary" onclick="clearParcel()">مسح</button>
+      </div>
+    </div>
+
   </div>
 </aside>
 
@@ -210,7 +287,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
   </div>
 </aside>
 
-<!-- درج الأسعار (مُحدَّث) -->
+<!-- درج الأسعار (ثابت كما طلبت) -->
 <aside class="drawer" id="pricesDrawer" dir="rtl" aria-label="قائمة الأسعار">
   <div class="drawer-head">
     <div class="drawer-title">💰 قائمة الأسعار</div>
@@ -219,30 +296,11 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
   <div class="drawer-body">
     <div class="price-note">* الأسعار التالية تقديرية وقد تختلف حسب المسافة والوقت. للتأكيد النهائي تواصل معنا على واتساب.</div>
 
-    <div class="price-item">
-      <div class="badge">20–25 ج</div>
-      <div style="font-weight:900">داخل نجع حمادي</div>
-    </div>
-
-    <div class="price-item">
-      <div class="badge">10 ج</div>
-      <div style="font-weight:900"> داخل بركة</div>
-    </div>
-
-    <div class="price-item">
-      <div class="badge">20 ج</div>
-      <div style="font-weight:900">من بركة إلى الالمنيوم</div>
-    </div>
-
-    <div class="price-item">
-      <div class="badge">35 ج</div>
-      <div style="font-weight:900">من بركة إلى نجع حمادي</div>
-    </div>
-
-    <div class="price-item">
-      <div class="badge">35 ج</div>
-      <div style="font-weight:900">من الالمنيوم إلى نجع حمادي</div>
-    </div>
+    <div class="price-item"><div class="badge">20–25 ج</div><div style="font-weight:900">داخل نجع حمادي</div></div>
+    <div class="price-item"><div class="badge">10 ج</div><div style="font-weight:900">قرية داخل بركة</div></div>
+    <div class="price-item"><div class="badge">20 ج</div><div style="font-weight:900">من بركة إلى الالمنيوم</div></div>
+    <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من بركة إلى نجع حمادي</div></div>
+    <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من الالمنيوم إلى نجع حمادي</div></div>
 
     <div class="order-actions" style="margin-top:14px">
       <button class="order-btn" onclick="window.open('https://wa.me/201017908076','_blank')">تواصل لتأكيد السعر على واتساب</button>
@@ -304,24 +362,71 @@ miFast.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer
 miMonthly.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(monthlyDrawer)});
 miPrices.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(pricesDrawer)});
 
-// إرسال أوردر مختصر
+// فحص الحقول المطلوبة
 function ensureRequired(ids){for(const id of ids){const el=document.getElementById(id);if(el && !el.value.trim()){el.focus();alert('من فضلك أكمل الحقول المطلوبة');return false}}return true}
+
+// واتساب — المدرسة
+function sendSchool(){
+  if(!ensureRequired(['schoolChild','schoolPhone','schoolFrom','schoolTo'])) return;
+  const t=schoolType.value, child=schoolChild.value, phone=schoolPhone.value, from=schoolFrom.value, to=schoolTo.value, note=schoolNote.value;
+  const text=`طلب توصيل مدرسة 🏫
+النوع: ${t}
+الطالب: ${child}
+ولي الأمر: ${phone}
+من: ${from}
+إلى: ${to}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+  waSend(text);
+}
+function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(id=>document.getElementById(id).value="");}
+
+// واتساب — أوردر/طرد
 function sendOrder(){
   if(!ensureRequired(['orderFrom','orderTo','orderName','orderPhone'])) return;
-  const kind=document.getElementById('orderKind').value;
-  const act=document.getElementById('orderAction').value;
-  const from=document.getElementById('orderFrom').value;
-  const to=document.getElementById('orderTo').value;
-  const name=document.getElementById('orderName').value;
-  const phone=document.getElementById('orderPhone').value;
+  const kind=orderKind.value, act=orderAction.value, from=orderFrom.value, to=orderTo.value, name=orderName.value, phone=orderPhone.value, when=orderWhen.value, note=orderNote.value;
   const text=`طلب ${kind} ${act} 📦
 الاسم: ${name} — ${phone}
 من: ${from}
 إلى: ${to}
+الوقت: ${when||'أقرب وقت'}
+ملاحظات: ${note||'—'}
 — أُرسل من موقع Fly Express`;
   waSend(text);
 }
-function clearOrder(){['orderFrom','orderTo','orderName','orderPhone'].forEach(id=>document.getElementById(id).value="")}
+function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen','orderNote'].forEach(id=>document.getElementById(id).value="");}
+
+// واتساب — طلبات السوق
+function sendMarket(){
+  if(!ensureRequired(['marketList','marketTo','marketName','marketPhone'])) return;
+  const list=marketList.value, from=marketFrom.value, to=marketTo.value, name=marketName.value, phone=marketPhone.value, when=marketWhen.value, note=marketNote.value;
+  const text=`طلبات سوق 🛒
+العميل: ${name} — ${phone}
+القائمة:
+${list}
+
+من: ${from||'—'}
+إلى: ${to}
+الوقت: ${when||'أقرب وقت'}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+  waSend(text);
+}
+function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone','marketWhen','marketNote'].forEach(id=>document.getElementById(id).value="");}
+
+// واتساب — توصيل طرد
+function sendParcel(){
+  if(!ensureRequired(['parcelName','parcelPhone','parcelFrom','parcelTo'])) return;
+  const act=parcelAction.value, from=parcelFrom.value, to=parcelTo.value, name=parcelName.value, phone=parcelPhone.value, note=parcelNote.value;
+  const text=`توصيل طرد (${act}) 📮
+العميل: ${name} — ${phone}
+من: ${from}
+إلى: ${to}
+ملاحظات: ${note||'—'}
+— أُرسل من موقع Fly Express`;
+  waSend(text);
+}
+function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
 
 // شهري
 document.getElementById('sendMonthly').addEventListener('click',()=>{
