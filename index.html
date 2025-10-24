@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -14,7 +13,8 @@
 <style>
 :root{--text:#eaf1f6;--muted:#b8c0c9;font-family:'Cairo',system-ui,sans-serif}
 *{box-sizing:border-box}
-body{margin:0;color:var(--text);
+body{
+  margin:0;color:var(--text);
   background:
     radial-gradient(1100px 600px at 10% 10%, #0d1b2a 0%, transparent 65%),
     radial-gradient(1100px 600px at 90% 90%, #001219 0%, transparent 65%),
@@ -30,7 +30,7 @@ body{margin:0;color:var(--text);
 .section{margin-top:18px}
 .section h2{margin:0 0 10px;font-size:24px;font-weight:900}
 
-/* ألعاب */
+/* الألعاب */
 .games{margin-top:10px}
 .games .trigger{width:100%;border:1px solid rgba(255,255,255,.08);background:linear-gradient(90deg,#2bb7ff,#4b8bff);color:#fff;padding:14px 16px;border-radius:18px;font-weight:900;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .games .menu{display:none;gap:10px;margin-top:10px}
@@ -41,9 +41,10 @@ body{margin:0;color:var(--text);
 .g3{background:linear-gradient(90deg,#ff8ad6,#9a7bff)}
 .g4{background:linear-gradient(90deg,#22d3ee,#34d399)}
 
-/* سوشيال */
-.socials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.sbtn{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff}
+/* منصّات التواصل — أزرار عريضة */
+.socials{display:grid;grid-template-columns:1fr;gap:12px}
+.sbtn{display:flex;align-items:center;justify-content:space-between;padding:16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff;font-weight:800;font-size:18px}
+.sbtn i:last-child{opacity:.9}
 .fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
 .wa{background:linear-gradient(90deg,#25D366,#ffd166)}
 .ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
@@ -51,7 +52,7 @@ body{margin:0;color:var(--text);
 .fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
 footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 
-/* الأدراج + الزر الأصفر */
+/* الأدراج + الزر العائم */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9998}
 .overlay.show{display:block}
 .drawer{position:fixed;top:0;right:-420px;width:min(420px,92vw);height:100vh;z-index:9999;background:rgba(10,20,28,.96);color:#eaf1f6;border-left:1px solid rgba(255,255,255,.06);box-shadow:-20px 0 50px rgba(0,0,0,.45);transition:right .28s ease;display:flex;flex-direction:column}
@@ -79,7 +80,11 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 .price-note{color:#b8c0c9;margin:4px 0 12px}
 .price-item{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 16px;margin:10px 0}
 .badge{min-width:98px;text-align:center;font-weight:900;color:#001316;background:linear-gradient(90deg,#22d3ee,#34d399);padding:10px 12px;border-radius:999px}
-@media(max-width:640px){.socials{grid-template-columns:1fr}}
+
+/* شبكة الأيام (اسم اليوم + من + إلى) */
+.day-grid{display:grid;grid-template-columns:120px 1fr 1fr;gap:8px}
+.day-label{display:flex;align-items:center;justify-content:flex-start;font-weight:900;color:#cfe2ee;padding:0 8px}
+@media(max-width:560px){.day-grid{grid-template-columns:96px 1fr 1fr}}
 </style>
 </head>
 
@@ -134,11 +139,21 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
   <div class="card section">
     <h2>منصّات التواصل 🔗</h2>
     <div class="socials">
-      <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener"><span><i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener"><span><i class="fa-brands fa-whatsapp"></i> واتساب</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener"><span><i class="fa-brands fa-instagram"></i> إنستجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener"><span><i class="fa-brands fa-telegram"></i> تليجرام</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-      <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener"><span><i class="fa-brands fa-facebook"></i> فيسبوك الشخصي</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
+        <span>صفحة فيسبوك</span><i class="fa-brands fa-facebook-f"></i>
+      </a>
+      <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener">
+        <span>واتساب</span><i class="fa-brands fa-whatsapp"></i>
+      </a>
+      <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
+        <span>إنستجرام</span><i class="fa-brands fa-instagram"></i>
+      </a>
+      <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
+        <span>تليجرام</span><i class="fa-brands fa-telegram"></i>
+      </a>
+      <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
+        <span>فيسبوك الشخصي</span><i class="fa-brands fa-facebook"></i>
+      </a>
     </div>
   </div>
 
@@ -156,14 +171,14 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 
 <div class="overlay" id="overlay"></div>
 
-<!-- 🔙 درج الطلبات القديم (4 أقسام) -->
+<!-- درج الطلبات -->
 <aside class="drawer" id="orderDrawer" dir="rtl" aria-label="درج الطلبات">
   <div class="drawer-head"><div class="drawer-title">قائمة الطلبات</div><button class="drawer-close" data-close>&times;</button></div>
   <div class="drawer-body">
 
-    <!-- 1) توصيل ابني المدرسة -->
+    <!-- مدرسة -->
     <div class="order-card">
-      <h3>🏫 توصيل ابني المدرسة <span style="background:#0ea5e9;color:#001316;padding:3px 8px;border-radius:999px;font-size:12px">جديد</span></h3>
+      <h3>🏫 توصيل ابني المدرسة</h3>
       <div class="order-row">
         <select class="order-select" id="schoolType">
           <option value="ذهاب فقط">ذهاب فقط</option>
@@ -185,7 +200,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
       </div>
     </div>
 
-    <!-- 2) توصيل أوردر / طرد -->
+    <!-- أوردر/طرد -->
     <div class="order-card">
       <h3>📦 توصيل أوردر / طرد</h3>
       <div class="order-row">
@@ -210,7 +225,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
       </div>
     </div>
 
-    <!-- 3) طلبات السوق -->
+    <!-- السوق -->
     <div class="order-card">
       <h3>🛒 طلبات السوق</h3>
       <div class="order-row single">
@@ -234,7 +249,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
       </div>
     </div>
 
-    <!-- 4) توصيل طرد -->
+    <!-- طرد -->
     <div class="order-card">
       <h3>📮 توصيل طرد</h3>
       <div class="order-row">
@@ -258,7 +273,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
   </div>
 </aside>
 
-<!-- درج الجدول الشهري -->
+<!-- درج الجدول الشهري + أيام الأسبوع -->
 <aside class="drawer" id="monthlyDrawer" dir="rtl" aria-label="الجدول الشهري">
   <div class="drawer-head"><div class="drawer-title">📘 جدول توصيل الأبناء (شهري)</div><button class="drawer-close" data-close>&times;</button></div>
   <div class="drawer-body">
@@ -278,8 +293,42 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
       </select>
       <input class="order-input" id="pmLessonsPerWeek" placeholder="كم حصة في الأسبوع" inputmode="numeric" required>
     </div>
+
+    <div class="order-card">
+      <h3>🗓️ مواعيد الأيام (من — إلى)</h3>
+      <div class="day-grid">
+        <div class="day-label">السبت</div>
+        <input class="order-input" id="satFrom" type="time" aria-label="السبت من">
+        <input class="order-input" id="satTo"   type="time" aria-label="السبت إلى">
+
+        <div class="day-label">الأحد</div>
+        <input class="order-input" id="sunFrom" type="time" aria-label="الأحد من">
+        <input class="order-input" id="sunTo"   type="time" aria-label="الأحد إلى">
+
+        <div class="day-label">الاثنين</div>
+        <input class="order-input" id="monFrom" type="time" aria-label="الاثنين من">
+        <input class="order-input" id="monTo"   type="time" aria-label="الاثنين إلى">
+
+        <div class="day-label">الثلاثاء</div>
+        <input class="order-input" id="tueFrom" type="time" aria-label="الثلاثاء من">
+        <input class="order-input" id="tueTo"   type="time" aria-label="الثلاثاء إلى">
+
+        <div class="day-label">الأربعاء</div>
+        <input class="order-input" id="wedFrom" type="time" aria-label="الأربعاء من">
+        <input class="order-input" id="wedTo"   type="time" aria-label="الأربعاء إلى">
+
+        <div class="day-label">الخميس</div>
+        <input class="order-input" id="thuFrom" type="time" aria-label="الخميس من">
+        <input class="order-input" id="thuTo"   type="time" aria-label="الخميس إلى">
+
+        <div class="day-label">الجمعة</div>
+        <input class="order-input" id="friFrom" type="time" aria-label="الجمعة من">
+        <input class="order-input" id="friTo"   type="time" aria-label="الجمعة إلى">
+      </div>
+    </div>
+
     <div class="order-row single">
-      <textarea class="order-textarea" id="pmLessonsTime" placeholder="ميعاد الحصص" required></textarea>
+      <textarea class="order-textarea" id="pmLessonsTime" placeholder="ملاحظات إضافية (اختياري)"></textarea>
     </div>
     <div class="order-actions">
       <button class="order-btn" id="sendMonthly">تأكيد وإرسال واتساب</button>
@@ -288,26 +337,27 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
   </div>
 </aside>
 
-<!-- درج الأسعار (ثابت كما طلبت) -->
+<!-- درج الأسعار -->
 <aside class="drawer" id="pricesDrawer" dir="rtl" aria-label="قائمة الأسعار">
   <div class="drawer-head">
     <div class="drawer-title">💰 قائمة الأسعار</div>
     <button class="drawer-close" data-close>&times;</button>
   </div>
   <div class="drawer-body">
-    <div class="price-note">* الأسعار التالية تقديرية وقد تختلف حسب المسافة والوقت. للتأكيد النهائي تواصل معنا على واتساب.</div>
-
+    <div class="price-note">* الأسعار تقديرية وقد تختلف حسب المسافة والوقت. للتأكيد النهائي تواصل معنا على واتساب.</div>
     <div class="price-item"><div class="badge">20–25 ج</div><div style="font-weight:900">داخل نجع حمادي</div></div>
     <div class="price-item"><div class="badge">10 ج</div><div style="font-weight:900">قرية داخل بركة</div></div>
-    <div class="price-item"><div class="badge">20 ج</div><div style="font-weight:900">من بركة إلى الالمنيوم</div></div>
+    <div class="price-item"><div class="badge">20 ج</div><div style="font-weight:900">من بركة إلى الألمنيوم</div></div>
     <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من بركة إلى نجع حمادي</div></div>
-    <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من الالمنيوم إلى نجع حمادي</div></div>
-
+    <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من الألمنيوم إلى نجع حمادي</div></div>
     <div class="order-actions" style="margin-top:14px">
       <button class="order-btn" onclick="window.open('https://wa.me/201017908076','_blank')">تواصل لتأكيد السعر على واتساب</button>
     </div>
   </div>
 </aside>
+
+<!-- 🎵 صوت اللعبة -->
+<audio id="gameMusic" src="https://media1.vocaroo.com/mp3/1oelwoF9NuRN" preload="auto" loop playsinline></audio>
 
 <script>
 // إعداد عام
@@ -336,17 +386,19 @@ const overlay=document.getElementById('overlay');
 const orderDrawer=document.getElementById('orderDrawer');
 const monthlyDrawer=document.getElementById('monthlyDrawer');
 const pricesDrawer=document.getElementById('pricesDrawer');
+
 function openDrawer(el){el.classList.add('open');overlay.classList.add('show')}
 function closeAll(){[orderDrawer,monthlyDrawer,pricesDrawer].forEach(d=>d.classList.remove('open'));overlay.classList.remove('show')}
 overlay.addEventListener('click',closeAll);
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAll));
 
-// منيو الزر الأصفر
+// زر القائمة
 const menuFab=document.getElementById('menuFab');
 const menuPop=document.getElementById('menuPop');
 const miFast=document.getElementById('miFast');
 const miMonthly=document.getElementById('miMonthly');
 const miPrices=document.getElementById('miPrices');
+
 menuFab.addEventListener('click',(e)=>{
   e.stopPropagation();
   const open=!menuPop.classList.contains('show');
@@ -364,9 +416,9 @@ miMonthly.addEventListener('click',()=>{menuPop.classList.remove('show');openDra
 miPrices.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(pricesDrawer)});
 
 // فحص الحقول المطلوبة
-function ensureRequired(ids){for(const id of ids){const el=document.getElementById(id);if(el && !el.value.trim()){el.focus();alert('من فضلك أكمل الحقول المطلوبة');return false}}return true}
+function ensureRequired(ids){for(const id of ids){const el=document.getElementById(id);if(el && !el.value.trim()){ el.focus(); alert('من فضلك أكمل الحقول المطلوبة'); return false; }} return true;}
 
-// واتساب — المدرسة
+// إرسال الطلبات
 function sendSchool(){
   if(!ensureRequired(['schoolChild','schoolPhone','schoolFrom','schoolTo'])) return;
   const t=schoolType.value, child=schoolChild.value, phone=schoolPhone.value, from=schoolFrom.value, to=schoolTo.value, note=schoolNote.value;
@@ -382,7 +434,6 @@ function sendSchool(){
 }
 function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(id=>document.getElementById(id).value="");}
 
-// واتساب — أوردر/طرد
 function sendOrder(){
   if(!ensureRequired(['orderFrom','orderTo','orderName','orderPhone'])) return;
   const kind=orderKind.value, act=orderAction.value, from=orderFrom.value, to=orderTo.value, name=orderName.value, phone=orderPhone.value, when=orderWhen.value, note=orderNote.value;
@@ -397,7 +448,6 @@ function sendOrder(){
 }
 function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen','orderNote'].forEach(id=>document.getElementById(id).value="");}
 
-// واتساب — طلبات السوق
 function sendMarket(){
   if(!ensureRequired(['marketList','marketTo','marketName','marketPhone'])) return;
   const list=marketList.value, from=marketFrom.value, to=marketTo.value, name=marketName.value, phone=marketPhone.value, when=marketWhen.value, note=marketNote.value;
@@ -415,7 +465,6 @@ ${list}
 }
 function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone','marketWhen','marketNote'].forEach(id=>document.getElementById(id).value="");}
 
-// واتساب — توصيل طرد
 function sendParcel(){
   if(!ensureRequired(['parcelName','parcelPhone','parcelFrom','parcelTo'])) return;
   const act=parcelAction.value, from=parcelFrom.value, to=parcelTo.value, name=parcelName.value, phone=parcelPhone.value, note=parcelNote.value;
@@ -429,30 +478,66 @@ function sendParcel(){
 }
 function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
 
-// شهري
+// الجدول الشهري + الأيام
 document.getElementById('sendMonthly').addEventListener('click',()=>{
-  if(!ensureRequired(['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'])) return;
-  const n=pmName.value,p=pmPhone.value,c=pmChildrenCount.value,s=pmStreet.value,d=pmDirection.value,w=pmLessonsPerWeek.value,t=pmLessonsTime.value;
+  if(!ensureRequired(['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek'])) return;
+
+  const n=pmName.value,p=pmPhone.value,c=pmChildrenCount.value,s=pmStreet.value,d=pmDirection.value,w=pmLessonsPerWeek.value,notes=pmLessonsTime.value;
+
+  const day = (name,from,to)=> (from||to) ? `${name}: ${from||'—'} → ${to||'—'}` : null;
+  const days = [
+    day('السبت',satFrom.value,satTo.value),
+    day('الأحد',sunFrom.value,sunTo.value),
+    day('الاثنين',monFrom.value,monTo.value),
+    day('الثلاثاء',tueFrom.value,tueTo.value),
+    day('الأربعاء',wedFrom.value,wedTo.value),
+    day('الخميس',thuFrom.value,thuTo.value),
+    day('الجمعة',friFrom.value,friTo.value),
+  ].filter(Boolean).join('\n');
+
   const text=`جدول توصيل الأبناء (شهري) 📘
 ولي الأمر: ${n} — ${p}
 عدد الأبناء: ${c}
 الشارع: ${s}
 الاتجاه: ${d}
 عدد الحصص/الأسبوع: ${w}
-مواعيد الحصص: ${t}
+
+مواعيد الأيام:
+${days || '—'}
+
+ملاحظات: ${notes||'—'}
 — أُرسل من موقع Fly Express`;
   waSend(text);
 });
+
 document.getElementById('clearMonthly').addEventListener('click',()=>{
-  ['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime'].forEach(id=>document.getElementById(id).value="");
+  ['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime',
+   'satFrom','satTo','sunFrom','sunTo','monFrom','monTo','tueFrom','tueTo','wedFrom','wedTo','thuFrom','thuTo','friFrom','friTo'
+  ].forEach(id=>{const el=document.getElementById(id); if(el) el.value="";});
   document.getElementById('pmDirection').selectedIndex=0;
 });
 
-// عداد الزيارات
+// عدّاد الزيارات
 const visits=+localStorage.getItem("visitsCount")||0;
 localStorage.setItem("visitsCount",visits+1);
 document.getElementById("visits").textContent=`👀 عدد زياراتك من هذا الجهاز: ${visits+1}`;
+
+// تشغيل صوت اللعبة بعد أول تفاعل قوي
+(function () {
+  const music = document.getElementById('gameMusic');
+  if(!music) return;
+  music.volume = 0.6;
+  music.muted = false;
+
+  const tryPlay = ()=> music.play().catch(()=>{ /* محظور لسه */ });
+
+  ['click','pointerdown','touchstart','scroll','keydown'].forEach(evt=>{
+    window.addEventListener(evt, tryPlay, { once:false, passive:true });
+  });
+
+  // لو رجع المستخدم للصفحة بعد إخفائها
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) tryPlay(); });
+})();
 </script>
 </body>
 </html>
-
