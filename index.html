@@ -30,7 +30,7 @@ body{
 .section{margin-top:18px}
 .section h2{margin:0 0 10px;font-size:24px;font-weight:900}
 
-/* الألعاب */
+/* ألعاب */
 .games{margin-top:10px}
 .games .trigger{width:100%;border:1px solid rgba(255,255,255,.08);background:linear-gradient(90deg,#2bb7ff,#4b8bff);color:#fff;padding:14px 16px;border-radius:18px;font-weight:900;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .games .menu{display:none;gap:10px;margin-top:10px}
@@ -81,7 +81,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 .price-item{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 16px;margin:10px 0}
 .badge{min-width:98px;text-align:center;font-weight:900;color:#001316;background:linear-gradient(90deg,#22d3ee,#34d399);padding:10px 12px;border-radius:999px}
 
-/* شبكة الأيام (اسم اليوم + من + إلى) */
+/* شبكة الأيام */
 .day-grid{display:grid;grid-template-columns:120px 1fr 1fr;gap:8px}
 .day-label{display:flex;align-items:center;justify-content:flex-start;font-weight:900;color:#cfe2ee;padding:0 8px}
 @media(max-width:560px){.day-grid{grid-template-columns:96px 1fr 1fr}}
@@ -171,7 +171,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
 
 <div class="overlay" id="overlay"></div>
 
-<!-- درج الطلبات -->
+<!-- درج الطلبات (نفسه) -->
 <aside class="drawer" id="orderDrawer" dir="rtl" aria-label="درج الطلبات">
   <div class="drawer-head"><div class="drawer-title">قائمة الطلبات</div><button class="drawer-close" data-close>&times;</button></div>
   <div class="drawer-body">
@@ -298,32 +298,19 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
       <h3>🗓️ مواعيد الأيام (من — إلى)</h3>
       <div class="day-grid">
         <div class="day-label">السبت</div>
-        <input class="order-input" id="satFrom" type="time" aria-label="السبت من">
-        <input class="order-input" id="satTo"   type="time" aria-label="السبت إلى">
-
+        <input class="order-input" id="satFrom" type="time"><input class="order-input" id="satTo" type="time">
         <div class="day-label">الأحد</div>
-        <input class="order-input" id="sunFrom" type="time" aria-label="الأحد من">
-        <input class="order-input" id="sunTo"   type="time" aria-label="الأحد إلى">
-
+        <input class="order-input" id="sunFrom" type="time"><input class="order-input" id="sunTo" type="time">
         <div class="day-label">الاثنين</div>
-        <input class="order-input" id="monFrom" type="time" aria-label="الاثنين من">
-        <input class="order-input" id="monTo"   type="time" aria-label="الاثنين إلى">
-
+        <input class="order-input" id="monFrom" type="time"><input class="order-input" id="monTo" type="time">
         <div class="day-label">الثلاثاء</div>
-        <input class="order-input" id="tueFrom" type="time" aria-label="الثلاثاء من">
-        <input class="order-input" id="tueTo"   type="time" aria-label="الثلاثاء إلى">
-
+        <input class="order-input" id="tueFrom" type="time"><input class="order-input" id="tueTo" type="time">
         <div class="day-label">الأربعاء</div>
-        <input class="order-input" id="wedFrom" type="time" aria-label="الأربعاء من">
-        <input class="order-input" id="wedTo"   type="time" aria-label="الأربعاء إلى">
-
+        <input class="order-input" id="wedFrom" type="time"><input class="order-input" id="wedTo" type="time">
         <div class="day-label">الخميس</div>
-        <input class="order-input" id="thuFrom" type="time" aria-label="الخميس من">
-        <input class="order-input" id="thuTo"   type="time" aria-label="الخميس إلى">
-
+        <input class="order-input" id="thuFrom" type="time"><input class="order-input" id="thuTo" type="time">
         <div class="day-label">الجمعة</div>
-        <input class="order-input" id="friFrom" type="time" aria-label="الجمعة من">
-        <input class="order-input" id="friTo"   type="time" aria-label="الجمعة إلى">
+        <input class="order-input" id="friFrom" type="time"><input class="order-input" id="friTo" type="time">
       </div>
     </div>
 
@@ -337,7 +324,7 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
   </div>
 </aside>
 
-<!-- درج الأسعار -->
+<!-- درج الأسعار (محدّث) -->
 <aside class="drawer" id="pricesDrawer" dir="rtl" aria-label="قائمة الأسعار">
   <div class="drawer-head">
     <div class="drawer-title">💰 قائمة الأسعار</div>
@@ -345,11 +332,14 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
   </div>
   <div class="drawer-body">
     <div class="price-note">* الأسعار تقديرية وقد تختلف حسب المسافة والوقت. للتأكيد النهائي تواصل معنا على واتساب.</div>
-    <div class="price-item"><div class="badge">20–25 ج</div><div style="font-weight:900">داخل نجع حمادي</div></div>
-    <div class="price-item"><div class="badge">10 ج</div><div style="font-weight:900">قرية داخل بركة</div></div>
-    <div class="price-item"><div class="badge">20 ج</div><div style="font-weight:900">من بركة إلى الألمنيوم</div></div>
-    <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من بركة إلى نجع حمادي</div></div>
-    <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من الألمنيوم إلى نجع حمادي</div></div>
+
+    <div class="price-item"><div class="badge">25 ج</div><div style="font-weight:900">داخل نجع حمادي</div></div>
+    <div class="price-item"><div class="badge">15 ج</div><div style="font-weight:900">داخل قرية بركة</div></div>
+    <div class="price-item"><div class="badge">30 ج</div><div style="font-weight:900">من بركة إلى الألمنيوم</div></div>
+    <div class="price-item"><div class="badge">40 ج</div><div style="font-weight:900">من بركة إلى نجع حمادي</div></div>
+    <div class="price-item"><div class="badge">25 ج</div><div style="font-weight:900">من بركة إلى المساكن</div></div>
+    <div class="price-item"><div class="badge">30 ج</div><div style="font-weight:900">من بركة إلى هو</div></div>
+
     <div class="order-actions" style="margin-top:14px">
       <button class="order-btn" onclick="window.open('https://wa.me/201017908076','_blank')">تواصل لتأكيد السعر على واتساب</button>
     </div>
@@ -529,13 +519,12 @@ document.getElementById("visits").textContent=`👀 عدد زياراتك من �
   music.volume = 0.6;
   music.muted = false;
 
-  const tryPlay = ()=> music.play().catch(()=>{ /* محظور لسه */ });
+  const tryPlay = ()=> music.play().catch(()=>{});
 
   ['click','pointerdown','touchstart','scroll','keydown'].forEach(evt=>{
     window.addEventListener(evt, tryPlay, { once:false, passive:true });
   });
 
-  // لو رجع المستخدم للصفحة بعد إخفائها
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) tryPlay(); });
 })();
 </script>
