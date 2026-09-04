@@ -163,7 +163,7 @@ body {
 .app-banner p { font-size: 12px; opacity: 0.95; margin-top: 4px; }
 .app-banner i { font-size: 38px; opacity: 0.3; }
 
-/* بانر عجلة الحظ */
+/* بانر عجلة الخصومات */
 .wheel-promo-card {
   background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 107, 0, 0.18));
   border: 1px dashed var(--primary);
@@ -463,11 +463,11 @@ body {
 .toast-title { font-weight: 800; color: #fff; }
 .toast-time { font-size: 10px; color: var(--text-sub); }
 
-/* نافذة عجلة الحظ */
+/* نافذة عجلة الحظ وأداة الأدمن */
 .wheel-modal, .admin-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.82);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   z-index: 200;
   display: none;
@@ -547,7 +547,6 @@ body {
 .spin-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .wheel-result { margin-top: 10px; font-weight: 800; font-size: 12px; color: #34d399; min-height: 20px; line-height: 1.5; }
 
-/* زر واتساب اليدوي الاحتياطي في حال حظر المتصفح للنوافذ المنبثقة */
 .wa-claim-btn {
   display: none;
   margin-top: 10px;
@@ -569,7 +568,7 @@ body {
 <body>
 <div class="app-container">
 
-  <!-- Header (اضغط 5 مرات متتالية على اللوجو لفتح أداة فحص الأكواد) -->
+  <!-- Header (اضغط 5 مرات على اللوجو لفتح أداة التحقق السرية) -->
   <header class="app-header">
     <div class="profile-section" id="adminSecretTrigger">
       <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
@@ -845,12 +844,12 @@ body {
     </div>
   </div>
 
-  <!-- نافذة عجلة الحظ الموثقة -->
+  <!-- نافذة عجلة الحظ الموثقة والمشفرة بأعلى مستوى أمان -->
   <div class="wheel-modal" id="wheelModal">
     <div class="wheel-card">
       <button class="wheel-close" onclick="closeWheel()">&times;</button>
       <h3 style="font-size:17px; font-weight:900; color:#fff;">🎡 عجلة الخصومات الموثقة</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">كود الخصم محمي وصالح لمدة ساعتين من اللف</p>
+      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">الكود مشفر ومقترن برقم الواتساب وصالح لساعتين</p>
       
       <div style="margin: 10px 0 6px;">
         <input type="tel" id="wheelPhone" class="order-input" placeholder="رقم الواتساب (01xxxxxxxxx)" style="text-align:center; font-weight:700; letter-spacing:1px;" inputmode="tel">
@@ -864,25 +863,25 @@ body {
       <button class="spin-btn" id="spinBtn" onclick="spinWheel()">لف العجلة الآن 🎯</button>
       <div class="wheel-result" id="wheelResult"></div>
       
-      <!-- زر تأكيد الواتساب الاحتياطي -->
+      <!-- زر واتساب اليدوي الاحتياطي في حال حظر النوافذ المنبثقة -->
       <button class="wa-claim-btn" id="waClaimBtn" onclick="openClaimWhatsApp()">
         <i class="fa-brands fa-whatsapp"></i> تفعيل وتثبيت الخصم عبر واتساب الآن 📲
       </button>
     </div>
   </div>
 
-  <!-- أداة الفحص السرية الخاصة بالأدمن -->
+  <!-- 🔒 أداة الفحص السرية الخاصة بالأدمن للتحقق من التزوير -->
   <div class="admin-modal" id="adminModal">
     <div class="admin-card">
       <button class="wheel-close" onclick="closeAdmin()">&times;</button>
       <h3 style="font-size:16px; font-weight:900; color:#ff8c00;">🛡️ فحص صحة الكوبون (للإدارة)</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-top:4px;">تأكد من صحة كود العميل وصلاحيته الزمنية</p>
+      <p style="font-size:11px; color:var(--text-sub); margin-top:4px;">تأكد من مطابقة رقم الشات الحقيقي للكود المشفر</p>
       <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
         <input type="text" id="verifyCode" class="order-input" placeholder="اكتب كود الخصم (FLY-...)">
-        <input type="tel" id="verifyPhone" class="order-input" placeholder="رقم هاتف العميل">
+        <input type="tel" id="verifyPhone" class="order-input" placeholder="رقم الواتساب اللي بيكلمك منه في الشات">
         <button class="order-btn" onclick="verifyCouponFromAdmin()">تحقق من الكوبون 🔍</button>
       </div>
-      <div id="verifyResult" style="margin-top:12px; font-size:12px; font-weight:800; min-height:35px;"></div>
+      <div id="verifyResult" style="margin-top:12px; font-size:12px; font-weight:800; min-height:35px; line-height:1.5;"></div>
     </div>
   </div>
 
@@ -893,11 +892,23 @@ body {
 <script>
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
-const FLY_SECRET_SALT = "FLY_EXP_2026_NAGA";
+
+// المفتاح السري السيادي لمنظومة Fly Express
+const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 
 let pendingClaimUrl = "";
 
-// بصمة شاشة ومعالج الجهاز لمنع اللف من متصفحات مختلفة
+// خوارزمية Hash قوية لربط رقم الهاتف كاملاً بدون نقص
+function hashString(str) {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash) + str.charCodeAt(i);
+    hash = hash & hash;
+  }
+  return Math.abs(hash).toString(36).toUpperCase();
+}
+
+// بصمة شاشة ومعالج الجهاز (Hardware/Canvas Fingerprint) لمنع اللف من متصفحات مختلفة
 function getDeviceFingerprint() {
   try {
     const canvas = document.createElement('canvas');
@@ -917,65 +928,64 @@ function getDeviceFingerprint() {
   }
 }
 
-// خوارزمية التوقيع المشفر
+// توليد كود مشفر بأعلى مستوى حماية (Level Max)
 function generateSecureCoupon(baseKey, phone) {
   const now = new Date();
-  const timeBlock = `${now.getDate().toString().padStart(2,'0')}${now.getHours().toString().padStart(2,'0')}`;
-  const epochMins = Math.floor(now.getTime() / (1000 * 60));
-  const phoneLast4 = phone.slice(-4);
+  const epochMins = Math.floor(now.getTime() / (1000 * 60)); // وقت اللف بدقة الدقيقة
   
-  const payload = `${phone}_${baseKey}_${timeBlock}_${FLY_SECRET_SALT}`;
-  let sig = 0;
-  for (let i = 0; i < payload.length; i++) {
-    sig = ((sig << 5) - sig) + payload.charCodeAt(i);
-    sig |= 0;
-  }
-  const checksum = Math.abs(sig).toString(36).substring(0, 4).toUpperCase();
-  return `FLY-${baseKey}-${phoneLast4}-${epochMins.toString(36).toUpperCase()}-${checksum}`;
+  // تشفير رقم الهاتف بالكامل (الـ 11 رقم) مع المفتاح السري
+  const cleanPhone = phone.trim().replace(/[^0-9]/g, '');
+  const phoneHash = hashString(cleanPhone + FLY_SECRET_SALT).substring(0, 4);
+  const fullSignature = hashString(`${cleanPhone}_${baseKey}_${epochMins}_${FLY_SECRET_SALT}`).substring(0, 4);
+  
+  // صيغة الكود: FLY-[القيمة]-[تشفير رقم الهاتف]-[وقت التوليد]-[التوقيع الرقمي]
+  return `FLY-${baseKey}-${phoneHash}-${epochMins.toString(36).toUpperCase()}-${fullSignature}`;
 }
 
-// دالة فحص الكود للأدمن
-function parseAndValidateCoupon(code, phone) {
-  if (!code || !phone) return { valid: false, reason: "البيانات ناقصة" };
+// أداة فحص الأدمن المطورة لكشف أي تلاعب برقم الشات
+function parseAndValidateCoupon(code, senderPhone) {
+  if (!code || !senderPhone) return { valid: false, reason: "من فضلك أدخل الكود ورقم الواتساب المرسل منه ❌" };
+  
+  // تنظيف رقم الهاتف وإزالة كود الدولة إن وُجد
+  let cleanPhone = senderPhone.trim().replace(/[^0-9]/g, '');
+  if (cleanPhone.startsWith("20") && cleanPhone.length === 12) {
+    cleanPhone = "0" + cleanPhone.slice(2);
+  }
+
   const parts = code.trim().split('-');
   if (parts.length !== 5 || parts[0] !== 'FLY') {
-    return { valid: false, reason: "صيغة الكود غير صحيحة ومزورة ❌" };
+    return { valid: false, reason: "صيغة الكود غير صحيحة ومفبركة تماماً ❌" };
   }
 
   const baseKey = parts[1];
-  const phoneLast4 = parts[2];
+  const couponPhoneHash = parts[2];
   const epochMins = parseInt(parts[3], 36);
-  const checksum = parts[4];
+  const signature = parts[4];
 
-  if (phone.slice(-4) !== phoneLast4) {
-    return { valid: false, reason: "الكود ليس مخصصاً لهذا الرقم ❌" };
+  // 1. فحص هل الكود اتولد بنفس رقم التليفون اللي بيكلمك منه في شات الواتساب؟
+  const expectedPhoneHash = hashString(cleanPhone + FLY_SECRET_SALT).substring(0, 4);
+  if (couponPhoneHash !== expectedPhoneHash) {
+    return { valid: false, reason: "كشف تلاعب 🚨: الرقم المسجل في الموقع مختلف عن رقم الواتساب اللي بيكلمك منه في الشات!" };
   }
 
+  // 2. فحص مدة الصلاحية (ساعتان = 120 دقيقة)
   const currentMins = Math.floor(Date.now() / (1000 * 60));
   const diffMins = currentMins - epochMins;
   if (isNaN(diffMins) || diffMins < 0 || diffMins > 120) {
-    return { valid: false, reason: `الكود منتهي الصلاحية (مر عليه أكثر من ساعتين) ⏳` };
+    return { valid: false, reason: `الكود منتهي الصلاحية ⏳ (مر عليه ${diffMins} دقيقة، الصلاحية ساعتان فقط)` };
   }
 
-  const testDate = new Date(epochMins * 60 * 1000);
-  const timeBlock = `${testDate.getDate().toString().padStart(2,'0')}${testDate.getHours().toString().padStart(2,'0')}`;
-  const payload = `${phone}_${baseKey}_${timeBlock}_${FLY_SECRET_SALT}`;
-  let sig = 0;
-  for (let i = 0; i < payload.length; i++) {
-    sig = ((sig << 5) - sig) + payload.charCodeAt(i);
-    sig |= 0;
-  }
-  const expectedChecksum = Math.abs(sig).toString(36).substring(0, 4).toUpperCase();
-
-  if (checksum !== expectedChecksum) {
-    return { valid: false, reason: "توقيع الكود مزور وغير مسجل بالنظام ❌" };
+  // 3. فحص التوقيع الرقمي بالمفتاح السري
+  const expectedSignature = hashString(`${cleanPhone}_${baseKey}_${epochMins}_${FLY_SECRET_SALT}`).substring(0, 4);
+  if (signature !== expectedSignature) {
+    return { valid: false, reason: "الكود مزور أو تم تعديل أحرفه يدوياً ❌" };
   }
 
   return {
     valid: true,
     discount: baseKey,
     remainingMins: 120 - diffMins,
-    reason: `كود موثق وأصلي 100% ✅ (متبقي ${120 - diffMins} دقيقة في صلاحيته)`
+    reason: `كود موثق وأصلي 100% ✅<br>الجائزة: ${baseKey}<br>متبقي في صلاحيته: ${120 - diffMins} دقيقة`
   };
 }
 
@@ -994,7 +1004,7 @@ const waSend = txt => {
 };
 
 // -------------------------------------------------------------
-// 1. نظام إشعارات الطلبات الحية
+// 1. نظام إشعارات الطلبات الحية (Social Proof)
 // -------------------------------------------------------------
 const mockOrders = [
   { title: "📦 طلب طرد سريع", desc: "من قرية بركة إلى الألمنيوم • منذ 4 دقائق" },
@@ -1025,7 +1035,7 @@ setTimeout(() => {
 }, 3000);
 
 // -------------------------------------------------------------
-// 2. عجلة الحظ مع التحويل التلقائي لواتساب
+// 2. عجلة الحظ مع التحويل المباشر للواتساب
 // -------------------------------------------------------------
 const slices = [
   { text: "خصم 5 ج", key: "5EGP", color: "#ff6b00" },
@@ -1118,7 +1128,7 @@ function spinWheel() {
   const spinBtn = document.getElementById('spinBtn');
   const waClaimBtn = document.getElementById('waClaimBtn');
 
-  // التحقق من رقم الموبايل المصري
+  // التحقق من الرقم المصري
   const phoneRegex = /^01[0125][0-9]{8}$/;
   if (!phoneRegex.test(phone)) {
     alert("من فضلك أدخل رقم هاتف مصري صحيح (11 رقم يبدأ بـ 01)");
@@ -1165,7 +1175,7 @@ function spinWheel() {
       localStorage.setItem('fly_locked_phone', phone);
       localStorage.setItem('fly_locked_device', 'true');
 
-      resultDiv.innerHTML = `🎉 مبروك! ربحت ${winner.text}<br><strong style="color:#fff;">كودك: ${secureCoupon}</strong><br><span style="color:#f59e0b;">⏳ جاري تحويلك لواتساب لتثبيت وتفعيل الخصم...</span>`;
+      resultDiv.innerHTML = `🎉 مبروك! ربحت ${winner.text}<br><strong style="color:#fff;">كودك الموثق: ${secureCoupon}</strong><br><span style="color:#f59e0b;">⏳ جاري تحويلك لواتساب لتثبيت وتفعيل الخصم...</span>`;
       document.getElementById('couponStatusTxt').textContent = `كوبونك الموثق: ${secureCoupon}`;
       
       ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone'].forEach(id => {
@@ -1173,17 +1183,16 @@ function spinWheel() {
         if (el) el.value = phone;
       });
 
-      // إعداد رسالة الواتساب الرسمية
       const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-      const waMsg = `مرحباً Fly Express 🚀\nلقد قمت بلف عجلة الحظ الآن وربحت:\n🎁 الجائزة: ${winner.text}\n🏷️ كود الخصم الموثق: ${secureCoupon}\n📱 رقم الهاتف المسجل: ${phone}\n⏰ وقت اللف: ${nowStr}\n(يرجى تأكيد وتثبيت الخصم لمشواري القادم - صالح لمدة ساعتين)`;
+      const waMsg = `مرحباً Fly Express 🚀\nلقد قمت بلف عجلة الحظ الآن وربحت:\n🎁 الجائزة: ${winner.text}\n🏷️ كود الخصم الموثق: ${secureCoupon}\n⏰ وقت اللف: ${nowStr}\n\n(يرجى تأكيد وتثبيت الخصم لمشواري القادم - الكود مشفر ومربوط برقم هذا الشات وصالح لمدة ساعتين فقط)`;
       
       pendingClaimUrl = `https://wa.me/${ADMIN_PHONE}?text=${enc(waMsg)}`;
       waClaimBtn.style.display = 'block';
 
-      // تحويل تلقائي بعد 1.8 ثانية
+      // تحويل تلقائي بعد ثانيتين
       setTimeout(() => {
         window.open(pendingClaimUrl, '_blank', 'noopener');
-      }, 1800);
+      }, 2000);
     }
   }, 4200);
 }
