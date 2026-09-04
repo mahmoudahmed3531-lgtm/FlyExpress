@@ -7,7 +7,14 @@
 <meta name="description" content="Fly Express: دليفري سريع في نجع حمادي — اطلب مشوارك فورًا عبر واتساب.">
 <meta name="theme-color" content="#070b12">
 
+<link rel="manifest" href="/FlyExpress/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fly Express">
+
 <link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
+<link rel="apple-touch-icon" href="/FlyExpress/icon-192.png"/>
 <meta property="og:image" content="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -30,7 +37,6 @@
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
 input, textarea, select { user-select: auto; }
 
-/* خلفية تكنولوجية ديناميكية كودية 100% تعمل على جميع الأجهزة فوراً */
 body {
   background-color: var(--bg-dark);
   color: var(--text-main);
@@ -46,22 +52,52 @@ body {
   background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
 }
 
-/* شريط سرعة ضوئي متحرك في الخلفية */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; right: 0; height: 100vh;
-  background: radial-gradient(circle 800px at var(--glow-x, 50%) var(--glow-y, 30%), rgba(255, 107, 0, 0.06), transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
 .app-container {
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
   position: relative;
   z-index: 1;
+}
+
+/* بنر تثبيت التطبيق PWA */
+.pwa-install-banner {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(18, 26, 43, 0.95);
+  border: 1px solid var(--primary);
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin: 12px 16px 0;
+  box-shadow: 0 4px 18px var(--primary-glow);
+  backdrop-filter: blur(12px);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.pwa-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pwa-install-btn {
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 /* شريط الرأس */
@@ -183,7 +219,6 @@ body::after {
   margin-bottom: 24px;
 }
 
-/* بطاقات ذات توهج نيون أنيق */
 .service-card, .game-card-btn, .price-box, .form-card {
   background: rgba(18, 26, 43, 0.65);
   backdrop-filter: blur(14px);
@@ -200,25 +235,12 @@ body::after {
   gap: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.service-card::after {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--primary), transparent);
-  opacity: 0;
-  transition: opacity 0.2s;
 }
 
 .service-card:active {
   transform: scale(0.97);
   border-color: rgba(255, 107, 0, 0.4);
 }
-
-.service-card:active::after { opacity: 1; }
 
 .service-icon {
   width: 46px;
@@ -398,6 +420,14 @@ body::after {
 
 <body>
 <div class="app-container">
+
+  <div class="pwa-install-banner" id="pwaBanner">
+    <div class="pwa-text">
+      <i class="fa-solid fa-mobile-screen-button" style="color:var(--primary); font-size:20px;"></i>
+      <span>ثبّت تطبيق Fly Express على هاتفك</span>
+    </div>
+    <button class="pwa-install-btn" id="pwaBtn">تثبيت الآن</button>
+  </div>
 
   <header class="app-header">
     <div class="profile-section">
@@ -652,6 +682,37 @@ const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
 const waSend = txt => window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`, '_blank', 'noopener');
 
+// تسجيل الـ Service Worker باستخدام المسار الكامل
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/FlyExpress/sw.js')
+      .then(reg => console.log('SW Registered', reg))
+      .catch(err => console.log('SW Failed', err));
+  });
+}
+
+// منطق بنر التثبيت PWA
+let deferredPrompt;
+const pwaBanner = document.getElementById('pwaBanner');
+const pwaBtn = document.getElementById('pwaBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  pwaBanner.style.display = 'flex';
+});
+
+pwaBtn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      pwaBanner.style.display = 'none';
+    }
+    deferredPrompt = null;
+  }
+});
+
 function switchTab(tabId, navBtn) {
   document.querySelectorAll('.tab-view').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -736,14 +797,6 @@ document.getElementById('clearMonthly').addEventListener('click',()=>{
 const visits = +localStorage.getItem("visitsCount") || 0;
 localStorage.setItem("visitsCount", visits + 1);
 document.getElementById("visits").textContent = `زياراتك للتطبيق: ${visits + 1} مرة`;
-
-// تفاعل ضوئي لمسي خفيف مع حركة إصبع المستخدم
-document.addEventListener('pointermove', (e) => {
-  const x = (e.clientX / window.innerWidth) * 100;
-  const y = (e.clientY / window.innerHeight) * 100;
-  document.body.style.setProperty('--glow-x', `${x}%`);
-  document.body.style.setProperty('--glow-y', `${y}%`);
-});
 
 (function () {
   const music = document.getElementById('gameMusic');
