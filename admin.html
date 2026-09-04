@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<title>Fly Express — لوحة تحكم الإدارة</title>
+<title>Fly Express — لوحة تحكم الإدارة المباشرة</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
@@ -12,7 +12,6 @@
   --card: #0f172a;
   --primary: #ff6b00;
   --success: #10b981;
-  --accent: #00e5ff;
   --text: #f8fafc;
   --sub: #94a3b8;
   font-family: 'Cairo', sans-serif;
@@ -20,7 +19,6 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; }
 
-/* شاشة تسجيل الدخول */
 #loginScreen {
   display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; gap: 16px;
 }
@@ -33,54 +31,58 @@ body { background: var(--bg); color: var(--text); padding: 16px; max-width: 500p
 .btn-primary { background: var(--primary); }
 .btn-success { background: var(--success); }
 .btn-info { background: #0284c7; }
-.btn-danger { background: #ef4444; }
 
 .status-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px; }
 .status-btn {
-  padding: 10px 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
-  color: var(--sub); font-family: inherit; font-size: 11px; font-weight: 800; cursor: pointer;
+  padding: 12px 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+  color: var(--sub); font-family: inherit; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s;
 }
 .status-btn.active {
-  background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 0 10px rgba(255,107,0,0.5);
+  background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 0 14px rgba(255,107,0,0.5);
 }
-
 .input-box {
   width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3);
   color: #fff; font-family: inherit; font-size: 13px; margin-top: 8px;
+}
+.sync-badge {
+  font-size: 11px; color: #34d399; display: flex; align-items: center; gap: 6px; font-weight: 700;
 }
 </style>
 </head>
 <body>
 
-<!-- شاشة القفل بكلمة سر -->
+<!-- شاشة تسجيل الدخول -->
 <div id="loginScreen">
   <i class="fa-solid fa-user-shield" style="font-size: 48px; color: var(--primary);"></i>
   <h2>لوحة تحكم كابتن Fly Express</h2>
-  <p style="font-size: 12px; color: var(--sub);">من فضلك أدخل رمز المرور السري</p>
-  <input type="password" id="passCode" class="input-box" placeholder="رمز المرور (الافتراضي: 1234)" style="text-align:center; font-size: 18px; letter-spacing: 4px;">
-  <button class="admin-btn btn-primary" onclick="checkLogin()">دخول اللوحة 🔐</button>
+  <p style="font-size: 12px; color: var(--sub);">أدخل رمز المرور السري</p>
+  <input type="password" id="passCode" class="input-box" placeholder="رمز المرور (1234)" style="text-align:center; font-size: 20px; letter-spacing: 4px;">
+  <button class="admin-btn btn-primary" onclick="checkLogin()">دخول 🔐</button>
 </div>
 
-<!-- لوحة التحكم الرئيسية -->
+<!-- لوحة التحكم -->
 <div id="dashboard" style="display: none;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-    <h3>لوحة الإدارة المباشرة 🛵</h3>
-    <button onclick="location.href='index.html'" style="background:none; border:0; color:var(--primary); font-family:inherit; font-weight:700; cursor:pointer;">عرض موقع الزبائن ↗</button>
+    <div>
+      <h3 style="font-size: 17px;">لوحة الإدارة السحابية 🛵</h3>
+      <div class="sync-badge"><i class="fa-solid fa-cloud-bolt"></i> الربط السحابي مع هواتف الزبائن نشط</div>
+    </div>
+    <button onclick="location.href='index.html'" style="background:none; border:0; color:var(--primary); font-family:inherit; font-weight:700; cursor:pointer;">الموقع ↗</button>
   </div>
 
-  <!-- 1. التحكم في رادار المدرسة -->
+  <!-- 1. رادار أمان المدرسة السحابي -->
   <div class="admin-card">
-    <h4 style="color:#10b981; margin-bottom:6px;"><i class="fa-solid fa-school-flag"></i> التحكم في رادار المدرسة</h4>
-    <p style="font-size:11px; color:var(--sub);">حدد المرحلة الحالية لرحلة الطلاب اليومية:</p>
+    <h4 style="color:#10b981; margin-bottom:6px;"><i class="fa-solid fa-school-flag"></i> رادار أمان الطلاب (بث مباشر)</h4>
+    <p style="font-size:11px; color:var(--sub);">الضغط على أي زر يغيّر الحالة مباشرة على هواتف أولياء الأمور:</p>
     <div class="status-grid">
-      <button class="status-btn" id="radarStep1" onclick="setRadarStep(1)">1. تم الاستلام 🏠</button>
-      <button class="status-btn" id="radarStep2" onclick="setRadarStep(2)">2. في الطريق 🛵</button>
-      <button class="status-btn" id="radarStep3" onclick="setRadarStep(3)">3. وصل بسلام 🏫</button>
+      <button class="status-btn" id="radarBtn1" onclick="updateCloudState(1, currentService)">1. تم الاستلام 🏠</button>
+      <button class="status-btn" id="radarBtn2" onclick="updateCloudState(2, currentService)">2. في الطريق 🛵</button>
+      <button class="status-btn" id="radarBtn3" onclick="updateCloudState(3, currentService)">3. وصل بسلام 🏫</button>
     </div>
 
     <div style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">
       <p style="font-size:11px; color:var(--sub); margin-bottom:6px;">إرسال رسالة طمأنة لواتساب ولي الأمر:</p>
-      <input type="tel" id="parentPhone" class="input-box" placeholder="رقم واتساب ولي الأمر">
+      <input type="tel" id="parentPhone" class="input-box" placeholder="رقم واتساب ولي الأمر (01xxxxxxxxx)">
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;">
         <button class="admin-btn btn-info" style="font-size:11px;" onclick="sendParentAlert('pickup')">إشعار: تم الاستلام 🛵</button>
         <button class="admin-btn btn-success" style="font-size:11px;" onclick="sendParentAlert('arrived')">إشعار: وصل بسلام 🏫</button>
@@ -88,17 +90,17 @@ body { background: var(--bg); color: var(--text); padding: 16px; max-width: 500p
     </div>
   </div>
 
-  <!-- 2. حالة التوصيل العامة للموقع -->
+  <!-- 2. حالة الخدمة العامة بالموقع -->
   <div class="admin-card">
-    <h4 style="color:var(--primary); margin-bottom:6px;"><i class="fa-solid fa-tower-broadcast"></i> حالة الخدمة بالموقع</h4>
+    <h4 style="color:var(--primary); margin-bottom:6px;"><i class="fa-solid fa-tower-broadcast"></i> حالة التوصيل في الموقع</h4>
     <div class="status-grid">
-      <button class="status-btn" id="servOnline" onclick="setServiceStatus('online')">متاح الآن 🟢</button>
-      <button class="status-btn" id="servBusy" onclick="setServiceStatus('busy')">مشغول حالياً 🟡</button>
-      <button class="status-btn" id="servOffline" onclick="setServiceStatus('offline')">مغلق 🔴</button>
+      <button class="status-btn" id="servOnline" onclick="updateCloudState(currentRadar, 'online')">متاح الآن 🟢</button>
+      <button class="status-btn" id="servBusy" onclick="updateCloudState(currentRadar, 'busy')">مشغول حالياً 🟡</button>
+      <button class="status-btn" id="servOffline" onclick="updateCloudState(currentRadar, 'offline')">مغلق 🔴</button>
     </div>
   </div>
 
-  <!-- 3. فحص كوبونات الزبائن ضد التزوير -->
+  <!-- 3. كشف التزوير -->
   <div class="admin-card">
     <h4 style="color:#ffd166; margin-bottom:6px;"><i class="fa-solid fa-shield-halved"></i> كشف تزوير الكوبونات</h4>
     <input type="text" id="verifyCode" class="input-box" placeholder="كود الكوبون المرسل (FLY-...)">
@@ -109,62 +111,78 @@ body { background: var(--bg); color: var(--text); padding: 16px; max-width: 500p
 </div>
 
 <script>
+const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 
+let currentRadar = 1;
+let currentService = "online";
+
 function checkLogin() {
-  const code = document.getElementById('passCode').value.trim();
-  if (code === "1234") { // يمكنك تغيير كلمة السر هنا
+  if (document.getElementById('passCode').value.trim() === "1234") {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
-    loadCurrentSettings();
+    fetchCurrentCloudState();
   } else {
     alert("رمز المرور غير صحيح!");
   }
 }
 
-function loadCurrentSettings() {
-  const step = localStorage.getItem('fly_radar_step') || '1';
-  highlightRadar(step);
-
-  const status = localStorage.getItem('fly_service_status') || 'online';
-  highlightStatus(status);
+// جلب الحالة المحفوظة سحابياً
+async function fetchCurrentCloudState() {
+  try {
+    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
+    const text = await res.text();
+    if (text) {
+      const lines = text.trim().split('\n');
+      const latest = JSON.parse(lines[lines.length - 1]);
+      const data = JSON.parse(latest.message);
+      currentRadar = data.radar || 1;
+      currentService = data.service || "online";
+      renderUI();
+    }
+  } catch(e) {
+    renderUI();
+  }
 }
 
-function setRadarStep(step) {
-  localStorage.setItem('fly_radar_step', step);
-  highlightRadar(step);
-  alert(`تم تحديث رادار أمان الطلاب إلى المرحلة (${step}) بنجاح!`);
+// إرسال التحديث للسحابة ليتغير عند كل الناس في نفس اللحظة
+async function updateCloudState(radarStep, serviceState) {
+  currentRadar = radarStep;
+  currentService = serviceState;
+  renderUI();
+
+  const payload = JSON.stringify({ radar: currentRadar, service: currentService, time: Date.now() });
+
+  try {
+    await fetch(CLOUD_CHANNEL, {
+      method: 'POST',
+      body: payload,
+      headers: { 'Title': 'StateUpdate' }
+    });
+    // حفظ محلي أيضاً كنسخة احتياطية
+    localStorage.setItem('fly_radar_step', currentRadar);
+    localStorage.setItem('fly_service_status', currentService);
+  } catch (err) {
+    console.log("Cloud sync error:", err);
+  }
 }
 
-function highlightRadar(step) {
+function renderUI() {
   [1, 2, 3].forEach(i => {
-    const el = document.getElementById(`radarStep${i}`);
-    if (el) el.classList.toggle('active', i == step);
+    const btn = document.getElementById(`radarBtn${i}`);
+    if (btn) btn.classList.toggle('active', i == currentRadar);
   });
-}
-
-function setServiceStatus(status) {
-  localStorage.setItem('fly_service_status', status);
-  highlightStatus(status);
-  alert("تم تغيير حالة الخدمة في الموقع!");
-}
-
-function highlightStatus(status) {
-  document.getElementById('servOnline').classList.toggle('active', status === 'online');
-  document.getElementById('servBusy').classList.toggle('active', status === 'busy');
-  document.getElementById('servOffline').classList.toggle('active', status === 'offline');
+  document.getElementById('servOnline').classList.toggle('active', currentService === 'online');
+  document.getElementById('servBusy').classList.toggle('active', currentService === 'busy');
+  document.getElementById('servOffline').classList.toggle('active', currentService === 'offline');
 }
 
 function sendParentAlert(type) {
   const phone = document.getElementById('parentPhone').value.trim();
   if (!phone) { alert("اكتب رقم ولي الأمر أولاً"); return; }
-  
-  let msg = "";
-  if (type === 'pickup') {
-    msg = "صباح الخير يا فندم 🌹\nمع حضرتك كابتن Fly Express، تم استلام الطالب بأمان وهو في الطريق إلى المدرسة الآن 🛵🎒";
-  } else {
-    msg = "حمدلله على سلامته 🌹\nتم وصول الطالب لمدرسته وتسليمه بسلام وأمان ✅\n— نتمنى له يوماً دراسياً موفقاً مع Fly Express";
-  }
+  let msg = (type === 'pickup') 
+    ? "صباح الخير يا فندم 🌹\nمع حضرتك كابتن Fly Express، تم استلام الطالب بأمان وهو في الطريق إلى المدرسة الآن 🛵🎒" 
+    : "حمدلله على سلامته 🌹\nتم وصول الطالب لمدرسته وتسليمه بسلام وأمان ✅\n— نتمنى له يوماً دراسياً سعيداً مع Fly Express";
   window.open(`https://wa.me/2${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
@@ -186,10 +204,9 @@ function verifyCoupon() {
   const parts = code.split('-');
   if (parts.length !== 5 || parts[0] !== 'FLY') {
     res.style.color = '#ef4444';
-    res.innerHTML = "الكود مفبرك وغير سليم تماماً ❌";
+    res.innerHTML = "الكود مفبرك وغير مسجل ❌";
     return;
   }
-
   const baseKey = parts[1];
   const couponPhoneHash = parts[2];
   const epochMins = parseInt(parts[3], 36);
@@ -198,7 +215,7 @@ function verifyCoupon() {
   const expectedPhoneHash = hashString(phone + FLY_SECRET_SALT).substring(0, 4);
   if (couponPhoneHash !== expectedPhoneHash) {
     res.style.color = '#ef4444';
-    res.innerHTML = "تنبيه غش 🚨: الكود مسجل برقم آخر غير رقم شات الواتساب المرسل منه!";
+    res.innerHTML = "تنبيه غش 🚨: الكود مسجل برقم آخر غير رقم هذا الشات!";
     return;
   }
 
@@ -209,9 +226,8 @@ function verifyCoupon() {
     res.innerHTML = `الكود منتهي الصلاحية ⏳ (مر عليه ${diff} دقيقة)`;
     return;
   }
-
   res.style.color = '#10b981';
-  res.innerHTML = `كود سليم وأصلي 100% ✅ | الخصم: ${baseKey} | متبقي: ${120 - diff} دقيقة`;
+  res.innerHTML = `كود سليم 100% ✅ | الخصم: ${baseKey} | متبقي: ${120 - diff} دقيقة`;
 }
 </script>
 </body>
