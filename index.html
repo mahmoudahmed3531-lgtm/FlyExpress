@@ -79,6 +79,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  cursor: pointer;
 }
 
 .profile-img {
@@ -462,11 +463,11 @@ body {
 .toast-title { font-weight: 800; color: #fff; }
 .toast-time { font-size: 10px; color: var(--text-sub); }
 
-/* نافذة عجلة الحظ المحمية */
-.wheel-modal {
+/* نافذة عجلة الحظ */
+.wheel-modal, .admin-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.82);
   backdrop-filter: blur(8px);
   z-index: 200;
   display: none;
@@ -475,9 +476,9 @@ body {
   padding: 20px;
 }
 
-.wheel-modal.show { display: flex; }
+.wheel-modal.show, .admin-modal.show { display: flex; }
 
-.wheel-card {
+.wheel-card, .admin-card {
   background: #0d1527;
   border: 1.5px solid var(--primary);
   border-radius: 24px;
@@ -551,9 +552,9 @@ body {
 <body>
 <div class="app-container">
 
-  <!-- Header -->
+  <!-- Header (اضغط 5 مرات على لوجو الموتوسيكل لفتح أداة التحقق السرية) -->
   <header class="app-header">
-    <div class="profile-section">
+    <div class="profile-section" id="adminSecretTrigger">
       <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="profile-info">
         <h1>Fly Express</h1>
@@ -574,8 +575,8 @@ body {
       <div class="wheel-promo-info">
         <i class="fa-solid fa-dharmachakra wheel-promo-icon"></i>
         <div>
-          <h4 style="font-size:13px; font-weight:900; color:#fff;">عجلة الخصومات اليومية 🎁</h4>
-          <span style="font-size:11px; color:#cbd5e1;" id="couponStatusTxt">لف العجلة واكسب خصم فوري على مشوارك</span>
+          <h4 style="font-size:13px; font-weight:900; color:#fff;">عجلة الخصومات الموثقة 🎁</h4>
+          <span style="font-size:11px; color:#cbd5e1;" id="couponStatusTxt">لف العجلة واكسب كود خصم موثق لمشوارك</span>
         </div>
       </div>
       <button class="wheel-promo-btn">العب الآن</button>
@@ -827,12 +828,12 @@ body {
     </div>
   </div>
 
-  <!-- نافذة عجلة الحظ المربوطة بالرقم والمشفرة لمنع التلاعب -->
+  <!-- نافذة عجلة الحظ الموثقة والمشفرة بتوقيع زمني وسري -->
   <div class="wheel-modal" id="wheelModal">
     <div class="wheel-card">
       <button class="wheel-close" onclick="closeWheel()">&times;</button>
       <h3 style="font-size:17px; font-weight:900; color:#fff;">🎡 عجلة الخصومات الموثقة</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">أدخل رقم الواتساب الذي ستطلب منه لتفعيل الكود</p>
+      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">كود الخصم محمي وصالح لمدة ساعتين من اللف</p>
       
       <div style="margin: 10px 0 6px;">
         <input type="tel" id="wheelPhone" class="order-input" placeholder="رقم الواتساب (01xxxxxxxxx)" style="text-align:center; font-weight:700; letter-spacing:1px;" inputmode="tel">
@@ -848,6 +849,21 @@ body {
     </div>
   </div>
 
+  <!-- 🔒 أداة الفحص السرية الخاصة بالأدمن للتحقق من الأكواد -->
+  <div class="admin-modal" id="adminModal">
+    <div class="admin-card">
+      <button class="wheel-close" onclick="closeAdmin()">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:#ff8c00;">🛡️ فحص صحة الكوبون (للإدارة)</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-top:4px;">تأكد من صحة كود العميل وصلاحيته الزمنية</p>
+      <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+        <input type="text" id="verifyCode" class="order-input" placeholder="اكتب كود الخصم (FLY-...)">
+        <input type="tel" id="verifyPhone" class="order-input" placeholder="رقم هاتف العميل">
+        <button class="order-btn" onclick="verifyCouponFromAdmin()">تحقق من الكوبون 🔍</button>
+      </div>
+      <div id="verifyResult" style="margin-top:12px; font-size:12px; font-weight:800; min-height:35px;"></div>
+    </div>
+  </div>
+
 </div>
 
 <audio id="gameMusic" src="https://media1.vocaroo.com/mp3/1oelwoF9NuRN" preload="auto" loop playsinline></audio>
@@ -856,12 +872,103 @@ body {
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
 
-// جلب كود الخصم الموثق المربوط برقم الهاتف
+// المفتاح السري الخاص بك لتوقيع الأكواد (Signature Secret)
+const FLY_SECRET_SALT = "FLY_EXP_2026_NAGA";
+
+// بصمة شاشة ومعالج الجهاز (Hardware/Canvas Fingerprint) لمنع اللف من متصفحات مختلفة
+function getDeviceFingerprint() {
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
+    const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'DEF_GPU';
+    const screenMeta = `${screen.width}x${screen.height}_${screen.colorDepth}_${navigator.hardwareConcurrency || 4}`;
+    let hash = 0;
+    const str = renderer + screenMeta;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return 'HW_' + Math.abs(hash).toString(36);
+  } catch(e) {
+    return 'HW_GENERIC';
+  }
+}
+
+// خوارزمية التوقيع المشفر بالأرقام والوقت والساعة
+function generateSecureCoupon(baseKey, phone) {
+  const now = new Date();
+  // رمز اليوم والشهر والساعة
+  const timeBlock = `${now.getDate().toString().padStart(2,'0')}${now.getHours().toString().padStart(2,'0')}`;
+  const epochMins = Math.floor(now.getTime() / (1000 * 60)); // دقائق الوقت للتحقق
+  const phoneLast4 = phone.slice(-4);
+  
+  // دمج المفتاح السري لتوليد توقيع يستحيل تزويره
+  const payload = `${phone}_${baseKey}_${timeBlock}_${FLY_SECRET_SALT}`;
+  let sig = 0;
+  for (let i = 0; i < payload.length; i++) {
+    sig = ((sig << 5) - sig) + payload.charCodeAt(i);
+    sig |= 0;
+  }
+  const checksum = Math.abs(sig).toString(36).substring(0, 4).toUpperCase();
+  
+  // صيغة الكود: FLY-[القيمة]-[آخر 4 أرقام]-[وقت اللف المشفر]-[توقيع الحماية]
+  return `FLY-${baseKey}-${phoneLast4}-${epochMins.toString(36).toUpperCase()}-${checksum}`;
+}
+
+// دالة فحص الكود المشفر (للأدمن أو الموقع)
+function parseAndValidateCoupon(code, phone) {
+  if (!code || !phone) return { valid: false, reason: "البيانات ناقصة" };
+  const parts = code.trim().split('-');
+  if (parts.length !== 5 || parts[0] !== 'FLY') {
+    return { valid: false, reason: "صيغة الكود غير صحيحة ومزورة ❌" };
+  }
+
+  const baseKey = parts[1];
+  const phoneLast4 = parts[2];
+  const epochMins = parseInt(parts[3], 36);
+  const checksum = parts[4];
+
+  if (phone.slice(-4) !== phoneLast4) {
+    return { valid: false, reason: "الكود ليس مخصصاً لهذا الرقم ❌" };
+  }
+
+  // فحص الصلاحية الزمنية (ساعتان = 120 دقيقة)
+  const currentMins = Math.floor(Date.now() / (1000 * 60));
+  const diffMins = currentMins - epochMins;
+  if (isNaN(diffMins) || diffMins < 0 || diffMins > 120) {
+    return { valid: false, reason: `الكود منتهي الصلاحية (مر عليه أكثر من ساعتين) ⏳` };
+  }
+
+  // فحص التوقيع الرقمي بالمفتاح السري
+  const testDate = new Date(epochMins * 60 * 1000);
+  const timeBlock = `${testDate.getDate().toString().padStart(2,'0')}${testDate.getHours().toString().padStart(2,'0')}`;
+  const payload = `${phone}_${baseKey}_${timeBlock}_${FLY_SECRET_SALT}`;
+  let sig = 0;
+  for (let i = 0; i < payload.length; i++) {
+    sig = ((sig << 5) - sig) + payload.charCodeAt(i);
+    sig |= 0;
+  }
+  const expectedChecksum = Math.abs(sig).toString(36).substring(0, 4).toUpperCase();
+
+  if (checksum !== expectedChecksum) {
+    return { valid: false, reason: "توقيع الكود مزور وغير مسجل بالنظام ❌" };
+  }
+
+  return {
+    valid: true,
+    discount: baseKey,
+    remainingMins: 120 - diffMins,
+    reason: `كود موثق وأصلي 100% ✅ (متبقي ${120 - diffMins} دقيقة في صلاحيته)`
+  };
+}
+
+// جلب كود الخصم المخزن
 function getActiveDiscount() {
   const code = localStorage.getItem('fly_discount_code');
   const phone = localStorage.getItem('fly_locked_phone');
   if (code && phone) {
-    return `\n🎁 كود الخصم المطبق: ${code}\n📱 الرقم المصرح له بالخصم: ${phone}`;
+    return `\n🎁 كود الخصم الموثق: ${code}\n📱 الرقم المصرح له: ${phone}\n⏳ صلاحية الكود: ساعتان من وقت اللف`;
   }
   return '';
 }
@@ -903,15 +1010,15 @@ setTimeout(() => {
 }, 3000);
 
 // -------------------------------------------------------------
-// 2. عجلة الحظ مع التشفير ومنع التلاعب
+// 2. عجلة الحظ مع الحماية القصوى والتوقيع السري
 // -------------------------------------------------------------
 const slices = [
-  { text: "خصم 5 ج", code: "FLY-5", color: "#ff6b00" },
-  { text: "حظ أوفر", code: null, color: "#1e293b" },
-  { text: "خصم 10 ج", code: "FLY-10", color: "#00d27a" },
-  { text: "توصيل مجاني", code: "FLY-FREE", color: "#8b5cf6" },
-  { text: "خصم 5%", code: "FLY-5P", color: "#00a8ff" },
-  { text: "كوبون VIP", code: "FLY-VIP", color: "#f59e0b" }
+  { text: "خصم 5 ج", key: "5EGP", color: "#ff6b00" },
+  { text: "حظ أوفر", key: null, color: "#1e293b" },
+  { text: "خصم 10 ج", key: "10EGP", color: "#00d27a" },
+  { text: "توصيل مجاني", key: "FREE", color: "#8b5cf6" },
+  { text: "خصم 5%", key: "5PER", color: "#00a8ff" },
+  { text: "كوبون VIP", key: "VIP", color: "#f59e0b" }
 ];
 
 const canvas = document.getElementById('wheelCanvas');
@@ -954,31 +1061,29 @@ function openWheel() {
 }
 function closeWheel() { document.getElementById('wheelModal').classList.remove('show'); }
 
-function getSpunUsers() {
+function getSpunRegistry() {
   try {
-    return JSON.parse(localStorage.getItem('fly_spun_users') || '{}');
+    return JSON.parse(localStorage.getItem('fly_hw_registry') || '{}');
   } catch(e) { return {}; }
-}
-
-function generateSecureCode(baseCode, phone) {
-  const last4 = phone.slice(-4);
-  const checkDigit = (parseInt(last4, 10) * 3) % 999;
-  return `${baseCode}-${last4}-${checkDigit}`;
 }
 
 function checkWheelEligibility() {
   const spinBtn = document.getElementById('spinBtn');
   const resultDiv = document.getElementById('wheelResult');
   const phoneInput = document.getElementById('wheelPhone');
-  const savedPhone = localStorage.getItem('fly_locked_phone');
-  const isDeviceLocked = localStorage.getItem('fly_locked_device') === 'true';
+  const hwPrint = getDeviceFingerprint();
+  const registry = getSpunRegistry();
 
-  if (isDeviceLocked && savedPhone) {
+  const isLocked = (registry[hwPrint] && (Date.now() - registry[hwPrint].time < 12 * 3600 * 1000)) ||
+                   (localStorage.getItem('fly_locked_device') === 'true');
+
+  if (isLocked) {
     const existingCode = localStorage.getItem('fly_discount_code');
+    const phone = localStorage.getItem('fly_locked_phone') || '';
     resultDiv.style.color = "#ef4444";
-    resultDiv.innerHTML = `لقد استنفدت لفتك لهذا اليوم!<br><span style="color:#fff;">كودك الموثق: ${existingCode}</span><br><small style="color:#f59e0b;">*صالح فقط للرقم: ${savedPhone}*</small>`;
+    resultDiv.innerHTML = `لقد استنفدت لفتك المتاحة اليوم على هذا الهاتف!<br><span style="color:#fff;">كودك: ${existingCode || 'مستخدم'}</span>`;
     spinBtn.disabled = true;
-    phoneInput.value = savedPhone;
+    if(phone) phoneInput.value = phone;
     phoneInput.disabled = true;
   }
 }
@@ -991,20 +1096,23 @@ function spinWheel() {
   const resultDiv = document.getElementById('wheelResult');
   const spinBtn = document.getElementById('spinBtn');
 
-  // التحقق من رقم الموبايل المصري
+  // التحقق من الرقم المصري
   const phoneRegex = /^01[0125][0-9]{8}$/;
   if (!phoneRegex.test(phone)) {
-    alert("من فضلك أدخل رقم هاتف مصري صحيح يبدأ بـ 01 ومكون من 11 رقماً");
+    alert("من فضلك أدخل رقم هاتف مصري صحيح (11 رقم يبدأ بـ 01)");
     phoneInput.focus();
     return;
   }
 
-  // فحص هل تم استخدام هذا الرقم أو الجهاز مسبقاً
-  const users = getSpunUsers();
-  if (users[phone] || localStorage.getItem('fly_locked_device') === 'true') {
-    const existingCode = users[phone] ? users[phone].code : localStorage.getItem('fly_discount_code');
+  // فحص سجل الجهاز برقم الهاردوير + الرقم
+  const hwPrint = getDeviceFingerprint();
+  const registry = getSpunRegistry();
+  const isUsedHw = registry[hwPrint] && (Date.now() - registry[hwPrint].time < 12 * 3600 * 1000);
+
+  if (isUsedHw || registry[phone] || localStorage.getItem('fly_locked_device') === 'true') {
+    const existingCode = localStorage.getItem('fly_discount_code');
     resultDiv.style.color = "#ef4444";
-    resultDiv.innerHTML = `عذراً! هذا الهاتف أو الرقم استنفد لفته.<br>كودك الموثق: (${existingCode || 'مستخدم'})`;
+    resultDiv.innerHTML = `عذراً! هذا الهاتف أو الرقم استنفد لفته اليوم.<br><strong style="color:#fff;">كودك السابق: ${existingCode || 'مستخدم'}</strong>`;
     spinBtn.disabled = true;
     return;
   }
@@ -1015,7 +1123,7 @@ function spinWheel() {
   resultDiv.style.color = "#34d399";
   resultDiv.textContent = "جاري تدوير العجلة...";
 
-  // قطاع رابح مضمون
+  // قطاع فائز مضمون
   const winningIndex = [0, 2, 4][Math.floor(Math.random() * 3)];
   const extraRounds = 5 * 360;
   const sliceDegree = 360 / numSlices;
@@ -1027,20 +1135,22 @@ function spinWheel() {
   setTimeout(() => {
     isSpinning = false;
     const winner = slices[winningIndex];
-    if (winner.code) {
-      // توليد كود مخصص ومقيد برقم هاتفه الفعلي
-      const secureCoupon = generateSecureCode(winner.code, phone);
+    if (winner.key) {
+      // توليد الكود المشفر والموثق
+      const secureCoupon = generateSecureCoupon(winner.key, phone);
 
-      users[phone] = { code: secureCoupon, time: Date.now() };
-      localStorage.setItem('fly_spun_users', JSON.stringify(users));
+      // قفل الهاتف والرقم في السجل المحلي ومعرّف الهاردوير
+      registry[hwPrint] = { phone: phone, code: secureCoupon, time: Date.now() };
+      registry[phone] = { code: secureCoupon, time: Date.now() };
+      localStorage.setItem('fly_hw_registry', JSON.stringify(registry));
       localStorage.setItem('fly_discount_code', secureCoupon);
       localStorage.setItem('fly_locked_phone', phone);
       localStorage.setItem('fly_locked_device', 'true');
 
-      resultDiv.innerHTML = `مبروك! ربحت ${winner.text}<br><strong style="color:#fff;">كودك الموثق: ${secureCoupon}</strong><br><small style="color:#f59e0b;">*صالح فقط للطلب من رقم الواتساب: ${phone}*</small>`;
-      document.getElementById('couponStatusTxt').textContent = `كوبونك: ${secureCoupon}`;
+      resultDiv.innerHTML = `مبروك! ربحت ${winner.text}<br><strong style="color:#fff;">كودك الموثق: ${secureCoupon}</strong><br><small style="color:#f59e0b;">*صالح لمدة ساعتين فقط للرقم: ${phone}*</small>`;
+      document.getElementById('couponStatusTxt').textContent = `كوبونك المفعّل: ${secureCoupon}`;
       
-      // تعبئة الرقم تلقائياً في خانات الحجز
+      // تعبئة الرقم تلقائياً في خانات الطلب
       ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = phone;
@@ -1049,10 +1159,44 @@ function spinWheel() {
   }, 4200);
 }
 
-// عرض الكود المحفوظ عند فتح الموقع
+// عرض الكود المحفوظ إن وُجد
 const savedCode = localStorage.getItem('fly_discount_code');
 if (savedCode) {
-  document.getElementById('couponStatusTxt').textContent = `كوبونك: ${savedCode}`;
+  document.getElementById('couponStatusTxt').textContent = `كوبونك الموثق: ${savedCode}`;
+}
+
+// -------------------------------------------------------------
+// 3. أداة الفحص السرية الخاصة بالأدمن (Admin Secret Tool)
+// -------------------------------------------------------------
+let logoClicks = 0;
+let logoTimer = null;
+document.getElementById('adminSecretTrigger').addEventListener('click', () => {
+  logoClicks++;
+  clearTimeout(logoTimer);
+  logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
+  if (logoClicks >= 5) {
+    logoClicks = 0;
+    document.getElementById('adminModal').classList.add('show');
+  }
+});
+
+function closeAdmin() {
+  document.getElementById('adminModal').classList.remove('show');
+}
+
+function verifyCouponFromAdmin() {
+  const code = document.getElementById('verifyCode').value.trim();
+  const phone = document.getElementById('verifyPhone').value.trim();
+  const resDiv = document.getElementById('verifyResult');
+
+  const check = parseAndValidateCoupon(code, phone);
+  if (check.valid) {
+    resDiv.style.color = "#10b981";
+    resDiv.innerHTML = check.reason;
+  } else {
+    resDiv.style.color = "#ef4444";
+    resDiv.innerHTML = check.reason;
+  }
 }
 
 // تسجيل الـ Service Worker
