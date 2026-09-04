@@ -2,207 +2,460 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <title>Fly Express — أسرع توصيل في نجع حمادي</title>
 <meta name="description" content="Fly Express: دليفري سريع في نجع حمادي — اطلب مشوارك فورًا عبر واتساب.">
-<meta name="theme-color" content="#0a1622">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0d1117">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 
 <style>
-:root{--text:#eaf1f6;--muted:#b8c0c9;font-family:'Cairo',system-ui,sans-serif}
-*{box-sizing:border-box}
-body{
-  margin:0;color:var(--text);
-  background:
-    radial-gradient(1100px 600px at 10% 10%, #0d1b2a 0%, transparent 65%),
-    radial-gradient(1100px 600px at 90% 90%, #001219 0%, transparent 65%),
-    conic-gradient(from 0deg at 50% 50%, #00111a, #001a2b, #0a2a43, #001a2b, #00111a);
-  min-height:100svh;padding:22px;overflow-x:hidden}
-.container{max-width:940px;margin:0 auto;position:relative;z-index:2}
-.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.28);position:relative;overflow:hidden}
-.header{display:flex;gap:16px;align-items:center}
-.logo{width:84px;height:84px;border-radius:16px;object-fit:cover;border:1px solid rgba(255,255,255,.1)}
-.brand h1{margin:0;font-weight:900;font-size:38px;line-height:1}
-.brand p{margin:6px 0 0;color:#cfe2ee}
-.banner{margin:16px 0;padding:14px 18px;border-radius:18px;background:linear-gradient(90deg,#00d27a,#00a8ff);display:flex;gap:12px;align-items:center;justify-content:space-between}
-.section{margin-top:18px}
-.section h2{margin:0 0 10px;font-size:24px;font-weight:900}
+:root {
+  --bg-dark: #090d16;
+  --surface: #131b2e;
+  --surface-card: rgba(26, 38, 64, 0.7);
+  --primary: #ff6b00;
+  --primary-glow: rgba(255, 107, 0, 0.35);
+  --accent: #00e5ff;
+  --text-main: #f8fafc;
+  --text-sub: #94a3b8;
+  --border: rgba(255, 255, 255, 0.08);
+  font-family: 'Cairo', system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
 
-/* ألعاب */
-.games{margin-top:10px}
-.games .trigger{width:100%;border:1px solid rgba(255,255,255,.08);background:linear-gradient(90deg,#2bb7ff,#4b8bff);color:#fff;padding:14px 16px;border-radius:18px;font-weight:900;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-.games .menu{display:none;gap:10px;margin-top:10px}
-.games .menu.show{display:grid}
-.games .menu a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:16px;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.08)}
-.g1{background:linear-gradient(90deg,#7b2fff,#ff2ea6)}
-.g2{background:linear-gradient(90deg,#00d27a,#00a8ff)}
-.g3{background:linear-gradient(90deg,#ff8ad6,#9a7bff)}
-.g4{background:linear-gradient(90deg,#22d3ee,#34d399)}
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+input, textarea, select { user-select: auto; }
 
-/* منصّات التواصل — أزرار عريضة */
-.socials{display:grid;grid-template-columns:1fr;gap:12px}
-.sbtn{display:flex;align-items:center;justify-content:space-between;padding:16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);text-decoration:none;color:#fff;font-weight:800;font-size:18px}
-.sbtn i:last-child{opacity:.9}
-.fb{background:linear-gradient(90deg,#1877f2,#2bbf3a)}
-.wa{background:linear-gradient(90deg,#25D366,#ffd166)}
-.ig{background:linear-gradient(90deg,#b277ff,#2b8cff)}
-.tg{background:linear-gradient(90deg,#2b8cff,#27ae60)}
-.fp{background:linear-gradient(90deg,#00d27a,#21f5b3)}
-footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding-bottom: 90px;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 10% 5%, rgba(255, 107, 0, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 40%);
+}
 
-/* الأدراج + الزر العائم */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9998}
-.overlay.show{display:block}
-.drawer{position:fixed;top:0;right:-420px;width:min(420px,92vw);height:100vh;z-index:9999;background:rgba(10,20,28,.96);color:#eaf1f6;border-left:1px solid rgba(255,255,255,.06);box-shadow:-20px 0 50px rgba(0,0,0,.45);transition:right .28s ease;display:flex;flex-direction:column}
-.drawer.open{right:0}
-.drawer-head{padding:16px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
-.drawer-title{font-weight:900;font-size:22px}
-.drawer-close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
-.drawer-body{padding:14px;overflow:auto}
-.order-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;margin-bottom:12px}
-.order-card h3{margin:0 0 8px;font-size:16px}
-.order-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.order-row.single{grid-template-columns:1fr}
-.order-input,.order-select,.order-textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:14px}
-.order-textarea{min-height:68px;resize:vertical}
-.order-actions{display:flex;gap:8px;margin-top:10px}
-.order-btn{flex:1;border:0;cursor:pointer;padding:10px 14px;border-radius:999px;font-weight:900;color:#001316;background:linear-gradient(90deg,#00ffaa,#00a8ff)}
-.order-btn.secondary{background:linear-gradient(90deg,#d4e4ff,#bfffd8);color:#003b35}
-.menu-fab{position:fixed;right:18px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;z-index:10000;cursor:pointer;border:0;box-shadow:0 0 20px rgba(255,255,255,.25)}
-.menu-pop{position:fixed;right:86px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:8px;display:none;z-index:10001;backdrop-filter:blur(8px)}
-.menu-pop.show{display:block}
-.menu-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;color:#001316;background:linear-gradient(90deg,#e7ffef,#c8ffd9);font-weight:900;cursor:pointer;margin:6px 0;white-space:nowrap}
-.menu-item.secondary{background:linear-gradient(90deg,#d7fff6,#cfe8ff)}
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+}
 
-/* الأسعار */
-.price-note{color:#b8c0c9;margin:4px 0 12px}
-.price-item{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 16px;margin:10px 0}
-.badge{min-width:98px;text-align:center;font-weight:900;color:#001316;background:linear-gradient(90deg,#22d3ee,#34d399);padding:10px 12px;border-radius:999px}
+/* شريط الرأس كـ App Bar */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(9, 13, 22, 0.85);
+  backdrop-filter: blur(16px);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
 
-/* شبكة الأيام */
-.day-grid{display:grid;grid-template-columns:120px 1fr 1fr;gap:8px}
-.day-label{display:flex;align-items:center;justify-content:flex-start;font-weight:900;color:#cfe2ee;padding:0 8px}
-@media(max-width:560px){.day-grid{grid-template-columns:96px 1fr 1fr}}
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-img {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.profile-info h1 {
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.profile-info p {
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+/* شارة الحالة اللحظية */
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #34d399;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* الشاشات (تبديل التبويبات) */
+.tab-view {
+  display: none;
+  padding: 16px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.tab-view.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* بطاقة إعلانية سريعة */
+.app-banner {
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+  padding: 16px;
+  border-radius: 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px var(--primary-glow);
+}
+
+.app-banner h3 { font-size: 16px; font-weight: 900; }
+.app-banner p { font-size: 12px; opacity: 0.9; margin-top: 4px; }
+.app-banner i { font-size: 38px; opacity: 0.25; }
+
+/* شبكة الخدمات (Action Grid) */
+.section-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.service-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  backdrop-filter: blur(8px);
+}
+
+.service-card:active {
+  transform: scale(0.97);
+  border-color: var(--primary);
+}
+
+.service-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; }
+.ic-blue { background: rgba(0, 168, 255, 0.15); color: #00a8ff; }
+.ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+
+.service-card h4 { font-size: 14px; font-weight: 700; color: #fff; }
+.service-card span { font-size: 11px; color: var(--text-sub); }
+
+/* الألعاب */
+.games-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.game-card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  backdrop-filter: blur(8px);
+}
+
+.game-card-btn:active { background: rgba(255, 255, 255, 0.08); }
+
+/* بطاقات الأسعار */
+.price-box {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.price-box .dest { font-weight: 800; font-size: 14px; }
+.price-box .cost {
+  background: linear-gradient(90deg, #ff6b00, #ff9500);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+/* شريط التنقل السفلي الثابت (Native Bottom Bar) */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  height: 68px;
+  background: rgba(13, 17, 23, 0.94);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--text-sub);
+  background: transparent;
+  border: 0;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  flex: 1;
+  transition: color 0.15s;
+}
+
+.nav-item i { font-size: 19px; }
+.nav-item.active { color: var(--primary); }
+
+/* واجهات النماذج (Forms) */
+.form-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.order-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.order-row.single { grid-template-columns: 1fr; }
+
+.order-input, .order-select, .order-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(10, 15, 25, 0.6);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.order-input:focus, .order-select:focus, .order-textarea:focus {
+  border-color: var(--primary);
+}
+
+.order-textarea { min-height: 75px; resize: vertical; }
+
+.order-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.order-btn {
+  flex: 1;
+  border: 0;
+  cursor: pointer;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+  background: linear-gradient(90deg, #ff6b00, #ff8c00);
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+
+.order-btn:active { transform: scale(0.98); }
+.order-btn.secondary { background: rgba(255, 255, 255, 0.08); box-shadow: none; color: #cbd5e1; }
+
+.day-grid { display: grid; grid-template-columns: 85px 1fr 1fr; gap: 6px; margin-top: 8px; }
+.day-label { display: flex; align-items: center; font-size: 12px; font-weight: 700; color: var(--text-sub); }
+
+/* أزرار السوشيال داخل التبويب */
+.social-list { display: flex; flex-direction: column; gap: 10px; }
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-radius: 16px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+}
+.social-btn.fb { background: #1877f2; }
+.social-btn.wa { background: #25d366; color: #000; }
+.social-btn.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.social-btn.tg { background: #229ed9; }
 </style>
 </head>
 
 <body>
-<div class="container">
+<div class="app-container">
 
-  <!-- الهيدر -->
-  <div class="card header">
-    <img class="logo" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
-    <div class="brand">
-      <h1>Fly Express</h1>
-      <p>التوصيل الأسرع في نجع حمادي</p>
-    </div>
-  </div>
-
-  <!-- بانر -->
-  <div class="banner card">
-    <div><b>🚀 أسرع خدمة توصيل في نجع حمادي.</b></div>
-    <small>خدمة يومية طوال الأسبوع</small>
-  </div>
-
-  <!-- الألعاب -->
-  <div class="card section">
-    <h2>العب و اكسب توصيلة مجانية 🎮</h2>
-    <div class="games">
-      <button id="gamesToggle" class="trigger" aria-expanded="false" aria-controls="gamesMenu">
-        <span>اضغط لاختيار لعبة</span>
-        <i class="fa-solid fa-caret-down"></i>
-      </button>
-      <div id="gamesMenu" class="menu" aria-hidden="true">
-        <a class="g1" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
-          <span><i class="fa-solid fa-bullseye"></i> لعبة الطرود — Whack-a-Parcel</span>
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a class="g2" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
-          <span><i class="fa-solid fa-motorcycle"></i> لعبة الموتسيكل — Fly Rider</span>
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a class="g3" href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank" rel="noopener">
-          <span><i class="fa-regular fa-face-smile-beam"></i> لعبة الذاكرة — Fly Rush</span>
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-        <a class="g4" href="https://mahmoudahmed3531-lgtm.github.io/Super-mario-/" target="_blank" rel="noopener">
-          <span><i class="fa-solid fa-circle-question"></i> لعبة الأسئلة — من سيربح التوصيلات</span>
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
+  <header class="app-header">
+    <div class="profile-section">
+      <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
+      <div class="profile-info">
+        <h1>Fly Express</h1>
+        <p>نجع حمادي وقراها</p>
       </div>
     </div>
-  </div>
-
-  <!-- منصّات التواصل -->
-  <div class="card section">
-    <h2>منصّات التواصل 🔗</h2>
-    <div class="socials">
-      <a class="sbtn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
-        <span>صفحة فيسبوك</span><i class="fa-brands fa-facebook-f"></i>
-      </a>
-      <a class="sbtn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener">
-        <span>واتساب</span><i class="fa-brands fa-whatsapp"></i>
-      </a>
-      <a class="sbtn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
-        <span>إنستجرام</span><i class="fa-brands fa-instagram"></i>
-      </a>
-      <a class="sbtn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
-        <span>تليجرام</span><i class="fa-brands fa-telegram"></i>
-      </a>
-      <a class="sbtn fp" href="https://www.facebook.com/share/16X3GTzQE6/" target="_blank" rel="noopener">
-        <span>فيسبوك الشخصي</span><i class="fa-brands fa-facebook"></i>
-      </a>
+    <div class="status-badge" id="liveStatus">
+      <span class="status-dot"></span>
+      <span id="statusTxt">متاح الآن للتوصيل</span>
     </div>
-  </div>
+  </header>
 
-  <p id="visits" style="text-align:center;margin:8px 0;color:#b8c0c9;"></p>
-  <footer>© Fly Express — أسرع توصيل في نجع حمادي</footer>
-</div>
-
-<!-- زر القائمة العائم -->
-<button class="menu-fab" id="menuFab" title="طلباتك هنا"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-<div class="menu-pop" id="menuPop" role="menu" aria-hidden="true">
-  <div class="menu-item" id="miFast"><i class="fa-solid fa-bolt"></i> طلب توصيل (سريع)</div>
-  <div class="menu-item secondary" id="miMonthly"><i class="fa-solid fa-calendar-days"></i> جدول شهري</div>
-  <div class="menu-item" id="miPrices"><i class="fa-solid fa-sack-dollar"></i> قائمة الأسعار</div>
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<!-- درج الطلبات (نفسه) -->
-<aside class="drawer" id="orderDrawer" dir="rtl" aria-label="درج الطلبات">
-  <div class="drawer-head"><div class="drawer-title">قائمة الطلبات</div><button class="drawer-close" data-close>&times;</button></div>
-  <div class="drawer-body">
-
-    <!-- مدرسة -->
-    <div class="order-card">
-      <h3>🏫 توصيل ابني المدرسة</h3>
-      <div class="order-row">
-        <select class="order-select" id="schoolType">
-          <option value="ذهاب فقط">ذهاب فقط</option>
-          <option value="ذهاب وعودة">ذهاب وعودة</option>
-        </select>
-        <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
+  <main id="tab-home" class="tab-view active">
+    <div class="app-banner">
+      <div>
+        <h3>أسرع دليفري في نجع حمادي 🚀</h3>
+        <p>مشاوير خاصة، مدارس، طرود، وطلبات السوق</p>
       </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" required>
-        <input class="order-input" id="schoolFrom" placeholder="العنوان: من" required>
+      <i class="fa-solid fa-bolt-lightning"></i>
+    </div>
+
+    <div class="section-title"><i class="fa-solid fa-shapes"></i> اختر نوع المشوار</div>
+    <div class="services-grid">
+      <div class="service-card" onclick="switchToForm('sec-order')">
+        <div class="service-icon ic-orange"><i class="fa-solid fa-box"></i></div>
+        <div>
+          <h4>طلب أوردر / طرد</h4>
+          <span>توصيل فوري واستلام</span>
+        </div>
       </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolTo" placeholder="العنوان: إلى (المدرسة)" required>
-        <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
+      <div class="service-card" onclick="switchToForm('sec-market')">
+        <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
+        <div>
+          <h4>طلبات السوق</h4>
+          <span>خضار، بقالة، صيدلية</span>
+        </div>
       </div>
-      <div class="order-actions">
-        <button class="order-btn" onclick="sendSchool()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
+      <div class="service-card" onclick="switchToForm('sec-school')">
+        <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div>
+          <h4>مشاوير المدرسة</h4>
+          <span>ذهاب وعودة آمنة</span>
+        </div>
+      </div>
+      <div class="service-card" onclick="switchToForm('sec-monthly')">
+        <div class="service-icon ic-purple"><i class="fa-solid fa-calendar-check"></i></div>
+        <div>
+          <h4>جدول الدروس الشهري</h4>
+          <span>اشتراك شهري مرن</span>
+        </div>
       </div>
     </div>
 
-    <!-- أوردر/طرد -->
-    <div class="order-card">
-      <h3>📦 توصيل أوردر / طرد</h3>
+    <div class="section-title"><i class="fa-solid fa-gamepad"></i> العب واكسب توصيلة مجانية</div>
+    <div class="games-list">
+      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
+        <span><i class="fa-solid fa-bullseye" style="color:#ff2ea6; margin-left:8px;"></i> لعبة الطرود — Whack-a-Parcel</span>
+        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
+      </a>
+      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
+        <span><i class="fa-solid fa-motorcycle" style="color:#00d27a; margin-left:8px;"></i> لعبة الموتسيكل — Fly Rider</span>
+        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
+      </a>
+      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank" rel="noopener">
+        <span><i class="fa-regular fa-face-smile-beam" style="color:#9a7bff; margin-left:8px;"></i> لعبة الذاكرة — Fly Rush</span>
+        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
+      </a>
+      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/Super-mario-/" target="_blank" rel="noopener">
+        <span><i class="fa-solid fa-circle-question" style="color:#22d3ee; margin-left:8px;"></i> من سيربح التوصيلات</span>
+        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
+      </a>
+    </div>
+
+    <p id="visits" style="text-align:center;font-size:12px;color:var(--text-sub);margin-top:10px;"></p>
+  </main>
+
+  <section id="tab-orders" class="tab-view">
+    <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار</div>
+
+    <div class="form-card" id="sec-order">
+      <h3 style="font-size:15px; margin-bottom:10px; color:#ff8c00;">📦 أوردر / طرد فوري</h3>
       <div class="order-row">
         <select class="order-select" id="orderKind"><option value="أوردر">أوردر</option><option value="طرد">طرد</option></select>
         <select class="order-select" id="orderAction"><option value="هنجيبه">هنجيبه</option><option value="هنوّصله">هنوّصله</option></select>
@@ -216,23 +469,22 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
         <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
       </div>
       <div class="order-row">
-        <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن/5 مساء)">
-        <input class="order-input" id="orderNote" placeholder="وصف المحتوى/ملاحظات (اختياري)">
+        <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن)">
+        <input class="order-input" id="orderNote" placeholder="ملاحظات">
       </div>
       <div class="order-actions">
-        <button class="order-btn" onclick="sendOrder()">تأكيد وإرسال على واتساب</button>
+        <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال</button>
         <button class="order-btn secondary" onclick="clearOrder()">مسح</button>
       </div>
     </div>
 
-    <!-- السوق -->
-    <div class="order-card">
-      <h3>🛒 طلبات السوق</h3>
+    <div class="form-card" id="sec-market">
+      <h3 style="font-size:15px; margin-bottom:10px; color:#00a8ff;">🛒 طلبات السوق والطلبات المنزلية</h3>
       <div class="order-row single">
-        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل" required></textarea>
+        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل..." required></textarea>
       </div>
       <div class="order-row">
-        <input class="order-input" id="marketFrom" placeholder="من أي سوق/محل؟ (اختياري)">
+        <input class="order-input" id="marketFrom" placeholder="من أي محل أو سوق؟ (اختياري)">
         <input class="order-input" id="marketTo" placeholder="عنوان التوصيل" required>
       </div>
       <div class="order-row">
@@ -241,185 +493,178 @@ footer{margin:18px 0 6px;text-align:center;color:var(--muted)}
       </div>
       <div class="order-row">
         <input class="order-input" id="marketWhen" placeholder="الوقت المفضل">
-        <input class="order-input" id="marketNote" placeholder="ملاحظات (اختياري)">
+        <input class="order-input" id="marketNote" placeholder="ملاحظات إضافية">
       </div>
       <div class="order-actions">
-        <button class="order-btn" onclick="sendMarket()">تأكيد وإرسال على واتساب</button>
+        <button class="order-btn" onclick="sendMarket()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال</button>
         <button class="order-btn secondary" onclick="clearMarket()">مسح</button>
       </div>
     </div>
 
-    <!-- طرد -->
-    <div class="order-card">
-      <h3>📮 توصيل طرد</h3>
+    <div class="form-card" id="sec-school">
+      <h3 style="font-size:15px; margin-bottom:10px; color:#10b981;">🏫 توصيل ابني المدرسة</h3>
       <div class="order-row">
-        <select class="order-select" id="parcelAction"><option value="هنجيبه">هنجيبه</option><option value="هنوديه">هنوديه</option></select>
-        <input class="order-input" id="parcelName" placeholder="اسمك" required>
+        <select class="order-select" id="schoolType">
+          <option value="ذهاب فقط">ذهاب فقط</option>
+          <option value="ذهاب وعودة">ذهاب وعودة</option>
+        </select>
+        <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
       </div>
       <div class="order-row">
-        <input class="order-input" id="parcelPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-        <input class="order-input" id="parcelFrom" placeholder="العنوان: من" required>
+        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" required>
+        <input class="order-input" id="schoolFrom" placeholder="مكان الانطلاق" required>
       </div>
       <div class="order-row">
-        <input class="order-input" id="parcelTo" placeholder="العنوان: إلى" required>
-        <input class="order-input" id="parcelNote" placeholder="وصف الطرد/تعليمات (اختياري)">
+        <input class="order-input" id="schoolTo" placeholder="اسم المدرسة" required>
+        <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
       </div>
       <div class="order-actions">
-        <button class="order-btn" onclick="sendParcel()">تأكيد وإرسال على واتساب</button>
-        <button class="order-btn secondary" onclick="clearParcel()">مسح</button>
+        <button class="order-btn" onclick="sendSchool()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال</button>
+        <button class="order-btn secondary" onclick="clearSchool()">مسح</button>
       </div>
     </div>
 
-  </div>
-</aside>
+    <div class="form-card" id="sec-monthly">
+      <h3 style="font-size:15px; margin-bottom:10px; color:#c084fc;">📘 جدول الدروس والمدارس الشهري</h3>
+      <div class="order-row">
+        <input class="order-input" id="pmName" placeholder="اسم ولي الأمر" required>
+        <input class="order-input" id="pmPhone" placeholder="رقم الموبايل" inputmode="tel" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="pmChildrenCount" placeholder="عدد الأبناء" inputmode="numeric" required>
+        <input class="order-input" id="pmStreet" placeholder="العنوان / الشارع" required>
+      </div>
+      <div class="order-row">
+        <select class="order-select" id="pmDirection">
+          <option value="هتوصلهم وتجيبهم">هتوصلهم وتجيبهم</option>
+          <option value="هتوصلهم فقط">هتوصلهم فقط</option>
+          <option value="هتجيبهم فقط">هتجيبهم فقط</option>
+        </select>
+        <input class="order-input" id="pmLessonsPerWeek" placeholder="كم حصة في الأسبوع" inputmode="numeric" required>
+      </div>
 
-<!-- درج الجدول الشهري + أيام الأسبوع -->
-<aside class="drawer" id="monthlyDrawer" dir="rtl" aria-label="الجدول الشهري">
-  <div class="drawer-head"><div class="drawer-title">📘 جدول توصيل الأبناء (شهري)</div><button class="drawer-close" data-close>&times;</button></div>
-  <div class="drawer-body">
-    <div class="order-row">
-      <input class="order-input" id="pmName" placeholder="اسم ولي الأمر" required>
-      <input class="order-input" id="pmPhone" placeholder="رقم موبايل ولي الأمر" inputmode="tel" required>
-    </div>
-    <div class="order-row">
-      <input class="order-input" id="pmChildrenCount" placeholder="عدد الأبناء" inputmode="numeric" required>
-      <input class="order-input" id="pmStreet" placeholder="شارع كام (اسم/رقم)" required>
-    </div>
-    <div class="order-row">
-      <select class="order-select" id="pmDirection">
-        <option value="هتوصلهم وتجيبهم">هتوصلهم وتجيبهم</option>
-        <option value="هتوصلهم فقط">هتوصلهم فقط</option>
-        <option value="هتجيبهم فقط">هتجيبهم فقط</option>
-      </select>
-      <input class="order-input" id="pmLessonsPerWeek" placeholder="كم حصة في الأسبوع" inputmode="numeric" required>
-    </div>
-
-    <div class="order-card">
-      <h3>🗓️ مواعيد الأيام (من — إلى)</h3>
+      <div style="font-size:12px; font-weight:700; color:var(--text-sub); margin-top:8px;">مواعيد الحصص بالأيام:</div>
       <div class="day-grid">
-        <div class="day-label">السبت</div>
-        <input class="order-input" id="satFrom" type="time"><input class="order-input" id="satTo" type="time">
-        <div class="day-label">الأحد</div>
-        <input class="order-input" id="sunFrom" type="time"><input class="order-input" id="sunTo" type="time">
-        <div class="day-label">الاثنين</div>
-        <input class="order-input" id="monFrom" type="time"><input class="order-input" id="monTo" type="time">
-        <div class="day-label">الثلاثاء</div>
-        <input class="order-input" id="tueFrom" type="time"><input class="order-input" id="tueTo" type="time">
-        <div class="day-label">الأربعاء</div>
-        <input class="order-input" id="wedFrom" type="time"><input class="order-input" id="wedTo" type="time">
-        <div class="day-label">الخميس</div>
-        <input class="order-input" id="thuFrom" type="time"><input class="order-input" id="thuTo" type="time">
-        <div class="day-label">الجمعة</div>
-        <input class="order-input" id="friFrom" type="time"><input class="order-input" id="friTo" type="time">
+        <div class="day-label">السبت</div><input class="order-input" id="satFrom" type="time"><input class="order-input" id="satTo" type="time">
+        <div class="day-label">الأحد</div><input class="order-input" id="sunFrom" type="time"><input class="order-input" id="sunTo" type="time">
+        <div class="day-label">الاثنين</div><input class="order-input" id="monFrom" type="time"><input class="order-input" id="monTo" type="time">
+        <div class="day-label">الثلاثاء</div><input class="order-input" id="tueFrom" type="time"><input class="order-input" id="tueTo" type="time">
+        <div class="day-label">الأربعاء</div><input class="order-input" id="wedFrom" type="time"><input class="order-input" id="wedTo" type="time">
+        <div class="day-label">الخميس</div><input class="order-input" id="thuFrom" type="time"><input class="order-input" id="thuTo" type="time">
+        <div class="day-label">الجمعة</div><input class="order-input" id="friFrom" type="time"><input class="order-input" id="friTo" type="time">
+      </div>
+
+      <div class="order-row single" style="margin-top:8px;">
+        <textarea class="order-textarea" id="pmLessonsTime" placeholder="ملاحظات إضافية"></textarea>
+      </div>
+      <div class="order-actions">
+        <button class="order-btn" id="sendMonthly"><i class="fa-brands fa-whatsapp"></i> إرسال الجدول واتساب</button>
+        <button class="order-btn secondary" id="clearMonthly">مسح</button>
       </div>
     </div>
+  </section>
 
-    <div class="order-row single">
-      <textarea class="order-textarea" id="pmLessonsTime" placeholder="ملاحظات إضافية (اختياري)"></textarea>
+  <section id="tab-prices" class="tab-view">
+    <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار التقديرية</div>
+    <div style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">قد تتغير الأسعار بنسبة طفيفة بحسب أوقات الذروة والمكان الدقيق.</div>
+
+    <div class="price-box"><span class="dest">داخل نجع حمادي</span><span class="cost">30 ج</span></div>
+    <div class="price-box"><span class="dest">داخل قرية بركة</span><span class="cost">20 ج</span></div>
+    <div class="price-box"><span class="dest">من بركة إلى الألمنيوم</span><span class="cost">35 ج</span></div>
+    <div class="price-box"><span class="dest">من بركة إلى نجع حمادي</span><span class="cost">100 ج</span></div>
+    <div class="price-box"><span class="dest">من بركة إلى المساكن</span><span class="cost">25 ج</span></div>
+    <div class="price-box"><span class="dest">من بركة إلى هو</span><span class="cost">50 ج</span></div>
+
+    <button class="order-btn" style="width:100%; margin-top:14px;" onclick="window.open('https://wa.me/201017908076','_blank')">
+      <i class="fa-brands fa-whatsapp"></i> تأكيد تكلفة مشوار خاص عبر واتساب
+    </button>
+  </section>
+
+  <section id="tab-contact" class="tab-view">
+    <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
+    <div class="social-list">
+      <a class="social-btn wa" href="https://wa.me/201017908076" target="_blank" rel="noopener">
+        <span>واتساب المباشر</span><i class="fa-brands fa-whatsapp"></i>
+      </a>
+      <a class="social-btn fb" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank" rel="noopener">
+        <span>صفحة فيسبوك</span><i class="fa-brands fa-facebook-f"></i>
+      </a>
+      <a class="social-btn ig" href="https://www.instagram.com/habis_namla/" target="_blank" rel="noopener">
+        <span>إنستجرام</span><i class="fa-brands fa-instagram"></i>
+      </a>
+      <a class="social-btn tg" href="https://t.me/D_M_C0" target="_blank" rel="noopener">
+        <span>تليجرام</span><i class="fa-brands fa-telegram"></i>
+      </a>
     </div>
-    <div class="order-actions">
-      <button class="order-btn" id="sendMonthly">تأكيد وإرسال واتساب</button>
-      <button class="order-btn secondary" id="clearMonthly">مسح</button>
-    </div>
-  </div>
-</aside>
+  </section>
 
-<!-- درج الأسعار (محدّث) -->
-<aside class="drawer" id="pricesDrawer" dir="rtl" aria-label="قائمة الأسعار">
-  <div class="drawer-head">
-    <div class="drawer-title">💰 قائمة الأسعار</div>
-    <button class="drawer-close" data-close>&times;</button>
-  </div>
-  <div class="drawer-body">
-    <div class="price-note">* الأسعار تقديرية وقد تختلف حسب المسافة والوقت. للتأكيد النهائي تواصل معنا على واتساب.</div>
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="switchTab('tab-home', this)">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('tab-orders', this)">
+      <i class="fa-solid fa-motorcycle"></i>
+      <span>طلب مشوار</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('tab-prices', this)">
+      <i class="fa-solid fa-tag"></i>
+      <span>الأسعار</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('tab-contact', this)">
+      <i class="fa-solid fa-comments"></i>
+      <span>تواصل</span>
+    </button>
+  </nav>
 
-    <div class="price-item"><div class="badge">30 ج</div><div style="font-weight:900">داخل نجع حمادي</div></div>
-    <div class="price-item"><div class="badge">20 ج</div><div style="font-weight:900">داخل قرية بركة</div></div>
-    <div class="price-item"><div class="badge">35 ج</div><div style="font-weight:900">من بركة إلى الألمنيوم</div></div>
-    <div class="price-item"><div class="badge">100 ج</div><div style="font-weight:900">من بركة إلى نجع حمادي</div></div>
-    <div class="price-item"><div class="badge">25 ج</div><div style="font-weight:900">من بركة إلى المساكن</div></div>
-    <div class="price-item"><div class="badge">50 ج</div><div style="font-weight:900">من بركة إلى هو</div></div>
+</div>
 
-    <div class="order-actions" style="margin-top:14px">
-      <button class="order-btn" onclick="window.open('https://wa.me/201017908076','_blank')">تواصل لتأكيد السعر على واتساب</button>
-    </div>
-  </div>
-</aside>
-
-<!-- 🎵 صوت اللعبة -->
 <audio id="gameMusic" src="https://media1.vocaroo.com/mp3/1oelwoF9NuRN" preload="auto" loop playsinline></audio>
 
 <script>
-// إعداد عام
-const ADMIN_PHONE="201017908076";
-const enc=s=>encodeURIComponent(s||"");
-const waSend=txt=>window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`,'_blank','noopener');
+const ADMIN_PHONE = "201017908076";
+const enc = s => encodeURIComponent(s || "");
+const waSend = txt => window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`, '_blank', 'noopener');
 
-// ألعاب
-const gamesToggle=document.getElementById('gamesToggle');
-const gamesMenu=document.getElementById('gamesMenu');
-gamesToggle.addEventListener('click',()=>{
-  const open=gamesMenu.classList.toggle('show');
-  gamesToggle.setAttribute('aria-expanded',open?'true':'false');
-  gamesMenu.setAttribute('aria-hidden',open?'false':'true');
-});
-document.addEventListener('click',(e)=>{
-  if(!gamesToggle.contains(e.target)&&!gamesMenu.contains(e.target)){
-    gamesMenu.classList.remove('show');
-    gamesToggle.setAttribute('aria-expanded','false');
-    gamesMenu.setAttribute('aria-hidden','true');
+// تبديل الشاشات
+function switchTab(tabId, navBtn) {
+  document.querySelectorAll('.tab-view').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+  
+  const target = document.getElementById(tabId);
+  if(target) target.classList.add('active');
+  if(navBtn) navBtn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// الانتقال السريع لقسم معين داخل شاشة الطلبات
+function switchToForm(formId) {
+  const ordersNavBtn = document.querySelectorAll('.nav-item')[1];
+  switchTab('tab-orders', ordersNavBtn);
+  setTimeout(() => {
+    const el = document.getElementById(formId);
+    if(el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
+
+// فحص الحقول
+function ensureRequired(ids){
+  for(const id of ids){
+    const el = document.getElementById(id);
+    if(el && !el.value.trim()){
+      el.focus();
+      alert('من فضلك أكمل البيانات المطلوبة أولاً');
+      return false;
+    }
   }
-});
+  return true;
+}
 
-// الأدراج
-const overlay=document.getElementById('overlay');
-const orderDrawer=document.getElementById('orderDrawer');
-const monthlyDrawer=document.getElementById('monthlyDrawer');
-const pricesDrawer=document.getElementById('pricesDrawer');
-
-function openDrawer(el){el.classList.add('open');overlay.classList.add('show')}
-function closeAll(){[orderDrawer,monthlyDrawer,pricesDrawer].forEach(d=>d.classList.remove('open'));overlay.classList.remove('show')}
-overlay.addEventListener('click',closeAll);
-document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAll));
-
-// زر القائمة
-const menuFab=document.getElementById('menuFab');
-const menuPop=document.getElementById('menuPop');
-const miFast=document.getElementById('miFast');
-const miMonthly=document.getElementById('miMonthly');
-const miPrices=document.getElementById('miPrices');
-
-menuFab.addEventListener('click',(e)=>{
-  e.stopPropagation();
-  const open=!menuPop.classList.contains('show');
-  menuPop.classList.toggle('show',open);
-  menuPop.setAttribute('aria-hidden',open?'false':'true');
-});
-document.addEventListener('click',(e)=>{
-  if(!menuFab.contains(e.target)&&!menuPop.contains(e.target)){
-    menuPop.classList.remove('show');
-    menuPop.setAttribute('aria-hidden','true');
-  }
-});
-miFast.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(orderDrawer)});
-miMonthly.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(monthlyDrawer)});
-miPrices.addEventListener('click',()=>{menuPop.classList.remove('show');openDrawer(pricesDrawer)});
-
-// فحص الحقول المطلوبة
-function ensureRequired(ids){for(const id of ids){const el=document.getElementById(id);if(el && !el.value.trim()){ el.focus(); alert('من فضلك أكمل الحقول المطلوبة'); return false; }} return true;}
-
-// إرسال الطلبات
+// دوال إرسال الواتساب
 function sendSchool(){
   if(!ensureRequired(['schoolChild','schoolPhone','schoolFrom','schoolTo'])) return;
   const t=schoolType.value, child=schoolChild.value, phone=schoolPhone.value, from=schoolFrom.value, to=schoolTo.value, note=schoolNote.value;
-  const text=`طلب توصيل مدرسة 🏫
-النوع: ${t}
-الطالب: ${child}
-ولي الأمر: ${phone}
-من: ${from}
-إلى: ${to}
-ملاحظات: ${note||'—'}
-— أُرسل من موقع Fly Express`;
+  const text=`طلب توصيل مدرسة 🏫\nالنوع: ${t}\nالطالب: ${child}\nولي الأمر: ${phone}\nمن: ${from}\nإلى: ${to}\nملاحظات: ${note||'—'}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 }
 function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','schoolNote'].forEach(id=>document.getElementById(id).value="");}
@@ -427,13 +672,7 @@ function clearSchool(){['schoolChild','schoolPhone','schoolFrom','schoolTo','sch
 function sendOrder(){
   if(!ensureRequired(['orderFrom','orderTo','orderName','orderPhone'])) return;
   const kind=orderKind.value, act=orderAction.value, from=orderFrom.value, to=orderTo.value, name=orderName.value, phone=orderPhone.value, when=orderWhen.value, note=orderNote.value;
-  const text=`طلب ${kind} ${act} 📦
-الاسم: ${name} — ${phone}
-من: ${from}
-إلى: ${to}
-الوقت: ${when||'أقرب وقت'}
-ملاحظات: ${note||'—'}
-— أُرسل من موقع Fly Express`;
+  const text=`طلب ${kind} ${act} 📦\nالاسم: ${name} — ${phone}\nمن: ${from}\nإلى: ${to}\nالوقت: ${when||'أقرب وقت'}\nملاحظات: ${note||'—'}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 }
 function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen','orderNote'].forEach(id=>document.getElementById(id).value="");}
@@ -441,37 +680,13 @@ function clearOrder(){['orderFrom','orderTo','orderName','orderPhone','orderWhen
 function sendMarket(){
   if(!ensureRequired(['marketList','marketTo','marketName','marketPhone'])) return;
   const list=marketList.value, from=marketFrom.value, to=marketTo.value, name=marketName.value, phone=marketPhone.value, when=marketWhen.value, note=marketNote.value;
-  const text=`طلبات سوق 🛒
-العميل: ${name} — ${phone}
-القائمة:
-${list}
-
-من: ${from||'—'}
-إلى: ${to}
-الوقت: ${when||'أقرب وقت'}
-ملاحظات: ${note||'—'}
-— أُرسل من موقع Fly Express`;
+  const text=`طلبات سوق 🛒\nالعميل: ${name} — ${phone}\nالقائمة:\n${list}\n\nمن: ${from||'—'}\nإلى: ${to}\nالوقت: ${when||'أقرب وقت'}\nملاحظات: ${note||'—'}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 }
 function clearMarket(){['marketList','marketFrom','marketTo','marketName','marketPhone','marketWhen','marketNote'].forEach(id=>document.getElementById(id).value="");}
 
-function sendParcel(){
-  if(!ensureRequired(['parcelName','parcelPhone','parcelFrom','parcelTo'])) return;
-  const act=parcelAction.value, from=parcelFrom.value, to=parcelTo.value, name=parcelName.value, phone=parcelPhone.value, note=parcelNote.value;
-  const text=`توصيل طرد (${act}) 📮
-العميل: ${name} — ${phone}
-من: ${from}
-إلى: ${to}
-ملاحظات: ${note||'—'}
-— أُرسل من موقع Fly Express`;
-  waSend(text);
-}
-function clearParcel(){['parcelFrom','parcelTo','parcelName','parcelPhone','parcelNote'].forEach(id=>document.getElementById(id).value="");}
-
-// الجدول الشهري + الأيام
 document.getElementById('sendMonthly').addEventListener('click',()=>{
   if(!ensureRequired(['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek'])) return;
-
   const n=pmName.value,p=pmPhone.value,c=pmChildrenCount.value,s=pmStreet.value,d=pmDirection.value,w=pmLessonsPerWeek.value,notes=pmLessonsTime.value;
 
   const day = (name,from,to)=> (from||to) ? `${name}: ${from||'—'} → ${to||'—'}` : null;
@@ -485,18 +700,7 @@ document.getElementById('sendMonthly').addEventListener('click',()=>{
     day('الجمعة',friFrom.value,friTo.value),
   ].filter(Boolean).join('\n');
 
-  const text=`جدول توصيل الأبناء (شهري) 📘
-ولي الأمر: ${n} — ${p}
-عدد الأبناء: ${c}
-الشارع: ${s}
-الاتجاه: ${d}
-عدد الحصص/الأسبوع: ${w}
-
-مواعيد الأيام:
-${days || '—'}
-
-ملاحظات: ${notes||'—'}
-— أُرسل من موقع Fly Express`;
+  const text=`جدول توصيل الأبناء (شهري) 📘\nولي الأمر: ${n} — ${p}\nعدد الأبناء: ${c}\nالعنوان: ${s}\nالاتجاه: ${d}\nعدد الحصص/الأسبوع: ${w}\n\nمواعيد الأيام:\n${days || '—'}\n\nملاحظات: ${notes||'—'}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 });
 
@@ -504,28 +708,20 @@ document.getElementById('clearMonthly').addEventListener('click',()=>{
   ['pmName','pmPhone','pmChildrenCount','pmStreet','pmLessonsPerWeek','pmLessonsTime',
    'satFrom','satTo','sunFrom','sunTo','monFrom','monTo','tueFrom','tueTo','wedFrom','wedTo','thuFrom','thuTo','friFrom','friTo'
   ].forEach(id=>{const el=document.getElementById(id); if(el) el.value="";});
-  document.getElementById('pmDirection').selectedIndex=0;
 });
 
 // عدّاد الزيارات
-const visits=+localStorage.getItem("visitsCount")||0;
-localStorage.setItem("visitsCount",visits+1);
-document.getElementById("visits").textContent=`👀 عدد زياراتك من هذا الجهاز: ${visits+1}`;
+const visits = +localStorage.getItem("visitsCount") || 0;
+localStorage.setItem("visitsCount", visits + 1);
+document.getElementById("visits").textContent = `زياراتك للتطبيق: ${visits + 1} مرة`;
 
-// تشغيل صوت اللعبة بعد أول تفاعل قوي
+// تشغيل الصوت بعد التفاعل
 (function () {
   const music = document.getElementById('gameMusic');
   if(!music) return;
-  music.volume = 0.6;
-  music.muted = false;
-
-  const tryPlay = ()=> music.play().catch(()=>{});
-
-  ['click','pointerdown','touchstart','scroll','keydown'].forEach(evt=>{
-    window.addEventListener(evt, tryPlay, { once:false, passive:true });
-  });
-
-  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) tryPlay(); });
+  music.volume = 0.5;
+  const tryPlay = () => music.play().catch(()=>{});
+  ['click','pointerdown','touchstart'].forEach(evt => window.addEventListener(evt, tryPlay, { once: true }));
 })();
 </script>
 </body>
