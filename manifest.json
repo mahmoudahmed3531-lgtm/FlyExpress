@@ -1,12 +1,12 @@
 {
-  "name": "Fly Express",
+  "name": "Fly Express — أسرع توصيل",
   "short_name": "FlyExpress",
   "description": "🚀 أسرع توصيل في نجع حمادي - اطلب دلوقتي واستمتع بخدمة Fly Express.",
   "start_url": "/FlyExpress/index.html",
   "scope": "/FlyExpress/",
   "display": "standalone",
-  "background_color": "#0B132B",
-  "theme_color": "#33654F",
+  "background_color": "#070b12",
+  "theme_color": "#070b12",
   "orientation": "portrait",
   "icons": [
     {
