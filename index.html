@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <title>Fly Express — أسرع توصيل في نجع حمادي</title>
 <meta name="description" content="Fly Express: دليفري سريع في نجع حمادي — اطلب مشوارك فورًا عبر واتساب.">
-<meta name="theme-color" content="#0d1117">
+<meta name="theme-color" content="#080c14">
 
 <link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 <meta property="og:image" content="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
@@ -15,15 +15,14 @@
 
 <style>
 :root {
-  --bg-dark: #090d16;
+  --bg-dark: #080c14;
   --surface: #131b2e;
-  --surface-card: rgba(19, 27, 46, 0.78);
   --primary: #ff6b00;
-  --primary-glow: rgba(255, 107, 0, 0.35);
+  --primary-glow: rgba(255, 107, 0, 0.4);
   --accent: #00e5ff;
   --text-main: #f8fafc;
-  --text-sub: #94a3b8;
-  --border: rgba(255, 255, 255, 0.1);
+  --text-sub: #cbd5e1;
+  --border: rgba(255, 255, 255, 0.12);
   font-family: 'Cairo', system-ui, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
@@ -40,15 +39,15 @@ body {
   position: relative;
 }
 
-/* طبقة الخلفية الليلية المتوافقة تماماً مع شاشات الموبايل */
+/* طبقة الخلفية الليلية المضمونة لأجهزة الموبايل */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-image: 
-    linear-gradient(rgba(9, 13, 22, 0.85), rgba(9, 13, 22, 0.92)),
-    url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1000&q=80');
+  background: 
+    linear-gradient(rgba(8, 12, 20, 0.70), rgba(8, 12, 20, 0.82)),
+    url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Dubai_Marina_night_traffic.jpg/1280px-Dubai_Marina_night_traffic.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -67,8 +66,9 @@ body::before {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(9, 13, 22, 0.9);
+  background: rgba(8, 12, 20, 0.88);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 10px 16px;
   display: flex;
   align-items: center;
@@ -107,8 +107,8 @@ body::before {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.35);
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 11px;
@@ -147,7 +147,7 @@ body::before {
 }
 
 .app-banner {
-  background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.95) 0%, rgba(255, 140, 0, 0.95) 100%);
   padding: 16px;
   border-radius: 20px;
   color: #fff;
@@ -159,14 +159,14 @@ body::before {
 }
 
 .app-banner h3 { font-size: 16px; font-weight: 900; }
-.app-banner p { font-size: 12px; opacity: 0.9; margin-top: 4px; }
-.app-banner i { font-size: 38px; opacity: 0.25; }
+.app-banner p { font-size: 12px; opacity: 0.95; margin-top: 4px; }
+.app-banner i { font-size: 38px; opacity: 0.3; }
 
 .section-title {
   font-size: 16px;
   font-weight: 800;
   margin-bottom: 12px;
-  color: #e2e8f0;
+  color: #f1f5f9;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -179,9 +179,15 @@ body::before {
   margin-bottom: 24px;
 }
 
-.service-card {
-  background: var(--surface-card);
+/* بطاقات شفافة زجاجية لإبراز أضواء الخلفية */
+.service-card, .game-card-btn, .price-box, .form-card {
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
+}
+
+.service-card {
   border-radius: 18px;
   padding: 16px;
   display: flex;
@@ -190,7 +196,6 @@ body::before {
   gap: 12px;
   cursor: pointer;
   transition: transform 0.15s ease, border-color 0.15s ease;
-  backdrop-filter: blur(10px);
 }
 
 .service-card:active {
@@ -208,10 +213,10 @@ body::before {
   font-size: 20px;
 }
 
-.ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; }
-.ic-blue { background: rgba(0, 168, 255, 0.15); color: #00a8ff; }
-.ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-.ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+.ic-orange { background: rgba(255, 107, 0, 0.2); color: #ff8c00; }
+.ic-blue { background: rgba(0, 168, 255, 0.2); color: #00a8ff; }
+.ic-green { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+.ic-purple { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
 
 .service-card h4 { font-size: 14px; font-weight: 700; color: #fff; }
 .service-card span { font-size: 11px; color: var(--text-sub); }
@@ -228,28 +233,22 @@ body::before {
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  background: var(--surface-card);
-  border: 1px solid var(--border);
   border-radius: 16px;
   color: #fff;
   text-decoration: none;
   font-weight: 700;
   font-size: 14px;
-  backdrop-filter: blur(10px);
 }
 
-.game-card-btn:active { background: rgba(255, 255, 255, 0.08); }
+.game-card-btn:active { background: rgba(255, 255, 255, 0.12); }
 
 .price-box {
-  background: var(--surface-card);
-  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
-  backdrop-filter: blur(10px);
 }
 
 .price-box .dest { font-weight: 800; font-size: 14px; }
@@ -270,8 +269,9 @@ body::before {
   max-width: 480px;
   margin: 0 auto;
   height: 68px;
-  background: rgba(13, 17, 23, 0.94);
+  background: rgba(8, 12, 20, 0.94);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border);
   display: flex;
   justify-content: space-around;
@@ -301,12 +301,9 @@ body::before {
 .nav-item.active { color: var(--primary); }
 
 .form-card {
-  background: var(--surface-card);
-  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 16px;
   margin-bottom: 16px;
-  backdrop-filter: blur(10px);
 }
 
 .order-row {
@@ -322,8 +319,8 @@ body::before {
   width: 100%;
   padding: 12px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(10, 15, 25, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(8, 12, 20, 0.75);
   color: #fff;
   font-family: inherit;
   font-size: 13px;
@@ -356,7 +353,7 @@ body::before {
 }
 
 .order-btn:active { transform: scale(0.98); }
-.order-btn.secondary { background: rgba(255, 255, 255, 0.08); box-shadow: none; color: #cbd5e1; }
+.order-btn.secondary { background: rgba(255, 255, 255, 0.1); box-shadow: none; color: #e2e8f0; }
 
 .day-grid { display: grid; grid-template-columns: 85px 1fr 1fr; gap: 6px; margin-top: 8px; }
 .day-label { display: flex; align-items: center; font-size: 12px; font-weight: 700; color: var(--text-sub); }
