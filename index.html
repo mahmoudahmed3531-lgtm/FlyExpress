@@ -61,6 +61,39 @@ body {
   z-index: 1;
 }
 
+/* 🔒 شاشة القفل وبوابة التحقق الإجبارية */
+.auth-gate-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-dark);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.gate-card {
+  background: #0d1527;
+  border: 1.5px solid var(--primary);
+  border-radius: 24px;
+  padding: 24px 18px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 10px 40px var(--primary-glow);
+}
+
+.gate-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 20px var(--primary-glow);
+  margin-bottom: 12px;
+}
+
 /* Header */
 .app-header {
   position: sticky;
@@ -110,21 +143,6 @@ body {
   gap: 8px;
 }
 
-.user-badge-btn {
-  background: rgba(255, 107, 0, 0.15);
-  border: 1px solid var(--primary);
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 800;
-  font-family: inherit;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
 .status-badge {
   display: flex;
   align-items: center;
@@ -166,7 +184,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* بطاقة ترحيب العميل المسجل */
+/* بطاقة ترحيب العميل */
 .user-welcome-card {
   background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(0, 229, 255, 0.08));
   border: 1px solid rgba(255, 107, 0, 0.3);
@@ -195,7 +213,7 @@ body {
 .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b00, #ffb703); border-radius: 999px; transition: width 0.5s ease; }
 .loyalty-sub { font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between; }
 
-/* رادار أمان الطالب */
+/* رادار أمان الطالب المتزامن سحابياً */
 .safety-radar-card {
   background: rgba(18, 26, 43, 0.7);
   border: 1px solid rgba(16, 185, 129, 0.35);
@@ -300,18 +318,6 @@ body {
 }
 .modal-close { position: absolute; top: 12px; left: 14px; background: transparent; border: 0; color: var(--text-sub); font-size: 22px; cursor: pointer; }
 
-/* تبويبات تسجيل الدخول */
-.auth-tabs {
-  display: flex; gap: 8px; margin-bottom: 14px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 12px;
-}
-.auth-tab-btn {
-  flex: 1; padding: 8px; border: 0; background: transparent; color: var(--text-sub); font-weight: 800; font-family: inherit; font-size: 12px;
-  border-radius: 8px; cursor: pointer;
-}
-.auth-tab-btn.active {
-  background: var(--primary); color: #fff;
-}
-
 .wheel-container { position: relative; width: 230px; height: 230px; margin: 14px auto; }
 .wheel-pointer {
   position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0;
@@ -326,7 +332,41 @@ body {
 </head>
 
 <body>
-<div class="app-container">
+
+<!-- 🔒 بوابة الدخول الإجبارية والتحقق بالكود -->
+<div class="auth-gate-screen" id="authGateScreen">
+  <div class="gate-card">
+    <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
+    <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
+    <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">يرجى تسجيل وتأكيد رقمك لبدء استخدام التطبيق</p>
+
+    <!-- المرحلة 1: إدخال البيانات وطلب كود التفعيل -->
+    <div id="gateStep1">
+      <input type="text" id="gateName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
+      <input type="tel" id="gatePhone" class="order-input" placeholder="رقم الهاتف (واتساب 01xxxxxxxxx)" style="margin-bottom:12px;">
+      <button class="order-btn" onclick="requestVerificationCode()">
+        <i class="fa-brands fa-whatsapp"></i> إرسال كود التفعيل واتساب 📲
+      </button>
+    </div>
+
+    <!-- المرحلة 2: إدخال الكود للتأكيد -->
+    <div id="gateStep2" style="display:none;">
+      <div style="background:rgba(0, 229, 255, 0.08); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; padding:10px; margin-bottom:12px;">
+        <span style="font-size:11px; color:#cbd5e1;">تم توليد كود التأكيد الخاص بك. اكتب الكود هنا لفتح التطبيق فوراً:</span>
+      </div>
+      <input type="number" id="gateOtpInput" class="order-input" placeholder="أدخل الكود المكون من 4 أرقام" style="text-align:center; font-size:18px; letter-spacing:4px; margin-bottom:10px;">
+      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyAndUnlockApp()">
+        تأكيد الكود وفتح التطبيق 🚀
+      </button>
+      <button onclick="backToStep1()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; margin-top:10px; cursor:pointer;">
+        تعديل رقم الهاتف ✏️
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- المحتوى الرئيسي للتطبيق (يفتح فقط بعد إدخال الكود) -->
+<div class="app-container" id="mainAppContent" style="display:none;">
 
   <!-- Header -->
   <header class="app-header">
@@ -334,14 +374,11 @@ body {
       <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="profile-info">
         <h1>Fly Express</h1>
-        <p id="userStatusTxt">حساب زائر</p>
+        <p id="userStatusTxt">حساب موثق</p>
       </div>
     </div>
     
     <div class="header-actions">
-      <button class="user-badge-btn" id="authActionBtn" onclick="openAuthModal()">
-        <i class="fa-regular fa-user"></i> <span id="authBtnTxt">تسجيل دخول</span>
-      </button>
       <div class="status-badge" id="serviceBadge">
         <span class="status-dot" id="serviceDot"></span>
         <span id="serviceTxt">متاح</span>
@@ -352,8 +389,8 @@ body {
   <!-- tab 1: الرئيسية -->
   <main id="tab-home" class="tab-view active">
     
-    <!-- كارت ترحيب العميل المسجل -->
-    <div class="user-welcome-card" id="userWelcomeBox" style="display:none;">
+    <!-- كارت ترحيب العميل -->
+    <div class="user-welcome-card" id="userWelcomeBox">
       <div>
         <div style="font-size:11px; color:var(--text-sub);">أهلاً بك معنا يا كابتن 🌟</div>
         <div style="font-size:14px; font-weight:900; color:#fff;" id="welcomeUserName">عميلنا العزيز</div>
@@ -376,7 +413,7 @@ body {
       </div>
     </div>
 
-    <!-- رادار أمان الطالب المباشر المتزامن سحابياً -->
+    <!-- رادار أمان الطالب -->
     <div class="safety-radar-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-size:12px; font-weight:800; color:#34d399;"><i class="fa-solid fa-shield-halved"></i> رادار أمان رحلة المدرسة اليومية</span>
@@ -570,36 +607,6 @@ body {
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
 
-  <!-- نافذة تسجيل الدخول وإنشاء حساب العميل (Auth Modal) -->
-  <div class="modal-backdrop" id="authModal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeAuthModal()">&times;</button>
-      
-      <div class="auth-tabs">
-        <button class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthView('login')">تسجيل دخول</button>
-        <button class="auth-tab-btn" id="tabRegisterBtn" onclick="switchAuthView('register')">إنشاء حساب</button>
-      </div>
-
-      <!-- نموذج تسجيل الدخول -->
-      <form id="loginForm" onsubmit="handleLogin(event)">
-        <h4 style="font-size:15px; font-weight:900; color:#fff; margin-bottom:10px;">أهلاً بك مجدداً 🛵</h4>
-        <input type="email" id="loginEmail" class="order-input" placeholder="البريد الإلكتروني" style="margin-bottom:8px;" required>
-        <input type="password" id="loginPass" class="order-input" placeholder="كلمة المرور" style="margin-bottom:12px;" required>
-        <button type="submit" class="order-btn">دخول الحساب 🚀</button>
-      </form>
-
-      <!-- نموذج إنشاء حساب جديد -->
-      <form id="registerForm" style="display:none;" onsubmit="handleRegister(event)">
-        <h4 style="font-size:15px; font-weight:900; color:#00e5ff; margin-bottom:10px;">إنشاء حساب جديد 🎒</h4>
-        <input type="text" id="regName" class="order-input" placeholder="الاسم الكامل" style="margin-bottom:8px;" required>
-        <input type="tel" id="regPhone" class="order-input" placeholder="رقم الهاتف (واتساب)" style="margin-bottom:8px;" required>
-        <input type="email" id="regEmail" class="order-input" placeholder="البريد الإلكتروني" style="margin-bottom:8px;" required>
-        <input type="password" id="regPass" class="order-input" placeholder="كلمة المرور" style="margin-bottom:12px;" required>
-        <button type="submit" class="order-btn" style="background:linear-gradient(90deg, #00e5ff, #00a8ff); color:#000;">تسجيل وحفظ الحساب ✅</button>
-      </form>
-    </div>
-  </div>
-
   <!-- نافذة صوّر واطلب مع التنبيه الذكي -->
   <div class="modal-backdrop" id="snapModal">
     <div class="modal-card">
@@ -630,9 +637,9 @@ body {
     <div class="modal-card">
       <button class="modal-close" onclick="closeWheel()">&times;</button>
       <h3 style="font-size:17px; font-weight:900; color:#fff;">🎡 عجلة الخصومات الموثقة</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">أدخل رقم هاتفك لتفعيل لفة اليوم (صالحة لساعتين)</p>
+      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">كود الخصم صالح لساعتين من وقت اللف</p>
       
-      <input type="tel" id="wheelPhone" class="order-input" placeholder="رقم الواتساب (01xxxxxxxxx)" style="text-align:center; font-weight:700; margin:10px 0;">
+      <input type="tel" id="wheelPhone" class="order-input" placeholder="رقم الواتساب" style="text-align:center; font-weight:700; margin:10px 0;" readonly>
       
       <div class="wheel-container">
         <div class="wheel-pointer"></div>
@@ -656,130 +663,95 @@ const enc = s => encodeURIComponent(s || "");
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 let pendingClaimUrl = "";
+let generatedOtp = null;
+let tempUserData = {};
 
 // -------------------------------------------------------------
-// 1. نظام تسجيل الدخول وإدارة حساب العميل
+// 1. فحص هل المستخدم مسجل وموثق لفتح التطبيق
 // -------------------------------------------------------------
-function getRegisteredUsers() {
-  try {
-    return JSON.parse(localStorage.getItem('fly_users_db') || '{}');
-  } catch(e) { return {}; }
-}
+function checkAppAccess() {
+  const verifiedUser = localStorage.getItem('fly_verified_user');
+  const gateScreen = document.getElementById('authGateScreen');
+  const mainApp = document.getElementById('mainAppContent');
 
-function getCurrentUser() {
-  try {
-    return JSON.parse(localStorage.getItem('fly_current_user') || 'null');
-  } catch(e) { return null; }
-}
-
-function updateAuthUI() {
-  const user = getCurrentUser();
-  const userStatus = document.getElementById('userStatusTxt');
-  const authBtnTxt = document.getElementById('authBtnTxt');
-  const welcomeBox = document.getElementById('userWelcomeBox');
-  const welcomeName = document.getElementById('welcomeUserName');
-
-  if (user) {
-    userStatus.textContent = user.name;
-    authBtnTxt.textContent = "حسابي";
-    welcomeName.textContent = user.name;
-    welcomeBox.style.display = "flex";
-
-    // تعبئة البيانات تلقائياً في كل الحقول
+  if (verifiedUser) {
+    const user = JSON.parse(verifiedUser);
+    gateScreen.style.display = "none";
+    mainApp.style.display = "block";
+    
+    document.getElementById('userStatusTxt').textContent = user.name;
+    document.getElementById('welcomeUserName').textContent = user.name;
+    
+    // ملء بياناته المسجلة في كل الخانات
     ['orderName', 'marketName', 'pmName', 'snapName'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = user.name;
+      const el = document.getElementById(id); if (el) el.value = user.name;
     });
     ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone', 'snapPhone', 'wheelPhone'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = user.phone;
+      const el = document.getElementById(id); if (el) el.value = user.phone;
     });
   } else {
-    userStatus.textContent = "حساب زائر";
-    authBtnTxt.textContent = "تسجيل دخول";
-    welcomeBox.style.display = "none";
+    gateScreen.style.display = "flex";
+    mainApp.style.display = "none";
   }
 }
-updateAuthUI();
+checkAppAccess();
 
-function openAuthModal() { document.getElementById('authModal').classList.add('show'); }
-function closeAuthModal() { document.getElementById('authModal').classList.remove('show'); }
+// طلب كود التفعيل عبر واتساب
+function requestVerificationCode() {
+  const name = document.getElementById('gateName').value.trim();
+  const phone = document.getElementById('gatePhone').value.trim();
 
-function switchAuthView(view) {
-  const loginForm = document.getElementById('loginForm');
-  const registerForm = document.getElementById('registerForm');
-  const tabLoginBtn = document.getElementById('tabLoginBtn');
-  const tabRegisterBtn = document.getElementById('tabRegisterBtn');
-
-  if (view === 'login') {
-    loginForm.style.display = "block";
-    registerForm.style.display = "none";
-    tabLoginBtn.classList.add('active');
-    tabRegisterBtn.classList.remove('active');
-  } else {
-    loginForm.style.display = "none";
-    registerForm.style.display = "block";
-    tabRegisterBtn.classList.add('active');
-    tabLoginBtn.classList.remove('active');
-  }
-}
-
-function handleRegister(e) {
-  e.preventDefault();
-  const name = document.getElementById('regName').value.trim();
-  const phone = document.getElementById('regPhone').value.trim();
-  const email = document.getElementById('regEmail').value.trim().toLowerCase();
-  const pass = document.getElementById('regPass').value;
-
-  if (!/^01[0125][0-9]{8}$/.test(phone)) {
-    alert("من فضلك أدخل رقم موبايل مصري صحيح (11 رقم)");
+  if (!name || !/^01[0125][0-9]{8}$/.test(phone)) {
+    alert("من فضلك أدخل اسمك ورقم هاتف مصري صحيح يبدأ بـ 01");
     return;
   }
 
-  const users = getRegisteredUsers();
-  if (users[email]) {
-    alert("هذا البريد الإلكتروني مسجل بالفعل! يرجى تسجيل الدخول.");
-    switchAuthView('login');
-    return;
-  }
+  // توليد كود من 4 أرقام عشوائي
+  generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+  tempUserData = { name, phone, otp: generatedOtp };
 
-  const newUser = { name, phone, email, pass };
-  users[email] = newUser;
-  localStorage.setItem('fly_users_db', JSON.stringify(users));
-  localStorage.setItem('fly_current_user', JSON.stringify(newUser));
+  // رسالة واتساب للتحقق
+  const otpMsg = `مرحباً Fly Express 🚀\nأنا: ${name}\nأرغب في تفعيل حسابي في التطبيق بالرقم: ${phone}\nكود تفعيل حسابي هو: [ ${generatedOtp} ]`;
+  
+  // فتح الواتساب لإرسال الكود والتأكد
+  window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(otpMsg)}`, '_blank');
 
-  alert(`تم إنشاء الحساب بنجاح! أهلاً بك يا ${name} في Fly Express 🎉`);
-  closeAuthModal();
-  updateAuthUI();
+  // إظهار خانة إدخال الكود
+  document.getElementById('gateStep1').style.display = "none";
+  document.getElementById('gateStep2').style.display = "block";
+  alert(`تم تجهيز كود التفعيل الخاص بك وهو: (${generatedOtp}) - اكتبه لتأكيد وتفعيل الحساب فوراً!`);
 }
 
-function handleLogin(e) {
-  e.preventDefault();
-  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const pass = document.getElementById('loginPass').value;
+function verifyAndUnlockApp() {
+  const enteredOtp = document.getElementById('gateOtpInput').value.trim();
 
-  const users = getRegisteredUsers();
-  const user = users[email];
-
-  if (user && user.pass === pass) {
-    localStorage.setItem('fly_current_user', JSON.stringify(user));
-    alert(`تم تسجيل الدخول بنجاح! مرحباً ${user.name} 🛵`);
-    closeAuthModal();
-    updateAuthUI();
+  if (enteredOtp === tempUserData.otp && generatedOtp) {
+    localStorage.setItem('fly_verified_user', JSON.stringify({
+      name: tempUserData.name,
+      phone: tempUserData.phone,
+      time: Date.now()
+    }));
+    alert(`تم التحقق بنجاح! مرحباً بك يا ${tempUserData.name} في تطبيق Fly Express 🎉`);
+    checkAppAccess();
   } else {
-    alert("البريد الإلكتروني أو كلمة المرور غير صحيحة!");
+    alert("كود التفعيل غير صحيح! يرجى التأكد من كتابة الكود المكون من 4 أرقام.");
   }
+}
+
+function backToStep1() {
+  document.getElementById('gateStep1').style.display = "block";
+  document.getElementById('gateStep2').style.display = "none";
 }
 
 function logoutUser() {
-  if (confirm("هل ترغب بالفعل في تسجيل الخروج؟")) {
-    localStorage.removeItem('fly_current_user');
-    updateAuthUI();
+  if (confirm("هل ترغب بالفعل في تسجيل الخروج وقفل التطبيق؟")) {
+    localStorage.removeItem('fly_verified_user');
+    checkAppAccess();
   }
 }
 
 // -------------------------------------------------------------
-// 2. مزامنة سحابية حية مع لوحة الأدمن
+// 2. المزامنة السحابية الحية (رادار + حالة التوصيل)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -976,11 +948,6 @@ function spinWheel() {
   const res = document.getElementById('wheelResult');
   const spinBtn = document.getElementById('spinBtn');
   const waClaimBtn = document.getElementById('waClaimBtn');
-
-  if (!/^01[0125][0-9]{8}$/.test(phone)) {
-    alert("أدخل رقم موبايل مصري صحيح (11 رقم)");
-    return;
-  }
 
   isSpinning = true;
   spinBtn.disabled = true;
