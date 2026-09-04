@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Fly Express">
 
 <link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
-<link rel="apple-touch-icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
+<link rel="apple-touch-icon" href="/FlyExpress/icon-192.png"/>
 <meta property="og:image" content="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -145,7 +145,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* بطاقة الحظ والبانر */
 .app-banner {
   background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
   padding: 16px;
@@ -163,7 +162,7 @@ body {
 .app-banner p { font-size: 12px; opacity: 0.95; margin-top: 4px; }
 .app-banner i { font-size: 38px; opacity: 0.3; }
 
-/* بانر عجلة الحظ الدعائي */
+/* بانر عجلة الحظ */
 .wheel-promo-card {
   background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 107, 0, 0.18));
   border: 1px dashed var(--primary);
@@ -418,7 +417,7 @@ body {
 .social-btn.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 .social-btn.tg { background: #229ed9; }
 
-/* 🔴 1. شريط الإشعارات الحية التفاعلي (Social Proof Ticker) */
+/* شريط الإشعارات الحية */
 .live-toast {
   position: fixed;
   bottom: 80px;
@@ -463,11 +462,11 @@ body {
 .toast-title { font-weight: 800; color: #fff; }
 .toast-time { font-size: 10px; color: var(--text-sub); }
 
-/* 🎁 2. نافذة وعجلة الحظ التفاعلية (Lucky Spin Wheel) */
+/* نافذة عجلة الحظ المحمية */
 .wheel-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(8px);
   z-index: 200;
   display: none;
@@ -482,9 +481,9 @@ body {
   background: #0d1527;
   border: 1.5px solid var(--primary);
   border-radius: 24px;
-  padding: 22px 18px;
+  padding: 20px 16px;
   width: 100%;
-  max-width: 360px;
+  max-width: 350px;
   text-align: center;
   box-shadow: 0 10px 35px var(--primary-glow);
   position: relative;
@@ -492,32 +491,32 @@ body {
 
 .wheel-close {
   position: absolute;
-  top: 14px;
+  top: 12px;
   left: 14px;
   background: transparent;
   border: 0;
   color: var(--text-sub);
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
 }
 
 .wheel-container {
   position: relative;
-  width: 240px;
-  height: 240px;
-  margin: 18px auto;
+  width: 230px;
+  height: 230px;
+  margin: 14px auto;
 }
 
 .wheel-pointer {
   position: absolute;
-  top: -12px;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-top: 24px solid #ff3b30;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 22px solid #ff3b30;
   z-index: 10;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
@@ -526,7 +525,7 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 5px solid #1e293b;
+  border: 4px solid #1e293b;
   box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
   transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
 }
@@ -545,13 +544,14 @@ body {
 }
 
 .spin-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.wheel-result { margin-top: 12px; font-weight: 800; font-size: 13px; color: #34d399; }
+.wheel-result { margin-top: 10px; font-weight: 800; font-size: 13px; color: #34d399; min-height: 20px; }
 </style>
 </head>
 
 <body>
 <div class="app-container">
 
+  <!-- Header -->
   <header class="app-header">
     <div class="profile-section">
       <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
@@ -566,8 +566,10 @@ body {
     </div>
   </header>
 
+  <!-- tab 1: الرئيسية -->
   <main id="tab-home" class="tab-view active">
     
+    <!-- بانر عجلة الحظ -->
     <div class="wheel-promo-card" onclick="openWheel()">
       <div class="wheel-promo-info">
         <i class="fa-solid fa-dharmachakra wheel-promo-icon"></i>
@@ -642,9 +644,11 @@ body {
     <p id="visits" style="text-align:center;font-size:12px;color:var(--text-sub);margin-top:10px;"></p>
   </main>
 
+  <!-- tab 2: شاشة الطلبات -->
   <section id="tab-orders" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار</div>
 
+    <!-- أوردر وطرد -->
     <div class="form-card" id="sec-order">
       <h3 style="font-size:15px; margin-bottom:10px; color:#ff8c00;">📦 أوردر / طرد فوري</h3>
       <div class="order-row">
@@ -669,6 +673,7 @@ body {
       </div>
     </div>
 
+    <!-- طلبات السوق -->
     <div class="form-card" id="sec-market">
       <h3 style="font-size:15px; margin-bottom:10px; color:#00a8ff;">🛒 طلبات السوق والطلبات المنزلية</h3>
       <div class="order-row single">
@@ -692,6 +697,7 @@ body {
       </div>
     </div>
 
+    <!-- المدرسة -->
     <div class="form-card" id="sec-school">
       <h3 style="font-size:15px; margin-bottom:10px; color:#10b981;">🏫 توصيل ابني المدرسة</h3>
       <div class="order-row">
@@ -715,6 +721,7 @@ body {
       </div>
     </div>
 
+    <!-- شهري -->
     <div class="form-card" id="sec-monthly">
       <h3 style="font-size:15px; margin-bottom:10px; color:#c084fc;">📘 جدول الدروس والمدارس الشهري</h3>
       <div class="order-row">
@@ -755,6 +762,7 @@ body {
     </div>
   </section>
 
+  <!-- tab 3: قائمة الأسعار -->
   <section id="tab-prices" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار التقديرية</div>
     <div style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">قد تتغير الأسعار بنسبة طفيفة بحسب أوقات الذروة والمكان الدقيق.</div>
@@ -771,6 +779,7 @@ body {
     </button>
   </section>
 
+  <!-- tab 4: التواصل -->
   <section id="tab-contact" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
     <div class="social-list">
@@ -789,6 +798,7 @@ body {
     </div>
   </section>
 
+  <!-- شريط التنقل السفلي الثابت -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('tab-home', this)">
       <i class="fa-solid fa-house"></i>
@@ -808,6 +818,7 @@ body {
     </button>
   </nav>
 
+  <!-- شريط الإشعار الحي المباشر -->
   <div class="live-toast" id="liveToast">
     <div class="toast-icon"><i class="fa-solid fa-bell"></i></div>
     <div class="toast-content">
@@ -816,15 +827,20 @@ body {
     </div>
   </div>
 
+  <!-- نافذة عجلة الحظ المربوطة برقم الهاتف -->
   <div class="wheel-modal" id="wheelModal">
     <div class="wheel-card">
       <button class="wheel-close" onclick="closeWheel()">&times;</button>
-      <h3 style="font-size:18px; font-weight:900; color:#fff;">🎡 عجلة الحظ السريعة</h3>
-      <p style="font-size:12px; color:var(--text-sub); margin-top:4px;">لف العجلة واكسب كود خصم لمشوارك القادم</p>
+      <h3 style="font-size:17px; font-weight:900; color:#fff;">🎡 عجلة الحظ (فرصة واحدة)</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">أدخل رقم هاتفك لتفعيل لفة اليوم</p>
       
+      <div style="margin: 10px 0 6px;">
+        <input type="tel" id="wheelPhone" class="order-input" placeholder="رقم موبايلك (01xxxxxxxxx)" style="text-align:center; font-weight:700; letter-spacing:1px;" inputmode="tel">
+      </div>
+
       <div class="wheel-container">
         <div class="wheel-pointer"></div>
-        <canvas id="wheelCanvas" class="wheel-canvas" width="240" height="240"></canvas>
+        <canvas id="wheelCanvas" class="wheel-canvas" width="230" height="230"></canvas>
       </div>
 
       <button class="spin-btn" id="spinBtn" onclick="spinWheel()">لف العجلة الآن 🎯</button>
@@ -883,7 +899,7 @@ setTimeout(() => {
 }, 3000);
 
 // -------------------------------------------------------------
-// 2. عجلة الحظ التفاعلية (Lucky Wheel)
+// 2. عجلة الحظ مع قفل برقم الموبايل وبصمة الجهاز
 // -------------------------------------------------------------
 const slices = [
   { text: "خصم 5 ج", code: "FLY-5EGP", color: "#ff6b00" },
@@ -913,7 +929,6 @@ function drawWheel() {
     ctx.fill();
     ctx.stroke();
 
-    // نصوص القطاعات
     ctx.save();
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 12px Cairo";
@@ -929,22 +944,68 @@ drawWheel();
 let currentRotation = 0;
 let isSpinning = false;
 
-function openWheel() { document.getElementById('wheelModal').classList.add('show'); }
+function openWheel() {
+  document.getElementById('wheelModal').classList.add('show');
+  checkWheelEligibility();
+}
 function closeWheel() { document.getElementById('wheelModal').classList.remove('show'); }
+
+function getSpunUsers() {
+  try {
+    return JSON.parse(localStorage.getItem('fly_spun_users') || '{}');
+  } catch(e) { return {}; }
+}
+
+function checkWheelEligibility() {
+  const spinBtn = document.getElementById('spinBtn');
+  const resultDiv = document.getElementById('wheelResult');
+  const phoneInput = document.getElementById('wheelPhone');
+  const isDeviceLocked = localStorage.getItem('fly_locked_device') === 'true';
+
+  if (isDeviceLocked) {
+    const existingCode = localStorage.getItem('fly_discount_code');
+    resultDiv.style.color = "#ef4444";
+    resultDiv.textContent = `لقد استنفدت لفتك لهذا اليوم! كودك: (${existingCode || 'مستخدم'})`;
+    spinBtn.disabled = true;
+    phoneInput.disabled = true;
+  }
+}
 
 function spinWheel() {
   if (isSpinning) return;
-  const spinBtn = document.getElementById('spinBtn');
+
+  const phoneInput = document.getElementById('wheelPhone');
+  const phone = (phoneInput.value || "").trim();
   const resultDiv = document.getElementById('wheelResult');
-  
+  const spinBtn = document.getElementById('spinBtn');
+
+  // التحقق من رقم الموبايل (11 رقم يبدأ بـ 01)
+  const phoneRegex = /^01[0125][0-9]{8}$/;
+  if (!phoneRegex.test(phone)) {
+    alert("من فضلك أدخل رقم موبايل صحيح (11 رقم يبدأ بـ 01)");
+    phoneInput.focus();
+    return;
+  }
+
+  // فحص هل الرقم لف العجلة مسبقاً
+  const users = getSpunUsers();
+  if (users[phone] || localStorage.getItem('fly_locked_device') === 'true') {
+    const existingCode = users[phone] ? users[phone].code : localStorage.getItem('fly_discount_code');
+    resultDiv.style.color = "#ef4444";
+    resultDiv.textContent = `عذراً! هذا الهاتف/الرقم استنفد لفته. كودك السابق: (${existingCode || 'مستخدم'})`;
+    spinBtn.disabled = true;
+    return;
+  }
+
   isSpinning = true;
   spinBtn.disabled = true;
+  phoneInput.disabled = true;
+  resultDiv.style.color = "#34d399";
   resultDiv.textContent = "جاري تدوير العجلة...";
 
-  // الفوز مضمون بقطاع فيه خصم (القطاع 0 أو 2 أو 4)
+  // اختيار قطاع رابح
   const winningIndex = [0, 2, 4][Math.floor(Math.random() * 3)];
   const extraRounds = 5 * 360;
-  // الزاوية بحيث يقف المؤشر العلوي (270 درجة) على القطاع الفائز
   const sliceDegree = 360 / numSlices;
   const targetDegree = extraRounds + (360 - (winningIndex * sliceDegree + sliceDegree / 2) - 90);
 
@@ -955,20 +1016,34 @@ function spinWheel() {
     isSpinning = false;
     const winner = slices[winningIndex];
     if (winner.code) {
+      users[phone] = { code: winner.code, time: Date.now() };
+      localStorage.setItem('fly_spun_users', JSON.stringify(users));
       localStorage.setItem('fly_discount_code', winner.code);
+      localStorage.setItem('fly_locked_device', 'true');
+
       resultDiv.textContent = `مبروك! ربحت ${winner.text} (الكود: ${winner.code})`;
       document.getElementById('couponStatusTxt').textContent = `كوبونك المفعّل: ${winner.code}`;
-    } else {
-      resultDiv.textContent = "حظ أوفر في المرة القادمة!";
+      
+      // تعبئة رقم الهاتف تلقائياً في خانات الطلب
+      ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.value) el.value = phone;
+      });
     }
-    spinBtn.disabled = false;
   }, 4200);
 }
 
-// فحص الكوبون المخزن عند التحميل
+// فحص الكوبون المخزن عند بداية تشغيل الصفحة
 const savedCode = localStorage.getItem('fly_discount_code');
 if (savedCode) {
   document.getElementById('couponStatusTxt').textContent = `كوبونك المفعّل: ${savedCode}`;
+}
+
+// تسجيل الـ Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/FlyExpress/sw.js').catch(()=>{});
+  });
 }
 
 // دوال التنقل وإرسال الطلبات
