@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Fly Express">
 
 <link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
-<link rel="apple-touch-icon" href="/FlyExpress/icon-192.png"/>
+<link rel="apple-touch-icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 <meta property="og:image" content="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -58,46 +58,6 @@ body {
   min-height: 100vh;
   position: relative;
   z-index: 1;
-}
-
-/* بنر تثبيت التطبيق PWA */
-.pwa-install-banner {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(18, 26, 43, 0.95);
-  border: 1px solid var(--primary);
-  border-radius: 16px;
-  padding: 12px 14px;
-  margin: 12px 16px 0;
-  box-shadow: 0 4px 18px var(--primary-glow);
-  backdrop-filter: blur(12px);
-  animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.pwa-text {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.pwa-install-btn {
-  background: var(--primary);
-  color: #fff;
-  border: 0;
-  border-radius: 10px;
-  padding: 6px 14px;
-  font-family: inherit;
-  font-weight: 800;
-  font-size: 12px;
-  cursor: pointer;
 }
 
 /* شريط الرأس */
@@ -185,6 +145,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* بطاقة الحظ والبانر */
 .app-banner {
   background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
   padding: 16px;
@@ -193,7 +154,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   box-shadow: 0 10px 28px var(--primary-glow);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -201,6 +162,47 @@ body {
 .app-banner h3 { font-size: 16px; font-weight: 900; }
 .app-banner p { font-size: 12px; opacity: 0.95; margin-top: 4px; }
 .app-banner i { font-size: 38px; opacity: 0.3; }
+
+/* بانر عجلة الحظ الدعائي */
+.wheel-promo-card {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 107, 0, 0.18));
+  border: 1px dashed var(--primary);
+  border-radius: 18px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.wheel-promo-card:active { transform: scale(0.98); }
+
+.wheel-promo-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wheel-promo-icon {
+  font-size: 26px;
+  color: #ffd166;
+  animation: rotateSlow 8s linear infinite;
+}
+
+@keyframes rotateSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.wheel-promo-btn {
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: inherit;
+}
 
 .section-title {
   font-size: 16px;
@@ -415,19 +417,140 @@ body {
 .social-btn.wa { background: #25d366; color: #000; }
 .social-btn.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 .social-btn.tg { background: #229ed9; }
+
+/* 🔴 1. شريط الإشعارات الحية التفاعلي (Social Proof Ticker) */
+.live-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 16px;
+  right: 16px;
+  max-width: 448px;
+  margin: 0 auto;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 14px rgba(0, 229, 255, 0.2);
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 99;
+  transform: translateY(120px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+}
+
+.live-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(0, 229, 255, 0.15);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.toast-content { font-size: 12px; line-height: 1.3; }
+.toast-title { font-weight: 800; color: #fff; }
+.toast-time { font-size: 10px; color: var(--text-sub); }
+
+/* 🎁 2. نافذة وعجلة الحظ التفاعلية (Lucky Spin Wheel) */
+.wheel-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.wheel-modal.show { display: flex; }
+
+.wheel-card {
+  background: #0d1527;
+  border: 1.5px solid var(--primary);
+  border-radius: 24px;
+  padding: 22px 18px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 10px 35px var(--primary-glow);
+  position: relative;
+}
+
+.wheel-close {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: transparent;
+  border: 0;
+  color: var(--text-sub);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.wheel-container {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 18px auto;
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 24px solid #ff3b30;
+  z-index: 10;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.wheel-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 5px solid #1e293b;
+  box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
+  transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
+}
+
+.spin-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: 0;
+  background: linear-gradient(90deg, #ff6b00, #ff9500);
+  color: #fff;
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px var(--primary-glow);
+}
+
+.spin-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.wheel-result { margin-top: 12px; font-weight: 800; font-size: 13px; color: #34d399; }
 </style>
 </head>
 
 <body>
 <div class="app-container">
-
-  <div class="pwa-install-banner" id="pwaBanner">
-    <div class="pwa-text">
-      <i class="fa-solid fa-mobile-screen-button" style="color:var(--primary); font-size:20px;"></i>
-      <span>ثبّت تطبيق Fly Express على هاتفك</span>
-    </div>
-    <button class="pwa-install-btn" id="pwaBtn">تثبيت الآن</button>
-  </div>
 
   <header class="app-header">
     <div class="profile-section">
@@ -444,6 +567,18 @@ body {
   </header>
 
   <main id="tab-home" class="tab-view active">
+    
+    <div class="wheel-promo-card" onclick="openWheel()">
+      <div class="wheel-promo-info">
+        <i class="fa-solid fa-dharmachakra wheel-promo-icon"></i>
+        <div>
+          <h4 style="font-size:13px; font-weight:900; color:#fff;">عجلة الخصومات اليومية 🎁</h4>
+          <span style="font-size:11px; color:#cbd5e1;" id="couponStatusTxt">لف العجلة واكسب خصم فوري على مشوارك</span>
+        </div>
+      </div>
+      <button class="wheel-promo-btn">العب الآن</button>
+    </div>
+
     <div class="app-banner">
       <div>
         <h3>أسرع دليفري في نجع حمادي 🚀</h3>
@@ -673,6 +808,30 @@ body {
     </button>
   </nav>
 
+  <div class="live-toast" id="liveToast">
+    <div class="toast-icon"><i class="fa-solid fa-bell"></i></div>
+    <div class="toast-content">
+      <div class="toast-title" id="toastTitle">طلب توصيل جديد 🚀</div>
+      <div class="toast-time" id="toastDesc">من نجع حمادي إلى بركة • الآن</div>
+    </div>
+  </div>
+
+  <div class="wheel-modal" id="wheelModal">
+    <div class="wheel-card">
+      <button class="wheel-close" onclick="closeWheel()">&times;</button>
+      <h3 style="font-size:18px; font-weight:900; color:#fff;">🎡 عجلة الحظ السريعة</h3>
+      <p style="font-size:12px; color:var(--text-sub); margin-top:4px;">لف العجلة واكسب كود خصم لمشوارك القادم</p>
+      
+      <div class="wheel-container">
+        <div class="wheel-pointer"></div>
+        <canvas id="wheelCanvas" class="wheel-canvas" width="240" height="240"></canvas>
+      </div>
+
+      <button class="spin-btn" id="spinBtn" onclick="spinWheel()">لف العجلة الآن 🎯</button>
+      <div class="wheel-result" id="wheelResult"></div>
+    </div>
+  </div>
+
 </div>
 
 <audio id="gameMusic" src="https://media1.vocaroo.com/mp3/1oelwoF9NuRN" preload="auto" loop playsinline></audio>
@@ -680,39 +839,139 @@ body {
 <script>
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
-const waSend = txt => window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(txt)}`, '_blank', 'noopener');
 
-// تسجيل الـ Service Worker باستخدام المسار الكامل
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/FlyExpress/sw.js')
-      .then(reg => console.log('SW Registered', reg))
-      .catch(err => console.log('SW Failed', err));
-  });
+// جلب كود الخصم المخزن
+function getActiveDiscount() {
+  const code = localStorage.getItem('fly_discount_code');
+  return code ? `\n🎁 كود الخصم المطبق: ${code}` : '';
 }
 
-// منطق بنر التثبيت PWA
-let deferredPrompt;
-const pwaBanner = document.getElementById('pwaBanner');
-const pwaBtn = document.getElementById('pwaBtn');
+const waSend = txt => {
+  const finalTxt = txt + getActiveDiscount();
+  window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(finalTxt)}`, '_blank', 'noopener');
+};
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  pwaBanner.style.display = 'flex';
-});
+// -------------------------------------------------------------
+// 1. نظام إشعارات الطلبات الحية (Social Proof)
+// -------------------------------------------------------------
+const mockOrders = [
+  { title: "📦 طلب طرد سريع", desc: "من قرية بركة إلى الألمنيوم • منذ 4 دقائق" },
+  { title: "🛒 طلبات سوق وخضار", desc: "داخل نجع حمادي • تم التوصيل الآن" },
+  { title: "🏫 توصيل مدرسة", desc: "حي المساكن إلى نجع حمادي • تم بنجاح" },
+  { title: "⚡ مشوار فوري عاجل", desc: "من نجع حمادي إلى قرية هو • جارٍ التوصيل" },
+  { title: "📮 استلام وتوصيل طرد", desc: "من شارع 30 إلى بركة • منذ 7 دقائق" }
+];
 
-pwaBtn.addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      pwaBanner.style.display = 'none';
-    }
-    deferredPrompt = null;
+let orderIndex = 0;
+function showNextToast() {
+  const toast = document.getElementById('liveToast');
+  const title = document.getElementById('toastTitle');
+  const desc = document.getElementById('toastDesc');
+  
+  const current = mockOrders[orderIndex];
+  title.textContent = current.title;
+  desc.textContent = current.desc;
+  
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4200);
+
+  orderIndex = (orderIndex + 1) % mockOrders.length;
+}
+setTimeout(() => {
+  showNextToast();
+  setInterval(showNextToast, 14000);
+}, 3000);
+
+// -------------------------------------------------------------
+// 2. عجلة الحظ التفاعلية (Lucky Wheel)
+// -------------------------------------------------------------
+const slices = [
+  { text: "خصم 5 ج", code: "FLY-5EGP", color: "#ff6b00" },
+  { text: "حظ أوفر", code: null, color: "#1e293b" },
+  { text: "خصم 10 ج", code: "FLY-10EGP", color: "#00d27a" },
+  { text: "توصيل مجاني", code: "FLY-FREE", color: "#8b5cf6" },
+  { text: "خصم 5%", code: "FLY-5PERCENT", color: "#00a8ff" },
+  { text: "كوبون مفاجأة", code: "FLY-VIP", color: "#f59e0b" }
+];
+
+const canvas = document.getElementById('wheelCanvas');
+const ctx = canvas.getContext('2d');
+const numSlices = slices.length;
+const arc = (2 * Math.PI) / numSlices;
+
+function drawWheel() {
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  const r = cx - 4;
+
+  for (let i = 0; i < numSlices; i++) {
+    const angle = i * arc;
+    ctx.beginPath();
+    ctx.fillStyle = slices[i].color;
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, angle, angle + arc);
+    ctx.fill();
+    ctx.stroke();
+
+    // نصوص القطاعات
+    ctx.save();
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 12px Cairo";
+    ctx.translate(cx, cy);
+    ctx.rotate(angle + arc / 2);
+    ctx.textAlign = "right";
+    ctx.fillText(slices[i].text, r - 15, 4);
+    ctx.restore();
   }
-});
+}
+drawWheel();
 
+let currentRotation = 0;
+let isSpinning = false;
+
+function openWheel() { document.getElementById('wheelModal').classList.add('show'); }
+function closeWheel() { document.getElementById('wheelModal').classList.remove('show'); }
+
+function spinWheel() {
+  if (isSpinning) return;
+  const spinBtn = document.getElementById('spinBtn');
+  const resultDiv = document.getElementById('wheelResult');
+  
+  isSpinning = true;
+  spinBtn.disabled = true;
+  resultDiv.textContent = "جاري تدوير العجلة...";
+
+  // الفوز مضمون بقطاع فيه خصم (القطاع 0 أو 2 أو 4)
+  const winningIndex = [0, 2, 4][Math.floor(Math.random() * 3)];
+  const extraRounds = 5 * 360;
+  // الزاوية بحيث يقف المؤشر العلوي (270 درجة) على القطاع الفائز
+  const sliceDegree = 360 / numSlices;
+  const targetDegree = extraRounds + (360 - (winningIndex * sliceDegree + sliceDegree / 2) - 90);
+
+  currentRotation += targetDegree;
+  canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+  setTimeout(() => {
+    isSpinning = false;
+    const winner = slices[winningIndex];
+    if (winner.code) {
+      localStorage.setItem('fly_discount_code', winner.code);
+      resultDiv.textContent = `مبروك! ربحت ${winner.text} (الكود: ${winner.code})`;
+      document.getElementById('couponStatusTxt').textContent = `كوبونك المفعّل: ${winner.code}`;
+    } else {
+      resultDiv.textContent = "حظ أوفر في المرة القادمة!";
+    }
+    spinBtn.disabled = false;
+  }, 4200);
+}
+
+// فحص الكوبون المخزن عند التحميل
+const savedCode = localStorage.getItem('fly_discount_code');
+if (savedCode) {
+  document.getElementById('couponStatusTxt').textContent = `كوبونك المفعّل: ${savedCode}`;
+}
+
+// دوال التنقل وإرسال الطلبات
 function switchTab(tabId, navBtn) {
   document.querySelectorAll('.tab-view').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
