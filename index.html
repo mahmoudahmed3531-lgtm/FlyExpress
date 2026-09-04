@@ -2,940 +2,233 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-<title>Fly Express — أسرع وأأمن توصيل في نجع حمادي</title>
-<meta name="description" content="Fly Express: توصيل طلاب المدارس والدليفري السريع في نجع حمادي وقراها.">
-<meta name="theme-color" content="#070b12">
-
-<link rel="manifest" href="/FlyExpress/manifest.json">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Fly Express">
-
-<link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
-<link rel="apple-touch-icon" href="/FlyExpress/icon-192.png"/>
-<meta property="og:image" content="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<title>Fly Express — لوحة تحكم الإدارة المباشرة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <style>
 :root {
-  --bg-dark: #070b12;
-  --surface: #0f172a;
+  --bg: #070b12;
+  --card: #0f172a;
   --primary: #ff6b00;
-  --primary-glow: rgba(255, 107, 0, 0.45);
-  --accent: #00e5ff;
   --success: #10b981;
-  --text-main: #f8fafc;
-  --text-sub: #94a3b8;
-  --border: rgba(255, 255, 255, 0.08);
-  font-family: 'Cairo', system-ui, sans-serif;
-  -webkit-tap-highlight-color: transparent;
+  --text: #f8fafc;
+  --sub: #94a3b8;
+  font-family: 'Cairo', sans-serif;
 }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; }
 
-* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-input, textarea, select { user-select: auto; }
-
-body {
-  background-color: var(--bg-dark);
-  color: var(--text-main);
-  min-height: 100vh;
-  padding-bottom: 90px;
-  overflow-x: hidden;
-  position: relative;
-  background-image: 
-    radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.16) 0%, transparent 50%),
-    radial-gradient(circle at 100% 50%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+#loginScreen {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; gap: 16px;
 }
-
-.app-container {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  position: relative;
-  z-index: 1;
+.admin-card {
+  background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 18px; margin-bottom: 16px;
 }
-
-/* Header */
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(7, 11, 18, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border);
+.admin-btn {
+  width: 100%; padding: 12px; border-radius: 12px; border: 0; font-weight: 800; font-family: inherit; cursor: pointer; color: #fff; margin-top: 8px;
 }
+.btn-primary { background: var(--primary); }
+.btn-success { background: var(--success); }
+.btn-info { background: #0284c7; }
 
-.profile-section {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
+.status-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px; }
+.status-btn {
+  padding: 12px 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+  color: var(--sub); font-family: inherit; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s;
 }
-
-.profile-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 16px;
-  object-fit: cover;
-  border: 2px solid var(--primary);
-  box-shadow: 0 0 16px var(--primary-glow);
-  flex-shrink: 0;
+.status-btn.active {
+  background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 0 14px rgba(255,107,0,0.5);
 }
-
-.profile-info h1 {
-  font-size: 19px;
-  font-weight: 900;
-  line-height: 1.2;
+.input-box {
+  width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3);
+  color: #fff; font-family: inherit; font-size: 13px; margin-top: 8px;
 }
-
-.profile-info p {
-  font-size: 12px;
-  color: var(--text-sub);
-}
-
-.status-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #34d399;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background: #10b981;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #10b981;
-  animation: pulse 1.6s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  50% { transform: scale(1.25); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.8; }
-}
-
-.tab-view {
-  display: none;
-  padding: 16px;
-  animation: fadeIn 0.25s ease-out;
-}
-
-.tab-view.active { display: block; }
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* نظام نقاط الولاء */
-.loyalty-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
-  border: 1px solid rgba(255, 107, 0, 0.35);
-  border-radius: 18px;
-  padding: 14px;
-  margin-bottom: 14px;
-}
-
-.loyalty-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.loyalty-title { font-size: 13px; font-weight: 800; color: #ffd166; display: flex; align-items: center; gap: 6px; }
-.loyalty-count { font-size: 12px; font-weight: 900; color: #fff; }
-
-.progress-bar-bg { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
-.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b00, #ffb703); border-radius: 999px; transition: width 0.5s ease; }
-.loyalty-sub { font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between; }
-
-/* رادار أمان الطالب المتزامن مع الأدمن */
-.safety-radar-card {
-  background: rgba(18, 26, 43, 0.7);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  border-radius: 20px;
-  padding: 14px;
-  margin-bottom: 16px;
-}
-
-.safety-steps { display: flex; justify-content: space-between; position: relative; margin-top: 12px; }
-.safety-steps::before {
-  content: ''; position: absolute; top: 14px; left: 20px; right: 20px; height: 3px; background: rgba(255, 255, 255, 0.1); z-index: 1;
-}
-
-.safety-step { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; z-index: 2; }
-.step-node {
-  width: 32px; height: 32px; border-radius: 50%; background: #1e293b; border: 2px solid var(--border);
-  display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-sub); transition: all 0.3s;
-}
-.step-node.active {
-  background: #10b981; border-color: #34d399; color: #fff; box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
-}
-.step-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
-
-/* صوّر واطلب فوراً */
-.snap-order-banner {
-  background: linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(0, 168, 255, 0.08));
-  border: 1px dashed var(--accent);
-  border-radius: 18px;
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  cursor: pointer;
-}
-
-.wheel-promo-card {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 107, 0, 0.18));
-  border: 1px dashed var(--primary);
-  border-radius: 18px;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  cursor: pointer;
-}
-
-.section-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
-.services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-.service-card, .price-box, .form-card {
-  background: rgba(18, 26, 43, 0.65); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
-}
-.service-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; cursor: pointer; }
-.service-card:active { transform: scale(0.97); }
-
-.service-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; }
-.ic-blue { background: rgba(0, 168, 255, 0.15); color: #00a8ff; }
-.ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-.ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
-
-.games-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-.game-card-btn {
-  display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 16px; color: #fff; text-decoration: none;
-  font-weight: 700; font-size: 14px; background: rgba(18, 26, 43, 0.65); border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 68px; background: rgba(7, 11, 18, 0.94);
-  backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100;
-}
-.nav-item {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--text-sub); background: transparent;
-  border: 0; font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer; flex: 1;
-}
-.nav-item.active { color: var(--primary); }
-
-.order-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-.order-row.single { grid-template-columns: 1fr; }
-.order-input, .order-select, .order-textarea {
-  width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(8, 12, 20, 0.7);
-  color: #fff; font-family: inherit; font-size: 13px; outline: none;
-}
-.order-btn {
-  width: 100%; border: 0; cursor: pointer; padding: 12px 14px; border-radius: 12px; font-weight: 800; font-size: 13px; color: #fff;
-  background: linear-gradient(90deg, #ff6b00, #ff8c00); margin-top: 6px; font-family: inherit;
-}
-
-.day-grid { display: grid; grid-template-columns: 85px 1fr 1fr; gap: 6px; margin-top: 8px; }
-.day-label { display: flex; align-items: center; font-size: 12px; font-weight: 700; color: var(--text-sub); }
-
-.live-toast {
-  position: fixed; bottom: 80px; left: 16px; right: 16px; max-width: 448px; margin: 0 auto; background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(0, 229, 255, 0.4); border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; gap: 12px;
-  z-index: 99; transform: translateY(120px); opacity: 0; transition: all 0.4s;
-}
-.live-toast.show { transform: translateY(0); opacity: 1; }
-
-.wheel-modal, .snap-modal {
-  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none;
-  align-items: center; justify-content: center; padding: 20px;
-}
-.wheel-modal.show, .snap-modal.show { display: flex; }
-.modal-card {
-  background: #0d1527; border: 1.5px solid var(--primary); border-radius: 24px; padding: 20px 16px; width: 100%; max-width: 350px;
-  text-align: center; position: relative;
-}
-.modal-close { position: absolute; top: 12px; left: 14px; background: transparent; border: 0; color: var(--text-sub); font-size: 22px; cursor: pointer; }
-
-/* Wheel specific canvas */
-.wheel-container {
-  position: relative; width: 230px; height: 230px; margin: 14px auto;
-}
-.wheel-pointer {
-  position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0;
-  border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid #ff3b30;
-  z-index: 10; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-}
-.wheel-canvas {
-  width: 100%; height: 100%; border-radius: 50%; border: 4px solid #1e293b; box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
-  transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
+.sync-badge {
+  font-size: 11px; color: #34d399; display: flex; align-items: center; gap: 6px; font-weight: 700;
 }
 </style>
 </head>
-
 <body>
-<div class="app-container">
 
-  <!-- Header -->
-  <header class="app-header">
-    <div class="profile-section" id="logoTrigger">
-      <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
-      <div class="profile-info">
-        <h1>Fly Express</h1>
-        <p>نجع حمادي وقراها</p>
-      </div>
-    </div>
-    <div class="status-badge" id="serviceBadge">
-      <span class="status-dot" id="serviceDot"></span>
-      <span id="serviceTxt">متاح الآن للتوصيل</span>
-    </div>
-  </header>
+<!-- شاشة تسجيل الدخول -->
+<div id="loginScreen">
+  <i class="fa-solid fa-user-shield" style="font-size: 48px; color: var(--primary);"></i>
+  <h2>لوحة تحكم كابتن Fly Express</h2>
+  <p style="font-size: 12px; color: var(--sub);">أدخل رمز المرور السري</p>
+  <input type="password" id="passCode" class="input-box" placeholder="رمز المرور (1234)" style="text-align:center; font-size: 20px; letter-spacing: 4px;">
+  <button class="admin-btn btn-primary" onclick="checkLogin()">دخول 🔐</button>
+</div>
 
-  <!-- tab 1: الرئيسية -->
-  <main id="tab-home" class="tab-view active">
-    
-    <!-- نقاط الولاء -->
-    <div class="loyalty-card">
-      <div class="loyalty-header">
-        <div class="loyalty-title"><i class="fa-solid fa-crown"></i> برنامج أبطال Fly Express</div>
-        <div class="loyalty-count" id="loyaltyCountTxt">0 / 5 مشاوير</div>
-      </div>
-      <div class="progress-bar-bg"><div class="progress-bar-fill" id="loyaltyFill" style="width: 0%;"></div></div>
-      <div class="loyalty-sub">
-        <span id="loyaltyMsg">أكمل 5 مشاوير واكسب توصيلة مجانية!</span>
-        <span style="color:#ffb703; font-weight:800;" id="loyaltyPercent">0%</span>
-      </div>
-    </div>
-
-    <!-- رادار أمان الطالب المباشر المتزامن مع الأدمن -->
-    <div class="safety-radar-card">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:12px; font-weight:800; color:#34d399;"><i class="fa-solid fa-shield-halved"></i> رادار أمان رحلة المدرسة اليومية</span>
-        <span style="font-size:10px; background:rgba(16, 185, 129, 0.2); color:#34d399; padding:2px 8px; border-radius:999px;">تحديث مباشر</span>
-      </div>
-      <div class="safety-steps">
-        <div class="safety-step">
-          <div class="step-node" id="clientStep1"><i class="fa-solid fa-house"></i></div>
-          <span class="step-label">تم الاستلام</span>
-        </div>
-        <div class="safety-step">
-          <div class="step-node" id="clientStep2"><i class="fa-solid fa-motorcycle"></i></div>
-          <span class="step-label">في الطريق</span>
-        </div>
-        <div class="safety-step">
-          <div class="step-node" id="clientStep3"><i class="fa-solid fa-school"></i></div>
-          <span class="step-label">وصل بسلام</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- صوّر واطلب فوراً -->
-    <div class="snap-order-banner" onclick="openSnapModal()">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <i class="fa-solid fa-camera" style="font-size:26px; color:var(--accent);"></i>
-        <div>
-          <h4 style="font-size:13px; font-weight:900; color:#fff;">صوّر واطلب فوراً 📸</h4>
-          <span style="font-size:11px; color:#cbd5e1;">كسلان تكتب؟ صوّر الروشتة أو ورقة السوق بضغطة زر</span>
-        </div>
-      </div>
-      <i class="fa-solid fa-chevron-left" style="color:var(--accent); font-size:12px;"></i>
-    </div>
-
-    <!-- عجلة الخصومات -->
-    <div class="wheel-promo-card" onclick="openWheel()">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <i class="fa-solid fa-dharmachakra" style="font-size:26px; color:#ffd166;"></i>
-        <div>
-          <h4 style="font-size:13px; font-weight:900; color:#fff;">عجلة الخصومات الموثقة 🎁</h4>
-          <span style="font-size:11px; color:#cbd5e1;" id="couponStatusTxt">لف العجلة واكسب كود خصم موثق لمشوارك</span>
-        </div>
-      </div>
-      <button style="background:var(--primary); color:#fff; border:0; border-radius:10px; padding:6px 12px; font-size:11px; font-weight:800; font-family:inherit;">العب الآن</button>
-    </div>
-
-    <div class="section-title"><i class="fa-solid fa-shapes"></i> خدمات التوصيل السريع</div>
-    <div class="services-grid">
-      <div class="service-card" onclick="switchToForm('sec-order')">
-        <div class="service-icon ic-orange"><i class="fa-solid fa-box"></i></div>
-        <div><h4>طلب أوردر / طرد</h4><span>توصيل فوري واستلام</span></div>
-      </div>
-      <div class="service-card" onclick="switchToForm('sec-market')">
-        <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
-        <div><h4>طلبات السوق</h4><span>خضار، بقالة، صيدلية</span></div>
-      </div>
-      <div class="service-card" onclick="switchToForm('sec-school')">
-        <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
-        <div><h4>مشاوير المدرسة</h4><span>ذهاب وعودة آمنة</span></div>
-      </div>
-      <div class="service-card" onclick="switchToForm('sec-monthly')">
-        <div class="service-icon ic-purple"><i class="fa-solid fa-calculator"></i></div>
-        <div><h4>حاسبة اشتراك الدروس</h4><span>احسب اشتراكك بخصم الإخوة</span></div>
-      </div>
-    </div>
-
-    <div class="section-title"><i class="fa-solid fa-gamepad"></i> العب واكسب توصيلة مجانية</div>
-    <div class="games-list">
-      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
-        <span><i class="fa-solid fa-bullseye" style="color:#ff2ea6; margin-left:8px;"></i> لعبة الطرود — Whack-a-Parcel</span>
-        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
-      </a>
-      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
-        <span><i class="fa-solid fa-motorcycle" style="color:#00d27a; margin-left:8px;"></i> لعبة الموتسيكل — Fly Rider</span>
-        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
-      </a>
-      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank" rel="noopener">
-        <span><i class="fa-regular fa-face-smile-beam" style="color:#9a7bff; margin-left:8px;"></i> لعبة الذاكرة — Fly Rush</span>
-        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
-      </a>
-      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/Super-mario-/" target="_blank" rel="noopener">
-        <span><i class="fa-solid fa-circle-question" style="color:#22d3ee; margin-left:8px;"></i> من سيربح التوصيلات</span>
-        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
-      </a>
-    </div>
-  </main>
-
-  <!-- tab 2: شاشة الطلبات -->
-  <section id="tab-orders" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار</div>
-
-    <!-- أوردر وطرد -->
-    <div class="form-card" id="sec-order" style="margin-bottom:14px;">
-      <h3 style="font-size:15px; margin-bottom:10px; color:#ff8c00;">📦 أوردر / طرد فوري</h3>
-      <div class="order-row">
-        <select class="order-select" id="orderKind"><option value="أوردر">أوردر</option><option value="طرد">طرد</option></select>
-        <select class="order-select" id="orderAction"><option value="هنجيبه">هنجيبه</option><option value="هنوّصله">هنوّصله</option></select>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderFrom" placeholder="العنوان: من" required>
-        <input class="order-input" id="orderTo" placeholder="العنوان: إلى" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderName" placeholder="اسمك" required>
-        <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن)">
-        <input class="order-input" id="orderNote" placeholder="ملاحظات">
-      </div>
-      <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
-    </div>
-
-    <!-- طلبات السوق -->
-    <div class="form-card" id="sec-market" style="margin-bottom:14px;">
-      <h3 style="font-size:15px; margin-bottom:10px; color:#00a8ff;">🛒 طلبات السوق والطلبات المنزلية</h3>
-      <div class="order-row single">
-        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل..." required></textarea>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketFrom" placeholder="من أي محل أو سوق؟ (اختياري)">
-        <input class="order-input" id="marketTo" placeholder="عنوان التوصيل" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketName" placeholder="اسمك" required>
-        <input class="order-input" id="marketPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-      </div>
-      <button class="order-btn" onclick="sendMarket()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
-    </div>
-
-    <!-- توصيل ابني المدرسة (يومي) -->
-    <div class="form-card" id="sec-school" style="margin-bottom:14px;">
-      <h3 style="font-size:15px; margin-bottom:10px; color:#10b981;">🏫 توصيل ابني المدرسة (يومي)</h3>
-      <div class="order-row">
-        <select class="order-select" id="schoolType">
-          <option value="ذهاب فقط">ذهاب فقط</option>
-          <option value="ذهاب وعودة">ذهاب وعودة</option>
-        </select>
-        <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" required>
-        <input class="order-input" id="schoolFrom" placeholder="مكان الانطلاق" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolTo" placeholder="اسم المدرسة" required>
-        <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
-      </div>
-      <button class="order-btn" onclick="sendSchool()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
-    </div>
-
-    <!-- حاسبة المدارس والدروس الشهرية بخصم الإخوة -->
-    <div class="form-card" id="sec-monthly">
-      <h3 style="font-size:15px; margin-bottom:6px; color:#c084fc;">📘 حاسبة واشتراك المدارس والدروس الشهرية</h3>
-      <div class="order-row">
-        <input class="order-input" id="pmName" placeholder="اسم ولي الأمر" required>
-        <input class="order-input" id="pmPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-      </div>
-      <div class="order-row">
-        <select class="order-select" id="pmChildrenCount" onchange="calcMonthlyEstimate()">
-          <option value="1">طالب واحد</option>
-          <option value="2">طالبين (خصم إخوة 10%)</option>
-          <option value="3">3 طلاب (خصم إخوة 15%)</option>
-          <option value="4">4 طلاب وأكثر (خصم 20%)</option>
-        </select>
-        <select class="order-select" id="pmRoute" onchange="calcMonthlyEstimate()">
-          <option value="inside">داخل نجع حمادي</option>
-          <option value="berka">من قرية بركة إلى المدارس</option>
-          <option value="aluminium">من الألمنيوم إلى نجع حمادي</option>
-          <option value="haw">من قرية هو إلى نجع حمادي</option>
-        </select>
-      </div>
-      <div class="order-row">
-        <select class="order-select" id="pmDirection" onchange="calcMonthlyEstimate()">
-          <option value="both">ذهاب وعودة يومياً</option>
-          <option value="oneWay">ذهاب فقط (أو عودة فقط)</option>
-        </select>
-        <input class="order-input" id="pmLessonsPerWeek" placeholder="كم يوم بالأسبوع؟" type="number" min="1" max="7" value="5" oninput="calcMonthlyEstimate()">
-      </div>
-
-      <div style="background:rgba(192, 132, 252, 0.12); border:1px solid rgba(192, 132, 252, 0.35); border-radius:14px; padding:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between;">
-        <div>
-          <div style="font-size:11px; color:var(--text-sub);">التكلفة التقديرية الشهرية:</div>
-          <div style="font-size:18px; font-weight:900; color:#e9d5ff;" id="monthlyEstimateTxt">750 ج / شهرياً</div>
-        </div>
-        <span style="font-size:11px; background:#c084fc; color:#000; font-weight:900; padding:4px 8px; border-radius:8px;" id="discountBadge">خصم إخوة مطبق</span>
-      </div>
-
-      <div style="font-size:12px; font-weight:700; color:var(--text-sub); margin-top:10px;">جدول المواعيد الأسبوعية (اختياري):</div>
-      <div class="day-grid">
-        <div class="day-label">السبت</div><input class="order-input" id="satFrom" type="time"><input class="order-input" id="satTo" type="time">
-        <div class="day-label">الأحد</div><input class="order-input" id="sunFrom" type="time"><input class="order-input" id="sunTo" type="time">
-        <div class="day-label">الاثنين</div><input class="order-input" id="monFrom" type="time"><input class="order-input" id="monTo" type="time">
-        <div class="day-label">الثلاثاء</div><input class="order-input" id="tueFrom" type="time"><input class="order-input" id="tueTo" type="time">
-        <div class="day-label">الأربعاء</div><input class="order-input" id="wedFrom" type="time"><input class="order-input" id="wedTo" type="time">
-        <div class="day-label">الخميس</div><input class="order-input" id="thuFrom" type="time"><input class="order-input" id="thuTo" type="time">
-        <div class="day-label">الجمعة</div><input class="order-input" id="friFrom" type="time"><input class="order-input" id="friTo" type="time">
-      </div>
-
-      <button class="order-btn" onclick="sendMonthlyOrder()"><i class="fa-brands fa-whatsapp"></i> حجز الاشتراك عبر واتساب</button>
-    </div>
-  </section>
-
-  <!-- tab 3: الأسعار -->
-  <section id="tab-prices" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار التقديرية</div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">30 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;">20 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى الألمنيوم</span><span style="color:#ff8c00; font-weight:900;">35 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى المساكن</span><span style="color:#ff8c00; font-weight:900;">25 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى هو</span><span style="color:#ff8c00; font-weight:900;">50 ج</span></div>
-    <button class="order-btn" onclick="window.open('https://wa.me/201017908076','_blank')"><i class="fa-brands fa-whatsapp"></i> تأكيد تكلفة مشوار خاص عبر واتساب</button>
-  </section>
-
-  <!-- tab 4: التواصل -->
-  <section id="tab-contact" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
-    <div class="social-list" style="display:flex; flex-direction:column; gap:10px;">
-      <a class="order-btn" style="background:#25d366; color:#000; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://wa.me/201017908076" target="_blank">
-        <i class="fa-brands fa-whatsapp"></i> واتساب المباشر
-      </a>
-      <a class="order-btn" style="background:#1877f2; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank">
-        <i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك
-      </a>
-      <a class="order-btn" style="background:linear-gradient(45deg,#f09433,#dc2743,#bc1888); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://www.instagram.com/habis_namla/" target="_blank">
-        <i class="fa-brands fa-instagram"></i> إنستجرام
-      </a>
-      <a class="order-btn" style="background:#229ed9; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://t.me/D_M_C0" target="_blank">
-        <i class="fa-brands fa-telegram"></i> تليجرام
-      </a>
-    </div>
-  </section>
-
-  <!-- شريط التنقل السفلي -->
-  <nav class="bottom-nav">
-    <button class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
-    <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-motorcycle"></i><span>طلب مشوار</span></button>
-    <button class="nav-item" onclick="switchTab('tab-prices', this)"><i class="fa-solid fa-tag"></i><span>الأسعار</span></button>
-    <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
-  </nav>
-
-  <!-- شريط الإشعار الحي -->
-  <div class="live-toast" id="liveToast">
-    <div style="font-size:20px; color:var(--accent);"><i class="fa-solid fa-bell"></i></div>
+<!-- لوحة التحكم -->
+<div id="dashboard" style="display: none;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
     <div>
-      <div id="toastTitle" style="font-weight:800; font-size:12px; color:#fff;">طلب توصيل جديد 🚀</div>
-      <div id="toastDesc" style="font-size:10px; color:var(--text-sub);">من نجع حمادي إلى بركة • الآن</div>
+      <h3 style="font-size: 17px;">لوحة الإدارة السحابية 🛵</h3>
+      <div class="sync-badge"><i class="fa-solid fa-cloud-bolt"></i> الربط السحابي مع هواتف الزبائن نشط</div>
     </div>
+    <button onclick="location.href='index.html'" style="background:none; border:0; color:var(--primary); font-family:inherit; font-weight:700; cursor:pointer;">الموقع ↗</button>
   </div>
 
-  <!-- نافذة صوّر واطلب مع التنبيه الذكي -->
-  <div class="snap-modal" id="snapModal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeSnapModal()">&times;</button>
-      <h3 style="font-size:17px; font-weight:900; color:#00e5ff;">📸 صوّر واطلب فوراً</h3>
-      
-      <div style="background:rgba(0, 229, 255, 0.1); border:1px dashed var(--accent); border-radius:14px; padding:12px; margin:12px 0;">
-        <i class="fa-solid fa-circle-info" style="color:var(--accent); font-size:20px; margin-bottom:4px;"></i>
-        <div style="font-size:11px; color:#cbd5e1; line-height:1.4;">
-          عند الضغط على الزر، سيفتح لك شات الواتساب مباشرة:  
-          <br><strong style="color:#fff;">اضغط على علامة المشبك 📎 أو الكاميرا 📷 بجوار الكتابة في واتساب لإرفاق الصورة فوراً مع الطلب.</strong>
-        </div>
-      </div>
+  <!-- 1. رادار أمان المدرسة السحابي -->
+  <div class="admin-card">
+    <h4 style="color:#10b981; margin-bottom:6px;"><i class="fa-solid fa-school-flag"></i> رادار أمان الطلاب (بث مباشر)</h4>
+    <p style="font-size:11px; color:var(--sub);">الضغط على أي زر يغيّر الحالة مباشرة على هواتف أولياء الأمور:</p>
+    <div class="status-grid">
+      <button class="status-btn" id="radarBtn1" onclick="updateCloudState(1, currentService)">1. تم الاستلام 🏠</button>
+      <button class="status-btn" id="radarBtn2" onclick="updateCloudState(2, currentService)">2. في الطريق 🛵</button>
+      <button class="status-btn" id="radarBtn3" onclick="updateCloudState(3, currentService)">3. وصل بسلام 🏫</button>
+    </div>
 
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <input type="text" id="snapName" class="order-input" placeholder="اسمك الكريم">
-        <input type="tel" id="snapPhone" class="order-input" placeholder="رقم الواتساب">
-        <input type="text" id="snapAddress" class="order-input" placeholder="عنوان التوصيل">
-        <button class="order-btn" style="background:linear-gradient(90deg, #00e5ff, #00a8ff); color:#000;" onclick="sendSnapDirect()">
-          <i class="fa-brands fa-whatsapp"></i> فتح واتساب وإرفاق الصورة 🛵
-        </button>
+    <div style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">
+      <p style="font-size:11px; color:var(--sub); margin-bottom:6px;">إرسال رسالة طمأنة لواتساب ولي الأمر:</p>
+      <input type="tel" id="parentPhone" class="input-box" placeholder="رقم واتساب ولي الأمر (01xxxxxxxxx)">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;">
+        <button class="admin-btn btn-info" style="font-size:11px;" onclick="sendParentAlert('pickup')">إشعار: تم الاستلام 🛵</button>
+        <button class="admin-btn btn-success" style="font-size:11px;" onclick="sendParentAlert('arrived')">إشعار: وصل بسلام 🏫</button>
       </div>
     </div>
   </div>
 
-  <!-- نافذة عجلة الخصومات -->
-  <div class="wheel-modal" id="wheelModal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeWheel()">&times;</button>
-      <h3 style="font-size:17px; font-weight:900; color:#fff;">🎡 عجلة الخصومات الموثقة</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">أدخل رقم هاتفك لتفعيل لفة اليوم (صالحة لساعتين)</p>
-      
-      <input type="tel" id="wheelPhone" class="order-input" placeholder="رقم الواتساب (01xxxxxxxxx)" style="text-align:center; font-weight:700; margin:10px 0;">
-      
-      <div class="wheel-container">
-        <div class="wheel-pointer"></div>
-        <canvas id="wheelCanvas" class="wheel-canvas" width="230" height="230"></canvas>
-      </div>
-
-      <button class="order-btn" id="spinBtn" onclick="spinWheel()">لف العجلة الآن 🎯</button>
-      <div id="wheelResult" style="margin-top:10px; font-size:12px; font-weight:800; min-height:20px; line-height:1.4;"></div>
-      
-      <button id="waClaimBtn" class="order-btn" style="display:none; background:#25d366; color:#000;" onclick="openClaimWhatsApp()">
-        <i class="fa-brands fa-whatsapp"></i> تفعيل وتثبيت الخصم عبر واتساب الآن 📲
-      </button>
+  <!-- 2. حالة الخدمة العامة بالموقع -->
+  <div class="admin-card">
+    <h4 style="color:var(--primary); margin-bottom:6px;"><i class="fa-solid fa-tower-broadcast"></i> حالة التوصيل في الموقع</h4>
+    <div class="status-grid">
+      <button class="status-btn" id="servOnline" onclick="updateCloudState(currentRadar, 'online')">متاح الآن 🟢</button>
+      <button class="status-btn" id="servBusy" onclick="updateCloudState(currentRadar, 'busy')">مشغول حالياً 🟡</button>
+      <button class="status-btn" id="servOffline" onclick="updateCloudState(currentRadar, 'offline')">مغلق 🔴</button>
     </div>
   </div>
 
+  <!-- 3. كشف التزوير -->
+  <div class="admin-card">
+    <h4 style="color:#ffd166; margin-bottom:6px;"><i class="fa-solid fa-shield-halved"></i> كشف تزوير الكوبونات</h4>
+    <input type="text" id="verifyCode" class="input-box" placeholder="كود الكوبون المرسل (FLY-...)">
+    <input type="tel" id="verifyPhone" class="input-box" placeholder="رقم الشات اللي بيكلمك منه">
+    <button class="admin-btn btn-primary" onclick="verifyCoupon()">تحقق من الكود 🔍</button>
+    <div id="verifyResult" style="margin-top:10px; font-size:12px; font-weight:800; min-height:20px;"></div>
+  </div>
 </div>
 
 <script>
-const ADMIN_PHONE = "201017908076";
-const enc = s => encodeURIComponent(s || "");
+const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
-let pendingClaimUrl = "";
 
-// مزامنة حالة الرادار والخدمة من لوحة الأدمن
-function syncAdminState() {
-  const step = parseInt(localStorage.getItem('fly_radar_step') || '1', 10);
-  for (let i = 1; i <= 3; i++) {
-    const node = document.getElementById(`clientStep${i}`);
-    if (node) node.classList.toggle('active', i <= step);
-  }
+let currentRadar = 1;
+let currentService = "online";
 
-  const status = localStorage.getItem('fly_service_status') || 'online';
-  const badge = document.getElementById('serviceBadge');
-  const dot = document.getElementById('serviceDot');
-  const txt = document.getElementById('serviceTxt');
-
-  if (status === 'busy') {
-    txt.textContent = "مشغول حالياً";
-    dot.style.background = "#f59e0b";
-    dot.style.boxShadow = "0 0 8px #f59e0b";
-    badge.style.color = "#fbbf24";
-  } else if (status === 'offline') {
-    txt.textContent = "مغلق مؤقتاً";
-    dot.style.background = "#ef4444";
-    dot.style.boxShadow = "0 0 8px #ef4444";
-    badge.style.color = "#f87171";
+function checkLogin() {
+  if (document.getElementById('passCode').value.trim() === "1234") {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    fetchCurrentCloudState();
   } else {
-    txt.textContent = "متاح الآن للتوصيل";
-    dot.style.background = "#10b981";
-    dot.style.boxShadow = "0 0 8px #10b981";
-    badge.style.color = "#34d399";
+    alert("رمز المرور غير صحيح!");
   }
 }
-setInterval(syncAdminState, 2000);
-syncAdminState();
 
-// نقاط الولاء
-function getLoyaltyRides() { return parseInt(localStorage.getItem('fly_loyalty_rides') || '0', 10); }
-function updateLoyalty() {
-  const rides = getLoyaltyRides() % 5;
-  const pct = (rides / 5) * 100;
-  document.getElementById('loyaltyCountTxt').textContent = `${rides} / 5 مشاوير`;
-  document.getElementById('loyaltyFill').style.width = `${pct}%`;
-  document.getElementById('loyaltyPercent').textContent = `${pct}%`;
-  const msgEl = document.getElementById('loyaltyMsg');
-  if (rides === 0 && getLoyaltyRides() > 0) {
-    msgEl.innerHTML = `<span style="color:#34d399; font-weight:800;">🎉 مبروك! مشوارك القادم مجاني بالكامل!</span>`;
-  } else {
-    msgEl.textContent = `أكمل ${5 - rides} مشاوير واكسب توصيلة مجانية!`;
+// جلب الحالة المحفوظة سحابياً
+async function fetchCurrentCloudState() {
+  try {
+    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
+    const text = await res.text();
+    if (text) {
+      const lines = text.trim().split('\n');
+      const latest = JSON.parse(lines[lines.length - 1]);
+      const data = JSON.parse(latest.message);
+      currentRadar = data.radar || 1;
+      currentService = data.service || "online";
+      renderUI();
+    }
+  } catch(e) {
+    renderUI();
   }
 }
-updateLoyalty();
 
-function addLoyaltyRide() {
-  localStorage.setItem('fly_loyalty_rides', getLoyaltyRides() + 1);
-  updateLoyalty();
-}
+// إرسال التحديث للسحابة ليتغير عند كل الناس في نفس اللحظة
+async function updateCloudState(radarStep, serviceState) {
+  currentRadar = radarStep;
+  currentService = serviceState;
+  renderUI();
 
-// كود الخصم الفعال إن وجد
-function getActiveDiscount() {
-  const code = localStorage.getItem('fly_discount_code');
-  const phone = localStorage.getItem('fly_locked_phone');
-  if (code && phone) {
-    return `\n🎁 كود الخصم الموثق: ${code}\n📱 الرقم المصرح له: ${phone}\n⏳ صالح لساعتين من وقت اللف`;
-  }
-  return '';
-}
+  const payload = JSON.stringify({ radar: currentRadar, service: currentService, time: Date.now() });
 
-const waSend = txt => {
-  const finalTxt = txt + getActiveDiscount();
-  window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(finalTxt)}`, '_blank', 'noopener');
-};
-
-// صوّر واطلب فوراً
-function openSnapModal() { document.getElementById('snapModal').classList.add('show'); }
-function closeSnapModal() { document.getElementById('snapModal').classList.remove('show'); }
-
-function sendSnapDirect() {
-  const name = document.getElementById('snapName').value.trim();
-  const phone = document.getElementById('snapPhone').value.trim();
-  const address = document.getElementById('snapAddress').value.trim();
-  if (!name || !phone || !address) { alert("من فضلك أكمل البيانات أولاً"); return; }
-  addLoyaltyRide();
-  const msg = `طلب دليفري بالصورة 📸\nالعميل: ${name}\nالموبايل: ${phone}\nالعنوان: ${address}\n\n(سأقوم بإرفاق صورة الروشتة/قائمة الطلبات هنا فوراً 📎)\n— أُرسل عبر تطبيق Fly Express`;
-  closeSnapModal();
-  waSend(msg);
-}
-
-// حاسبة المدارس والدروس
-function calcMonthlyEstimate() {
-  const count = parseInt(document.getElementById('pmChildrenCount').value || '1', 10);
-  const route = document.getElementById('pmRoute').value;
-  const dir = document.getElementById('pmDirection').value;
-  const days = Math.min(Math.max(parseInt(document.getElementById('pmLessonsPerWeek').value || '5', 10), 1), 7);
-  let base = route === 'berka' ? 30 : (route === 'aluminium' ? 35 : (route === 'haw' ? 40 : 25));
-  let trips = (dir === 'both' ? 2 : 1) * days * 4;
-  let disc = count === 2 ? 0.10 : (count === 3 ? 0.15 : (count >= 4 ? 0.20 : 0));
-  let total = Math.round(trips * base * count * (1 - disc));
-  document.getElementById('monthlyEstimateTxt').textContent = `${total} ج / شهرياً`;
-  const badge = document.getElementById('discountBadge');
-  if (disc > 0) {
-    badge.style.display = 'inline-block';
-    badge.textContent = `خصم إخوة ${disc * 100}% مطبق`;
-  } else {
-    badge.style.display = 'none';
+  try {
+    await fetch(CLOUD_CHANNEL, {
+      method: 'POST',
+      body: payload,
+      headers: { 'Title': 'StateUpdate' }
+    });
+    // حفظ محلي أيضاً كنسخة احتياطية
+    localStorage.setItem('fly_radar_step', currentRadar);
+    localStorage.setItem('fly_service_status', currentService);
+  } catch (err) {
+    console.log("Cloud sync error:", err);
   }
 }
-calcMonthlyEstimate();
 
-// إرسال النماذج
-function ensureRequired(ids) {
-  for (const id of ids) {
-    const el = document.getElementById(id);
-    if (el && !el.value.trim()) { el.focus(); alert('من فضلك أكمل البيانات المطلوبة'); return false; }
-  }
-  return true;
+function renderUI() {
+  [1, 2, 3].forEach(i => {
+    const btn = document.getElementById(`radarBtn${i}`);
+    if (btn) btn.classList.toggle('active', i == currentRadar);
+  });
+  document.getElementById('servOnline').classList.toggle('active', currentService === 'online');
+  document.getElementById('servBusy').classList.toggle('active', currentService === 'busy');
+  document.getElementById('servOffline').classList.toggle('active', currentService === 'offline');
 }
 
-function sendOrder() {
-  if (!ensureRequired(['orderFrom', 'orderTo', 'orderName', 'orderPhone'])) return;
-  addLoyaltyRide();
-  const kind = orderKind.value, act = orderAction.value, from = orderFrom.value, to = orderTo.value, name = orderName.value, phone = orderPhone.value, when = orderWhen.value, note = orderNote.value;
-  const text = `طلب ${kind} ${act} 📦\nالاسم: ${name} — ${phone}\nمن: ${from}\nإلى: ${to}\nالوقت: ${when || 'أقرب وقت'}\nملاحظات: ${note || '—'}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
+function sendParentAlert(type) {
+  const phone = document.getElementById('parentPhone').value.trim();
+  if (!phone) { alert("اكتب رقم ولي الأمر أولاً"); return; }
+  let msg = (type === 'pickup') 
+    ? "صباح الخير يا فندم 🌹\nمع حضرتك كابتن Fly Express، تم استلام الطالب بأمان وهو في الطريق إلى المدرسة الآن 🛵🎒" 
+    : "حمدلله على سلامته 🌹\nتم وصول الطالب لمدرسته وتسليمه بسلام وأمان ✅\n— نتمنى له يوماً دراسياً سعيداً مع Fly Express";
+  window.open(`https://wa.me/2${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
-
-function sendMarket() {
-  if (!ensureRequired(['marketList', 'marketTo', 'marketName', 'marketPhone'])) return;
-  addLoyaltyRide();
-  const list = marketList.value, from = marketFrom.value, to = marketTo.value, name = marketName.value, phone = marketPhone.value;
-  const text = `طلبات سوق 🛒\nالعميل: ${name} — ${phone}\nالقائمة:\n${list}\n\nمن: ${from || '—'}\nإلى: ${to}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
-}
-
-function sendSchool() {
-  if (!ensureRequired(['schoolChild', 'schoolPhone', 'schoolFrom', 'schoolTo'])) return;
-  addLoyaltyRide();
-  const t = schoolType.value, child = schoolChild.value, phone = schoolPhone.value, from = schoolFrom.value, to = schoolTo.value, note = schoolNote.value;
-  const text = `طلب توصيل مدرسة 🏫\nالنوع: ${t}\nالطالب: ${child}\nولي الأمر: ${phone}\nمن: ${from}\nإلى: ${to}\nملاحظات: ${note || '—'}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
-}
-
-function sendMonthlyOrder() {
-  if (!ensureRequired(['pmName', 'pmPhone'])) return;
-  addLoyaltyRide();
-  const n = pmName.value, p = pmPhone.value;
-  const childrenText = pmChildrenCount.options[pmChildrenCount.selectedIndex].text;
-  const routeText = pmRoute.options[pmRoute.selectedIndex].text;
-  const dirText = pmDirection.options[pmDirection.selectedIndex].text;
-  const estimate = document.getElementById('monthlyEstimateTxt').textContent;
-
-  const day = (name, from, to) => (from || to) ? `${name}: ${from || '—'} → ${to || '—'}` : null;
-  const days = [
-    day('السبت', satFrom.value, satTo.value), day('الأحد', sunFrom.value, sunTo.value), day('الاثنين', monFrom.value, monTo.value),
-    day('الثلاثاء', tueFrom.value, tueTo.value), day('الأربعاء', wedFrom.value, wedTo.value), day('الخميس', thuFrom.value, thuTo.value), day('الجمعة', friFrom.value, friTo.value)
-  ].filter(Boolean).join('\n');
-
-  const text = `حجز اشتراك شهري (مدارس/دروس) 📘\nولي الأمر: ${n} — ${p}\nالعدد: ${childrenText}\nخط السير: ${routeText}\nالنظام: ${dirText}\nالتكلفة التقديرية: ${estimate}\n\nالمواعيد:\n${days || '—'}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
-}
-
-// عجلة الحظ والتشفير
-const slices = [
-  { text: "خصم 5 ج", key: "5EGP", color: "#ff6b00" },
-  { text: "حظ أوفر", key: null, color: "#1e293b" },
-  { text: "خصم 10 ج", key: "10EGP", color: "#00d27a" },
-  { text: "توصيل مجاني", key: "FREE", color: "#8b5cf6" },
-  { text: "خصم 5%", key: "5PER", color: "#00a8ff" },
-  { text: "كوبون VIP", key: "VIP", color: "#f59e0b" }
-];
-
-const canvas = document.getElementById('wheelCanvas');
-const ctx = canvas.getContext('2d');
-const numSlices = slices.length;
-const arc = (2 * Math.PI) / numSlices;
-
-function drawWheel() {
-  const cx = canvas.width / 2, cy = canvas.height / 2, r = cx - 4;
-  for (let i = 0; i < numSlices; i++) {
-    const angle = i * arc;
-    ctx.beginPath();
-    ctx.fillStyle = slices[i].color;
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, angle, angle + arc);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.save();
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 12px Cairo";
-    ctx.translate(cx, cy);
-    ctx.rotate(angle + arc / 2);
-    ctx.textAlign = "right";
-    ctx.fillText(slices[i].text, r - 15, 4);
-    ctx.restore();
-  }
-}
-drawWheel();
-
-let currentRotation = 0, isSpinning = false;
-function openWheel() { document.getElementById('wheelModal').classList.add('show'); }
-function closeWheel() { document.getElementById('wheelModal').classList.remove('show'); }
 
 function hashString(str) {
   let hash = 5381;
-  for (let i = 0; i < str.length; i++) hash = ((hash << 5) + hash) + str.charCodeAt(i);
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash) + str.charCodeAt(i);
+    hash = hash & hash;
+  }
   return Math.abs(hash).toString(36).toUpperCase();
 }
 
-function spinWheel() {
-  if (isSpinning) return;
-  const phone = (document.getElementById('wheelPhone').value || "").trim();
-  const res = document.getElementById('wheelResult');
-  const spinBtn = document.getElementById('spinBtn');
-  const waClaimBtn = document.getElementById('waClaimBtn');
+function verifyCoupon() {
+  const code = document.getElementById('verifyCode').value.trim();
+  let phone = document.getElementById('verifyPhone').value.trim().replace(/[^0-9]/g, '');
+  if (phone.startsWith("20") && phone.length === 12) phone = "0" + phone.slice(2);
+  const res = document.getElementById('verifyResult');
 
-  if (!/^01[0125][0-9]{8}$/.test(phone)) {
-    alert("أدخل رقم موبايل مصري صحيح (11 رقم)");
+  const parts = code.split('-');
+  if (parts.length !== 5 || parts[0] !== 'FLY') {
+    res.style.color = '#ef4444';
+    res.innerHTML = "الكود مفبرك وغير مسجل ❌";
+    return;
+  }
+  const baseKey = parts[1];
+  const couponPhoneHash = parts[2];
+  const epochMins = parseInt(parts[3], 36);
+  const sig = parts[4];
+
+  const expectedPhoneHash = hashString(phone + FLY_SECRET_SALT).substring(0, 4);
+  if (couponPhoneHash !== expectedPhoneHash) {
+    res.style.color = '#ef4444';
+    res.innerHTML = "تنبيه غش 🚨: الكود مسجل برقم آخر غير رقم هذا الشات!";
     return;
   }
 
-  isSpinning = true;
-  spinBtn.disabled = true;
-  res.style.color = "#34d399";
-  res.textContent = "جاري تدوير العجلة...";
-
-  const winIdx = [0, 2, 4][Math.floor(Math.random() * 3)];
-  const extraRounds = 5 * 360;
-  const sliceDeg = 360 / numSlices;
-  const targetDeg = extraRounds + (360 - (winIdx * sliceDeg + sliceDeg / 2) - 90);
-
-  currentRotation += targetDeg;
-  canvas.style.transform = `rotate(${currentRotation}deg)`;
-
-  setTimeout(() => {
-    isSpinning = false;
-    const winner = slices[winIdx];
-    if (winner.key) {
-      const epochMins = Math.floor(Date.now() / (1000 * 60));
-      const phoneHash = hashString(phone + FLY_SECRET_SALT).substring(0, 4);
-      const sig = hashString(`${phone}_${winner.key}_${epochMins}_${FLY_SECRET_SALT}`).substring(0, 4);
-      const code = `FLY-${winner.key}-${phoneHash}-${epochMins.toString(36).toUpperCase()}-${sig}`;
-
-      localStorage.setItem('fly_discount_code', code);
-      localStorage.setItem('fly_locked_phone', phone);
-
-      res.innerHTML = `🎉 مبروك! ربحت ${winner.text}<br><strong style="color:#fff;">كودك: ${code}</strong>`;
-      document.getElementById('couponStatusTxt').textContent = `كوبونك: ${code}`;
-      
-      const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-      const waMsg = `مرحباً Fly Express 🚀\nلقد قمت بلف عجلة الحظ وربحت:\n🎁 الجائزة: ${winner.text}\n🏷️ كود الخصم الموثق: ${code}\n⏰ وقت اللف: ${nowStr}\n(يرجى تأكيد وتثبيت الخصم لمشواري القادم - صالح لساعتين)`;
-      
-      pendingClaimUrl = `https://wa.me/${ADMIN_PHONE}?text=${enc(waMsg)}`;
-      waClaimBtn.style.display = 'block';
-
-      setTimeout(() => { window.open(pendingClaimUrl, '_blank', 'noopener'); }, 2000);
-    }
-  }, 4200);
-}
-
-function openClaimWhatsApp() {
-  if (pendingClaimUrl) window.open(pendingClaimUrl, '_blank', 'noopener');
-}
-
-// 5 ضغطات على اللوجو لفتح صفحة الأدمن
-let logoClicks = 0, logoTimer = null;
-document.getElementById('logoTrigger').addEventListener('click', () => {
-  logoClicks++;
-  clearTimeout(logoTimer);
-  logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
-  if (logoClicks >= 5) {
-    logoClicks = 0;
-    location.href = 'admin.html';
+  const currentMins = Math.floor(Date.now() / (1000 * 60));
+  const diff = currentMins - epochMins;
+  if (diff < 0 || diff > 120) {
+    res.style.color = '#f59e0b';
+    res.innerHTML = `الكود منتهي الصلاحية ⏳ (مر عليه ${diff} دقيقة)`;
+    return;
   }
-});
-
-// التنقل بين الأقسام
-function switchTab(tabId, navBtn) {
-  document.querySelectorAll('.tab-view').forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  navBtn.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  res.style.color = '#10b981';
+  res.innerHTML = `كود سليم 100% ✅ | الخصم: ${baseKey} | متبقي: ${120 - diff} دقيقة`;
 }
-
-function switchToForm(formId) {
-  switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
-  setTimeout(() => {
-    const el = document.getElementById(formId);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }, 100);
-}
-
-// شريط الإشعارات الحية
-const mockOrders = [
-  { title: "🏫 توصيل طالب للمدرسة", desc: "تم استلام الطالب والتوصيل بسلام • منذ دقيقتين" },
-  { title: "📦 طلب طرد سريع", desc: "من قرية بركة إلى الألمنيوم • منذ 4 دقائق" },
-  { title: "🛒 طلبات سوق وخضار", desc: "داخل نجع حمادي • تم الاستلام والتوصيل" },
-  { title: "📸 طلب صيدلية بالصورة", desc: "روشتة عاجلة من وسط البلد • جارٍ التوصيل" }
-];
-let toastIdx = 0;
-setInterval(() => {
-  const t = document.getElementById('liveToast');
-  document.getElementById('toastTitle').textContent = mockOrders[toastIdx].title;
-  document.getElementById('toastDesc').textContent = mockOrders[toastIdx].desc;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 4000);
-  toastIdx = (toastIdx + 1) % mockOrders.length;
-}, 14000);
 </script>
 </body>
 </html>
