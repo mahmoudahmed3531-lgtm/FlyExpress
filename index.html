@@ -20,10 +20,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
 <style>
 :root {
   --bg-dark: #070b12;
@@ -65,7 +61,7 @@ body {
   z-index: 1;
 }
 
-/* 🔒 شاشة القفل والتحقق برمز SMS */
+/* 🔒 شاشة التفعيل والتحقق الموثقة عبر واتساب */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -323,38 +319,43 @@ body {
 
 <body>
 
-<!-- 🔒 شاشة القفل والتحقق برمز SMS الرسمي عبر Firebase -->
+<!-- 🔒 شاشة القفل والتحقق الموثق برقم الواتساب -->
 <div class="auth-gate-screen" id="authGateScreen">
   <div class="gate-card">
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
-    <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">سجل برقم هاتفك ليصلك كود التفعيل في رسالة SMS 📲</p>
+    <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">سجل برقم هاتفك لتوثيق وتفعيل حسابك عبر واتساب 📲</p>
 
-    <!-- المرحلة 1: إدخال الاسم ورقم الموبايل -->
+    <!-- المرحلة 1: إدخال البيانات والتحويل إلى واتساب -->
     <div id="gateStep1">
       <input type="text" id="gateName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
       <input type="tel" id="gatePhone" class="order-input" placeholder="رقم الموبايل (مثال: 01012345678)" style="margin-bottom:12px;">
       
-      <button class="order-btn" id="sendOtpBtn" onclick="requestFirebaseSmsOtp()">
-        إرسال كود التحقق في رسالة SMS 📩
+      <button class="order-btn" style="background:linear-gradient(90deg, #25d366, #128c7e); color:#fff;" onclick="requestWhatsAppVerification()">
+        <i class="fa-brands fa-whatsapp"></i> إرسال كود التفعيل عبر واتساب 📲
       </button>
-      
-      <!-- حاوية اختبار الأمان -->
-      <div id="recaptcha-container" style="margin-top:10px; display:flex; justify-content:center;"></div>
     </div>
 
-    <!-- المرحلة 2: كتابة كود الـ SMS المستلم -->
+    <!-- المرحلة 2: تأكيد الكود المولد المذكور في الرسالة -->
     <div id="gateStep2" style="display:none;">
-      <div style="background:rgba(0, 229, 255, 0.08); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; padding:10px; margin-bottom:12px;">
-        <span style="font-size:11px; color:#cbd5e1;">أدخل رمز التحقق (6 أرقام) الذي وصلك في رسالة SMS على هاتفك:</span>
+      <div style="background:rgba(37, 211, 102, 0.1); border:1px solid rgba(37, 211, 102, 0.3); border-radius:14px; padding:12px; margin-bottom:12px;">
+        <span style="font-size:11px; color:#cbd5e1;">تم تجهيز رسالة التفعيل لكود الأمان الخاص بك:</span>
+        <div id="displayOtpBox" style="font-size:26px; font-weight:900; color:#25d366; letter-spacing:4px; margin:6px 0;">----</div>
+        <span style="font-size:11px; color:#94a3b8;">اضغط إرسال في واتساب ثم اكتب الكود هنا لتأكيد التفعيل</span>
       </div>
-      <input type="number" id="gateSmsCode" class="order-input" placeholder="------" style="text-align:center; font-size:22px; letter-spacing:6px; margin-bottom:12px;">
-      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyFirebaseSmsOtp()">
+      
+      <input type="number" id="gateSmsCode" class="order-input" placeholder="اكتب الرمز (4 أرقام)" style="text-align:center; font-size:20px; letter-spacing:4px; margin-bottom:12px;">
+      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyWhatsAppOtp()">
         تأكيد الكود وفتح التطبيق 🚀
       </button>
-      <button onclick="backToGateStep1()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; margin-top:10px; cursor:pointer;">
-        تغيير رقم الهاتف ✏️
-      </button>
+      <div style="display:flex; justify-content:space-around; margin-top:12px;">
+        <button onclick="reopenWhatsAppChat()" style="background:transparent; border:0; color:#25d366; font-size:11px; font-family:inherit; cursor:pointer;">
+          <i class="fa-brands fa-whatsapp"></i> فتح المحادثة مجدداً
+        </button>
+        <button onclick="backToGateStep1()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; cursor:pointer;">
+          تعديل البيانات ✏️
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -646,34 +647,16 @@ body {
 </div>
 
 <script>
-// -------------------------------------------------------------
-// 1. تهيئة مشروع Firebase بمفاتيحك الحقيقية
-// -------------------------------------------------------------
-const firebaseConfig = {
-  apiKey: "AIzaSyApqKjD46xobFTyBXY4lXRVZttnLGZxO98",
-  authDomain: "flyexpress-a0f5a.firebaseapp.com",
-  projectId: "flyexpress-a0f5a",
-  storageBucket: "flyexpress-a0f5a.firebasestorage.app",
-  messagingSenderId: "1053055752719",
-  appId: "1:1053055752719:web:97ae05aa117ffbf6e8617a",
-  measurementId: "G-G6HXPVWH6V"
-};
-
-try {
-  firebase.initializeApp(firebaseConfig);
-} catch(e) {
-  console.log("Firebase initialized");
-}
-
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 let pendingClaimUrl = "";
-let tempName = "";
+let currentSecurityOtp = "";
+let pendingUserData = {};
 
 // -------------------------------------------------------------
-// 2. التحقق من حالة تسجيل الدخول وبوابة الأمان
+// 1. نظام التحقق الموثق عبر واتساب الرسمي
 // -------------------------------------------------------------
 function checkAppAccess() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
@@ -697,101 +680,74 @@ function checkAppAccess() {
   } else {
     gateScreen.style.display = "flex";
     mainApp.style.display = "none";
-    initRecaptcha();
   }
 }
 
-function initRecaptcha() {
-  if (!window.recaptchaVerifier) {
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-      'size': 'invisible',
-      'callback': (response) => {}
-    });
-  }
-}
-
-// إرسال كود SMS
-function requestFirebaseSmsOtp() {
+function requestWhatsAppVerification() {
   const name = document.getElementById('gateName').value.trim();
-  let phone = document.getElementById('gatePhone').value.trim();
-  const sendBtn = document.getElementById('sendOtpBtn');
+  const phone = document.getElementById('gatePhone').value.trim();
 
   if (!name || !/^01[0125][0-9]{8}$/.test(phone)) {
-    alert("من فضلك أدخل اسمك ورقم هاتف مصري صحيح يبدأ بـ 01");
+    alert("من فضلك أدخل اسمك ورقم هاتف مصري صحيح (11 رقم يبدأ بـ 01)");
     return;
   }
 
-  tempName = name;
-  let internationalPhone = "+2" + phone;
+  // توليد كود تحقق عشوائي من 4 أرقام
+  currentSecurityOtp = Math.floor(1000 + Math.random() * 9000).toString();
+  pendingUserData = { name: name, phone: phone };
 
-  sendBtn.disabled = true;
-  sendBtn.textContent = "جاري إرسال الرسالة...";
+  // إعداد نص الرسالة لواتساب الأدمن
+  const waMsg = `مرحباً كابتن محمود 👋\nأرغب في تفعيل حسابي على تطبيق Fly Express 🛵\nالاسم: ${name}\nرقم الموبايل: ${phone}\n🔐 كود الأمان لتفعيل حسابي: ${currentSecurityOtp}\n(يرجى تأكيد التفعيل)`;
 
-  initRecaptcha();
-  const appVerifier = window.recaptchaVerifier;
+  // الانتقال للخطوة الثانية
+  document.getElementById('displayOtpBox').textContent = currentSecurityOtp;
+  document.getElementById('gateStep1').style.display = "none";
+  document.getElementById('gateStep2').style.display = "block";
 
-  firebase.auth().signInWithPhoneNumber(internationalPhone, appVerifier)
-    .then((confirmationResult) => {
-      window.confirmationResult = confirmationResult;
-      document.getElementById('gateStep1').style.display = "none";
-      document.getElementById('gateStep2').style.display = "block";
-      alert("تم إرسال كود التحقق في رسالة SMS على هاتفك بنجاح 📩");
-    }).catch((error) => {
-      sendBtn.disabled = false;
-      sendBtn.textContent = "إرسال كود التحقق في رسالة SMS 📩";
-      alert("تعذر إرسال الرسالة: " + error.message);
-    });
+  // فتح واتساب مباشرة لإرسال الرسالة
+  const waUrl = `https://wa.me/${ADMIN_PHONE}?text=${enc(waMsg)}`;
+  window.open(waUrl, '_blank', 'noopener');
 }
 
-// تأكيد كود SMS
-function verifyFirebaseSmsOtp() {
-  const code = document.getElementById('gateSmsCode').value.trim();
-  if (!code || code.length < 6) {
-    alert("يرجى كتابة كود التحقق المكون من 6 أرقام");
+function reopenWhatsAppChat() {
+  if (currentSecurityOtp && pendingUserData.name) {
+    const waMsg = `مرحباً كابتن محمود 👋\nأرغب في تفعيل حسابي على تطبيق Fly Express 🛵\nالاسم: ${pendingUserData.name}\nرقم الموبايل: ${pendingUserData.phone}\n🔐 كود الأمان لتفعيل حسابي: ${currentSecurityOtp}`;
+    window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(waMsg)}`, '_blank', 'noopener');
+  }
+}
+
+function verifyWhatsAppOtp() {
+  const enteredCode = document.getElementById('gateSmsCode').value.trim();
+  if (!enteredCode || enteredCode !== currentSecurityOtp) {
+    alert("كود الأمان غير صحيح! يرجى إدخال الكود المكتوب في رسالة الواتساب ❌");
     return;
   }
 
-  if (!window.confirmationResult) {
-    alert("انتهت الجلسة، يرجى طلب الكود مجدداً");
-    return;
-  }
+  // حفظ العميل كموثق
+  localStorage.setItem('fly_verified_user', JSON.stringify({
+    name: pendingUserData.name,
+    phone: pendingUserData.phone,
+    verifiedAt: Date.now()
+  }));
 
-  window.confirmationResult.confirm(code)
-    .then((result) => {
-      const user = result.user;
-      let localPhone = user.phoneNumber.replace("+2", "");
-      localStorage.setItem('fly_verified_user', JSON.stringify({
-        name: tempName || "عميل Fly Express",
-        phone: localPhone,
-        uid: user.uid,
-        time: Date.now()
-      }));
-      alert(`تم التحقق بنجاح! مرحباً بك في تطبيق Fly Express 🚀`);
-      checkAppAccess();
-    }).catch((error) => {
-      alert("كود التحقق غير صحيح أو منتهي الصلاحية ❌");
-    });
+  alert(`تم التحقق والتوثيق بنجاح! أهلاً بك يا ${pendingUserData.name} في Fly Express 🚀`);
+  checkAppAccess();
 }
 
 function backToGateStep1() {
   document.getElementById('gateStep1').style.display = "block";
   document.getElementById('gateStep2').style.display = "none";
-  const sendBtn = document.getElementById('sendOtpBtn');
-  sendBtn.disabled = false;
-  sendBtn.textContent = "إرسال كود التحقق في رسالة SMS 📩";
 }
 
 function logoutUser() {
   if (confirm("هل ترغب بالفعل في تسجيل الخروج وقفل التطبيق؟")) {
-    firebase.auth().signOut().then(() => {
-      localStorage.removeItem('fly_verified_user');
-      checkAppAccess();
-    });
+    localStorage.removeItem('fly_verified_user');
+    checkAppAccess();
   }
 }
 
 // -------------------------------------------------------------
-// 3. المزامنة السحابية الحية (رادار + حالة التوصيل)
+// 2. المزامنة الحية (الرادار + حالة التوصيل)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
