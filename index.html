@@ -335,12 +335,11 @@ body {
       <input type="text" id="gateName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
       <input type="tel" id="gatePhone" class="order-input" placeholder="رقم الموبايل (مثال: 01012345678)" style="margin-bottom:12px;">
       
-      <!-- زر استلام رسالة SMS -->
       <button class="order-btn" id="sendOtpBtn" onclick="requestFirebaseSmsOtp()">
         إرسال كود التحقق في رسالة SMS 📩
       </button>
       
-      <!-- حاوية اختبار الأمان الشفافة لفايربيس -->
+      <!-- حاوية اختبار الأمان -->
       <div id="recaptcha-container" style="margin-top:10px; display:flex; justify-content:center;"></div>
     </div>
 
@@ -360,7 +359,7 @@ body {
   </div>
 </div>
 
-<!-- المحتوى الكامل للتطبيق (محمي ومقفل حتى إتمام التحقق) -->
+<!-- المحتوى الكامل للتطبيق -->
 <div class="app-container" id="mainAppContent" style="display:none;">
 
   <header class="app-header">
@@ -648,17 +647,23 @@ body {
 
 <script>
 // -------------------------------------------------------------
-// 1. تهيئة مشروع Firebase ببياناتك الخاصة
+// 1. تهيئة مشروع Firebase بمفاتيحك الحقيقية
 // -------------------------------------------------------------
 const firebaseConfig = {
-  apiKey: "AIzaSyApqkjD46xobFtY8XY41XRVZItnLGZx098",
+  apiKey: "AIzaSyApqKjD46xobFTyBXY4lXRVZttnLGZxO98",
   authDomain: "flyexpress-a0f5a.firebaseapp.com",
   projectId: "flyexpress-a0f5a",
   storageBucket: "flyexpress-a0f5a.firebasestorage.app",
   messagingSenderId: "1053055752719",
-  appId: "1:1053055752719:web:97ac05aa117ffbf6a8617a"
+  appId: "1:1053055752719:web:97ae05aa117ffbf6e8617a",
+  measurementId: "G-G6HXPVWH6V"
 };
-firebase.initializeApp(firebaseConfig);
+
+try {
+  firebase.initializeApp(firebaseConfig);
+} catch(e) {
+  console.log("Firebase initialized");
+}
 
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
@@ -705,7 +710,7 @@ function initRecaptcha() {
   }
 }
 
-// إرسال كود الـ SMS عبر فايربيس
+// إرسال كود SMS
 function requestFirebaseSmsOtp() {
   const name = document.getElementById('gateName').value.trim();
   let phone = document.getElementById('gatePhone').value.trim();
@@ -738,7 +743,7 @@ function requestFirebaseSmsOtp() {
     });
 }
 
-// تأكيد كود الـ SMS وفتح التطبيق
+// تأكيد كود SMS
 function verifyFirebaseSmsOtp() {
   const code = document.getElementById('gateSmsCode').value.trim();
   if (!code || code.length < 6) {
@@ -747,7 +752,7 @@ function verifyFirebaseSmsOtp() {
   }
 
   if (!window.confirmationResult) {
-    alert("حدث خطأ في الجلسة، يرجى إعادة إرسال الكود");
+    alert("انتهت الجلسة، يرجى طلب الكود مجدداً");
     return;
   }
 
@@ -929,7 +934,7 @@ function sendMonthlyOrder() {
   waSend(text);
 }
 
-// عجلة الحظ
+// عجلة الخصومات
 const slices = [
   { text: "خصم 5 ج", key: "5EGP", color: "#ff6b00" },
   { text: "حظ أوفر", key: null, color: "#1e293b" },
