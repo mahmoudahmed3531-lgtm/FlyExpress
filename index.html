@@ -544,7 +544,7 @@ body {
 }
 
 .spin-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.wheel-result { margin-top: 10px; font-weight: 800; font-size: 13px; color: #34d399; min-height: 20px; }
+.wheel-result { margin-top: 10px; font-weight: 800; font-size: 12px; color: #34d399; min-height: 20px; line-height: 1.5; }
 </style>
 </head>
 
@@ -827,15 +827,15 @@ body {
     </div>
   </div>
 
-  <!-- نافذة عجلة الحظ المربوطة برقم الهاتف -->
+  <!-- نافذة عجلة الحظ المربوطة بالرقم والمشفرة لمنع التلاعب -->
   <div class="wheel-modal" id="wheelModal">
     <div class="wheel-card">
       <button class="wheel-close" onclick="closeWheel()">&times;</button>
-      <h3 style="font-size:17px; font-weight:900; color:#fff;">🎡 عجلة الحظ (فرصة واحدة)</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">أدخل رقم هاتفك لتفعيل لفة اليوم</p>
+      <h3 style="font-size:17px; font-weight:900; color:#fff;">🎡 عجلة الخصومات الموثقة</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">أدخل رقم الواتساب الذي ستطلب منه لتفعيل الكود</p>
       
       <div style="margin: 10px 0 6px;">
-        <input type="tel" id="wheelPhone" class="order-input" placeholder="رقم موبايلك (01xxxxxxxxx)" style="text-align:center; font-weight:700; letter-spacing:1px;" inputmode="tel">
+        <input type="tel" id="wheelPhone" class="order-input" placeholder="رقم الواتساب (01xxxxxxxxx)" style="text-align:center; font-weight:700; letter-spacing:1px;" inputmode="tel">
       </div>
 
       <div class="wheel-container">
@@ -856,10 +856,14 @@ body {
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
 
-// جلب كود الخصم المخزن
+// جلب كود الخصم الموثق المربوط برقم الهاتف
 function getActiveDiscount() {
   const code = localStorage.getItem('fly_discount_code');
-  return code ? `\n🎁 كود الخصم المطبق: ${code}` : '';
+  const phone = localStorage.getItem('fly_locked_phone');
+  if (code && phone) {
+    return `\n🎁 كود الخصم المطبق: ${code}\n📱 الرقم المصرح له بالخصم: ${phone}`;
+  }
+  return '';
 }
 
 const waSend = txt => {
@@ -899,15 +903,15 @@ setTimeout(() => {
 }, 3000);
 
 // -------------------------------------------------------------
-// 2. عجلة الحظ مع قفل برقم الموبايل وبصمة الجهاز
+// 2. عجلة الحظ مع التشفير ومنع التلاعب
 // -------------------------------------------------------------
 const slices = [
-  { text: "خصم 5 ج", code: "FLY-5EGP", color: "#ff6b00" },
+  { text: "خصم 5 ج", code: "FLY-5", color: "#ff6b00" },
   { text: "حظ أوفر", code: null, color: "#1e293b" },
-  { text: "خصم 10 ج", code: "FLY-10EGP", color: "#00d27a" },
+  { text: "خصم 10 ج", code: "FLY-10", color: "#00d27a" },
   { text: "توصيل مجاني", code: "FLY-FREE", color: "#8b5cf6" },
-  { text: "خصم 5%", code: "FLY-5PERCENT", color: "#00a8ff" },
-  { text: "كوبون مفاجأة", code: "FLY-VIP", color: "#f59e0b" }
+  { text: "خصم 5%", code: "FLY-5P", color: "#00a8ff" },
+  { text: "كوبون VIP", code: "FLY-VIP", color: "#f59e0b" }
 ];
 
 const canvas = document.getElementById('wheelCanvas');
@@ -956,17 +960,25 @@ function getSpunUsers() {
   } catch(e) { return {}; }
 }
 
+function generateSecureCode(baseCode, phone) {
+  const last4 = phone.slice(-4);
+  const checkDigit = (parseInt(last4, 10) * 3) % 999;
+  return `${baseCode}-${last4}-${checkDigit}`;
+}
+
 function checkWheelEligibility() {
   const spinBtn = document.getElementById('spinBtn');
   const resultDiv = document.getElementById('wheelResult');
   const phoneInput = document.getElementById('wheelPhone');
+  const savedPhone = localStorage.getItem('fly_locked_phone');
   const isDeviceLocked = localStorage.getItem('fly_locked_device') === 'true';
 
-  if (isDeviceLocked) {
+  if (isDeviceLocked && savedPhone) {
     const existingCode = localStorage.getItem('fly_discount_code');
     resultDiv.style.color = "#ef4444";
-    resultDiv.textContent = `لقد استنفدت لفتك لهذا اليوم! كودك: (${existingCode || 'مستخدم'})`;
+    resultDiv.innerHTML = `لقد استنفدت لفتك لهذا اليوم!<br><span style="color:#fff;">كودك الموثق: ${existingCode}</span><br><small style="color:#f59e0b;">*صالح فقط للرقم: ${savedPhone}*</small>`;
     spinBtn.disabled = true;
+    phoneInput.value = savedPhone;
     phoneInput.disabled = true;
   }
 }
@@ -979,20 +991,20 @@ function spinWheel() {
   const resultDiv = document.getElementById('wheelResult');
   const spinBtn = document.getElementById('spinBtn');
 
-  // التحقق من رقم الموبايل (11 رقم يبدأ بـ 01)
+  // التحقق من رقم الموبايل المصري
   const phoneRegex = /^01[0125][0-9]{8}$/;
   if (!phoneRegex.test(phone)) {
-    alert("من فضلك أدخل رقم موبايل صحيح (11 رقم يبدأ بـ 01)");
+    alert("من فضلك أدخل رقم هاتف مصري صحيح يبدأ بـ 01 ومكون من 11 رقماً");
     phoneInput.focus();
     return;
   }
 
-  // فحص هل الرقم لف العجلة مسبقاً
+  // فحص هل تم استخدام هذا الرقم أو الجهاز مسبقاً
   const users = getSpunUsers();
   if (users[phone] || localStorage.getItem('fly_locked_device') === 'true') {
     const existingCode = users[phone] ? users[phone].code : localStorage.getItem('fly_discount_code');
     resultDiv.style.color = "#ef4444";
-    resultDiv.textContent = `عذراً! هذا الهاتف/الرقم استنفد لفته. كودك السابق: (${existingCode || 'مستخدم'})`;
+    resultDiv.innerHTML = `عذراً! هذا الهاتف أو الرقم استنفد لفته.<br>كودك الموثق: (${existingCode || 'مستخدم'})`;
     spinBtn.disabled = true;
     return;
   }
@@ -1003,7 +1015,7 @@ function spinWheel() {
   resultDiv.style.color = "#34d399";
   resultDiv.textContent = "جاري تدوير العجلة...";
 
-  // اختيار قطاع رابح
+  // قطاع رابح مضمون
   const winningIndex = [0, 2, 4][Math.floor(Math.random() * 3)];
   const extraRounds = 5 * 360;
   const sliceDegree = 360 / numSlices;
@@ -1016,27 +1028,31 @@ function spinWheel() {
     isSpinning = false;
     const winner = slices[winningIndex];
     if (winner.code) {
-      users[phone] = { code: winner.code, time: Date.now() };
+      // توليد كود مخصص ومقيد برقم هاتفه الفعلي
+      const secureCoupon = generateSecureCode(winner.code, phone);
+
+      users[phone] = { code: secureCoupon, time: Date.now() };
       localStorage.setItem('fly_spun_users', JSON.stringify(users));
-      localStorage.setItem('fly_discount_code', winner.code);
+      localStorage.setItem('fly_discount_code', secureCoupon);
+      localStorage.setItem('fly_locked_phone', phone);
       localStorage.setItem('fly_locked_device', 'true');
 
-      resultDiv.textContent = `مبروك! ربحت ${winner.text} (الكود: ${winner.code})`;
-      document.getElementById('couponStatusTxt').textContent = `كوبونك المفعّل: ${winner.code}`;
+      resultDiv.innerHTML = `مبروك! ربحت ${winner.text}<br><strong style="color:#fff;">كودك الموثق: ${secureCoupon}</strong><br><small style="color:#f59e0b;">*صالح فقط للطلب من رقم الواتساب: ${phone}*</small>`;
+      document.getElementById('couponStatusTxt').textContent = `كوبونك: ${secureCoupon}`;
       
-      // تعبئة رقم الهاتف تلقائياً في خانات الطلب
+      // تعبئة الرقم تلقائياً في خانات الحجز
       ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone'].forEach(id => {
         const el = document.getElementById(id);
-        if (el && !el.value) el.value = phone;
+        if (el) el.value = phone;
       });
     }
   }, 4200);
 }
 
-// فحص الكوبون المخزن عند بداية تشغيل الصفحة
+// عرض الكود المحفوظ عند فتح الموقع
 const savedCode = localStorage.getItem('fly_discount_code');
 if (savedCode) {
-  document.getElementById('couponStatusTxt').textContent = `كوبونك المفعّل: ${savedCode}`;
+  document.getElementById('couponStatusTxt').textContent = `كوبونك: ${savedCode}`;
 }
 
 // تسجيل الـ Service Worker
