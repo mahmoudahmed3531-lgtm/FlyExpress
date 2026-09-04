@@ -1,12 +1,17 @@
-const CACHE = 'flyexpress-v1';
+const CACHE = 'flyexpress-v2';
 const ASSETS = [
   '/FlyExpress/',
   '/FlyExpress/index.html',
-  '/FlyExpress/manifest.json'
+  '/FlyExpress/manifest.json',
+  '/FlyExpress/icon-192.png',
+  '/FlyExpress/icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ASSETS)));
+  e.waitUntil(
+    caches.open(CACHE).then((cache) => cache.addAll(ASSETS))
+  );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
