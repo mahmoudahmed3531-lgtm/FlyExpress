@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <title>Fly Express — أسرع توصيل في نجع حمادي</title>
 <meta name="description" content="Fly Express: دليفري سريع في نجع حمادي — اطلب مشوارك فورًا عبر واتساب.">
-<meta name="theme-color" content="#080c14">
+<meta name="theme-color" content="#070b12">
 
 <link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 <meta property="og:image" content="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
@@ -15,14 +15,14 @@
 
 <style>
 :root {
-  --bg-dark: #080c14;
-  --surface: #131b2e;
+  --bg-dark: #070b12;
+  --surface: #0f172a;
   --primary: #ff6b00;
-  --primary-glow: rgba(255, 107, 0, 0.4);
+  --primary-glow: rgba(255, 107, 0, 0.45);
   --accent: #00e5ff;
   --text-main: #f8fafc;
-  --text-sub: #cbd5e1;
-  --border: rgba(255, 255, 255, 0.12);
+  --text-sub: #94a3b8;
+  --border: rgba(255, 255, 255, 0.08);
   font-family: 'Cairo', system-ui, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
@@ -30,6 +30,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
 input, textarea, select { user-select: auto; }
 
+/* خلفية تكنولوجية ديناميكية كودية 100% تعمل على جميع الأجهزة فوراً */
 body {
   background-color: var(--bg-dark);
   color: var(--text-main);
@@ -37,21 +38,22 @@ body {
   padding-bottom: 90px;
   overflow-x: hidden;
   position: relative;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.16) 0%, transparent 50%),
+    radial-gradient(circle at 100% 50%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
 }
 
-/* طبقة الخلفية الليلية المضمونة لأجهزة الموبايل */
-body::before {
+/* شريط سرعة ضوئي متحرك في الخلفية */
+body::after {
   content: "";
   position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: 
-    linear-gradient(rgba(8, 12, 20, 0.70), rgba(8, 12, 20, 0.82)),
-    url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Dubai_Marina_night_traffic.jpg/1280px-Dubai_Marina_night_traffic.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  top: 0; left: 0; right: 0; height: 100vh;
+  background: radial-gradient(circle 800px at var(--glow-x, 50%) var(--glow-y, 30%), rgba(255, 107, 0, 0.06), transparent 70%);
   pointer-events: none;
+  z-index: 0;
 }
 
 .app-container {
@@ -59,6 +61,7 @@ body::before {
   margin: 0 auto;
   min-height: 100vh;
   position: relative;
+  z-index: 1;
 }
 
 /* شريط الرأس */
@@ -66,7 +69,7 @@ body::before {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(8, 12, 20, 0.88);
+  background: rgba(7, 11, 18, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   padding: 10px 16px;
@@ -107,7 +110,7 @@ body::before {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(16, 185, 129, 0.16);
+  background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(16, 185, 129, 0.35);
   padding: 6px 12px;
   border-radius: 999px;
@@ -147,7 +150,7 @@ body::before {
 }
 
 .app-banner {
-  background: linear-gradient(135deg, rgba(255, 107, 0, 0.95) 0%, rgba(255, 140, 0, 0.95) 100%);
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
   padding: 16px;
   border-radius: 20px;
   color: #fff;
@@ -155,7 +158,8 @@ body::before {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
-  box-shadow: 0 8px 24px var(--primary-glow);
+  box-shadow: 0 10px 28px var(--primary-glow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .app-banner h3 { font-size: 16px; font-weight: 900; }
@@ -179,46 +183,59 @@ body::before {
   margin-bottom: 24px;
 }
 
-/* بطاقات شفافة زجاجية لإبراز أضواء الخلفية */
+/* بطاقات ذات توهج نيون أنيق */
 .service-card, .game-card-btn, .price-box, .form-card {
-  background: rgba(15, 23, 42, 0.58);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
+  background: rgba(18, 26, 43, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .service-card {
-  border-radius: 18px;
+  border-radius: 20px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
 .service-card:active {
   transform: scale(0.97);
-  border-color: var(--primary);
+  border-color: rgba(255, 107, 0, 0.4);
 }
 
+.service-card:active::after { opacity: 1; }
+
 .service-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
 }
 
-.ic-orange { background: rgba(255, 107, 0, 0.2); color: #ff8c00; }
-.ic-blue { background: rgba(0, 168, 255, 0.2); color: #00a8ff; }
-.ic-green { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-.ic-purple { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+.ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; border: 1px solid rgba(255, 107, 0, 0.3); }
+.ic-blue { background: rgba(0, 168, 255, 0.15); color: #00a8ff; border: 1px solid rgba(0, 168, 255, 0.3); }
+.ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
 
-.service-card h4 { font-size: 14px; font-weight: 700; color: #fff; }
+.service-card h4 { font-size: 14px; font-weight: 800; color: #fff; }
 .service-card span { font-size: 11px; color: var(--text-sub); }
 
 .games-list {
@@ -238,9 +255,10 @@ body::before {
   text-decoration: none;
   font-weight: 700;
   font-size: 14px;
+  transition: transform 0.15s;
 }
 
-.game-card-btn:active { background: rgba(255, 255, 255, 0.12); }
+.game-card-btn:active { background: rgba(255, 255, 255, 0.08); transform: scale(0.98); }
 
 .price-box {
   border-radius: 16px;
@@ -259,6 +277,7 @@ body::before {
   border-radius: 999px;
   font-weight: 900;
   font-size: 13px;
+  box-shadow: 0 0 12px var(--primary-glow);
 }
 
 .bottom-nav {
@@ -269,7 +288,7 @@ body::before {
   max-width: 480px;
   margin: 0 auto;
   height: 68px;
-  background: rgba(8, 12, 20, 0.94);
+  background: rgba(7, 11, 18, 0.94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border);
@@ -319,8 +338,8 @@ body::before {
   width: 100%;
   padding: 12px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(8, 12, 20, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 12, 20, 0.7);
   color: #fff;
   font-family: inherit;
   font-size: 13px;
@@ -353,7 +372,7 @@ body::before {
 }
 
 .order-btn:active { transform: scale(0.98); }
-.order-btn.secondary { background: rgba(255, 255, 255, 0.1); box-shadow: none; color: #e2e8f0; }
+.order-btn.secondary { background: rgba(255, 255, 255, 0.08); box-shadow: none; color: #cbd5e1; }
 
 .day-grid { display: grid; grid-template-columns: 85px 1fr 1fr; gap: 6px; margin-top: 8px; }
 .day-label { display: flex; align-items: center; font-size: 12px; font-weight: 700; color: var(--text-sub); }
@@ -717,6 +736,14 @@ document.getElementById('clearMonthly').addEventListener('click',()=>{
 const visits = +localStorage.getItem("visitsCount") || 0;
 localStorage.setItem("visitsCount", visits + 1);
 document.getElementById("visits").textContent = `زياراتك للتطبيق: ${visits + 1} مرة`;
+
+// تفاعل ضوئي لمسي خفيف مع حركة إصبع المستخدم
+document.addEventListener('pointermove', (e) => {
+  const x = (e.clientX / window.innerWidth) * 100;
+  const y = (e.clientY / window.innerHeight) * 100;
+  document.body.style.setProperty('--glow-x', `${x}%`);
+  document.body.style.setProperty('--glow-y', `${y}%`);
+});
 
 (function () {
   const music = document.getElementById('gameMusic');
