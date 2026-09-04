@@ -94,14 +94,35 @@ body {
 }
 
 .profile-info h1 {
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 900;
   line-height: 1.2;
 }
 
 .profile-info p {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-sub);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-badge-btn {
+  background: rgba(255, 107, 0, 0.15);
+  border: 1px solid var(--primary);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .status-badge {
@@ -110,16 +131,16 @@ body {
   gap: 6px;
   background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: #34d399;
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   background: #10b981;
   border-radius: 50%;
   box-shadow: 0 0 8px #10b981;
@@ -145,7 +166,19 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* نظام نقاط الولاء */
+/* بطاقة ترحيب العميل المسجل */
+.user-welcome-card {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(0, 229, 255, 0.08));
+  border: 1px solid rgba(255, 107, 0, 0.3);
+  border-radius: 16px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* نقاط الولاء */
 .loyalty-card {
   background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
   border: 1px solid rgba(255, 107, 0, 0.35);
@@ -162,7 +195,7 @@ body {
 .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b00, #ffb703); border-radius: 999px; transition: width 0.5s ease; }
 .loyalty-sub { font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between; }
 
-/* رادار أمان الطالب المتزامن سحابياً */
+/* رادار أمان الطالب */
 .safety-radar-card {
   background: rgba(18, 26, 43, 0.7);
   border: 1px solid rgba(16, 185, 129, 0.35);
@@ -186,7 +219,7 @@ body {
 }
 .step-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
 
-/* صوّر واطلب فوراً */
+/* صوّر واطلب */
 .snap-order-banner {
   background: linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(0, 168, 255, 0.08));
   border: 1px dashed var(--accent);
@@ -225,12 +258,6 @@ body {
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
-.games-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-.game-card-btn {
-  display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 16px; color: #fff; text-decoration: none;
-  font-weight: 700; font-size: 14px; background: rgba(18, 26, 43, 0.65); border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 68px; background: rgba(7, 11, 18, 0.94);
   backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100;
@@ -262,16 +289,28 @@ body {
 }
 .live-toast.show { transform: translateY(0); opacity: 1; }
 
-.wheel-modal, .snap-modal {
+.modal-backdrop {
   position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none;
   align-items: center; justify-content: center; padding: 20px;
 }
-.wheel-modal.show, .snap-modal.show { display: flex; }
+.modal-backdrop.show { display: flex; }
 .modal-card {
   background: #0d1527; border: 1.5px solid var(--primary); border-radius: 24px; padding: 20px 16px; width: 100%; max-width: 350px;
   text-align: center; position: relative;
 }
 .modal-close { position: absolute; top: 12px; left: 14px; background: transparent; border: 0; color: var(--text-sub); font-size: 22px; cursor: pointer; }
+
+/* تبويبات تسجيل الدخول */
+.auth-tabs {
+  display: flex; gap: 8px; margin-bottom: 14px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 12px;
+}
+.auth-tab-btn {
+  flex: 1; padding: 8px; border: 0; background: transparent; color: var(--text-sub); font-weight: 800; font-family: inherit; font-size: 12px;
+  border-radius: 8px; cursor: pointer;
+}
+.auth-tab-btn.active {
+  background: var(--primary); color: #fff;
+}
 
 .wheel-container { position: relative; width: 230px; height: 230px; margin: 14px auto; }
 .wheel-pointer {
@@ -295,18 +334,35 @@ body {
       <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="profile-info">
         <h1>Fly Express</h1>
-        <p>نجع حمادي وقراها</p>
+        <p id="userStatusTxt">حساب زائر</p>
       </div>
     </div>
-    <div class="status-badge" id="serviceBadge">
-      <span class="status-dot" id="serviceDot"></span>
-      <span id="serviceTxt">متاح الآن للتوصيل</span>
+    
+    <div class="header-actions">
+      <button class="user-badge-btn" id="authActionBtn" onclick="openAuthModal()">
+        <i class="fa-regular fa-user"></i> <span id="authBtnTxt">تسجيل دخول</span>
+      </button>
+      <div class="status-badge" id="serviceBadge">
+        <span class="status-dot" id="serviceDot"></span>
+        <span id="serviceTxt">متاح</span>
+      </div>
     </div>
   </header>
 
   <!-- tab 1: الرئيسية -->
   <main id="tab-home" class="tab-view active">
     
+    <!-- كارت ترحيب العميل المسجل -->
+    <div class="user-welcome-card" id="userWelcomeBox" style="display:none;">
+      <div>
+        <div style="font-size:11px; color:var(--text-sub);">أهلاً بك معنا يا كابتن 🌟</div>
+        <div style="font-size:14px; font-weight:900; color:#fff;" id="welcomeUserName">عميلنا العزيز</div>
+      </div>
+      <button onclick="logoutUser()" style="background:transparent; border:0; color:#ef4444; font-size:11px; font-weight:800; font-family:inherit; cursor:pointer;">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
+      </button>
+    </div>
+
     <!-- نقاط الولاء -->
     <div class="loyalty-card">
       <div class="loyalty-header">
@@ -409,7 +465,45 @@ body {
       <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
     </div>
 
-    <!-- حاسبة المدارس والدروس -->
+    <!-- طلبات السوق -->
+    <div class="form-card" id="sec-market" style="margin-bottom:14px;">
+      <h3 style="font-size:15px; margin-bottom:10px; color:#00a8ff;">🛒 طلبات السوق والطلبات المنزلية</h3>
+      <div class="order-row single">
+        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل..." required></textarea>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="marketFrom" placeholder="من أي محل أو سوق؟ (اختياري)">
+        <input class="order-input" id="marketTo" placeholder="عنوان التوصيل" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="marketName" placeholder="اسمك" required>
+        <input class="order-input" id="marketPhone" placeholder="رقم الموبايل" inputmode="tel" required>
+      </div>
+      <button class="order-btn" onclick="sendMarket()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
+    </div>
+
+    <!-- توصيل المدرسة -->
+    <div class="form-card" id="sec-school" style="margin-bottom:14px;">
+      <h3 style="font-size:15px; margin-bottom:10px; color:#10b981;">🏫 توصيل ابني المدرسة (يومي)</h3>
+      <div class="order-row">
+        <select class="order-select" id="schoolType">
+          <option value="ذهاب فقط">ذهاب فقط</option>
+          <option value="ذهاب وعودة">ذهاب وعودة</option>
+        </select>
+        <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" required>
+        <input class="order-input" id="schoolFrom" placeholder="مكان الانطلاق" required>
+      </div>
+      <div class="order-row">
+        <input class="order-input" id="schoolTo" placeholder="اسم المدرسة" required>
+        <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
+      </div>
+      <button class="order-btn" onclick="sendSchool()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
+    </div>
+
+    <!-- حاسبة المدارس والدروس الشهرية بخصم الإخوة -->
     <div class="form-card" id="sec-monthly">
       <h3 style="font-size:15px; margin-bottom:6px; color:#c084fc;">📘 حاسبة واشتراك المدارس والدروس الشهرية</h3>
       <div class="order-row">
@@ -476,8 +570,38 @@ body {
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
 
+  <!-- نافذة تسجيل الدخول وإنشاء حساب العميل (Auth Modal) -->
+  <div class="modal-backdrop" id="authModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+      
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthView('login')">تسجيل دخول</button>
+        <button class="auth-tab-btn" id="tabRegisterBtn" onclick="switchAuthView('register')">إنشاء حساب</button>
+      </div>
+
+      <!-- نموذج تسجيل الدخول -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <h4 style="font-size:15px; font-weight:900; color:#fff; margin-bottom:10px;">أهلاً بك مجدداً 🛵</h4>
+        <input type="email" id="loginEmail" class="order-input" placeholder="البريد الإلكتروني" style="margin-bottom:8px;" required>
+        <input type="password" id="loginPass" class="order-input" placeholder="كلمة المرور" style="margin-bottom:12px;" required>
+        <button type="submit" class="order-btn">دخول الحساب 🚀</button>
+      </form>
+
+      <!-- نموذج إنشاء حساب جديد -->
+      <form id="registerForm" style="display:none;" onsubmit="handleRegister(event)">
+        <h4 style="font-size:15px; font-weight:900; color:#00e5ff; margin-bottom:10px;">إنشاء حساب جديد 🎒</h4>
+        <input type="text" id="regName" class="order-input" placeholder="الاسم الكامل" style="margin-bottom:8px;" required>
+        <input type="tel" id="regPhone" class="order-input" placeholder="رقم الهاتف (واتساب)" style="margin-bottom:8px;" required>
+        <input type="email" id="regEmail" class="order-input" placeholder="البريد الإلكتروني" style="margin-bottom:8px;" required>
+        <input type="password" id="regPass" class="order-input" placeholder="كلمة المرور" style="margin-bottom:12px;" required>
+        <button type="submit" class="order-btn" style="background:linear-gradient(90deg, #00e5ff, #00a8ff); color:#000;">تسجيل وحفظ الحساب ✅</button>
+      </form>
+    </div>
+  </div>
+
   <!-- نافذة صوّر واطلب مع التنبيه الذكي -->
-  <div class="snap-modal" id="snapModal">
+  <div class="modal-backdrop" id="snapModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeSnapModal()">&times;</button>
       <h3 style="font-size:17px; font-weight:900; color:#00e5ff;">📸 صوّر واطلب فوراً</h3>
@@ -502,7 +626,7 @@ body {
   </div>
 
   <!-- نافذة عجلة الخصومات -->
-  <div class="wheel-modal" id="wheelModal">
+  <div class="modal-backdrop" id="wheelModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeWheel()">&times;</button>
       <h3 style="font-size:17px; font-weight:900; color:#fff;">🎡 عجلة الخصومات الموثقة</h3>
@@ -533,7 +657,130 @@ const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 let pendingClaimUrl = "";
 
-// 🛰️ مزامنة سحابية حية مع لوحة الأدمن
+// -------------------------------------------------------------
+// 1. نظام تسجيل الدخول وإدارة حساب العميل
+// -------------------------------------------------------------
+function getRegisteredUsers() {
+  try {
+    return JSON.parse(localStorage.getItem('fly_users_db') || '{}');
+  } catch(e) { return {}; }
+}
+
+function getCurrentUser() {
+  try {
+    return JSON.parse(localStorage.getItem('fly_current_user') || 'null');
+  } catch(e) { return null; }
+}
+
+function updateAuthUI() {
+  const user = getCurrentUser();
+  const userStatus = document.getElementById('userStatusTxt');
+  const authBtnTxt = document.getElementById('authBtnTxt');
+  const welcomeBox = document.getElementById('userWelcomeBox');
+  const welcomeName = document.getElementById('welcomeUserName');
+
+  if (user) {
+    userStatus.textContent = user.name;
+    authBtnTxt.textContent = "حسابي";
+    welcomeName.textContent = user.name;
+    welcomeBox.style.display = "flex";
+
+    // تعبئة البيانات تلقائياً في كل الحقول
+    ['orderName', 'marketName', 'pmName', 'snapName'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = user.name;
+    });
+    ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone', 'snapPhone', 'wheelPhone'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = user.phone;
+    });
+  } else {
+    userStatus.textContent = "حساب زائر";
+    authBtnTxt.textContent = "تسجيل دخول";
+    welcomeBox.style.display = "none";
+  }
+}
+updateAuthUI();
+
+function openAuthModal() { document.getElementById('authModal').classList.add('show'); }
+function closeAuthModal() { document.getElementById('authModal').classList.remove('show'); }
+
+function switchAuthView(view) {
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const tabLoginBtn = document.getElementById('tabLoginBtn');
+  const tabRegisterBtn = document.getElementById('tabRegisterBtn');
+
+  if (view === 'login') {
+    loginForm.style.display = "block";
+    registerForm.style.display = "none";
+    tabLoginBtn.classList.add('active');
+    tabRegisterBtn.classList.remove('active');
+  } else {
+    loginForm.style.display = "none";
+    registerForm.style.display = "block";
+    tabRegisterBtn.classList.add('active');
+    tabLoginBtn.classList.remove('active');
+  }
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('regName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('regPass').value;
+
+  if (!/^01[0125][0-9]{8}$/.test(phone)) {
+    alert("من فضلك أدخل رقم موبايل مصري صحيح (11 رقم)");
+    return;
+  }
+
+  const users = getRegisteredUsers();
+  if (users[email]) {
+    alert("هذا البريد الإلكتروني مسجل بالفعل! يرجى تسجيل الدخول.");
+    switchAuthView('login');
+    return;
+  }
+
+  const newUser = { name, phone, email, pass };
+  users[email] = newUser;
+  localStorage.setItem('fly_users_db', JSON.stringify(users));
+  localStorage.setItem('fly_current_user', JSON.stringify(newUser));
+
+  alert(`تم إنشاء الحساب بنجاح! أهلاً بك يا ${name} في Fly Express 🎉`);
+  closeAuthModal();
+  updateAuthUI();
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass').value;
+
+  const users = getRegisteredUsers();
+  const user = users[email];
+
+  if (user && user.pass === pass) {
+    localStorage.setItem('fly_current_user', JSON.stringify(user));
+    alert(`تم تسجيل الدخول بنجاح! مرحباً ${user.name} 🛵`);
+    closeAuthModal();
+    updateAuthUI();
+  } else {
+    alert("البريد الإلكتروني أو كلمة المرور غير صحيحة!");
+  }
+}
+
+function logoutUser() {
+  if (confirm("هل ترغب بالفعل في تسجيل الخروج؟")) {
+    localStorage.removeItem('fly_current_user');
+    updateAuthUI();
+  }
+}
+
+// -------------------------------------------------------------
+// 2. مزامنة سحابية حية مع لوحة الأدمن
+// -------------------------------------------------------------
 async function listenToCloudState() {
   try {
     const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
@@ -545,7 +792,6 @@ async function listenToCloudState() {
       applyLiveState(data.radar, data.service);
     }
   } catch(e) {
-    // في حال تعذر الاتصال بالسحابة لأي سبب، استخدم النسخة المخزنة محلياً
     const r = parseInt(localStorage.getItem('fly_radar_step') || '1', 10);
     const s = localStorage.getItem('fly_service_status') || 'online';
     applyLiveState(r, s);
@@ -564,24 +810,23 @@ function applyLiveState(step, status) {
   const txt = document.getElementById('serviceTxt');
 
   if (status === 'busy') {
-    txt.textContent = "مشغول حالياً";
+    txt.textContent = "مشغول";
     dot.style.background = "#f59e0b";
     dot.style.boxShadow = "0 0 8px #f59e0b";
     badge.style.color = "#fbbf24";
   } else if (status === 'offline') {
-    txt.textContent = "مغلق مؤقتاً";
+    txt.textContent = "مغلق";
     dot.style.background = "#ef4444";
     dot.style.boxShadow = "0 0 8px #ef4444";
     badge.style.color = "#f87171";
   } else {
-    txt.textContent = "متاح الآن للتوصيل";
+    txt.textContent = "متاح";
     dot.style.background = "#10b981";
     dot.style.boxShadow = "0 0 8px #10b981";
     badge.style.color = "#34d399";
   }
 }
 
-// فحص التحديث السحابي كل 3 ثوانٍ
 setInterval(listenToCloudState, 3000);
 listenToCloudState();
 
@@ -653,6 +898,20 @@ function sendOrder() {
   if (!orderName.value || !orderPhone.value || !orderFrom.value || !orderTo.value) { alert("أكمل البيانات المطلوبة أولاً"); return; }
   addLoyaltyRide();
   const text = `طلب ${orderKind.value} ${orderAction.value} 📦\nالاسم: ${orderName.value} — ${orderPhone.value}\nمن: ${orderFrom.value}\nإلى: ${orderTo.value}\n— أُرسل عبر تطبيق Fly Express`;
+  waSend(text);
+}
+
+function sendMarket() {
+  if (!marketName.value || !marketPhone.value || !marketList.value || !marketTo.value) { alert("أكمل بيانات الطلب"); return; }
+  addLoyaltyRide();
+  const text = `طلبات سوق 🛒\nالاسم: ${marketName.value} — ${marketPhone.value}\nالطلبات:\n${marketList.value}\nإلى: ${marketTo.value}\n— أُرسل عبر تطبيق Fly Express`;
+  waSend(text);
+}
+
+function sendSchool() {
+  if (!schoolChild.value || !schoolPhone.value || !schoolFrom.value || !schoolTo.value) { alert("أكمل البيانات"); return; }
+  addLoyaltyRide();
+  const text = `طلب توصيل مدرسة 🏫\nالطالب: ${schoolChild.value}\nولي الأمر: ${schoolPhone.value}\nمن: ${schoolFrom.value}\nإلى: ${schoolTo.value}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 }
 
