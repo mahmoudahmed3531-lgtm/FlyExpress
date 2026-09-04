@@ -162,7 +162,7 @@ body {
 .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b00, #ffb703); border-radius: 999px; transition: width 0.5s ease; }
 .loyalty-sub { font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between; }
 
-/* رادار أمان الطالب المتزامن مع الأدمن */
+/* رادار أمان الطالب المتزامن سحابياً */
 .safety-radar-card {
   background: rgba(18, 26, 43, 0.7);
   border: 1px solid rgba(16, 185, 129, 0.35);
@@ -273,10 +273,7 @@ body {
 }
 .modal-close { position: absolute; top: 12px; left: 14px; background: transparent; border: 0; color: var(--text-sub); font-size: 22px; cursor: pointer; }
 
-/* Wheel specific canvas */
-.wheel-container {
-  position: relative; width: 230px; height: 230px; margin: 14px auto;
-}
+.wheel-container { position: relative; width: 230px; height: 230px; margin: 14px auto; }
 .wheel-pointer {
   position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0;
   border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid #ff3b30;
@@ -323,11 +320,11 @@ body {
       </div>
     </div>
 
-    <!-- رادار أمان الطالب المباشر المتزامن مع الأدمن -->
+    <!-- رادار أمان الطالب المباشر المتزامن سحابياً -->
     <div class="safety-radar-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-size:12px; font-weight:800; color:#34d399;"><i class="fa-solid fa-shield-halved"></i> رادار أمان رحلة المدرسة اليومية</span>
-        <span style="font-size:10px; background:rgba(16, 185, 129, 0.2); color:#34d399; padding:2px 8px; border-radius:999px;">تحديث مباشر</span>
+        <span style="font-size:10px; background:rgba(16, 185, 129, 0.2); color:#34d399; padding:2px 8px; border-radius:999px;">تحديث مباشر 🟢</span>
       </div>
       <div class="safety-steps">
         <div class="safety-step">
@@ -388,29 +385,9 @@ body {
         <div><h4>حاسبة اشتراك الدروس</h4><span>احسب اشتراكك بخصم الإخوة</span></div>
       </div>
     </div>
-
-    <div class="section-title"><i class="fa-solid fa-gamepad"></i> العب واكسب توصيلة مجانية</div>
-    <div class="games-list">
-      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/FlyExpress2/" target="_blank" rel="noopener">
-        <span><i class="fa-solid fa-bullseye" style="color:#ff2ea6; margin-left:8px;"></i> لعبة الطرود — Whack-a-Parcel</span>
-        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
-      </a>
-      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/FlyRiderGame/" target="_blank" rel="noopener">
-        <span><i class="fa-solid fa-motorcycle" style="color:#00d27a; margin-left:8px;"></i> لعبة الموتسيكل — Fly Rider</span>
-        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
-      </a>
-      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/FlyRushGame/" target="_blank" rel="noopener">
-        <span><i class="fa-regular fa-face-smile-beam" style="color:#9a7bff; margin-left:8px;"></i> لعبة الذاكرة — Fly Rush</span>
-        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
-      </a>
-      <a class="game-card-btn" href="https://mahmoudahmed3531-lgtm.github.io/Super-mario-/" target="_blank" rel="noopener">
-        <span><i class="fa-solid fa-circle-question" style="color:#22d3ee; margin-left:8px;"></i> من سيربح التوصيلات</span>
-        <i class="fa-solid fa-chevron-left" style="font-size:12px; opacity:0.5;"></i>
-      </a>
-    </div>
   </main>
 
-  <!-- tab 2: شاشة الطلبات -->
+  <!-- tab 2: الطلبات -->
   <section id="tab-orders" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار</div>
 
@@ -429,52 +406,10 @@ body {
         <input class="order-input" id="orderName" placeholder="اسمك" required>
         <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
       </div>
-      <div class="order-row">
-        <input class="order-input" id="orderWhen" placeholder="الوقت المفضل (مثال: الآن)">
-        <input class="order-input" id="orderNote" placeholder="ملاحظات">
-      </div>
       <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
     </div>
 
-    <!-- طلبات السوق -->
-    <div class="form-card" id="sec-market" style="margin-bottom:14px;">
-      <h3 style="font-size:15px; margin-bottom:10px; color:#00a8ff;">🛒 طلبات السوق والطلبات المنزلية</h3>
-      <div class="order-row single">
-        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل..." required></textarea>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketFrom" placeholder="من أي محل أو سوق؟ (اختياري)">
-        <input class="order-input" id="marketTo" placeholder="عنوان التوصيل" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketName" placeholder="اسمك" required>
-        <input class="order-input" id="marketPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-      </div>
-      <button class="order-btn" onclick="sendMarket()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
-    </div>
-
-    <!-- توصيل ابني المدرسة (يومي) -->
-    <div class="form-card" id="sec-school" style="margin-bottom:14px;">
-      <h3 style="font-size:15px; margin-bottom:10px; color:#10b981;">🏫 توصيل ابني المدرسة (يومي)</h3>
-      <div class="order-row">
-        <select class="order-select" id="schoolType">
-          <option value="ذهاب فقط">ذهاب فقط</option>
-          <option value="ذهاب وعودة">ذهاب وعودة</option>
-        </select>
-        <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" required>
-        <input class="order-input" id="schoolFrom" placeholder="مكان الانطلاق" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolTo" placeholder="اسم المدرسة" required>
-        <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
-      </div>
-      <button class="order-btn" onclick="sendSchool()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
-    </div>
-
-    <!-- حاسبة المدارس والدروس الشهرية بخصم الإخوة -->
+    <!-- حاسبة المدارس والدروس -->
     <div class="form-card" id="sec-monthly">
       <h3 style="font-size:15px; margin-bottom:6px; color:#c084fc;">📘 حاسبة واشتراك المدارس والدروس الشهرية</h3>
       <div class="order-row">
@@ -511,17 +446,6 @@ body {
         <span style="font-size:11px; background:#c084fc; color:#000; font-weight:900; padding:4px 8px; border-radius:8px;" id="discountBadge">خصم إخوة مطبق</span>
       </div>
 
-      <div style="font-size:12px; font-weight:700; color:var(--text-sub); margin-top:10px;">جدول المواعيد الأسبوعية (اختياري):</div>
-      <div class="day-grid">
-        <div class="day-label">السبت</div><input class="order-input" id="satFrom" type="time"><input class="order-input" id="satTo" type="time">
-        <div class="day-label">الأحد</div><input class="order-input" id="sunFrom" type="time"><input class="order-input" id="sunTo" type="time">
-        <div class="day-label">الاثنين</div><input class="order-input" id="monFrom" type="time"><input class="order-input" id="monTo" type="time">
-        <div class="day-label">الثلاثاء</div><input class="order-input" id="tueFrom" type="time"><input class="order-input" id="tueTo" type="time">
-        <div class="day-label">الأربعاء</div><input class="order-input" id="wedFrom" type="time"><input class="order-input" id="wedTo" type="time">
-        <div class="day-label">الخميس</div><input class="order-input" id="thuFrom" type="time"><input class="order-input" id="thuTo" type="time">
-        <div class="day-label">الجمعة</div><input class="order-input" id="friFrom" type="time"><input class="order-input" id="friTo" type="time">
-      </div>
-
       <button class="order-btn" onclick="sendMonthlyOrder()"><i class="fa-brands fa-whatsapp"></i> حجز الاشتراك عبر واتساب</button>
     </div>
   </section>
@@ -533,28 +457,15 @@ body {
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;">20 ج</span></div>
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى الألمنيوم</span><span style="color:#ff8c00; font-weight:900;">35 ج</span></div>
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى المساكن</span><span style="color:#ff8c00; font-weight:900;">25 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى هو</span><span style="color:#ff8c00; font-weight:900;">50 ج</span></div>
     <button class="order-btn" onclick="window.open('https://wa.me/201017908076','_blank')"><i class="fa-brands fa-whatsapp"></i> تأكيد تكلفة مشوار خاص عبر واتساب</button>
   </section>
 
   <!-- tab 4: التواصل -->
   <section id="tab-contact" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
-    <div class="social-list" style="display:flex; flex-direction:column; gap:10px;">
-      <a class="order-btn" style="background:#25d366; color:#000; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://wa.me/201017908076" target="_blank">
-        <i class="fa-brands fa-whatsapp"></i> واتساب المباشر
-      </a>
-      <a class="order-btn" style="background:#1877f2; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://www.facebook.com/profile.php?id=61582010826944&mibextid=ZbWKwL" target="_blank">
-        <i class="fa-brands fa-facebook-f"></i> صفحة فيسبوك
-      </a>
-      <a class="order-btn" style="background:linear-gradient(45deg,#f09433,#dc2743,#bc1888); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://www.instagram.com/habis_namla/" target="_blank">
-        <i class="fa-brands fa-instagram"></i> إنستجرام
-      </a>
-      <a class="order-btn" style="background:#229ed9; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://t.me/D_M_C0" target="_blank">
-        <i class="fa-brands fa-telegram"></i> تليجرام
-      </a>
-    </div>
+    <a class="order-btn" style="background:#25d366; color:#000; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://wa.me/201017908076" target="_blank">
+      <i class="fa-brands fa-whatsapp"></i> واتساب المباشر
+    </a>
   </section>
 
   <!-- شريط التنقل السفلي -->
@@ -564,15 +475,6 @@ body {
     <button class="nav-item" onclick="switchTab('tab-prices', this)"><i class="fa-solid fa-tag"></i><span>الأسعار</span></button>
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
-
-  <!-- شريط الإشعار الحي -->
-  <div class="live-toast" id="liveToast">
-    <div style="font-size:20px; color:var(--accent);"><i class="fa-solid fa-bell"></i></div>
-    <div>
-      <div id="toastTitle" style="font-weight:800; font-size:12px; color:#fff;">طلب توصيل جديد 🚀</div>
-      <div id="toastDesc" style="font-size:10px; color:var(--text-sub);">من نجع حمادي إلى بركة • الآن</div>
-    </div>
-  </div>
 
   <!-- نافذة صوّر واطلب مع التنبيه الذكي -->
   <div class="snap-modal" id="snapModal">
@@ -627,18 +529,36 @@ body {
 <script>
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
+const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 let pendingClaimUrl = "";
 
-// مزامنة حالة الرادار والخدمة من لوحة الأدمن
-function syncAdminState() {
-  const step = parseInt(localStorage.getItem('fly_radar_step') || '1', 10);
+// 🛰️ مزامنة سحابية حية مع لوحة الأدمن
+async function listenToCloudState() {
+  try {
+    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
+    const text = await res.text();
+    if (text) {
+      const lines = text.trim().split('\n');
+      const latest = JSON.parse(lines[lines.length - 1]);
+      const data = JSON.parse(latest.message);
+      applyLiveState(data.radar, data.service);
+    }
+  } catch(e) {
+    // في حال تعذر الاتصال بالسحابة لأي سبب، استخدم النسخة المخزنة محلياً
+    const r = parseInt(localStorage.getItem('fly_radar_step') || '1', 10);
+    const s = localStorage.getItem('fly_service_status') || 'online';
+    applyLiveState(r, s);
+  }
+}
+
+function applyLiveState(step, status) {
+  const radarStep = parseInt(step || 1, 10);
   for (let i = 1; i <= 3; i++) {
     const node = document.getElementById(`clientStep${i}`);
-    if (node) node.classList.toggle('active', i <= step);
+    if (node) node.classList.toggle('active', i <= radarStep);
   }
 
-  const status = localStorage.getItem('fly_service_status') || 'online';
   const badge = document.getElementById('serviceBadge');
   const dot = document.getElementById('serviceDot');
   const txt = document.getElementById('serviceTxt');
@@ -660,8 +580,10 @@ function syncAdminState() {
     badge.style.color = "#34d399";
   }
 }
-setInterval(syncAdminState, 2000);
-syncAdminState();
+
+// فحص التحديث السحابي كل 3 ثوانٍ
+setInterval(listenToCloudState, 3000);
+listenToCloudState();
 
 // نقاط الولاء
 function getLoyaltyRides() { return parseInt(localStorage.getItem('fly_loyalty_rides') || '0', 10); }
@@ -671,12 +593,6 @@ function updateLoyalty() {
   document.getElementById('loyaltyCountTxt').textContent = `${rides} / 5 مشاوير`;
   document.getElementById('loyaltyFill').style.width = `${pct}%`;
   document.getElementById('loyaltyPercent').textContent = `${pct}%`;
-  const msgEl = document.getElementById('loyaltyMsg');
-  if (rides === 0 && getLoyaltyRides() > 0) {
-    msgEl.innerHTML = `<span style="color:#34d399; font-weight:800;">🎉 مبروك! مشوارك القادم مجاني بالكامل!</span>`;
-  } else {
-    msgEl.textContent = `أكمل ${5 - rides} مشاوير واكسب توصيلة مجانية!`;
-  }
 }
 updateLoyalty();
 
@@ -685,7 +601,6 @@ function addLoyaltyRide() {
   updateLoyalty();
 }
 
-// كود الخصم الفعال إن وجد
 function getActiveDiscount() {
   const code = localStorage.getItem('fly_discount_code');
   const phone = localStorage.getItem('fly_locked_phone');
@@ -700,7 +615,6 @@ const waSend = txt => {
   window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(finalTxt)}`, '_blank', 'noopener');
 };
 
-// صوّر واطلب فوراً
 function openSnapModal() { document.getElementById('snapModal').classList.add('show'); }
 function closeSnapModal() { document.getElementById('snapModal').classList.remove('show'); }
 
@@ -715,7 +629,6 @@ function sendSnapDirect() {
   waSend(msg);
 }
 
-// حاسبة المدارس والدروس
 function calcMonthlyEstimate() {
   const count = parseInt(document.getElementById('pmChildrenCount').value || '1', 10);
   const route = document.getElementById('pmRoute').value;
@@ -736,59 +649,21 @@ function calcMonthlyEstimate() {
 }
 calcMonthlyEstimate();
 
-// إرسال النماذج
-function ensureRequired(ids) {
-  for (const id of ids) {
-    const el = document.getElementById(id);
-    if (el && !el.value.trim()) { el.focus(); alert('من فضلك أكمل البيانات المطلوبة'); return false; }
-  }
-  return true;
-}
-
 function sendOrder() {
-  if (!ensureRequired(['orderFrom', 'orderTo', 'orderName', 'orderPhone'])) return;
+  if (!orderName.value || !orderPhone.value || !orderFrom.value || !orderTo.value) { alert("أكمل البيانات المطلوبة أولاً"); return; }
   addLoyaltyRide();
-  const kind = orderKind.value, act = orderAction.value, from = orderFrom.value, to = orderTo.value, name = orderName.value, phone = orderPhone.value, when = orderWhen.value, note = orderNote.value;
-  const text = `طلب ${kind} ${act} 📦\nالاسم: ${name} — ${phone}\nمن: ${from}\nإلى: ${to}\nالوقت: ${when || 'أقرب وقت'}\nملاحظات: ${note || '—'}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
-}
-
-function sendMarket() {
-  if (!ensureRequired(['marketList', 'marketTo', 'marketName', 'marketPhone'])) return;
-  addLoyaltyRide();
-  const list = marketList.value, from = marketFrom.value, to = marketTo.value, name = marketName.value, phone = marketPhone.value;
-  const text = `طلبات سوق 🛒\nالعميل: ${name} — ${phone}\nالقائمة:\n${list}\n\nمن: ${from || '—'}\nإلى: ${to}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
-}
-
-function sendSchool() {
-  if (!ensureRequired(['schoolChild', 'schoolPhone', 'schoolFrom', 'schoolTo'])) return;
-  addLoyaltyRide();
-  const t = schoolType.value, child = schoolChild.value, phone = schoolPhone.value, from = schoolFrom.value, to = schoolTo.value, note = schoolNote.value;
-  const text = `طلب توصيل مدرسة 🏫\nالنوع: ${t}\nالطالب: ${child}\nولي الأمر: ${phone}\nمن: ${from}\nإلى: ${to}\nملاحظات: ${note || '—'}\n— أُرسل عبر تطبيق Fly Express`;
+  const text = `طلب ${orderKind.value} ${orderAction.value} 📦\nالاسم: ${orderName.value} — ${orderPhone.value}\nمن: ${orderFrom.value}\nإلى: ${orderTo.value}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 }
 
 function sendMonthlyOrder() {
-  if (!ensureRequired(['pmName', 'pmPhone'])) return;
+  if (!pmName.value || !pmPhone.value) { alert("أكمل البيانات المطلوبة أولاً"); return; }
   addLoyaltyRide();
-  const n = pmName.value, p = pmPhone.value;
-  const childrenText = pmChildrenCount.options[pmChildrenCount.selectedIndex].text;
-  const routeText = pmRoute.options[pmRoute.selectedIndex].text;
-  const dirText = pmDirection.options[pmDirection.selectedIndex].text;
-  const estimate = document.getElementById('monthlyEstimateTxt').textContent;
-
-  const day = (name, from, to) => (from || to) ? `${name}: ${from || '—'} → ${to || '—'}` : null;
-  const days = [
-    day('السبت', satFrom.value, satTo.value), day('الأحد', sunFrom.value, sunTo.value), day('الاثنين', monFrom.value, monTo.value),
-    day('الثلاثاء', tueFrom.value, tueTo.value), day('الأربعاء', wedFrom.value, wedTo.value), day('الخميس', thuFrom.value, thuTo.value), day('الجمعة', friFrom.value, friTo.value)
-  ].filter(Boolean).join('\n');
-
-  const text = `حجز اشتراك شهري (مدارس/دروس) 📘\nولي الأمر: ${n} — ${p}\nالعدد: ${childrenText}\nخط السير: ${routeText}\nالنظام: ${dirText}\nالتكلفة التقديرية: ${estimate}\n\nالمواعيد:\n${days || '—'}\n— أُرسل عبر تطبيق Fly Express`;
+  const text = `حجز اشتراك شهري (مدارس/دروس) 📘\nولي الأمر: ${pmName.value} — ${pmPhone.value}\nالعدد: ${pmChildrenCount.options[pmChildrenCount.selectedIndex].text}\nالتكلفة التقديرية: ${monthlyEstimateTxt.textContent}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 }
 
-// عجلة الحظ والتشفير
+// عجلة الحظ
 const slices = [
   { text: "خصم 5 ج", key: "5EGP", color: "#ff6b00" },
   { text: "حظ أوفر", key: null, color: "#1e293b" },
@@ -891,7 +766,7 @@ function openClaimWhatsApp() {
   if (pendingClaimUrl) window.open(pendingClaimUrl, '_blank', 'noopener');
 }
 
-// 5 ضغطات على اللوجو لفتح صفحة الأدمن
+// 5 ضغطات على اللوجو لفتح الأدمن
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
   logoClicks++;
@@ -903,7 +778,6 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
   }
 });
 
-// التنقل بين الأقسام
 function switchTab(tabId, navBtn) {
   document.querySelectorAll('.tab-view').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -919,23 +793,6 @@ function switchToForm(formId) {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   }, 100);
 }
-
-// شريط الإشعارات الحية
-const mockOrders = [
-  { title: "🏫 توصيل طالب للمدرسة", desc: "تم استلام الطالب والتوصيل بسلام • منذ دقيقتين" },
-  { title: "📦 طلب طرد سريع", desc: "من قرية بركة إلى الألمنيوم • منذ 4 دقائق" },
-  { title: "🛒 طلبات سوق وخضار", desc: "داخل نجع حمادي • تم الاستلام والتوصيل" },
-  { title: "📸 طلب صيدلية بالصورة", desc: "روشتة عاجلة من وسط البلد • جارٍ التوصيل" }
-];
-let toastIdx = 0;
-setInterval(() => {
-  const t = document.getElementById('liveToast');
-  document.getElementById('toastTitle').textContent = mockOrders[toastIdx].title;
-  document.getElementById('toastDesc').textContent = mockOrders[toastIdx].desc;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 4000);
-  toastIdx = (toastIdx + 1) % mockOrders.length;
-}, 14000);
 </script>
 </body>
 </html>
