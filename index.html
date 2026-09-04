@@ -20,6 +20,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
 <style>
 :root {
   --bg-dark: #070b12;
@@ -61,7 +65,7 @@ body {
   z-index: 1;
 }
 
-/* 🔒 شاشة القفل وبوابة التحقق الإجبارية */
+/* 🔒 شاشة القفل والتحقق برمز SMS */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -184,7 +188,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* بطاقة ترحيب العميل */
 .user-welcome-card {
   background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(0, 229, 255, 0.08));
   border: 1px solid rgba(255, 107, 0, 0.3);
@@ -196,7 +199,6 @@ body {
   justify-content: space-between;
 }
 
-/* نقاط الولاء */
 .loyalty-card {
   background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
   border: 1px solid rgba(255, 107, 0, 0.35);
@@ -213,7 +215,6 @@ body {
 .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b00, #ffb703); border-radius: 999px; transition: width 0.5s ease; }
 .loyalty-sub { font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between; }
 
-/* رادار أمان الطالب المتزامن سحابياً */
 .safety-radar-card {
   background: rgba(18, 26, 43, 0.7);
   border: 1px solid rgba(16, 185, 129, 0.35);
@@ -237,7 +238,6 @@ body {
 }
 .step-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
 
-/* صوّر واطلب */
 .snap-order-banner {
   background: linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(0, 168, 255, 0.08));
   border: 1px dashed var(--accent);
@@ -297,16 +297,6 @@ body {
   background: linear-gradient(90deg, #ff6b00, #ff8c00); margin-top: 6px; font-family: inherit;
 }
 
-.day-grid { display: grid; grid-template-columns: 85px 1fr 1fr; gap: 6px; margin-top: 8px; }
-.day-label { display: flex; align-items: center; font-size: 12px; font-weight: 700; color: var(--text-sub); }
-
-.live-toast {
-  position: fixed; bottom: 80px; left: 16px; right: 16px; max-width: 448px; margin: 0 auto; background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(0, 229, 255, 0.4); border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; gap: 12px;
-  z-index: 99; transform: translateY(120px); opacity: 0; transition: all 0.4s;
-}
-.live-toast.show { transform: translateY(0); opacity: 1; }
-
 .modal-backdrop {
   position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none;
   align-items: center; justify-content: center; padding: 20px;
@@ -333,48 +323,52 @@ body {
 
 <body>
 
-<!-- 🔒 بوابة الدخول الإجبارية والتحقق بالكود -->
+<!-- 🔒 شاشة القفل والتحقق برمز SMS الرسمي عبر Firebase -->
 <div class="auth-gate-screen" id="authGateScreen">
   <div class="gate-card">
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
-    <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">يرجى تسجيل وتأكيد رقمك لبدء استخدام التطبيق</p>
+    <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">سجل برقم هاتفك ليصلك كود التفعيل في رسالة SMS 📲</p>
 
-    <!-- المرحلة 1: إدخال البيانات وطلب كود التفعيل -->
+    <!-- المرحلة 1: إدخال الاسم ورقم الموبايل -->
     <div id="gateStep1">
       <input type="text" id="gateName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
-      <input type="tel" id="gatePhone" class="order-input" placeholder="رقم الهاتف (واتساب 01xxxxxxxxx)" style="margin-bottom:12px;">
-      <button class="order-btn" onclick="requestVerificationCode()">
-        <i class="fa-brands fa-whatsapp"></i> إرسال كود التفعيل واتساب 📲
+      <input type="tel" id="gatePhone" class="order-input" placeholder="رقم الموبايل (مثال: 01012345678)" style="margin-bottom:12px;">
+      
+      <!-- زر استلام رسالة SMS -->
+      <button class="order-btn" id="sendOtpBtn" onclick="requestFirebaseSmsOtp()">
+        إرسال كود التحقق في رسالة SMS 📩
       </button>
+      
+      <!-- حاوية اختبار الأمان الشفافة لفايربيس -->
+      <div id="recaptcha-container" style="margin-top:10px; display:flex; justify-content:center;"></div>
     </div>
 
-    <!-- المرحلة 2: إدخال الكود للتأكيد -->
+    <!-- المرحلة 2: كتابة كود الـ SMS المستلم -->
     <div id="gateStep2" style="display:none;">
       <div style="background:rgba(0, 229, 255, 0.08); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; padding:10px; margin-bottom:12px;">
-        <span style="font-size:11px; color:#cbd5e1;">تم توليد كود التأكيد الخاص بك. اكتب الكود هنا لفتح التطبيق فوراً:</span>
+        <span style="font-size:11px; color:#cbd5e1;">أدخل رمز التحقق (6 أرقام) الذي وصلك في رسالة SMS على هاتفك:</span>
       </div>
-      <input type="number" id="gateOtpInput" class="order-input" placeholder="أدخل الكود المكون من 4 أرقام" style="text-align:center; font-size:18px; letter-spacing:4px; margin-bottom:10px;">
-      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyAndUnlockApp()">
+      <input type="number" id="gateSmsCode" class="order-input" placeholder="------" style="text-align:center; font-size:22px; letter-spacing:6px; margin-bottom:12px;">
+      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyFirebaseSmsOtp()">
         تأكيد الكود وفتح التطبيق 🚀
       </button>
-      <button onclick="backToStep1()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; margin-top:10px; cursor:pointer;">
-        تعديل رقم الهاتف ✏️
+      <button onclick="backToGateStep1()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; margin-top:10px; cursor:pointer;">
+        تغيير رقم الهاتف ✏️
       </button>
     </div>
   </div>
 </div>
 
-<!-- المحتوى الرئيسي للتطبيق (يفتح فقط بعد إدخال الكود) -->
+<!-- المحتوى الكامل للتطبيق (محمي ومقفل حتى إتمام التحقق) -->
 <div class="app-container" id="mainAppContent" style="display:none;">
 
-  <!-- Header -->
   <header class="app-header">
     <div class="profile-section" id="logoTrigger">
       <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="profile-info">
         <h1>Fly Express</h1>
-        <p id="userStatusTxt">حساب موثق</p>
+        <p id="userStatusTxt">حساب موثق ✅</p>
       </div>
     </div>
     
@@ -386,13 +380,12 @@ body {
     </div>
   </header>
 
-  <!-- tab 1: الرئيسية -->
+  <!-- تبويب 1: الرئيسية -->
   <main id="tab-home" class="tab-view active">
     
-    <!-- كارت ترحيب العميل -->
     <div class="user-welcome-card" id="userWelcomeBox">
       <div>
-        <div style="font-size:11px; color:var(--text-sub);">أهلاً بك معنا يا كابتن 🌟</div>
+        <div style="font-size:11px; color:var(--text-sub);">أهلاً بك معنا 🌟</div>
         <div style="font-size:14px; font-weight:900; color:#fff;" id="welcomeUserName">عميلنا العزيز</div>
       </div>
       <button onclick="logoutUser()" style="background:transparent; border:0; color:#ef4444; font-size:11px; font-weight:800; font-family:inherit; cursor:pointer;">
@@ -413,7 +406,7 @@ body {
       </div>
     </div>
 
-    <!-- رادار أمان الطالب -->
+    <!-- رادار الأمان السحابي المباشر -->
     <div class="safety-radar-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-size:12px; font-weight:800; color:#34d399;"><i class="fa-solid fa-shield-halved"></i> رادار أمان رحلة المدرسة اليومية</span>
@@ -435,13 +428,13 @@ body {
       </div>
     </div>
 
-    <!-- صوّر واطلب فوراً -->
+    <!-- صوّر واطلب -->
     <div class="snap-order-banner" onclick="openSnapModal()">
       <div style="display:flex; align-items:center; gap:12px;">
         <i class="fa-solid fa-camera" style="font-size:26px; color:var(--accent);"></i>
         <div>
           <h4 style="font-size:13px; font-weight:900; color:#fff;">صوّر واطلب فوراً 📸</h4>
-          <span style="font-size:11px; color:#cbd5e1;">كسلان تكتب؟ صوّر الروشتة أو ورقة السوق بضغطة زر</span>
+          <span style="font-size:11px; color:#cbd5e1;">كسلان تكتب؟ صوّر الروشتة أو طلبات البيت بضغطة زر</span>
         </div>
       </div>
       <i class="fa-solid fa-chevron-left" style="color:var(--accent); font-size:12px;"></i>
@@ -463,7 +456,7 @@ body {
     <div class="services-grid">
       <div class="service-card" onclick="switchToForm('sec-order')">
         <div class="service-icon ic-orange"><i class="fa-solid fa-box"></i></div>
-        <div><h4>طلب أوردر / طرد</h4><span>توصيل فوري واستلام</span></div>
+        <div><h4>طلب أوردر / طرد</h4><span>توصيل واستلام فوري</span></div>
       </div>
       <div class="service-card" onclick="switchToForm('sec-market')">
         <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
@@ -471,7 +464,7 @@ body {
       </div>
       <div class="service-card" onclick="switchToForm('sec-school')">
         <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
-        <div><h4>مشاوير المدرسة</h4><span>ذهاب وعودة آمنة</span></div>
+        <div><h4>مشاوير المدرسة</h4><span>ذهاب وعودة بأمان تام</span></div>
       </div>
       <div class="service-card" onclick="switchToForm('sec-monthly')">
         <div class="service-icon ic-purple"><i class="fa-solid fa-calculator"></i></div>
@@ -480,11 +473,10 @@ body {
     </div>
   </main>
 
-  <!-- tab 2: الطلبات -->
+  <!-- تبويب 2: الطلبات -->
   <section id="tab-orders" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار</div>
 
-    <!-- أوردر وطرد -->
     <div class="form-card" id="sec-order" style="margin-bottom:14px;">
       <h3 style="font-size:15px; margin-bottom:10px; color:#ff8c00;">📦 أوردر / طرد فوري</h3>
       <div class="order-row">
@@ -502,7 +494,6 @@ body {
       <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
     </div>
 
-    <!-- طلبات السوق -->
     <div class="form-card" id="sec-market" style="margin-bottom:14px;">
       <h3 style="font-size:15px; margin-bottom:10px; color:#00a8ff;">🛒 طلبات السوق والطلبات المنزلية</h3>
       <div class="order-row single">
@@ -519,7 +510,6 @@ body {
       <button class="order-btn" onclick="sendMarket()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
     </div>
 
-    <!-- توصيل المدرسة -->
     <div class="form-card" id="sec-school" style="margin-bottom:14px;">
       <h3 style="font-size:15px; margin-bottom:10px; color:#10b981;">🏫 توصيل ابني المدرسة (يومي)</h3>
       <div class="order-row">
@@ -540,7 +530,6 @@ body {
       <button class="order-btn" onclick="sendSchool()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
     </div>
 
-    <!-- حاسبة المدارس والدروس الشهرية بخصم الإخوة -->
     <div class="form-card" id="sec-monthly">
       <h3 style="font-size:15px; margin-bottom:6px; color:#c084fc;">📘 حاسبة واشتراك المدارس والدروس الشهرية</h3>
       <div class="order-row">
@@ -581,7 +570,7 @@ body {
     </div>
   </section>
 
-  <!-- tab 3: الأسعار -->
+  <!-- تبويب 3: الأسعار -->
   <section id="tab-prices" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار التقديرية</div>
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">30 ج</span></div>
@@ -591,7 +580,7 @@ body {
     <button class="order-btn" onclick="window.open('https://wa.me/201017908076','_blank')"><i class="fa-brands fa-whatsapp"></i> تأكيد تكلفة مشوار خاص عبر واتساب</button>
   </section>
 
-  <!-- tab 4: التواصل -->
+  <!-- تبويب 4: التواصل -->
   <section id="tab-contact" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
     <a class="order-btn" style="background:#25d366; color:#000; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://wa.me/201017908076" target="_blank">
@@ -607,7 +596,7 @@ body {
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
 
-  <!-- نافذة صوّر واطلب مع التنبيه الذكي -->
+  <!-- نافذة صوّر واطلب -->
   <div class="modal-backdrop" id="snapModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeSnapModal()">&times;</button>
@@ -616,8 +605,8 @@ body {
       <div style="background:rgba(0, 229, 255, 0.1); border:1px dashed var(--accent); border-radius:14px; padding:12px; margin:12px 0;">
         <i class="fa-solid fa-circle-info" style="color:var(--accent); font-size:20px; margin-bottom:4px;"></i>
         <div style="font-size:11px; color:#cbd5e1; line-height:1.4;">
-          عند الضغط على الزر، سيفتح لك شات الواتساب مباشرة:  
-          <br><strong style="color:#fff;">اضغط على علامة المشبك 📎 أو الكاميرا 📷 بجوار الكتابة في واتساب لإرفاق الصورة فوراً مع الطلب.</strong>
+          عند الضغط على الزر، سيفتح شات الواتساب:  
+          <br><strong style="color:#fff;">اضغط على علامة المشبك 📎 أو الكاميرا 📷 لإرفاق الصورة مع الطلب.</strong>
         </div>
       </div>
 
@@ -650,7 +639,7 @@ body {
       <div id="wheelResult" style="margin-top:10px; font-size:12px; font-weight:800; min-height:20px; line-height:1.4;"></div>
       
       <button id="waClaimBtn" class="order-btn" style="display:none; background:#25d366; color:#000;" onclick="openClaimWhatsApp()">
-        <i class="fa-brands fa-whatsapp"></i> تفعيل وتثبيت الخصم عبر واتساب الآن 📲
+        <i class="fa-brands fa-whatsapp"></i> تفعيل وتثبيت الخصم عبر واتساب 📲
       </button>
     </div>
   </div>
@@ -658,16 +647,28 @@ body {
 </div>
 
 <script>
+// -------------------------------------------------------------
+// 1. تهيئة مشروع Firebase ببياناتك الخاصة
+// -------------------------------------------------------------
+const firebaseConfig = {
+  apiKey: "AIzaSyApqkjD46xobFtY8XY41XRVZItnLGZx098",
+  authDomain: "flyexpress-a0f5a.firebaseapp.com",
+  projectId: "flyexpress-a0f5a",
+  storageBucket: "flyexpress-a0f5a.firebasestorage.app",
+  messagingSenderId: "1053055752719",
+  appId: "1:1053055752719:web:97ac05aa117ffbf6a8617a"
+};
+firebase.initializeApp(firebaseConfig);
+
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 let pendingClaimUrl = "";
-let generatedOtp = null;
-let tempUserData = {};
+let tempName = "";
 
 // -------------------------------------------------------------
-// 1. فحص هل المستخدم مسجل وموثق لفتح التطبيق
+// 2. التحقق من حالة تسجيل الدخول وبوابة الأمان
 // -------------------------------------------------------------
 function checkAppAccess() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
@@ -682,7 +683,6 @@ function checkAppAccess() {
     document.getElementById('userStatusTxt').textContent = user.name;
     document.getElementById('welcomeUserName').textContent = user.name;
     
-    // ملء بياناته المسجلة في كل الخانات
     ['orderName', 'marketName', 'pmName', 'snapName'].forEach(id => {
       const el = document.getElementById(id); if (el) el.value = user.name;
     });
@@ -692,66 +692,101 @@ function checkAppAccess() {
   } else {
     gateScreen.style.display = "flex";
     mainApp.style.display = "none";
+    initRecaptcha();
   }
 }
-checkAppAccess();
 
-// طلب كود التفعيل عبر واتساب
-function requestVerificationCode() {
+function initRecaptcha() {
+  if (!window.recaptchaVerifier) {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+      'size': 'invisible',
+      'callback': (response) => {}
+    });
+  }
+}
+
+// إرسال كود الـ SMS عبر فايربيس
+function requestFirebaseSmsOtp() {
   const name = document.getElementById('gateName').value.trim();
-  const phone = document.getElementById('gatePhone').value.trim();
+  let phone = document.getElementById('gatePhone').value.trim();
+  const sendBtn = document.getElementById('sendOtpBtn');
 
   if (!name || !/^01[0125][0-9]{8}$/.test(phone)) {
     alert("من فضلك أدخل اسمك ورقم هاتف مصري صحيح يبدأ بـ 01");
     return;
   }
 
-  // توليد كود من 4 أرقام عشوائي
-  generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-  tempUserData = { name, phone, otp: generatedOtp };
+  tempName = name;
+  let internationalPhone = "+2" + phone;
 
-  // رسالة واتساب للتحقق
-  const otpMsg = `مرحباً Fly Express 🚀\nأنا: ${name}\nأرغب في تفعيل حسابي في التطبيق بالرقم: ${phone}\nكود تفعيل حسابي هو: [ ${generatedOtp} ]`;
-  
-  // فتح الواتساب لإرسال الكود والتأكد
-  window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(otpMsg)}`, '_blank');
+  sendBtn.disabled = true;
+  sendBtn.textContent = "جاري إرسال الرسالة...";
 
-  // إظهار خانة إدخال الكود
-  document.getElementById('gateStep1').style.display = "none";
-  document.getElementById('gateStep2').style.display = "block";
-  alert(`تم تجهيز كود التفعيل الخاص بك وهو: (${generatedOtp}) - اكتبه لتأكيد وتفعيل الحساب فوراً!`);
+  initRecaptcha();
+  const appVerifier = window.recaptchaVerifier;
+
+  firebase.auth().signInWithPhoneNumber(internationalPhone, appVerifier)
+    .then((confirmationResult) => {
+      window.confirmationResult = confirmationResult;
+      document.getElementById('gateStep1').style.display = "none";
+      document.getElementById('gateStep2').style.display = "block";
+      alert("تم إرسال كود التحقق في رسالة SMS على هاتفك بنجاح 📩");
+    }).catch((error) => {
+      sendBtn.disabled = false;
+      sendBtn.textContent = "إرسال كود التحقق في رسالة SMS 📩";
+      alert("تعذر إرسال الرسالة: " + error.message);
+    });
 }
 
-function verifyAndUnlockApp() {
-  const enteredOtp = document.getElementById('gateOtpInput').value.trim();
-
-  if (enteredOtp === tempUserData.otp && generatedOtp) {
-    localStorage.setItem('fly_verified_user', JSON.stringify({
-      name: tempUserData.name,
-      phone: tempUserData.phone,
-      time: Date.now()
-    }));
-    alert(`تم التحقق بنجاح! مرحباً بك يا ${tempUserData.name} في تطبيق Fly Express 🎉`);
-    checkAppAccess();
-  } else {
-    alert("كود التفعيل غير صحيح! يرجى التأكد من كتابة الكود المكون من 4 أرقام.");
+// تأكيد كود الـ SMS وفتح التطبيق
+function verifyFirebaseSmsOtp() {
+  const code = document.getElementById('gateSmsCode').value.trim();
+  if (!code || code.length < 6) {
+    alert("يرجى كتابة كود التحقق المكون من 6 أرقام");
+    return;
   }
+
+  if (!window.confirmationResult) {
+    alert("حدث خطأ في الجلسة، يرجى إعادة إرسال الكود");
+    return;
+  }
+
+  window.confirmationResult.confirm(code)
+    .then((result) => {
+      const user = result.user;
+      let localPhone = user.phoneNumber.replace("+2", "");
+      localStorage.setItem('fly_verified_user', JSON.stringify({
+        name: tempName || "عميل Fly Express",
+        phone: localPhone,
+        uid: user.uid,
+        time: Date.now()
+      }));
+      alert(`تم التحقق بنجاح! مرحباً بك في تطبيق Fly Express 🚀`);
+      checkAppAccess();
+    }).catch((error) => {
+      alert("كود التحقق غير صحيح أو منتهي الصلاحية ❌");
+    });
 }
 
-function backToStep1() {
+function backToGateStep1() {
   document.getElementById('gateStep1').style.display = "block";
   document.getElementById('gateStep2').style.display = "none";
+  const sendBtn = document.getElementById('sendOtpBtn');
+  sendBtn.disabled = false;
+  sendBtn.textContent = "إرسال كود التحقق في رسالة SMS 📩";
 }
 
 function logoutUser() {
   if (confirm("هل ترغب بالفعل في تسجيل الخروج وقفل التطبيق؟")) {
-    localStorage.removeItem('fly_verified_user');
-    checkAppAccess();
+    firebase.auth().signOut().then(() => {
+      localStorage.removeItem('fly_verified_user');
+      checkAppAccess();
+    });
   }
 }
 
 // -------------------------------------------------------------
-// 2. المزامنة السحابية الحية (رادار + حالة التوصيل)
+// 3. المزامنة السحابية الحية (رادار + حالة التوصيل)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -949,6 +984,11 @@ function spinWheel() {
   const spinBtn = document.getElementById('spinBtn');
   const waClaimBtn = document.getElementById('waClaimBtn');
 
+  if (!/^01[0125][0-9]{8}$/.test(phone)) {
+    alert("أدخل رقم موبايل مصري صحيح (11 رقم)");
+    return;
+  }
+
   isSpinning = true;
   spinBtn.disabled = true;
   res.style.color = "#34d399";
@@ -992,7 +1032,7 @@ function openClaimWhatsApp() {
   if (pendingClaimUrl) window.open(pendingClaimUrl, '_blank', 'noopener');
 }
 
-// 5 ضغطات على اللوجو لفتح الأدمن
+// 5 ضغطات على الشعار لفتح الأدمن
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
   logoClicks++;
@@ -1019,6 +1059,9 @@ function switchToForm(formId) {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   }, 100);
 }
+
+// بدء الفحص عند فتح الصفحة
+checkAppAccess();
 </script>
 </body>
 </html>
