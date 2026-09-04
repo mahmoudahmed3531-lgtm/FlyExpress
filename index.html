@@ -7,7 +7,8 @@
 <meta name="description" content="Fly Express: دليفري سريع في نجع حمادي — اطلب مشوارك فورًا عبر واتساب.">
 <meta name="theme-color" content="#0d1117">
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='26' fill='%23131b2e' stroke='%23ff6b00' stroke-width='4'/%3E%3Cpath d='M15 78 C25 78 30 80 40 80' stroke='%2300e5ff' stroke-width='3' stroke-linecap='round' stroke-dasharray='4 4'/%3E%3Ccircle cx='42' cy='74' r='14' fill='none' stroke='%23ff6b00' stroke-width='4'/%3E%3Ccircle cx='86' cy='74' r='14' fill='none' stroke='%23ff6b00' stroke-width='4'/%3E%3Cpath d='M42 74 L58 74 L70 56 L86 74' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linejoin='round'/%3E%3Crect x='34' y='46' width='16' height='14' rx='3' fill='%23ff6b00'/%3E%3Ccircle cx='68' cy='38' r='7' fill='%23ffffff'/%3E%3Cpath d='M64 45 L54 56 L68 56' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M70 52 L80 50' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round'/%3E%3Ctext x='60' y='108' fill='%23ff6b00' font-family='sans-serif' font-weight='900' font-size='13' text-anchor='middle' letter-spacing='0.5'%3EFLY EXPRESS%3C/text%3E%3C/svg%3E"/>
+<link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
+<meta property="og:image" content="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -30,15 +31,28 @@
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
 input, textarea, select { user-select: auto; }
 
-/* خلفية المدينة الليلية مع أضواء السرعة والتعتيم */
 body {
-  background: 
-    linear-gradient(rgba(9, 13, 22, 0.88), rgba(9, 13, 22, 0.94)),
-    url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat fixed;
+  background-color: var(--bg-dark);
   color: var(--text-main);
   min-height: 100vh;
   padding-bottom: 90px;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* طبقة الخلفية الليلية المتوافقة تماماً مع شاشات الموبايل */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    linear-gradient(rgba(9, 13, 22, 0.85), rgba(9, 13, 22, 0.92)),
+    url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1000&q=80');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
 }
 
 .app-container {
@@ -68,17 +82,13 @@ body {
   gap: 12px;
 }
 
-.logo-box {
-  width: 54px;
-  height: 54px;
+.profile-img {
+  width: 50px;
+  height: 50px;
   border-radius: 16px;
-  background: #131b2e;
-  border: 1.5px solid var(--primary);
+  object-fit: cover;
+  border: 2px solid var(--primary);
   box-shadow: 0 0 16px var(--primary-glow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
   flex-shrink: 0;
 }
 
@@ -375,19 +385,7 @@ body {
 
   <header class="app-header">
     <div class="profile-section">
-      <div class="logo-box">
-        <svg viewBox="0 0 120 120" width="46" height="46">
-          <path d="M12 76 C22 76 28 78 38 78" stroke="#00e5ff" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 4"/>
-          <circle cx="42" cy="74" r="14" fill="none" stroke="#ff6b00" stroke-width="4"/>
-          <circle cx="86" cy="74" r="14" fill="none" stroke="#ff6b00" stroke-width="4"/>
-          <path d="M42 74 L58 74 L70 56 L86 74" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
-          <rect x="34" y="46" width="16" height="14" rx="3" fill="#ff6b00"/>
-          <circle cx="68" cy="38" r="7" fill="#ffffff"/>
-          <path d="M64 45 L54 56 L68 56" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M70 52 L80 50" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-          <text x="60" y="106" fill="#ff6b00" font-family="sans-serif" font-weight="900" font-size="12" text-anchor="middle" letter-spacing="0.5">FLY EXPRESS</text>
-        </svg>
-      </div>
+      <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="profile-info">
         <h1>Fly Express</h1>
         <p>نجع حمادي وقراها</p>
