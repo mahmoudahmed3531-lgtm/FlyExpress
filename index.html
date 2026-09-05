@@ -460,9 +460,9 @@ body {
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
 
-<!-- مقطوعة مونامور (Mon Amour Instrumental) -->
+<!-- مشغل الموسيقى (ملف جيتار كلاسيكي مباشر عالي السرعة) -->
 <audio id="bgMusicPlayer" loop preload="auto">
-  <source src="https://archive.org/download/mon-amour-instrumental-classic/Mon%20Amour%20Guitar.mp3" type="audio/mp3">
+  <source src="https://cdn.pixabay.com/download/audio/2022/11/06/audio_2c2a04803d.mp3?filename=spanish-guitar-romantic-125372.mp3" type="audio/mp3">
 </audio>
 
 <!-- 🔒 شاشة القفل وبوابة الدخول -->
@@ -843,22 +843,23 @@ let currentOtpFlow = "";
 const bgMusic = document.getElementById('bgMusicPlayer');
 const musicBtn = document.getElementById('musicToggleBtn');
 const musicIcon = document.getElementById('musicIcon');
+let audioUnlocked = false;
 
-function playMusicSafely() {
-  if (bgMusic.paused) {
-    bgMusic.volume = 0.22;
-    bgMusic.play().then(() => {
-      musicBtn.classList.add('playing');
-      musicIcon.className = "fa-solid fa-volume-high";
-    }).catch(() => {
-      console.log("المتصفح يطلب نقرة للتشغيل التلقائي");
-    });
-  }
+function startAudioPlayback() {
+  if (!bgMusic) return;
+  bgMusic.volume = 0.25;
+  bgMusic.play().then(() => {
+    audioUnlocked = true;
+    musicBtn.classList.add('playing');
+    musicIcon.className = "fa-solid fa-volume-high";
+  }).catch(() => {
+    console.log("بانتظار تفاعل المستخدم للتشغيل التلقائي");
+  });
 }
 
 function toggleBackgroundMusic() {
   if (bgMusic.paused) {
-    playMusicSafely();
+    startAudioPlayback();
   } else {
     bgMusic.pause();
     musicBtn.classList.remove('playing');
@@ -866,21 +867,25 @@ function toggleBackgroundMusic() {
   }
 }
 
-// التشغيل التلقائي لموسيقى مونامور بعد 10 ثوانٍ من فتح الموقع
+// محاولة التشغيل بعد 10 ثوانٍ
 setTimeout(() => {
-  playMusicSafely();
+  startAudioPlayback();
 }, 10000);
 
-// تفعيل الصوت عند أول تفاعل إذا منعه المتصفح
-window.addEventListener('click', function unlockAudioOnce() {
-  if (bgMusic.paused) {
-    playMusicSafely();
+// حل أزمة سياسة المتصفح: فك حظر الصوت فور لمس الشاشة لأول مرة
+function unlockAudioOnFirstTouch() {
+  if (!audioUnlocked) {
+    startAudioPlayback();
+    document.removeEventListener('click', unlockAudioOnFirstTouch);
+    document.removeEventListener('touchstart', unlockAudioOnFirstTouch);
   }
-  window.removeEventListener('click', unlockAudioOnce);
-}, { once: true });
+}
+
+document.addEventListener('click', unlockAudioOnFirstTouch, { passive: true });
+document.addEventListener('touchstart', unlockAudioOnFirstTouch, { passive: true });
 
 // -------------------------------------------------------------
-// 2. محاكي إشعارات الطلبات الحية كل 30 ثانية
+// 2. إشعارات الطلبات الحية التلقائية كل 30 ثانية
 // -------------------------------------------------------------
 const sampleOrders = [
   { title: "طلب توصيل طرد 📦", desc: "من شارع المحطة إلى قرية بركة" },
