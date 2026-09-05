@@ -98,7 +98,7 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(15, 23, 42, 0.9);
   backdrop-filter: blur(12px);
   border: 1.5px solid var(--accent);
   color: var(--accent);
@@ -114,7 +114,7 @@ body {
 .music-fab-btn.playing {
   border-color: #10b981;
   color: #10b981;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.55);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
   animation: rotateDisc 4s linear infinite;
 }
 
@@ -123,7 +123,7 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* إشعار توصيل الطلبات المنبثق التلقائي */
+/* شريط إشعار خدمات وطلبات نجع حمادي */
 .live-toast-box {
   position: fixed;
   bottom: 76px;
@@ -131,7 +131,7 @@ body {
   left: 68px;
   background: rgba(13, 21, 39, 0.95);
   border: 1px solid var(--accent);
-  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
   backdrop-filter: blur(10px);
   border-radius: 14px;
   padding: 8px 12px;
@@ -446,9 +446,9 @@ body {
 
 <body>
 
-<!-- شريط إشعار الطلبات المباشرة كل 30 ثانية -->
+<!-- شريط إشعار خدمات وطلبات نجع حمادي كل 30 ثانية -->
 <div class="live-toast-box" id="liveOrderToast">
-  <div class="live-toast-icon"><i class="fa-solid fa-motorcycle"></i></div>
+  <div class="live-toast-icon" id="toastIcon"><i class="fa-solid fa-motorcycle"></i></div>
   <div style="text-align:right; overflow:hidden;">
     <div style="font-size:11px; font-weight:900; color:#fff;" id="toastTitle">طلب توصيل جديد الآن 🛵</div>
     <div style="font-size:10px; color:var(--text-sub); white-space:nowrap; text-overflow:ellipsis;" id="toastDesc">من شارع المحطة إلى قرية بركة</div>
@@ -456,13 +456,13 @@ body {
 </div>
 
 <!-- زر الموسيقى العائم -->
-<button class="music-fab-btn" id="musicToggleBtn" onclick="toggleBackgroundMusic()" title="تشغيل / كتم موسيقى مونامور">
+<button class="music-fab-btn" id="musicToggleBtn" onclick="toggleBackgroundMusic()" title="تشغيل / إيقاف الموسيقى">
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
 
-<!-- مشغل الموسيقى (ملف جيتار كلاسيكي مباشر عالي السرعة) -->
-<audio id="bgMusicPlayer" loop preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2022/11/06/audio_2c2a04803d.mp3?filename=spanish-guitar-romantic-125372.mp3" type="audio/mp3">
+<!-- ملف صوتي هادئ ومباشر -->
+<audio id="bgMusicPlayer" loop preload="none">
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mp3">
 </audio>
 
 <!-- 🔒 شاشة القفل وبوابة الدخول -->
@@ -823,7 +823,7 @@ body {
 
 <script>
 // -------------------------------------------------------------
-// 1. مفاتيح EmailJS ومتحكمات الصوت التلقائية
+// 1. مفاتيح EmailJS ومتحكمات الصوت اليدوية
 // -------------------------------------------------------------
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
@@ -843,23 +843,17 @@ let currentOtpFlow = "";
 const bgMusic = document.getElementById('bgMusicPlayer');
 const musicBtn = document.getElementById('musicToggleBtn');
 const musicIcon = document.getElementById('musicIcon');
-let audioUnlocked = false;
 
-function startAudioPlayback() {
-  if (!bgMusic) return;
-  bgMusic.volume = 0.25;
-  bgMusic.play().then(() => {
-    audioUnlocked = true;
-    musicBtn.classList.add('playing');
-    musicIcon.className = "fa-solid fa-volume-high";
-  }).catch(() => {
-    console.log("بانتظار تفاعل المستخدم للتشغيل التلقائي");
-  });
-}
-
+// تشغيل وإيقاف الموسيقى بنقرة زر واحدة
 function toggleBackgroundMusic() {
   if (bgMusic.paused) {
-    startAudioPlayback();
+    bgMusic.volume = 0.3;
+    bgMusic.play().then(() => {
+      musicBtn.classList.add('playing');
+      musicIcon.className = "fa-solid fa-volume-high";
+    }).catch(err => {
+      alert("تعذر تشغيل الصوت، تأكد من الاتصال بالإنترنت.");
+    });
   } else {
     bgMusic.pause();
     musicBtn.classList.remove('playing');
@@ -867,57 +861,43 @@ function toggleBackgroundMusic() {
   }
 }
 
-// محاولة التشغيل بعد 10 ثوانٍ
-setTimeout(() => {
-  startAudioPlayback();
-}, 10000);
-
-// حل أزمة سياسة المتصفح: فك حظر الصوت فور لمس الشاشة لأول مرة
-function unlockAudioOnFirstTouch() {
-  if (!audioUnlocked) {
-    startAudioPlayback();
-    document.removeEventListener('click', unlockAudioOnFirstTouch);
-    document.removeEventListener('touchstart', unlockAudioOnFirstTouch);
-  }
-}
-
-document.addEventListener('click', unlockAudioOnFirstTouch, { passive: true });
-document.addEventListener('touchstart', unlockAudioOnFirstTouch, { passive: true });
-
 // -------------------------------------------------------------
-// 2. إشعارات الطلبات الحية التلقائية كل 30 ثانية
+// 2. إشعارات خدمات وطلبات نجع حمادي الحية كل 30 ثانية
 // -------------------------------------------------------------
-const sampleOrders = [
-  { title: "طلب توصيل طرد 📦", desc: "من شارع المحطة إلى قرية بركة" },
-  { title: "طلب علاج وصيدلية 💊", desc: "صيدلية السلام إلى شارع 30 بنجع حمادي" },
-  { title: "مشوار مدرسة صباحي 🏫", desc: "من قرية هو إلى مدرسة نجع حمادي الثانوية" },
-  { title: "طلبات سوبرماركت 🛒", desc: "من سوق نجع حمادي إلى الألمنيوم" },
-  { title: "طلب دليفري مطعم 🛵", desc: "من شارع الترعة إلى عمارات الساحل" }
+const localServicesList = [
+  { icon: "fa-notes-medical", title: "طوارئ علاج وصيدلية 💊", desc: "طلب روشتة عاجلة من صيدلية السلام إلى شارع 30" },
+  { icon: "fa-box", title: "توصيل طرد فوري 📦", desc: "استلام أوردر من شارع المحطة والتوصيل لقرية بركة" },
+  { icon: "fa-graduation-cap", title: "مشوار مدرسة صباحي 🏫", desc: "توصيل طالب بأمان من قرية هو إلى مدرسة الزراعة" },
+  { icon: "fa-basket-shopping", title: "طلبات سوبرماركت وخضار 🛒", desc: "توصيل طلبات منزلية طازجة من السوق إلى نجع حمادي" },
+  { icon: "fa-calculator", title: "حجز اشتراك دروس شهري 📘", desc: "اشتراك شهري لطالبين مع تطبيق خصم الإخوة بالألمنيوم" },
+  { icon: "fa-motorcycle", title: "دليفري مطاعم سريع 🍔", desc: "طلب وجبة من شارع الترعة إلى عمارات الساحل" }
 ];
 
-let orderToastIndex = 0;
-function showNextLiveOrder() {
+let toastIndex = 0;
+function showNextServiceToast() {
   const toast = document.getElementById('liveOrderToast');
+  const tIcon = document.getElementById('toastIcon');
   const tTitle = document.getElementById('toastTitle');
   const tDesc = document.getElementById('toastDesc');
-  const ord = sampleOrders[orderToastIndex % sampleOrders.length];
+  const item = localServicesList[toastIndex % localServicesList.length];
 
-  tTitle.textContent = ord.title;
-  tDesc.textContent = ord.desc;
+  tIcon.innerHTML = `<i class="fa-solid ${item.icon}"></i>`;
+  tTitle.textContent = item.title;
+  tDesc.textContent = item.desc;
 
   toast.classList.add('show');
-  orderToastIndex++;
+  toastIndex++;
 
   setTimeout(() => {
     toast.classList.remove('show');
-  }, 5000);
+  }, 6000);
 }
 
-// البدء بعد 5 ثوانٍ ثم التكرار كل 30 ثانية
+// تشغيل أول إشعار بعد 4 ثوانٍ ثم تكراره كل 30 ثانية
 setTimeout(() => {
-  showNextLiveOrder();
-  setInterval(showNextLiveOrder, 30000);
-}, 5000);
+  showNextServiceToast();
+  setInterval(showNextServiceToast, 30000);
+}, 4000);
 
 function getStoredUsers() {
   return JSON.parse(localStorage.getItem('fly_registered_users') || "[]");
