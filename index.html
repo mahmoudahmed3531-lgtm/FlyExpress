@@ -41,7 +41,6 @@
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
 input, textarea, select { user-select: auto; }
 
-/* تأثير تدرج الخلفية RGB المحيطي التفاعلي */
 @keyframes bgRgbShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -68,7 +67,6 @@ body {
   z-index: 1;
 }
 
-/* إضاءة وتوهج RGB الانسيابي للكروت البارزة */
 @keyframes rgbGlowFrame {
   0% {
     border-color: rgba(255, 107, 0, 0.6);
@@ -92,7 +90,7 @@ body {
   animation: rgbGlowFrame 6s infinite alternate ease-in-out;
 }
 
-/* زر الموسيقى العائم الأنيق */
+/* زر الموسيقى العائم */
 .music-fab-btn {
   position: fixed;
   bottom: 80px;
@@ -123,6 +121,45 @@ body {
 @keyframes rotateDisc {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* إشعار توصيل الطلبات المنبثق التلقائي */
+.live-toast-box {
+  position: fixed;
+  bottom: 76px;
+  right: 14px;
+  left: 68px;
+  background: rgba(13, 21, 39, 0.95);
+  border: 1px solid var(--accent);
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 140;
+  transform: translateY(120%);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.live-toast-box.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.live-toast-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(0, 229, 255, 0.15);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
 }
 
 /* 🔒 شاشة القفل وبوابة الدخول */
@@ -409,14 +446,23 @@ body {
 
 <body>
 
+<!-- شريط إشعار الطلبات المباشرة كل 30 ثانية -->
+<div class="live-toast-box" id="liveOrderToast">
+  <div class="live-toast-icon"><i class="fa-solid fa-motorcycle"></i></div>
+  <div style="text-align:right; overflow:hidden;">
+    <div style="font-size:11px; font-weight:900; color:#fff;" id="toastTitle">طلب توصيل جديد الآن 🛵</div>
+    <div style="font-size:10px; color:var(--text-sub); white-space:nowrap; text-overflow:ellipsis;" id="toastDesc">من شارع المحطة إلى قرية بركة</div>
+  </div>
+</div>
+
 <!-- زر الموسيقى العائم -->
-<button class="music-fab-btn" id="musicToggleBtn" onclick="toggleBackgroundMusic()" title="تشغيل / كتم الموسيقى الهادئة">
+<button class="music-fab-btn" id="musicToggleBtn" onclick="toggleBackgroundMusic()" title="تشغيل / كتم موسيقى مونامور">
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
 
-<!-- مقطع صوتي هادئ مجاني (Lo-Fi Ambient) -->
-<audio id="bgMusicPlayer" loop preload="none">
-  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mp3">
+<!-- مقطوعة مونامور (Mon Amour Instrumental) -->
+<audio id="bgMusicPlayer" loop preload="auto">
+  <source src="https://archive.org/download/mon-amour-instrumental-classic/Mon%20Amour%20Guitar.mp3" type="audio/mp3">
 </audio>
 
 <!-- 🔒 شاشة القفل وبوابة الدخول -->
@@ -777,7 +823,7 @@ body {
 
 <script>
 // -------------------------------------------------------------
-// 1. مفاتيح EmailJS ومتحكمات الصوت
+// 1. مفاتيح EmailJS ومتحكمات الصوت التلقائية
 // -------------------------------------------------------------
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
@@ -798,21 +844,75 @@ const bgMusic = document.getElementById('bgMusicPlayer');
 const musicBtn = document.getElementById('musicToggleBtn');
 const musicIcon = document.getElementById('musicIcon');
 
-function toggleBackgroundMusic() {
+function playMusicSafely() {
   if (bgMusic.paused) {
-    bgMusic.volume = 0.25;
+    bgMusic.volume = 0.22;
     bgMusic.play().then(() => {
       musicBtn.classList.add('playing');
       musicIcon.className = "fa-solid fa-volume-high";
     }).catch(() => {
-      alert("اضغط في أي مكان بالشاشة أولاً لتفعيل تشغيل الصوت.");
+      console.log("المتصفح يطلب نقرة للتشغيل التلقائي");
     });
+  }
+}
+
+function toggleBackgroundMusic() {
+  if (bgMusic.paused) {
+    playMusicSafely();
   } else {
     bgMusic.pause();
     musicBtn.classList.remove('playing');
     musicIcon.className = "fa-solid fa-music";
   }
 }
+
+// التشغيل التلقائي لموسيقى مونامور بعد 10 ثوانٍ من فتح الموقع
+setTimeout(() => {
+  playMusicSafely();
+}, 10000);
+
+// تفعيل الصوت عند أول تفاعل إذا منعه المتصفح
+window.addEventListener('click', function unlockAudioOnce() {
+  if (bgMusic.paused) {
+    playMusicSafely();
+  }
+  window.removeEventListener('click', unlockAudioOnce);
+}, { once: true });
+
+// -------------------------------------------------------------
+// 2. محاكي إشعارات الطلبات الحية كل 30 ثانية
+// -------------------------------------------------------------
+const sampleOrders = [
+  { title: "طلب توصيل طرد 📦", desc: "من شارع المحطة إلى قرية بركة" },
+  { title: "طلب علاج وصيدلية 💊", desc: "صيدلية السلام إلى شارع 30 بنجع حمادي" },
+  { title: "مشوار مدرسة صباحي 🏫", desc: "من قرية هو إلى مدرسة نجع حمادي الثانوية" },
+  { title: "طلبات سوبرماركت 🛒", desc: "من سوق نجع حمادي إلى الألمنيوم" },
+  { title: "طلب دليفري مطعم 🛵", desc: "من شارع الترعة إلى عمارات الساحل" }
+];
+
+let orderToastIndex = 0;
+function showNextLiveOrder() {
+  const toast = document.getElementById('liveOrderToast');
+  const tTitle = document.getElementById('toastTitle');
+  const tDesc = document.getElementById('toastDesc');
+  const ord = sampleOrders[orderToastIndex % sampleOrders.length];
+
+  tTitle.textContent = ord.title;
+  tDesc.textContent = ord.desc;
+
+  toast.classList.add('show');
+  orderToastIndex++;
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 5000);
+}
+
+// البدء بعد 5 ثوانٍ ثم التكرار كل 30 ثانية
+setTimeout(() => {
+  showNextLiveOrder();
+  setInterval(showNextLiveOrder, 30000);
+}, 5000);
 
 function getStoredUsers() {
   return JSON.parse(localStorage.getItem('fly_registered_users') || "[]");
@@ -823,7 +923,7 @@ function saveStoredUsers(users) {
 }
 
 // -------------------------------------------------------------
-// 2. إدارة شاشات الدخول وبوابة الأمان
+// 3. إدارة شاشات الدخول وبوابة الأمان
 // -------------------------------------------------------------
 function switchAuthMode(mode) {
   const isLogin = mode === 'login';
@@ -877,7 +977,7 @@ function checkAppAccess() {
 }
 
 // -------------------------------------------------------------
-// 3. تسجيل الدخول السريع (بالبريد والباسورد مباشرة دون كود)
+// 4. تسجيل الدخول السريع (بالبريد والباسورد مباشرة دون كود)
 // -------------------------------------------------------------
 function directPasswordLogin() {
   const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
@@ -909,7 +1009,7 @@ function directPasswordLogin() {
 }
 
 // -------------------------------------------------------------
-// 4. إنشاء حساب جديد لأول مرة
+// 5. إنشاء حساب جديد لأول مرة
 // -------------------------------------------------------------
 async function requestSignupOtp() {
   const name = document.getElementById('signupName').value.trim();
@@ -960,7 +1060,7 @@ async function requestSignupOtp() {
 }
 
 // -------------------------------------------------------------
-// 5. استعادة كلمة المرور
+// 6. استعادة كلمة المرور
 // -------------------------------------------------------------
 async function requestForgotOtp() {
   const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
@@ -1005,7 +1105,7 @@ async function requestForgotOtp() {
 }
 
 // -------------------------------------------------------------
-// 6. التحقق النهائي من الكود
+// 7. التحقق النهائي من الكود
 // -------------------------------------------------------------
 function verifyAndFinishOtp() {
   const code = document.getElementById('gateOtpInput').value.trim();
@@ -1064,7 +1164,7 @@ function logoutUser() {
 }
 
 // -------------------------------------------------------------
-// 7. خدمة طلب الأدوية والصيدلية
+// 8. خدمة طلب الأدوية والصيدلية
 // -------------------------------------------------------------
 function openPharmacyModal() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
@@ -1101,7 +1201,7 @@ function sendPharmacyOrder() {
 }
 
 // -------------------------------------------------------------
-// 8. المزامنة السحابية الحية (رادار + حالة التوصيل)
+// 9. المزامنة السحابية الحية (رادار + حالة التوصيل)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
