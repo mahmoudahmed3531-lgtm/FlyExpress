@@ -41,6 +41,13 @@
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
 input, textarea, select { user-select: auto; }
 
+/* تأثير تدرج الخلفية RGB المحيطي التفاعلي */
+@keyframes bgRgbShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 body {
   background-color: var(--bg-dark);
   color: var(--text-main);
@@ -48,12 +55,9 @@ body {
   padding-bottom: 90px;
   overflow-x: hidden;
   position: relative;
-  background-image: 
-    radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.16) 0%, transparent 50%),
-    radial-gradient(circle at 100% 50%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+  background: linear-gradient(130deg, #070b12, #0e1526, #140d21, #070b12);
+  background-size: 300% 300%;
+  animation: bgRgbShift 14s ease infinite;
 }
 
 .app-container {
@@ -62,6 +66,63 @@ body {
   min-height: 100vh;
   position: relative;
   z-index: 1;
+}
+
+/* إضاءة وتوهج RGB الانسيابي للكروت البارزة */
+@keyframes rgbGlowFrame {
+  0% {
+    border-color: rgba(255, 107, 0, 0.6);
+    box-shadow: 0 0 16px rgba(255, 107, 0, 0.35);
+  }
+  33% {
+    border-color: rgba(0, 229, 255, 0.6);
+    box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
+  }
+  66% {
+    border-color: rgba(168, 85, 247, 0.6);
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.35);
+  }
+  100% {
+    border-color: rgba(255, 107, 0, 0.6);
+    box-shadow: 0 0 16px rgba(255, 107, 0, 0.35);
+  }
+}
+
+.rgb-frame-active {
+  animation: rgbGlowFrame 6s infinite alternate ease-in-out;
+}
+
+/* زر الموسيقى العائم الأنيق */
+.music-fab-btn {
+  position: fixed;
+  bottom: 80px;
+  left: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+  cursor: pointer;
+  z-index: 150;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.music-fab-btn.playing {
+  border-color: #10b981;
+  color: #10b981;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.55);
+  animation: rotateDisc 4s linear infinite;
+}
+
+@keyframes rotateDisc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* 🔒 شاشة القفل وبوابة الدخول */
@@ -97,7 +158,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* تبويبات التبديل */
 .auth-tabs {
   display: flex;
   gap: 8px;
@@ -264,7 +324,6 @@ body {
 }
 .step-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
 
-/* بنر الخدمة الطبية */
 .pharmacy-order-banner {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(6, 78, 59, 0.2));
   border: 1px dashed var(--success);
@@ -350,20 +409,29 @@ body {
 
 <body>
 
-<!-- 🔒 شاشة القفل وبوابة الدخول / التسجيل / استعادة كلمة المرور -->
+<!-- زر الموسيقى العائم -->
+<button class="music-fab-btn" id="musicToggleBtn" onclick="toggleBackgroundMusic()" title="تشغيل / كتم الموسيقى الهادئة">
+  <i class="fa-solid fa-music" id="musicIcon"></i>
+</button>
+
+<!-- مقطع صوتي هادئ مجاني (Lo-Fi Ambient) -->
+<audio id="bgMusicPlayer" loop preload="none">
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mp3">
+</audio>
+
+<!-- 🔒 شاشة القفل وبوابة الدخول -->
 <div class="auth-gate-screen" id="authGateScreen">
-  <div class="gate-card">
+  <div class="gate-card rgb-frame-active">
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
     <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">خدمة التوصيل الأسرع في نجع حمادي 🚀</p>
 
-    <!-- تبويبات التبديل -->
     <div class="auth-tabs" id="authTabsContainer">
       <button class="auth-tab-btn active" id="tabBtnLogin" onclick="switchAuthMode('login')">تسجيل دخول</button>
       <button class="auth-tab-btn" id="tabBtnSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
     </div>
 
-    <!-- نموذج 1: تسجيل الدخول السريع (بالبريد والباسورد مباشرة دون كود) -->
+    <!-- تسجيل دخول سريع بالبريد وكلمة المرور دون كود -->
     <div id="formLoginView">
       <input type="text" id="loginIdentifier" class="order-input" placeholder="البريد الإلكتروني (Gmail) أو الهاتف" style="margin-bottom:8px;">
       <input type="password" id="loginPassword" class="order-input" placeholder="كلمة المرور" style="margin-bottom:6px;">
@@ -379,7 +447,7 @@ body {
       </button>
     </div>
 
-    <!-- نموذج 2: إنشاء حساب جديد لأول مرة -->
+    <!-- إنشاء حساب جديد لأول مرة -->
     <div id="formSignupView" style="display:none;">
       <input type="text" id="signupName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
       <input type="tel" id="signupPhone" class="order-input" placeholder="رقم الموبايل (واتساب)" style="margin-bottom:8px;">
@@ -391,7 +459,7 @@ body {
       </button>
     </div>
 
-    <!-- نموذج 3: نسيت كلمة المرور -->
+    <!-- نسيت كلمة المرور -->
     <div id="formForgotView" style="display:none;">
       <div style="font-size:11px; color:#cbd5e1; margin-bottom:10px;">
         أدخل بريدك الإلكتروني المسجل وسيصلك كود لتعيين كلمة مرور جديدة:
@@ -405,7 +473,7 @@ body {
       </button>
     </div>
 
-    <!-- نموذج 4: شاشة كتابة الكود المستلم من Gmail -->
+    <!-- شاشة كتابة الكود المستلم عبر Gmail -->
     <div id="gateStepOtp" style="display:none;">
       <div style="background:rgba(0, 229, 255, 0.08); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; padding:10px; margin-bottom:12px;">
         <span style="font-size:11px; color:#cbd5e1;" id="otpNoticeTxt">افتح تطبيق Gmail واكتب الكود هنا:</span>
@@ -427,7 +495,7 @@ body {
   </div>
 </div>
 
-<!-- المحتوى الكامل للتطبيق -->
+<!-- المحتوى الرئيسي للتطبيق -->
 <div class="app-container" id="mainAppContent" style="display:none;">
 
   <header class="app-header">
@@ -449,7 +517,7 @@ body {
 
   <!-- تبويب 1: الرئيسية -->
   <main id="tab-home" class="tab-view active">
-    <div class="user-welcome-card" id="userWelcomeBox">
+    <div class="user-welcome-card rgb-frame-active" id="userWelcomeBox">
       <div>
         <div style="font-size:11px; color:var(--text-sub);">أهلاً بك معنا 🌟</div>
         <div style="font-size:14px; font-weight:900; color:#fff;" id="welcomeUserName">عميلنا العزيز</div>
@@ -459,7 +527,7 @@ body {
       </button>
     </div>
 
-    <!-- نقاط الولاء -->
+    <!-- برنامج الأبطال والولاء -->
     <div class="loyalty-card">
       <div class="loyalty-header">
         <div class="loyalty-title"><i class="fa-solid fa-crown"></i> برنامج أبطال Fly Express</div>
@@ -494,7 +562,7 @@ body {
       </div>
     </div>
 
-    <!-- بنر خدمة الصيدلية والعلاج السريع (البديل المطور للكاميرا) -->
+    <!-- خدمة طوارئ الصيدلية والعلاج السريع -->
     <div class="pharmacy-order-banner" onclick="openPharmacyModal()">
       <div style="display:flex; align-items:center; gap:12px;">
         <i class="fa-solid fa-notes-medical" style="font-size:26px; color:#34d399;"></i>
@@ -662,7 +730,7 @@ body {
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
 
-  <!-- نافذة طلب أدوية الصيدلية السريعة -->
+  <!-- نافذة طلب أدوية الصيدلية -->
   <div class="modal-backdrop" id="pharmacyModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closePharmacyModal()">&times;</button>
@@ -709,7 +777,7 @@ body {
 
 <script>
 // -------------------------------------------------------------
-// 1. مفاتيح ربط EmailJS الخاصة بحسابك
+// 1. مفاتيح EmailJS ومتحكمات الصوت
 // -------------------------------------------------------------
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
@@ -724,7 +792,27 @@ const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 let pendingClaimUrl = "";
 let currentGeneratedOtp = null;
 let activeAuthTargetUser = null;
-let currentOtpFlow = ""; 
+let currentOtpFlow = "";
+
+const bgMusic = document.getElementById('bgMusicPlayer');
+const musicBtn = document.getElementById('musicToggleBtn');
+const musicIcon = document.getElementById('musicIcon');
+
+function toggleBackgroundMusic() {
+  if (bgMusic.paused) {
+    bgMusic.volume = 0.25;
+    bgMusic.play().then(() => {
+      musicBtn.classList.add('playing');
+      musicIcon.className = "fa-solid fa-volume-high";
+    }).catch(() => {
+      alert("اضغط في أي مكان بالشاشة أولاً لتفعيل تشغيل الصوت.");
+    });
+  } else {
+    bgMusic.pause();
+    musicBtn.classList.remove('playing');
+    musicIcon.className = "fa-solid fa-music";
+  }
+}
 
 function getStoredUsers() {
   return JSON.parse(localStorage.getItem('fly_registered_users') || "[]");
@@ -735,7 +823,7 @@ function saveStoredUsers(users) {
 }
 
 // -------------------------------------------------------------
-// 2. إدارة التبويبات والشاشات
+// 2. إدارة شاشات الدخول وبوابة الأمان
 // -------------------------------------------------------------
 function switchAuthMode(mode) {
   const isLogin = mode === 'login';
@@ -1273,7 +1361,6 @@ function switchToForm(formId) {
   }, 100);
 }
 
-// تشغيل الفحص وبدء التطبيق
 checkAppAccess();
 </script>
 </body>
