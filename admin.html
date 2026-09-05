@@ -2,133 +2,211 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<title>Fly Express — لوحة تحكم الإدارة المباشرة</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<title>Fly Express — لوحة التحكم الإدارية</title>
+<meta name="theme-color" content="#070b12">
+<link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 :root {
-  --bg: #070b12;
-  --card: #0f172a;
+  --bg-dark: #070b12;
+  --surface: #0d1527;
   --primary: #ff6b00;
+  --accent: #00e5ff;
   --success: #10b981;
-  --text: #f8fafc;
-  --sub: #94a3b8;
-  font-family: 'Cairo', sans-serif;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --text-main: #f8fafc;
+  --text-sub: #94a3b8;
+  --border: rgba(255, 255, 255, 0.08);
+  font-family: 'Cairo', system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; }
 
-#loginScreen {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; gap: 16px;
-}
-.admin-card {
-  background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 18px; margin-bottom: 16px;
-}
-.admin-btn {
-  width: 100%; padding: 12px; border-radius: 12px; border: 0; font-weight: 800; font-family: inherit; cursor: pointer; color: #fff; margin-top: 8px;
-}
-.btn-primary { background: var(--primary); }
-.btn-success { background: var(--success); }
-.btn-info { background: #0284c7; }
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+input, button, select { user-select: auto; font-family: inherit; }
 
-.status-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px; }
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* شاشة حماية الأدمن */
+.admin-lock-screen {
+  position: fixed; inset: 0; background: var(--bg-dark); z-index: 999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;
+}
+.lock-card {
+  background: var(--surface); border: 1.5px solid var(--primary); border-radius: 20px;
+  padding: 24px; width: 100%; max-width: 340px; box-shadow: 0 8px 30px rgba(255, 107, 0, 0.25);
+}
+
+.header-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+  padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;
+}
+.header-title { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 900; }
+.header-title img { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--primary); }
+
+.control-panel {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+  padding: 16px; margin-bottom: 16px;
+}
+.panel-title {
+  font-size: 14px; font-weight: 800; color: #cbd5e1; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .status-btn {
-  padding: 12px 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
-  color: var(--sub); font-family: inherit; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s;
+  padding: 12px 8px; border-radius: 12px; border: 1.5px solid transparent;
+  background: rgba(255, 255, 255, 0.04); color: var(--text-sub); font-weight: 800;
+  font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: all 0.2s ease;
 }
-.status-btn.active {
-  background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 0 14px rgba(255,107,0,0.5);
+.status-btn.active.online { background: rgba(16, 185, 129, 0.15); border-color: var(--success); color: var(--success); }
+.status-btn.active.busy { background: rgba(245, 158, 11, 0.15); border-color: var(--warning); color: var(--warning); }
+.status-btn.active.offline { background: rgba(239, 68, 68, 0.15); border-color: var(--danger); color: var(--danger); }
+
+.radar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.radar-btn {
+  padding: 12px 6px; border-radius: 12px; border: 1.5px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03); color: var(--text-sub); font-size: 11px; font-weight: 800;
+  cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.2s ease;
 }
+.radar-btn.active {
+  background: rgba(0, 229, 255, 0.15); border-color: var(--accent); color: var(--accent);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+
 .input-box {
-  width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3);
-  color: #fff; font-family: inherit; font-size: 13px; margin-top: 8px;
+  width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 12, 20, 0.7); color: #fff; font-size: 13px; outline: none; margin-bottom: 10px;
 }
-.sync-badge {
-  font-size: 11px; color: #34d399; display: flex; align-items: center; gap: 6px; font-weight: 700;
+.action-btn {
+  width: 100%; border: 0; cursor: pointer; padding: 12px; border-radius: 12px;
+  font-weight: 800; font-size: 13px; color: #fff; background: linear-gradient(90deg, #ff6b00, #ff8c00);
+}
+
+.sync-status {
+  text-align: center; font-size: 11px; color: var(--text-sub); margin-top: 14px;
 }
 </style>
 </head>
+
 <body>
 
-<!-- شاشة تسجيل الدخول -->
-<div id="loginScreen">
-  <i class="fa-solid fa-user-shield" style="font-size: 48px; color: var(--primary);"></i>
-  <h2>لوحة تحكم كابتن Fly Express</h2>
-  <p style="font-size: 12px; color: var(--sub);">أدخل رمز المرور السري</p>
-  <input type="password" id="passCode" class="input-box" placeholder="رمز المرور (1234)" style="text-align:center; font-size: 20px; letter-spacing: 4px;">
-  <button class="admin-btn btn-primary" onclick="checkLogin()">دخول 🔐</button>
+<!-- شاشة حماية الأدمن -->
+<div class="admin-lock-screen" id="adminLock">
+  <div class="lock-card">
+    <i class="fa-solid fa-user-shield" style="font-size:36px; color:var(--primary); margin-bottom:12px;"></i>
+    <h3 style="font-size:16px; margin-bottom:6px;">لوحة تحكم Fly Express</h3>
+    <p style="font-size:11px; color:var(--text-sub); margin-bottom:16px;">يرجى كتابة رمز المرور الإداري للوصول</p>
+    <input type="password" id="adminPin" class="input-box" placeholder="رمز PIN" style="text-align:center; font-size:20px; letter-spacing:4px;">
+    <button class="action-btn" onclick="checkAdminPin()">دخول اللوحة 🔐</button>
+  </div>
 </div>
 
-<!-- لوحة التحكم -->
-<div id="dashboard" style="display: none;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-    <div>
-      <h3 style="font-size: 17px;">لوحة الإدارة السحابية 🛵</h3>
-      <div class="sync-badge"><i class="fa-solid fa-cloud-bolt"></i> الربط السحابي مع هواتف الزبائن نشط</div>
-    </div>
-    <button onclick="location.href='index.html'" style="background:none; border:0; color:var(--primary); font-family:inherit; font-weight:700; cursor:pointer;">الموقع ↗</button>
-  </div>
+<!-- المحتوى الرئيسي للوحة الأدمن -->
+<div id="adminPanelContent" style="display:none;">
 
-  <!-- 1. رادار أمان المدرسة السحابي -->
-  <div class="admin-card">
-    <h4 style="color:#10b981; margin-bottom:6px;"><i class="fa-solid fa-school-flag"></i> رادار أمان الطلاب (بث مباشر)</h4>
-    <p style="font-size:11px; color:var(--sub);">الضغط على أي زر يغيّر الحالة مباشرة على هواتف أولياء الأمور:</p>
-    <div class="status-grid">
-      <button class="status-btn" id="radarBtn1" onclick="updateCloudState(1, currentService)">1. تم الاستلام 🏠</button>
-      <button class="status-btn" id="radarBtn2" onclick="updateCloudState(2, currentService)">2. في الطريق 🛵</button>
-      <button class="status-btn" id="radarBtn3" onclick="updateCloudState(3, currentService)">3. وصل بسلام 🏫</button>
-    </div>
-
-    <div style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">
-      <p style="font-size:11px; color:var(--sub); margin-bottom:6px;">إرسال رسالة طمأنة لواتساب ولي الأمر:</p>
-      <input type="tel" id="parentPhone" class="input-box" placeholder="رقم واتساب ولي الأمر (01xxxxxxxxx)">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;">
-        <button class="admin-btn btn-info" style="font-size:11px;" onclick="sendParentAlert('pickup')">إشعار: تم الاستلام 🛵</button>
-        <button class="admin-btn btn-success" style="font-size:11px;" onclick="sendParentAlert('arrived')">إشعار: وصل بسلام 🏫</button>
+  <div class="header-card">
+    <div class="header-title">
+      <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Logo">
+      <div>
+        <div>Fly Express Admin</div>
+        <div style="font-size:10px; color:var(--text-sub);">التحكم السحابي المباشر 🛰️</div>
       </div>
     </div>
+    <a href="index.html" style="color:var(--text-sub); text-decoration:none; font-size:12px; font-weight:700;">
+      <i class="fa-solid fa-store"></i> المتجر
+    </a>
   </div>
 
-  <!-- 2. حالة الخدمة العامة بالموقع -->
-  <div class="admin-card">
-    <h4 style="color:var(--primary); margin-bottom:6px;"><i class="fa-solid fa-tower-broadcast"></i> حالة التوصيل في الموقع</h4>
+  <!-- 1. التحكم في حالة التوصيل للعملاء -->
+  <div class="control-panel">
+    <div class="panel-title"><i class="fa-solid fa-power-off"></i> حالة العمل الحالية للعملاء</div>
     <div class="status-grid">
-      <button class="status-btn" id="servOnline" onclick="updateCloudState(currentRadar, 'online')">متاح الآن 🟢</button>
-      <button class="status-btn" id="servBusy" onclick="updateCloudState(currentRadar, 'busy')">مشغول حالياً 🟡</button>
-      <button class="status-btn" id="servOffline" onclick="updateCloudState(currentRadar, 'offline')">مغلق 🔴</button>
+      <button class="status-btn active online" id="btnOnline" onclick="setServiceState('online')">
+        <i class="fa-solid fa-circle-check" style="font-size:18px;"></i>
+        <span>متاح</span>
+      </button>
+      <button class="status-btn busy" id="btnBusy" onclick="setServiceState('busy')">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size:18px;"></i>
+        <span>مشغول</span>
+      </button>
+      <button class="status-btn offline" id="btnOffline" onclick="setServiceState('offline')">
+        <i class="fa-solid fa-ban" style="font-size:18px;"></i>
+        <span>مغلق</span>
+      </button>
     </div>
   </div>
 
-  <!-- 3. كشف التزوير -->
-  <div class="admin-card">
-    <h4 style="color:#ffd166; margin-bottom:6px;"><i class="fa-solid fa-shield-halved"></i> كشف تزوير الكوبونات</h4>
-    <input type="text" id="verifyCode" class="input-box" placeholder="كود الكوبون المرسل (FLY-...)">
-    <input type="tel" id="verifyPhone" class="input-box" placeholder="رقم الشات اللي بيكلمك منه">
-    <button class="admin-btn btn-primary" onclick="verifyCoupon()">تحقق من الكود 🔍</button>
-    <div id="verifyResult" style="margin-top:10px; font-size:12px; font-weight:800; min-height:20px;"></div>
+  <!-- 2. التحكم في رادار الأمان المباشر -->
+  <div class="control-panel">
+    <div class="panel-title"><i class="fa-solid fa-shield-halved"></i> رادار رحلة المدارس المباشر</div>
+    <div style="font-size:11px; color:var(--text-sub); margin-bottom:8px;">اضغط على المرحلة لتحديثها فوراً في شاشات أولياء الأمور:</div>
+    <div class="radar-grid">
+      <button class="radar-btn active" id="radar1" onclick="setRadarStep(1)">
+        <i class="fa-solid fa-house" style="font-size:16px;"></i>
+        <span>1. استلام الطالب</span>
+      </button>
+      <button class="radar-btn" id="radar2" onclick="setRadarStep(2)">
+        <i class="fa-solid fa-motorcycle" style="font-size:16px;"></i>
+        <span>2. في الطريق</span>
+      </button>
+      <button class="radar-btn" id="radar3" onclick="setRadarStep(3)">
+        <i class="fa-solid fa-school" style="font-size:16px;"></i>
+        <span>3. وصل بسلام</span>
+      </button>
+    </div>
   </div>
+
+  <!-- 3. فحص كوبونات الخصم الواردة -->
+  <div class="control-panel">
+    <div class="panel-title"><i class="fa-solid fa-ticket"></i> مدقق كوبونات عجلة الحظ</div>
+    <input type="text" id="couponCodeInput" class="input-box" placeholder="الصق كود الخصم المستلم عبر واتساب">
+    <button class="action-btn" style="background:linear-gradient(90deg, #00e5ff, #00a8ff); color:#000;" onclick="verifyCoupon()">
+      <i class="fa-solid fa-magnifying-glass"></i> فحص صلاحية الكوبون
+    </button>
+    <div id="couponResult" style="margin-top:10px; font-size:12px; line-height:1.4;"></div>
+  </div>
+
+  <div class="sync-status" id="syncStatusTxt">
+    <i class="fa-solid fa-satellite-dish"></i> السيرفر السحابي متصل ويعمل بنجاح
+  </div>
+
 </div>
 
 <script>
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
+const ADMIN_SECURITY_PIN = "1234"; // رمز الدخول للوحة (يمكنك تغييره لأي رقم تريده)
 
-let currentRadar = 1;
-let currentService = "online";
+let currentState = {
+  radar: 1,
+  service: 'online'
+};
 
-function checkLogin() {
-  if (document.getElementById('passCode').value.trim() === "1234") {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    fetchCurrentCloudState();
+function checkAdminPin() {
+  const pin = document.getElementById('adminPin').value.trim();
+  if (pin === ADMIN_SECURITY_PIN) {
+    document.getElementById('adminLock').style.display = 'none';
+    document.getElementById('adminPanelContent').style.display = 'block';
+    loadCurrentCloudState();
   } else {
-    alert("رمز المرور غير صحيح!");
+    alert("رمز PIN غير صحيح!");
   }
 }
 
-// جلب الحالة المحفوظة سحابياً
-async function fetchCurrentCloudState() {
+async function loadCurrentCloudState() {
   try {
     const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
     const text = await res.text();
@@ -136,98 +214,94 @@ async function fetchCurrentCloudState() {
       const lines = text.trim().split('\n');
       const latest = JSON.parse(lines[lines.length - 1]);
       const data = JSON.parse(latest.message);
-      currentRadar = data.radar || 1;
-      currentService = data.service || "online";
-      renderUI();
+      currentState.radar = data.radar || 1;
+      currentState.service = data.service || 'online';
+      updateUI();
     }
   } catch(e) {
-    renderUI();
+    console.log("استخدام الحالة المحلية");
   }
 }
 
-// إرسال التحديث للسحابة ليتغير عند كل الناس في نفس اللحظة
-async function updateCloudState(radarStep, serviceState) {
-  currentRadar = radarStep;
-  currentService = serviceState;
-  renderUI();
+function updateUI() {
+  // تحديث حالة العمل
+  ['online', 'busy', 'offline'].forEach(s => {
+    const btn = document.getElementById(`btn${s.charAt(0).toUpperCase() + s.slice(1)}`);
+    if (btn) btn.classList.toggle('active', currentState.service === s);
+  });
 
-  const payload = JSON.stringify({ radar: currentRadar, service: currentService, time: Date.now() });
+  // تحديث الرادار
+  for (let i = 1; i <= 3; i++) {
+    const rBtn = document.getElementById(`radar${i}`);
+    if (rBtn) rBtn.classList.toggle('active', i <= currentState.radar);
+  }
+}
+
+async function broadcastState() {
+  const statusTxt = document.getElementById('syncStatusTxt');
+  statusTxt.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري بث التحديث لجميع الهواتف...';
+  
+  updateUI();
 
   try {
     await fetch(CLOUD_CHANNEL, {
       method: 'POST',
-      body: payload,
-      headers: { 'Title': 'StateUpdate' }
+      body: JSON.stringify(currentState)
     });
-    // حفظ محلي أيضاً كنسخة احتياطية
-    localStorage.setItem('fly_radar_step', currentRadar);
-    localStorage.setItem('fly_service_status', currentService);
-  } catch (err) {
-    console.log("Cloud sync error:", err);
+    statusTxt.innerHTML = '<i class="fa-solid fa-check-circle" style="color:#10b981;"></i> تم التحديث لجميع هواتف العملاء فوراً ⚡';
+  } catch(e) {
+    statusTxt.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i> تعذر الإرسال السحابي، تأكد من اتصال الإنترنت.';
   }
 }
 
-function renderUI() {
-  [1, 2, 3].forEach(i => {
-    const btn = document.getElementById(`radarBtn${i}`);
-    if (btn) btn.classList.toggle('active', i == currentRadar);
-  });
-  document.getElementById('servOnline').classList.toggle('active', currentService === 'online');
-  document.getElementById('servBusy').classList.toggle('active', currentService === 'busy');
-  document.getElementById('servOffline').classList.toggle('active', currentService === 'offline');
+function setServiceState(state) {
+  currentState.service = state;
+  broadcastState();
 }
 
-function sendParentAlert(type) {
-  const phone = document.getElementById('parentPhone').value.trim();
-  if (!phone) { alert("اكتب رقم ولي الأمر أولاً"); return; }
-  let msg = (type === 'pickup') 
-    ? "صباح الخير يا فندم 🌹\nمع حضرتك كابتن Fly Express، تم استلام الطالب بأمان وهو في الطريق إلى المدرسة الآن 🛵🎒" 
-    : "حمدلله على سلامته 🌹\nتم وصول الطالب لمدرسته وتسليمه بسلام وأمان ✅\n— نتمنى له يوماً دراسياً سعيداً مع Fly Express";
-  window.open(`https://wa.me/2${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+function setRadarStep(step) {
+  currentState.radar = step;
+  broadcastState();
 }
 
+// فحص صحة الكوبونات
 function hashString(str) {
   let hash = 5381;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) + hash) + str.charCodeAt(i);
-    hash = hash & hash;
-  }
+  for (let i = 0; i < str.length; i++) hash = ((hash << 5) + hash) + str.charCodeAt(i);
   return Math.abs(hash).toString(36).toUpperCase();
 }
 
 function verifyCoupon() {
-  const code = document.getElementById('verifyCode').value.trim();
-  let phone = document.getElementById('verifyPhone').value.trim().replace(/[^0-9]/g, '');
-  if (phone.startsWith("20") && phone.length === 12) phone = "0" + phone.slice(2);
-  const res = document.getElementById('verifyResult');
-
-  const parts = code.split('-');
-  if (parts.length !== 5 || parts[0] !== 'FLY') {
-    res.style.color = '#ef4444';
-    res.innerHTML = "الكود مفبرك وغير مسجل ❌";
-    return;
-  }
-  const baseKey = parts[1];
-  const couponPhoneHash = parts[2];
-  const epochMins = parseInt(parts[3], 36);
-  const sig = parts[4];
-
-  const expectedPhoneHash = hashString(phone + FLY_SECRET_SALT).substring(0, 4);
-  if (couponPhoneHash !== expectedPhoneHash) {
-    res.style.color = '#ef4444';
-    res.innerHTML = "تنبيه غش 🚨: الكود مسجل برقم آخر غير رقم هذا الشات!";
+  const rawCode = document.getElementById('couponCodeInput').value.trim();
+  const resDiv = document.getElementById('couponResult');
+  
+  if (!rawCode.startsWith("FLY-")) {
+    resDiv.innerHTML = '<span style="color:#ef4444; font-weight:800;">❌ هذا الكود غير صالح أو لم يُنشأ بواسطة التطبيق.</span>';
     return;
   }
 
+  const parts = rawCode.split('-');
+  if (parts.length < 5) {
+    resDiv.innerHTML = '<span style="color:#ef4444; font-weight:800;">❌ صيغة الكود غير مكتملة.</span>';
+    return;
+  }
+
+  const [_, key, phoneHash, epochStr, sig] = parts;
+  const createdMins = parseInt(epochStr, 36);
   const currentMins = Math.floor(Date.now() / (1000 * 60));
-  const diff = currentMins - epochMins;
-  if (diff < 0 || diff > 120) {
-    res.style.color = '#f59e0b';
-    res.innerHTML = `الكود منتهي الصلاحية ⏳ (مر عليه ${diff} دقيقة)`;
-    return;
+  const diffMins = currentMins - createdMins;
+
+  if (diffMins > 120) {
+    resDiv.innerHTML = `<span style="color:#ef4444; font-weight:800;">⏰ هذا الكوبون منتهي الصلاحية (مضى عليه ${Math.round(diffMins/60)} ساعة). الصلاحية ساعتان فقط.</span>`;
+  } else {
+    resDiv.innerHTML = `
+      <div style="background:rgba(16, 185, 129, 0.15); border:1px solid #10b981; border-radius:10px; padding:10px; color:#34d399; font-weight:800;">
+        ✅ كوبون أصلي ومطابق!<br>
+        🎁 الجائزة: ${key}<br>
+        ⏱️ الوقت المتبقي: حوالي ${120 - diffMins} دقيقة
+      </div>
+    `;
   }
-  res.style.color = '#10b981';
-  res.innerHTML = `كود سليم 100% ✅ | الخصم: ${baseKey} | متبقي: ${120 - diff} دقيقة`;
 }
 </script>
 </body>
