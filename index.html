@@ -38,14 +38,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-input, textarea, select { user-select: auto; }
-
-@keyframes bgRgbShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  user-select: none; 
+  touch-action: manipulation; /* يلغي تأخير الـ 300ms فوراً في الأندرويد */
 }
+input, textarea, select { user-select: auto; }
 
 body {
   background-color: var(--bg-dark);
@@ -54,9 +54,7 @@ body {
   padding-bottom: 90px;
   overflow-x: hidden;
   position: relative;
-  background: linear-gradient(130deg, #070b12, #0e1526, #140d21, #070b12);
-  background-size: 300% 300%;
-  animation: bgRgbShift 14s ease infinite;
+  background: #070b12;
 }
 
 .app-container {
@@ -65,29 +63,6 @@ body {
   min-height: 100vh;
   position: relative;
   z-index: 1;
-}
-
-@keyframes rgbGlowFrame {
-  0% {
-    border-color: rgba(255, 107, 0, 0.6);
-    box-shadow: 0 0 16px rgba(255, 107, 0, 0.35);
-  }
-  33% {
-    border-color: rgba(0, 229, 255, 0.6);
-    box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
-  }
-  66% {
-    border-color: rgba(168, 85, 247, 0.6);
-    box-shadow: 0 0 18px rgba(168, 85, 247, 0.35);
-  }
-  100% {
-    border-color: rgba(255, 107, 0, 0.6);
-    box-shadow: 0 0 16px rgba(255, 107, 0, 0.35);
-  }
-}
-
-.rgb-frame-active {
-  animation: rgbGlowFrame 6s infinite alternate ease-in-out;
 }
 
 /* زر الموسيقى العائم */
@@ -108,19 +83,13 @@ body {
   box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
   cursor: pointer;
   z-index: 150;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.1s ease;
 }
 
 .music-fab-btn.playing {
   border-color: #10b981;
   color: #10b981;
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
-  animation: rotateDisc 4s linear infinite;
-}
-
-@keyframes rotateDisc {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 /* شريط إشعار خدمات وطلبات نجع حمادي */
@@ -141,7 +110,7 @@ body {
   z-index: 140;
   transform: translateY(120%);
   opacity: 0;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.4s ease;
 }
 
 .live-toast-box.show {
@@ -214,11 +183,24 @@ body {
   font-weight: 800;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
 }
 .auth-tab-btn.active {
   background: var(--primary);
   color: #fff;
+}
+
+/* رسالة الخطأ المباشرة في شاشة الدخول */
+.auth-error-msg {
+  display: none;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  text-align: right;
 }
 
 /* Header */
@@ -226,9 +208,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(7, 11, 18, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(7, 11, 18, 0.95);
   padding: 10px 16px;
   display: flex;
   align-items: center;
@@ -264,12 +244,6 @@ body {
   color: var(--text-sub);
 }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .status-badge {
   display: flex;
   align-items: center;
@@ -289,26 +263,16 @@ body {
   background: #10b981;
   border-radius: 50%;
   box-shadow: 0 0 8px #10b981;
-  animation: pulse 1.6s infinite;
 }
 
-@keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  50% { transform: scale(1.25); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.8; }
-}
-
+/* التبويبات - سريعة وفورية بدون بطء */
 .tab-view {
   display: none;
   padding: 16px;
-  animation: fadeIn 0.25s ease-out;
 }
 
-.tab-view.active { display: block; }
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+.tab-view.active { 
+  display: block; 
 }
 
 .user-welcome-card {
@@ -323,7 +287,7 @@ body {
 }
 
 .loyalty-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
+  background: #0f172a;
   border: 1px solid rgba(255, 107, 0, 0.35);
   border-radius: 18px;
   padding: 14px;
@@ -335,11 +299,11 @@ body {
 .loyalty-count { font-size: 12px; font-weight: 900; color: #fff; }
 
 .progress-bar-bg { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
-.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b00, #ffb703); border-radius: 999px; transition: width 0.5s ease; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b00, #ffb703); border-radius: 999px; }
 .loyalty-sub { font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between; }
 
 .safety-radar-card {
-  background: rgba(18, 26, 43, 0.7);
+  background: #10192d;
   border: 1px solid rgba(16, 185, 129, 0.35);
   border-radius: 20px;
   padding: 14px;
@@ -354,7 +318,7 @@ body {
 .safety-step { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; z-index: 2; }
 .step-node {
   width: 32px; height: 32px; border-radius: 50%; background: #1e293b; border: 2px solid var(--border);
-  display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-sub); transition: all 0.3s;
+  display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-sub);
 }
 .step-node.active {
   background: #10b981; border-color: #34d399; color: #fff; box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
@@ -388,10 +352,10 @@ body {
 .section-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
 .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 .service-card, .price-box, .form-card {
-  background: rgba(18, 26, 43, 0.65); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
+  background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
 }
 .service-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; cursor: pointer; }
-.service-card:active { transform: scale(0.97); }
+.service-card:active { transform: scale(0.96); }
 
 .service-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 .ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; }
@@ -399,29 +363,32 @@ body {
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
+/* شريط التنقل السفلي - استجابة فورية بدون أي لاج */
 .bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 68px; background: rgba(7, 11, 18, 0.94);
-  backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100;
+  position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 68px; background: rgba(7, 11, 18, 0.98);
+  border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100;
 }
 .nav-item {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--text-sub); background: transparent;
-  border: 0; font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer; flex: 1;
+  border: 0; font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer; flex: 1; height: 100%;
 }
 .nav-item.active { color: var(--primary); }
 
 .order-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
 .order-row.single { grid-template-columns: 1fr; }
 .order-input, .order-select, .order-textarea {
-  width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(8, 12, 20, 0.7);
+  width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(8, 12, 20, 0.9);
   color: #fff; font-family: inherit; font-size: 13px; outline: none;
 }
 .order-btn {
   width: 100%; border: 0; cursor: pointer; padding: 12px 14px; border-radius: 12px; font-weight: 800; font-size: 13px; color: #fff;
   background: linear-gradient(90deg, #ff6b00, #ff8c00); margin-top: 6px; font-family: inherit;
 }
+.order-btn:active { transform: scale(0.98); }
 
+/* النوافذ المنبثقة التفاعلية - z-index أعلى من شاشة القفل لمنع الاختفاء */
 .modal-backdrop {
-  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 200; display: none;
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 2500; display: none;
   align-items: center; justify-content: center; padding: 20px;
 }
 .modal-backdrop.show { display: flex; }
@@ -435,10 +402,10 @@ body {
 .wheel-pointer {
   position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0;
   border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid #ff3b30;
-  z-index: 10; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  z-index: 10;
 }
 .wheel-canvas {
-  width: 100%; height: 100%; border-radius: 50%; border: 4px solid #1e293b; box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
+  width: 100%; height: 100%; border-radius: 50%; border: 4px solid #1e293b;
   transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
 }
 </style>
@@ -446,7 +413,7 @@ body {
 
 <body>
 
-<!-- شريط إشعار خدمات وطلبات نجع حمادي كل 30 ثانية -->
+<!-- شريط إشعار خدمات وطلبات نجع حمادي -->
 <div class="live-toast-box" id="liveOrderToast">
   <div class="live-toast-icon" id="toastIcon"><i class="fa-solid fa-motorcycle"></i></div>
   <div style="text-align:right; overflow:hidden;">
@@ -460,17 +427,19 @@ body {
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
 
-<!-- ملف صوتي هادئ ومباشر -->
 <audio id="bgMusicPlayer" loop preload="none">
   <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mp3">
 </audio>
 
 <!-- 🔒 شاشة القفل وبوابة الدخول -->
 <div class="auth-gate-screen" id="authGateScreen">
-  <div class="gate-card rgb-frame-active">
+  <div class="gate-card">
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
     <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">خدمة التوصيل الأسرع في نجع حمادي 🚀</p>
+
+    <!-- مكان إظهار رسالة الخطأ المباشرة في شاشة القفل -->
+    <div class="auth-error-msg" id="authErrorDisplay"></div>
 
     <div class="auth-tabs" id="authTabsContainer">
       <button class="auth-tab-btn active" id="tabBtnLogin" onclick="switchAuthMode('login')">تسجيل دخول</button>
@@ -563,7 +532,7 @@ body {
 
   <!-- تبويب 1: الرئيسية -->
   <main id="tab-home" class="tab-view active">
-    <div class="user-welcome-card rgb-frame-active" id="userWelcomeBox">
+    <div class="user-welcome-card" id="userWelcomeBox">
       <div>
         <div style="font-size:11px; color:var(--text-sub);">أهلاً بك معنا 🌟</div>
         <div style="font-size:14px; font-weight:900; color:#fff;" id="welcomeUserName">عميلنا العزيز</div>
@@ -835,7 +804,7 @@ body {
     </div>
   </div>
 
-  <!-- نافذة التنبيهات المدمجة لتطبيق الهاتف (بدل Alert) -->
+  <!-- نافذة التنبيهات المدمجة لتطبيق الهاتف (z-index 2500 تظهر فوق كل شيء) -->
   <div class="modal-backdrop" id="appAlertModal">
     <div class="modal-card" style="max-width: 310px; text-align: center;">
       <div style="font-size: 36px; color: var(--accent); margin-bottom: 8px;" id="appAlertIcon">
@@ -851,7 +820,7 @@ body {
 
 <script>
 // -------------------------------------------------------------
-// 1. نظام التنبيهات المدمج داخل التطبيق (بديل alert و confirm)
+// 1. نظام التنبيهات المدمج
 // -------------------------------------------------------------
 function showAppAlert(msg, title = "تطبيق Fly Express", iconClass = "fa-solid fa-circle-info", iconColor = "var(--accent)") {
   const modal = document.getElementById('appAlertModal');
@@ -870,8 +839,17 @@ function closeAppAlert() {
   document.getElementById('appAlertModal').classList.remove('show');
 }
 
+function showAuthInlineError(msg) {
+  const errBox = document.getElementById('authErrorDisplay');
+  errBox.textContent = msg;
+  errBox.style.display = 'block';
+  setTimeout(() => {
+    errBox.style.display = 'none';
+  }, 5000);
+}
+
 // -------------------------------------------------------------
-// 2. مفاتيح EmailJS ومتحكمات الصوت اليدوية
+// 2. مفاتيح EmailJS ومتحكمات الصوت
 // -------------------------------------------------------------
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
@@ -898,7 +876,7 @@ function toggleBackgroundMusic() {
     bgMusic.play().then(() => {
       musicBtn.classList.add('playing');
       musicIcon.className = "fa-solid fa-volume-high";
-    }).catch(err => {
+    }).catch(() => {
       showAppAlert("يرجى التأكد من اتصالك بالإنترنت لتشغيل النغمة.", "الموسيقى", "fa-solid fa-music");
     });
   } else {
@@ -909,7 +887,7 @@ function toggleBackgroundMusic() {
 }
 
 // -------------------------------------------------------------
-// 3. إشعارات خدمات وطلبات نجع حمادي الحية كل 30 ثانية
+// 3. إشعارات خدمات وطلبات نجع حمادي
 // -------------------------------------------------------------
 const localServicesList = [
   { icon: "fa-notes-medical", title: "طوارئ علاج وصيدلية 💊", desc: "طلب روشتة عاجلة من صيدلية السلام إلى شارع 30" },
@@ -937,7 +915,7 @@ function showNextServiceToast() {
 
   setTimeout(() => {
     toast.classList.remove('show');
-  }, 6000);
+  }, 5000);
 }
 
 setTimeout(() => {
@@ -958,6 +936,7 @@ function saveStoredUsers(users) {
 // -------------------------------------------------------------
 function switchAuthMode(mode) {
   const isLogin = mode === 'login';
+  document.getElementById('authErrorDisplay').style.display = 'none';
   document.getElementById('tabBtnLogin').classList.toggle('active', isLogin);
   document.getElementById('tabBtnSignup').classList.toggle('active', !isLogin);
   document.getElementById('formLoginView').style.display = isLogin ? 'block' : 'none';
@@ -968,6 +947,7 @@ function switchAuthMode(mode) {
 }
 
 function switchToForgotView() {
+  document.getElementById('authErrorDisplay').style.display = 'none';
   document.getElementById('authTabsContainer').style.display = 'none';
   document.getElementById('formLoginView').style.display = 'none';
   document.getElementById('formSignupView').style.display = 'none';
@@ -1008,7 +988,7 @@ function checkAppAccess() {
 }
 
 // -------------------------------------------------------------
-// 5. تسجيل الدخول السريع
+// 5. تسجيل الدخول السريع وفحص كلمة المرور المباشر
 // -------------------------------------------------------------
 function directPasswordLogin() {
   const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
@@ -1016,7 +996,7 @@ function directPasswordLogin() {
   const users = getStoredUsers();
 
   if (!identifier || !password) {
-    showAppAlert("من فضلك أدخل البريد الإلكتروني/الهاتف وكلمة المرور.", "بيانات ناقصة", "fa-solid fa-triangle-exclamation", "#f59e0b");
+    showAuthInlineError("⚠️ من فضلك اكتب البريد الإلكتروني أو الهاتف وكلمة المرور.");
     return;
   }
 
@@ -1033,9 +1013,11 @@ function directPasswordLogin() {
       time: Date.now()
     }));
     checkAppAccess();
-    showAppAlert(`أهلاً بعودتك يا ${user.name}! تم تسجيل الدخول بنجاح 🚀`, "تسجيل دخول ناجح", "fa-solid fa-circle-check", "#10b981");
+    showAppAlert(`أهلاً بعودتك يا ${user.name}! تم الدخول بنجاح 🚀`, "تم تسجيل الدخول", "fa-solid fa-circle-check", "#10b981");
   } else {
-    showAppAlert("بيانات الدخول غير صحيحة! يرجى التأكد من البريد وكلمة المرور، أو اضغط (نسيت كلمة السر).", "خطأ في الدخول", "fa-solid fa-circle-xmark", "#ef4444");
+    // إظهار تنبيه الخطأ مباشرة وواضحاً فوق الشاشة
+    showAuthInlineError("❌ البريد الإلكتروني أو كلمة المرور غير صحيحة! تأكد من الحساب أو اضغط (نسيت كلمة السر).");
+    showAppAlert("البريد الإلكتروني أو كلمة المرور غير صحيحة! يرجى التأكد من البيانات أو الضغط على (نسيت كلمة السر).", "خطأ في تسجيل الدخول", "fa-solid fa-circle-xmark", "#ef4444");
   }
 }
 
@@ -1051,13 +1033,13 @@ async function requestSignupOtp() {
   const users = getStoredUsers();
 
   if (!name || !/^01[0125][0-9]{8}$/.test(phone) || !email || !email.includes('@') || password.length < 4) {
-    showAppAlert("يرجى إكمال جميع الخانات (كلمة المرور 4 خانات على الأقل، ورقم هاتف مصري صحيح).", "بيانات غير مكتملة", "fa-solid fa-triangle-exclamation", "#f59e0b");
+    showAuthInlineError("⚠️ يرجى إكمال جميع الخانات بشكل صحيح (موبايل مصري صحيح وكلمة مرور 4 خانات فأكثر).");
     return;
   }
 
   const exists = users.some(u => u.phone === phone || u.email.toLowerCase() === email);
   if (exists) {
-    showAppAlert("هذا الحساب مسجل لدينا بالفعل! تم نقلك لخانة تسجيل الدخول.", "حساب مسجل", "fa-solid fa-user-check", "#00e5ff");
+    showAuthInlineError("ℹ️ هذا الحساب مسجل لدينا بالفعل! يمكنك تسجيل الدخول مباشرة.");
     switchAuthMode('login');
     document.getElementById('loginIdentifier').value = email;
     return;
@@ -1086,7 +1068,7 @@ async function requestSignupOtp() {
   } catch (e) {
     btn.disabled = false;
     btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
-    showAppAlert("تعذر إرسال الإيميل، تأكد من صحة البريد والاتصال بالإنترنت.", "فشل الإرسال", "fa-solid fa-triangle-exclamation", "#ef4444");
+    showAuthInlineError("❌ تعذر إرسال الإيميل، تأكد من صحة البريد والاتصال بالإنترنت.");
   }
 }
 
@@ -1099,13 +1081,13 @@ async function requestForgotOtp() {
   const users = getStoredUsers();
 
   if (!email || !email.includes('@')) {
-    showAppAlert("أدخل بريد إلكتروني صحيح.", "بريد خاطئ", "fa-solid fa-triangle-exclamation", "#f59e0b");
+    showAuthInlineError("⚠️ أدخل بريد إلكتروني صحيح.");
     return;
   }
 
   const user = users.find(u => u.email.toLowerCase() === email);
   if (!user) {
-    showAppAlert("هذا البريد غير مسجل لدينا! تأكد من كتابة البريد المسجل به.", "غير موجود", "fa-solid fa-circle-xmark", "#ef4444");
+    showAuthInlineError("❌ هذا البريد غير مسجل لدينا! تأكد من كتابة البريد المسجل به.");
     return;
   }
 
@@ -1131,7 +1113,7 @@ async function requestForgotOtp() {
   } catch(e) {
     btn.disabled = false;
     btn.textContent = "إرسال كود الاستعادة 📩";
-    showAppAlert("تعذر إرسال الكود، يرجى إعادة المحاولة.", "خطأ", "fa-solid fa-circle-xmark", "#ef4444");
+    showAuthInlineError("❌ تعذر إرسال الكود، يرجى المحاولة لاحقاً.");
   }
 }
 
@@ -1187,7 +1169,7 @@ function verifyAndFinishOtp() {
 }
 
 // -------------------------------------------------------------
-// 9. تسجيل الخروج بنظام النافذة المدمجة (بدون confirm)
+// 9. تسجيل الخروج بنظام النافذة المدمجة
 // -------------------------------------------------------------
 function logoutUser() {
   document.getElementById('logoutConfirmModal').classList.add('show');
@@ -1275,17 +1257,14 @@ function applyLiveState(step, status) {
   if (status === 'busy') {
     txt.textContent = "مشغول";
     dot.style.background = "#f59e0b";
-    dot.style.boxShadow = "0 0 8px #f59e0b";
     badge.style.color = "#fbbf24";
   } else if (status === 'offline') {
     txt.textContent = "مغلق";
     dot.style.background = "#ef4444";
-    dot.style.boxShadow = "0 0 8px #ef4444";
     badge.style.color = "#f87171";
   } else {
     txt.textContent = "متاح";
     dot.style.background = "#10b981";
-    dot.style.boxShadow = "0 0 8px #10b981";
     badge.style.color = "#34d399";
   }
 }
@@ -1497,20 +1476,30 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
   }
 });
 
+// التنقل بين التبويبات - استجابة فورية (Instant Switching)
 function switchTab(tabId, navBtn) {
-  document.querySelectorAll('.tab-view').forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  navBtn.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const views = document.querySelectorAll('.tab-view');
+  for (let i = 0; i < views.length; i++) {
+    views[i].style.display = 'none';
+  }
+  
+  const navBtns = document.querySelectorAll('.nav-item');
+  for (let i = 0; i < navBtns.length; i++) {
+    navBtns[i].classList.remove('active');
+  }
+
+  const target = document.getElementById(tabId);
+  if (target) target.style.display = 'block';
+  if (navBtn) navBtn.classList.add('active');
+
+  // تمرير فوري مباشر بدون تأخير Smooth Scroll
+  window.scrollTo(0, 0);
 }
 
 function switchToForm(formId) {
   switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
-  setTimeout(() => {
-    const el = document.getElementById(formId);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }, 100);
+  const el = document.getElementById(formId);
+  if (el) el.scrollIntoView();
 }
 
 checkAppAccess();
