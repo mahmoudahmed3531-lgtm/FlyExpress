@@ -20,6 +20,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<!-- مكتبة EmailJS الرسمية -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <style>
 :root {
   --bg-dark: #070b12;
@@ -61,7 +64,7 @@ body {
   z-index: 1;
 }
 
-/* 🔒 شاشة التفعيل والتحقق الموثقة عبر واتساب */
+/* 🔒 شاشة القفل والتحقق عبر بريد Gmail */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -319,43 +322,36 @@ body {
 
 <body>
 
-<!-- 🔒 شاشة القفل والتحقق الموثق برقم الواتساب -->
+<!-- 🔒 شاشة القفل وتأكيد الحساب بكود Gmail -->
 <div class="auth-gate-screen" id="authGateScreen">
   <div class="gate-card">
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
-    <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">سجل برقم هاتفك لتوثيق وتفعيل حسابك عبر واتساب 📲</p>
+    <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">أدخل بياناتك وسيصلك كود التفعيل على Gmail ✉️</p>
 
-    <!-- المرحلة 1: إدخال البيانات والتحويل إلى واتساب -->
+    <!-- المرحلة 1: إدخال البيانات -->
     <div id="gateStep1">
       <input type="text" id="gateName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
-      <input type="tel" id="gatePhone" class="order-input" placeholder="رقم الموبايل (مثال: 01012345678)" style="margin-bottom:12px;">
+      <input type="tel" id="gatePhone" class="order-input" placeholder="رقم الموبايل (واتساب)" style="margin-bottom:8px;">
+      <input type="email" id="gateEmail" class="order-input" placeholder="بريدك الإلكتروني (Gmail)" style="margin-bottom:12px;">
       
-      <button class="order-btn" style="background:linear-gradient(90deg, #25d366, #128c7e); color:#fff;" onclick="requestWhatsAppVerification()">
-        <i class="fa-brands fa-whatsapp"></i> إرسال كود التفعيل عبر واتساب 📲
+      <button class="order-btn" id="sendOtpBtn" onclick="requestEmailOtp()">
+        <i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩
       </button>
     </div>
 
-    <!-- المرحلة 2: تأكيد الكود المولد المذكور في الرسالة -->
+    <!-- المرحلة 2: كتابة الكود المستلم -->
     <div id="gateStep2" style="display:none;">
-      <div style="background:rgba(37, 211, 102, 0.1); border:1px solid rgba(37, 211, 102, 0.3); border-radius:14px; padding:12px; margin-bottom:12px;">
-        <span style="font-size:11px; color:#cbd5e1;">تم تجهيز رسالة التفعيل لكود الأمان الخاص بك:</span>
-        <div id="displayOtpBox" style="font-size:26px; font-weight:900; color:#25d366; letter-spacing:4px; margin:6px 0;">----</div>
-        <span style="font-size:11px; color:#94a3b8;">اضغط إرسال في واتساب ثم اكتب الكود هنا لتأكيد التفعيل</span>
+      <div style="background:rgba(0, 229, 255, 0.08); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; padding:10px; margin-bottom:12px;">
+        <span style="font-size:11px; color:#cbd5e1;">تم إرسال كود التفعيل إلى بريدك. افتح تطبيق Gmail وانسخ الكود:</span>
       </div>
-      
-      <input type="number" id="gateSmsCode" class="order-input" placeholder="اكتب الرمز (4 أرقام)" style="text-align:center; font-size:20px; letter-spacing:4px; margin-bottom:12px;">
-      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyWhatsAppOtp()">
+      <input type="number" id="gateOtpInput" class="order-input" placeholder="أدخل الكود (4 أرقام)" style="text-align:center; font-size:20px; letter-spacing:6px; margin-bottom:12px;">
+      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyEmailOtp()">
         تأكيد الكود وفتح التطبيق 🚀
       </button>
-      <div style="display:flex; justify-content:space-around; margin-top:12px;">
-        <button onclick="reopenWhatsAppChat()" style="background:transparent; border:0; color:#25d366; font-size:11px; font-family:inherit; cursor:pointer;">
-          <i class="fa-brands fa-whatsapp"></i> فتح المحادثة مجدداً
-        </button>
-        <button onclick="backToGateStep1()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; cursor:pointer;">
-          تعديل البيانات ✏️
-        </button>
-      </div>
+      <button onclick="backToStep1()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; margin-top:10px; cursor:pointer;">
+        تعديل البريد الإلكتروني ✏️
+      </button>
     </div>
   </div>
 </div>
@@ -382,7 +378,6 @@ body {
 
   <!-- تبويب 1: الرئيسية -->
   <main id="tab-home" class="tab-view active">
-    
     <div class="user-welcome-card" id="userWelcomeBox">
       <div>
         <div style="font-size:11px; color:var(--text-sub);">أهلاً بك معنا 🌟</div>
@@ -406,7 +401,7 @@ body {
       </div>
     </div>
 
-    <!-- رادار الأمان السحابي المباشر -->
+    <!-- رادار الأمان السحابي -->
     <div class="safety-radar-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-size:12px; font-weight:800; color:#34d399;"><i class="fa-solid fa-shield-halved"></i> رادار أمان رحلة المدرسة اليومية</span>
@@ -647,16 +642,25 @@ body {
 </div>
 
 <script>
+// -------------------------------------------------------------
+// 1. مفاتيح ربط EmailJS الخاصة بحسابك (تم التفعيل بنجاح ✅)
+// -------------------------------------------------------------
+const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
+const EMAILJS_SERVICE_ID = "service_xylpe3a";
+const EMAILJS_TEMPLATE_ID = "template_4ovzrts";
+
+emailjs.init(EMAILJS_PUBLIC_KEY);
+
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 let pendingClaimUrl = "";
-let currentSecurityOtp = "";
-let pendingUserData = {};
+let currentGeneratedOtp = null;
+let clientTempSignup = {};
 
 // -------------------------------------------------------------
-// 1. نظام التحقق الموثق عبر واتساب الرسمي
+// 2. التحقق من الدخول وجلسة المستخدم
 // -------------------------------------------------------------
 function checkAppAccess() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
@@ -683,60 +687,67 @@ function checkAppAccess() {
   }
 }
 
-function requestWhatsAppVerification() {
+// توليد وإرسال كود OTP عبر Gmail
+async function requestEmailOtp() {
   const name = document.getElementById('gateName').value.trim();
   const phone = document.getElementById('gatePhone').value.trim();
+  const email = document.getElementById('gateEmail').value.trim().toLowerCase();
+  const btn = document.getElementById('sendOtpBtn');
 
-  if (!name || !/^01[0125][0-9]{8}$/.test(phone)) {
-    alert("من فضلك أدخل اسمك ورقم هاتف مصري صحيح (11 رقم يبدأ بـ 01)");
+  if (!name || !/^01[0125][0-9]{8}$/.test(phone) || !email || !email.includes('@')) {
+    alert("من فضلك أدخل اسمك، ورقم هاتف مصري صحيح، وبريدك الإلكتروني.");
     return;
   }
 
-  // توليد كود تحقق عشوائي من 4 أرقام
-  currentSecurityOtp = Math.floor(1000 + Math.random() * 9000).toString();
-  pendingUserData = { name: name, phone: phone };
+  // توليد كود سري من 4 أرقام
+  currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+  clientTempSignup = { name, phone, email, otp: currentGeneratedOtp };
 
-  // إعداد نص الرسالة لواتساب الأدمن
-  const waMsg = `مرحباً كابتن محمود 👋\nأرغب في تفعيل حسابي على تطبيق Fly Express 🛵\nالاسم: ${name}\nرقم الموبايل: ${phone}\n🔐 كود الأمان لتفعيل حسابي: ${currentSecurityOtp}\n(يرجى تأكيد التفعيل)`;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الكود إلى بريدك...';
 
-  // الانتقال للخطوة الثانية
-  document.getElementById('displayOtpBox').textContent = currentSecurityOtp;
-  document.getElementById('gateStep1').style.display = "none";
-  document.getElementById('gateStep2').style.display = "block";
+  const templateParams = {
+    to_name: name,
+    to_email: email,
+    otp_code: currentGeneratedOtp
+  };
 
-  // فتح واتساب مباشرة لإرسال الرسالة
-  const waUrl = `https://wa.me/${ADMIN_PHONE}?text=${enc(waMsg)}`;
-  window.open(waUrl, '_blank', 'noopener');
-}
-
-function reopenWhatsAppChat() {
-  if (currentSecurityOtp && pendingUserData.name) {
-    const waMsg = `مرحباً كابتن محمود 👋\nأرغب في تفعيل حسابي على تطبيق Fly Express 🛵\nالاسم: ${pendingUserData.name}\nرقم الموبايل: ${pendingUserData.phone}\n🔐 كود الأمان لتفعيل حسابي: ${currentSecurityOtp}`;
-    window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(waMsg)}`, '_blank', 'noopener');
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+    alert(`تم إرسال كود التفعيل إلى بريدك (${email}) بنجاح! ✉️\nافتح صندوق الوارد في Gmail وانسخ الكود.`);
+    document.getElementById('gateStep1').style.display = "none";
+    document.getElementById('gateStep2').style.display = "block";
+  } catch (error) {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
+    alert("تعذر إرسال الإيميل! تأكد من أن بريدك صحيح وأنك فعلت المتغيرات داخل القالب.");
   }
 }
 
-function verifyWhatsAppOtp() {
-  const enteredCode = document.getElementById('gateSmsCode').value.trim();
-  if (!enteredCode || enteredCode !== currentSecurityOtp) {
-    alert("كود الأمان غير صحيح! يرجى إدخال الكود المكتوب في رسالة الواتساب ❌");
-    return;
+// تأكيد الكود
+function verifyEmailOtp() {
+  const code = document.getElementById('gateOtpInput').value.trim();
+
+  if (code === currentGeneratedOtp && currentGeneratedOtp) {
+    localStorage.setItem('fly_verified_user', JSON.stringify({
+      name: clientTempSignup.name,
+      phone: clientTempSignup.phone,
+      email: clientTempSignup.email,
+      time: Date.now()
+    }));
+    alert(`تم التحقق بنجاح! مرحباً بك يا ${clientTempSignup.name} في Fly Express 🚀`);
+    checkAppAccess();
+  } else {
+    alert("كود التحقق غير صحيح! تأكد من الرقم المكتوب في رسالة Gmail الواردة.");
   }
-
-  // حفظ العميل كموثق
-  localStorage.setItem('fly_verified_user', JSON.stringify({
-    name: pendingUserData.name,
-    phone: pendingUserData.phone,
-    verifiedAt: Date.now()
-  }));
-
-  alert(`تم التحقق والتوثيق بنجاح! أهلاً بك يا ${pendingUserData.name} في Fly Express 🚀`);
-  checkAppAccess();
 }
 
-function backToGateStep1() {
+function backToStep1() {
   document.getElementById('gateStep1').style.display = "block";
   document.getElementById('gateStep2').style.display = "none";
+  const btn = document.getElementById('sendOtpBtn');
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
 }
 
 function logoutUser() {
@@ -747,7 +758,7 @@ function logoutUser() {
 }
 
 // -------------------------------------------------------------
-// 2. المزامنة الحية (الرادار + حالة التوصيل)
+// 3. المزامنة السحابية الحية (رادار + حالة التوصيل)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -890,7 +901,7 @@ function sendMonthlyOrder() {
   waSend(text);
 }
 
-// عجلة الخصومات
+// عجلة الحظ
 const slices = [
   { text: "خصم 5 ج", key: "5EGP", color: "#ff6b00" },
   { text: "حظ أوفر", key: null, color: "#1e293b" },
@@ -945,8 +956,8 @@ function spinWheel() {
   const spinBtn = document.getElementById('spinBtn');
   const waClaimBtn = document.getElementById('waClaimBtn');
 
-  if (!/^01[0125][0-9]{8}$/.test(phone)) {
-    alert("أدخل رقم موبايل مصري صحيح (11 رقم)");
+  if (!phone) {
+    alert("رقم الهاتف غير مسجل");
     return;
   }
 
@@ -993,7 +1004,7 @@ function openClaimWhatsApp() {
   if (pendingClaimUrl) window.open(pendingClaimUrl, '_blank', 'noopener');
 }
 
-// 5 ضغطات على الشعار لفتح الأدمن
+// 5 ضغطات على الشعار لفتح لوحة الأدمن
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
   logoClicks++;
@@ -1021,7 +1032,7 @@ function switchToForm(formId) {
   }, 100);
 }
 
-// بدء الفحص عند فتح الصفحة
+// تشغيل الفحص وبدء التطبيق
 checkAppAccess();
 </script>
 </body>
