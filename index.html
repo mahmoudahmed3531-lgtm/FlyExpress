@@ -264,9 +264,10 @@ body {
 }
 .step-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
 
-.snap-order-banner {
-  background: linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(0, 168, 255, 0.08));
-  border: 1px dashed var(--accent);
+/* بنر الخدمة الطبية */
+.pharmacy-order-banner {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(6, 78, 59, 0.2));
+  border: 1px dashed var(--success);
   border-radius: 18px;
   padding: 14px;
   display: flex;
@@ -390,7 +391,7 @@ body {
       </button>
     </div>
 
-    <!-- نموذج 3: نسيت كلمة المرور (طلب كود الاستعادة) -->
+    <!-- نموذج 3: نسيت كلمة المرور -->
     <div id="formForgotView" style="display:none;">
       <div style="font-size:11px; color:#cbd5e1; margin-bottom:10px;">
         أدخل بريدك الإلكتروني المسجل وسيصلك كود لتعيين كلمة مرور جديدة:
@@ -404,14 +405,13 @@ body {
       </button>
     </div>
 
-    <!-- نموذج 4: شاشة كتابة الكود (لتأكيد الحساب الجديد أو تعيين باسورد جديد) -->
+    <!-- نموذج 4: شاشة كتابة الكود المستلم من Gmail -->
     <div id="gateStepOtp" style="display:none;">
       <div style="background:rgba(0, 229, 255, 0.08); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; padding:10px; margin-bottom:12px;">
         <span style="font-size:11px; color:#cbd5e1;" id="otpNoticeTxt">افتح تطبيق Gmail واكتب الكود هنا:</span>
       </div>
       <input type="number" id="gateOtpInput" class="order-input" placeholder="أدخل الكود (4 أرقام)" style="text-align:center; font-size:20px; letter-spacing:6px; margin-bottom:8px;">
       
-      <!-- خانة الباسورد الجديد (تظهر فقط عند نسيان الباسورد) -->
       <div id="newPasswordSection" style="display:none; margin-bottom:8px;">
         <input type="password" id="gateNewPassword" class="order-input" placeholder="اكتب كلمة المرور الجديدة">
       </div>
@@ -494,16 +494,16 @@ body {
       </div>
     </div>
 
-    <!-- صوّر واطلب -->
-    <div class="snap-order-banner" onclick="openSnapModal()">
+    <!-- بنر خدمة الصيدلية والعلاج السريع (البديل المطور للكاميرا) -->
+    <div class="pharmacy-order-banner" onclick="openPharmacyModal()">
       <div style="display:flex; align-items:center; gap:12px;">
-        <i class="fa-solid fa-camera" style="font-size:26px; color:var(--accent);"></i>
+        <i class="fa-solid fa-notes-medical" style="font-size:26px; color:#34d399;"></i>
         <div>
-          <h4 style="font-size:13px; font-weight:900; color:#fff;">صوّر واطلب فوراً 📸</h4>
-          <span style="font-size:11px; color:#cbd5e1;">كسلان تكتب؟ صوّر الروشتة أو طلبات البيت بضغطة زر</span>
+          <h4 style="font-size:13px; font-weight:900; color:#fff;">طوارئ علاج وصيدلية 💊</h4>
+          <span style="font-size:11px; color:#cbd5e1;">محتاج دواء ضروري؟ اكتب اسم العلاج ويوصلك فوراً</span>
         </div>
       </div>
-      <i class="fa-solid fa-chevron-left" style="color:var(--accent); font-size:12px;"></i>
+      <i class="fa-solid fa-chevron-left" style="color:#34d399; font-size:12px;"></i>
     </div>
 
     <!-- عجلة الخصومات -->
@@ -526,7 +526,7 @@ body {
       </div>
       <div class="service-card" onclick="switchToForm('sec-market')">
         <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
-        <div><h4>طلبات السوق</h4><span>خضار، بقالة، صيدلية</span></div>
+        <div><h4>طلبات السوق</h4><span>خضار، بقالة، طلبات بيت</span></div>
       </div>
       <div class="service-card" onclick="switchToForm('sec-school')">
         <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
@@ -662,26 +662,21 @@ body {
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
 
-  <!-- نافذة صوّر واطلب -->
-  <div class="modal-backdrop" id="snapModal">
+  <!-- نافذة طلب أدوية الصيدلية السريعة -->
+  <div class="modal-backdrop" id="pharmacyModal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closeSnapModal()">&times;</button>
-      <h3 style="font-size:17px; font-weight:900; color:#00e5ff;">📸 صوّر واطلب فوراً</h3>
-      
-      <div style="background:rgba(0, 229, 255, 0.1); border:1px dashed var(--accent); border-radius:14px; padding:12px; margin:12px 0;">
-        <i class="fa-solid fa-circle-info" style="color:var(--accent); font-size:20px; margin-bottom:4px;"></i>
-        <div style="font-size:11px; color:#cbd5e1; line-height:1.4;">
-          عند الضغط على الزر، سيفتح شات الواتساب:  
-          <br><strong style="color:#fff;">اضغط على علامة المشبك 📎 أو الكاميرا 📷 لإرفاق الصورة مع الطلب.</strong>
-        </div>
-      </div>
+      <button class="modal-close" onclick="closePharmacyModal()">&times;</button>
+      <h3 style="font-size:17px; font-weight:900; color:#34d399;">💊 طلب علاج وصيدلية طارئة</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin:4px 0 12px;">اكتب طلبات العلاج وستصلك إلى المنزل فوراً</p>
 
       <div style="display:flex; flex-direction:column; gap:8px;">
-        <input type="text" id="snapName" class="order-input" placeholder="اسمك الكريم">
-        <input type="tel" id="snapPhone" class="order-input" placeholder="رقم الواتساب">
-        <input type="text" id="snapAddress" class="order-input" placeholder="عنوان التوصيل">
-        <button class="order-btn" style="background:linear-gradient(90deg, #00e5ff, #00a8ff); color:#000;" onclick="sendSnapDirect()">
-          <i class="fa-brands fa-whatsapp"></i> فتح واتساب وإرفاق الصورة 🛵
+        <input type="text" id="pharmName" class="order-input" placeholder="اسمك الكريم">
+        <input type="tel" id="pharmPhone" class="order-input" placeholder="رقم الواتساب">
+        <input type="text" id="pharmPrefPharmacy" class="order-input" placeholder="اسم صيدلية معينة؟ (اختياري)">
+        <textarea id="pharmMedicineList" class="order-textarea" placeholder="اكتب أسماء الأدوية أو المستلزمات المطلوبة بالتفصيل..."></textarea>
+        <input type="text" id="pharmAddress" class="order-input" placeholder="عنوان التوصيل">
+        <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669); color:#fff;" onclick="sendPharmacyOrder()">
+          <i class="fa-brands fa-whatsapp"></i> إرسال طلب العلاج عبر واتساب 🛵
         </button>
       </div>
     </div>
@@ -729,7 +724,7 @@ const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 let pendingClaimUrl = "";
 let currentGeneratedOtp = null;
 let activeAuthTargetUser = null;
-let currentOtpFlow = ""; // 'signup' أو 'forgot'
+let currentOtpFlow = ""; 
 
 function getStoredUsers() {
   return JSON.parse(localStorage.getItem('fly_registered_users') || "[]");
@@ -781,10 +776,10 @@ function checkAppAccess() {
     document.getElementById('userStatusTxt').textContent = user.name;
     document.getElementById('welcomeUserName').textContent = user.name;
     
-    ['orderName', 'marketName', 'pmName', 'snapName'].forEach(id => {
+    ['orderName', 'marketName', 'pmName', 'pharmName'].forEach(id => {
       const el = document.getElementById(id); if (el) el.value = user.name;
     });
-    ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone', 'snapPhone', 'wheelPhone'].forEach(id => {
+    ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone', 'pharmPhone', 'wheelPhone'].forEach(id => {
       const el = document.getElementById(id); if (el) el.value = user.phone;
     });
   } else {
@@ -794,7 +789,7 @@ function checkAppAccess() {
 }
 
 // -------------------------------------------------------------
-// 3. تسجيل الدخول السريع (بالبريد وكلمة المرور دون إرسال كود)
+// 3. تسجيل الدخول السريع (بالبريد والباسورد مباشرة دون كود)
 // -------------------------------------------------------------
 function directPasswordLogin() {
   const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
@@ -806,7 +801,6 @@ function directPasswordLogin() {
     return;
   }
 
-  // مطابقة الحساب وكلمة السر
   const user = users.find(u => 
     (u.email.toLowerCase() === identifier || u.phone === identifier) && 
     u.password === password
@@ -827,7 +821,7 @@ function directPasswordLogin() {
 }
 
 // -------------------------------------------------------------
-// 4. إنشاء حساب جديد (مع كلمة المرور وإرسال كود التأكيد أول مرة)
+// 4. إنشاء حساب جديد لأول مرة
 // -------------------------------------------------------------
 async function requestSignupOtp() {
   const name = document.getElementById('signupName').value.trim();
@@ -842,7 +836,6 @@ async function requestSignupOtp() {
     return;
   }
 
-  // منع التكرار
   const exists = users.some(u => u.phone === phone || u.email.toLowerCase() === email);
   if (exists) {
     alert("هذا الحساب مسجل لدينا بالفعل! يرجى التوجه لخانة تسجيل الدخول.");
@@ -879,7 +872,7 @@ async function requestSignupOtp() {
 }
 
 // -------------------------------------------------------------
-// 5. مسار استعادة كلمة المرور (نسيت كلمة السر)
+// 5. استعادة كلمة المرور
 // -------------------------------------------------------------
 async function requestForgotOtp() {
   const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
@@ -913,7 +906,7 @@ async function requestForgotOtp() {
 
     document.getElementById('formForgotView').style.display = 'none';
     document.getElementById('gateStepOtp').style.display = 'block';
-    document.getElementById('newPasswordSection').style.display = 'block'; // إظهار خانة الباسورد الجديد
+    document.getElementById('newPasswordSection').style.display = 'block';
     document.getElementById('otpNoticeTxt').textContent = `أدخل الكود المرسل إلى (${email}) واكتب كلمة المرور الجديدة:`;
     alert("تم إرسال كود استعادة كلمة المرور إلى بريدك ✉️");
   } catch(e) {
@@ -937,7 +930,6 @@ function verifyAndFinishOtp() {
   let users = getStoredUsers();
 
   if (currentOtpFlow === 'signup') {
-    // حفظ الحساب الجديد
     users.push(activeAuthTargetUser);
     saveStoredUsers(users);
 
@@ -951,7 +943,6 @@ function verifyAndFinishOtp() {
     alert(`تم تأكيد حسابك بنجاح! مرحباً بك يا ${activeAuthTargetUser.name} في Fly Express 🚀`);
     checkAppAccess();
   } else if (currentOtpFlow === 'forgot') {
-    // تعيين الباسورد الجديد
     const newPass = document.getElementById('gateNewPassword').value.trim();
     if (newPass.length < 4) {
       alert("يرجى كتابة كلمة مرور جديدة لا تقل عن 4 خانات.");
@@ -985,7 +976,44 @@ function logoutUser() {
 }
 
 // -------------------------------------------------------------
-// 7. المزامنة السحابية الحية (رادار + حالة التوصيل)
+// 7. خدمة طلب الأدوية والصيدلية
+// -------------------------------------------------------------
+function openPharmacyModal() {
+  const verifiedUser = localStorage.getItem('fly_verified_user');
+  if (verifiedUser) {
+    const u = JSON.parse(verifiedUser);
+    const pName = document.getElementById('pharmName');
+    const pPhone = document.getElementById('pharmPhone');
+    if (pName) pName.value = u.name || '';
+    if (pPhone) pPhone.value = u.phone || '';
+  }
+  document.getElementById('pharmacyModal').classList.add('show');
+}
+
+function closePharmacyModal() {
+  document.getElementById('pharmacyModal').classList.remove('show');
+}
+
+function sendPharmacyOrder() {
+  const name = document.getElementById('pharmName').value.trim();
+  const phone = document.getElementById('pharmPhone').value.trim();
+  const pharmacy = document.getElementById('pharmPrefPharmacy').value.trim() || 'أقرب صيدلية مفتوحة';
+  const meds = document.getElementById('pharmMedicineList').value.trim();
+  const address = document.getElementById('pharmAddress').value.trim();
+
+  if (!name || !phone || !meds || !address) {
+    alert("من فضلك اكتب اسمك، والعلاج المطلوب، وعنوان التوصيل.");
+    return;
+  }
+
+  addLoyaltyRide();
+  const msg = `طلب صيدلية وعلاج طارئ 💊\nالاسم: ${name}\nالموبايل: ${phone}\nالصيدلية المطلوبة: ${pharmacy}\nالعلاج المطلوب:\n${meds}\nالعنوان: ${address}\n— أُرسل عبر تطبيق Fly Express`;
+  closePharmacyModal();
+  waSend(msg);
+}
+
+// -------------------------------------------------------------
+// 8. المزامنة السحابية الحية (رادار + حالة التوصيل)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1065,20 +1093,6 @@ const waSend = txt => {
   const finalTxt = txt + getActiveDiscount();
   window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(finalTxt)}`, '_blank', 'noopener');
 };
-
-function openSnapModal() { document.getElementById('snapModal').classList.add('show'); }
-function closeSnapModal() { document.getElementById('snapModal').classList.remove('show'); }
-
-function sendSnapDirect() {
-  const name = document.getElementById('snapName').value.trim();
-  const phone = document.getElementById('snapPhone').value.trim();
-  const address = document.getElementById('snapAddress').value.trim();
-  if (!name || !phone || !address) { alert("من فضلك أكمل البيانات أولاً"); return; }
-  addLoyaltyRide();
-  const msg = `طلب دليفري بالصورة 📸\nالعميل: ${name}\nالموبايل: ${phone}\nالعنوان: ${address}\n\n(سأقوم بإرفاق صورة الروشتة/قائمة الطلبات هنا فوراً 📎)\n— أُرسل عبر تطبيق Fly Express`;
-  closeSnapModal();
-  waSend(msg);
-}
 
 function calcMonthlyEstimate() {
   const count = parseInt(document.getElementById('pmChildrenCount').value || '1', 10);
