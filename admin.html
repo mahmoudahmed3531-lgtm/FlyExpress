@@ -38,7 +38,7 @@ body {
   margin: 0 auto;
 }
 
-/* شاشة حماية الأدمن */
+/* شاشة حماية ودخول الأدمن */
 .admin-lock-screen {
   position: fixed; inset: 0; background: var(--bg-dark); z-index: 999;
   display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;
@@ -103,14 +103,17 @@ body {
 
 <body>
 
-<!-- شاشة حماية الأدمن -->
+<!-- شاشة قفل الأدمن: تسجيل الدخول بالاسم وكلمة المرور -->
 <div class="admin-lock-screen" id="adminLock">
   <div class="lock-card">
-    <i class="fa-solid fa-user-shield" style="font-size:36px; color:var(--primary); margin-bottom:12px;"></i>
-    <h3 style="font-size:16px; margin-bottom:6px;">لوحة تحكم Fly Express</h3>
-    <p style="font-size:11px; color:var(--text-sub); margin-bottom:16px;">يرجى كتابة رمز المرور الإداري للوصول</p>
-    <input type="password" id="adminPin" class="input-box" placeholder="رمز PIN" style="text-align:center; font-size:20px; letter-spacing:4px;">
-    <button class="action-btn" onclick="checkAdminPin()">دخول اللوحة 🔐</button>
+    <i class="fa-solid fa-user-shield" style="font-size:38px; color:var(--primary); margin-bottom:12px;"></i>
+    <h3 style="font-size:17px; font-weight:900; margin-bottom:4px;">لوحة تحكم Fly Express</h3>
+    <p style="font-size:11px; color:var(--text-sub); margin-bottom:18px;">تسجيل الدخول للمسؤولين فقط 🛡️</p>
+    
+    <input type="text" id="adminUser" class="input-box" placeholder="اسم المستخدم (User)" autocomplete="off">
+    <input type="password" id="adminPass" class="input-box" placeholder="كلمة المرور (Password)">
+    
+    <button class="action-btn" onclick="checkAdminCredentials()">تسجيل الدخول 🚀</button>
   </div>
 </div>
 
@@ -122,12 +125,17 @@ body {
       <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Logo">
       <div>
         <div>Fly Express Admin</div>
-        <div style="font-size:10px; color:var(--text-sub);">التحكم السحابي المباشر 🛰️</div>
+        <div style="font-size:10px; color:var(--text-sub);">المسؤول: <span style="color:#00e5ff; font-weight:900;">Fly</span> ✅</div>
       </div>
     </div>
-    <a href="index.html" style="color:var(--text-sub); text-decoration:none; font-size:12px; font-weight:700;">
-      <i class="fa-solid fa-store"></i> المتجر
-    </a>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <a href="index.html" style="color:var(--text-sub); text-decoration:none; font-size:12px; font-weight:700;">
+        <i class="fa-solid fa-store"></i> المتجر
+      </a>
+      <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
+      </button>
+    </div>
   </div>
 
   <!-- 1. التحكم في حالة التوصيل للعملاء -->
@@ -149,7 +157,7 @@ body {
     </div>
   </div>
 
-  <!-- 2. التحكم في رادار الأمان المباشر -->
+  <!-- 2. التحكم في رادار رحلة المدارس المباشر -->
   <div class="control-panel">
     <div class="panel-title"><i class="fa-solid fa-shield-halved"></i> رادار رحلة المدارس المباشر</div>
     <div style="font-size:11px; color:var(--text-sub); margin-bottom:8px;">اضغط على المرحلة لتحديثها فوراً في شاشات أولياء الأمور:</div>
@@ -188,22 +196,54 @@ body {
 <script>
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
-const ADMIN_SECURITY_PIN = "1234"; // رمز الدخول للوحة (يمكنك تغييره لأي رقم تريده)
+
+// بيانات الدخول المعتمدة
+const AUTH_USER = "Fly";
+const AUTH_PASS = "5060";
 
 let currentState = {
   radar: 1,
   service: 'online'
 };
 
-function checkAdminPin() {
-  const pin = document.getElementById('adminPin').value.trim();
-  if (pin === ADMIN_SECURITY_PIN) {
-    document.getElementById('adminLock').style.display = 'none';
-    document.getElementById('adminPanelContent').style.display = 'block';
-    loadCurrentCloudState();
+// فحص بيانات الدخول
+function checkAdminCredentials() {
+  const user = document.getElementById('adminUser').value.trim();
+  const pass = document.getElementById('adminPass').value.trim();
+
+  if (user === AUTH_USER && pass === AUTH_PASS) {
+    sessionStorage.setItem('fly_admin_logged', 'true');
+    unlockPanel();
   } else {
-    alert("رمز PIN غير صحيح!");
+    alert("بيانات الدخول غير صحيحة! يرجى التأكد من اسم المستخدم وكلمة المرور.");
   }
+}
+
+function unlockPanel() {
+  document.getElementById('adminLock').style.display = 'none';
+  document.getElementById('adminPanelContent').style.display = 'block';
+  loadCurrentCloudState();
+}
+
+function adminLogout() {
+  sessionStorage.removeItem('fly_admin_logged');
+  document.getElementById('adminLock').style.display = 'flex';
+  document.getElementById('adminPanelContent').style.display = 'none';
+  document.getElementById('adminUser').value = '';
+  document.getElementById('adminPass').value = '';
+}
+
+// دعم الدخول بالضغط على Enter
+document.getElementById('adminPass').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') checkAdminCredentials();
+});
+document.getElementById('adminUser').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') document.getElementById('adminPass').focus();
+});
+
+// فحص الجلسة عند فتح الصفحة
+if (sessionStorage.getItem('fly_admin_logged') === 'true') {
+  unlockPanel();
 }
 
 async function loadCurrentCloudState() {
@@ -224,13 +264,11 @@ async function loadCurrentCloudState() {
 }
 
 function updateUI() {
-  // تحديث حالة العمل
   ['online', 'busy', 'offline'].forEach(s => {
     const btn = document.getElementById(`btn${s.charAt(0).toUpperCase() + s.slice(1)}`);
     if (btn) btn.classList.toggle('active', currentState.service === s);
   });
 
-  // تحديث الرادار
   for (let i = 1; i <= 3; i++) {
     const rBtn = document.getElementById(`radar${i}`);
     if (rBtn) rBtn.classList.toggle('active', i <= currentState.radar);
@@ -265,12 +303,6 @@ function setRadarStep(step) {
 }
 
 // فحص صحة الكوبونات
-function hashString(str) {
-  let hash = 5381;
-  for (let i = 0; i < str.length; i++) hash = ((hash << 5) + hash) + str.charCodeAt(i);
-  return Math.abs(hash).toString(36).toUpperCase();
-}
-
 function verifyCoupon() {
   const rawCode = document.getElementById('couponCodeInput').value.trim();
   const resDiv = document.getElementById('couponResult');
