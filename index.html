@@ -64,7 +64,7 @@ body {
   z-index: 1;
 }
 
-/* 🔒 شاشة القفل والتحقق عبر بريد Gmail */
+/* 🔒 شاشة القفل وبوابة الدخول والتسجيل */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -82,7 +82,7 @@ body {
   background: #0d1527;
   border: 1.5px solid var(--primary);
   border-radius: 24px;
-  padding: 24px 18px;
+  padding: 22px 18px;
   width: 100%;
   max-width: 360px;
   box-shadow: 0 10px 40px var(--primary-glow);
@@ -94,7 +94,34 @@ body {
   border-radius: 20px;
   border: 2px solid var(--primary);
   box-shadow: 0 0 20px var(--primary-glow);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+}
+
+/* تبويبات الدخول والتسجيل */
+.auth-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px;
+  border-radius: 12px;
+}
+.auth-tab-btn {
+  flex: 1;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-sub);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.auth-tab-btn.active {
+  background: var(--primary);
+  color: #fff;
 }
 
 /* Header */
@@ -322,37 +349,52 @@ body {
 
 <body>
 
-<!-- 🔒 شاشة القفل وتأكيد الحساب بكود Gmail -->
+<!-- 🔒 شاشة القفل وبوابة الدخول / التسجيل الجديد -->
 <div class="auth-gate-screen" id="authGateScreen">
   <div class="gate-card">
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
-    <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">أدخل بياناتك وسيصلك كود التفعيل على Gmail ✉️</p>
+    <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">خدمة التوصيل الأسرع في نجع حمادي 🚀</p>
 
-    <!-- المرحلة 1: إدخال البيانات -->
-    <div id="gateStep1">
-      <input type="text" id="gateName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
-      <input type="tel" id="gatePhone" class="order-input" placeholder="رقم الموبايل (واتساب)" style="margin-bottom:8px;">
-      <input type="email" id="gateEmail" class="order-input" placeholder="بريدك الإلكتروني (Gmail)" style="margin-bottom:12px;">
+    <!-- تبويبات التبديل بين تسجيل الدخول وإنشاء حساب -->
+    <div class="auth-tabs" id="authTabsContainer">
+      <button class="auth-tab-btn active" id="tabBtnLogin" onclick="switchAuthMode('login')">تسجيل دخول</button>
+      <button class="auth-tab-btn" id="tabBtnSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
+    </div>
+
+    <!-- نموذج 1: تسجيل دخول لحساب موجود -->
+    <div id="formLoginView">
+      <input type="text" id="loginIdentifier" class="order-input" placeholder="رقم الموبايل أو البريد (Gmail)" style="margin-bottom:12px;">
+      <button class="order-btn" id="loginOtpBtn" onclick="requestLoginOtp()">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> طلب كود تسجيل الدخول 📩
+      </button>
+    </div>
+
+    <!-- نموذج 2: إنشاء حساب جديد لأول مرة -->
+    <div id="formSignupView" style="display:none;">
+      <input type="text" id="signupName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
+      <input type="tel" id="signupPhone" class="order-input" placeholder="رقم الموبايل (واتساب)" style="margin-bottom:8px;">
+      <input type="email" id="signupEmail" class="order-input" placeholder="بريدك الإلكتروني (Gmail)" style="margin-bottom:12px;">
       
-      <button class="order-btn" id="sendOtpBtn" onclick="requestEmailOtp()">
+      <button class="order-btn" id="signupOtpBtn" onclick="requestSignupOtp()">
         <i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩
       </button>
     </div>
 
-    <!-- المرحلة 2: كتابة الكود المستلم -->
-    <div id="gateStep2" style="display:none;">
+    <!-- شاشة إدخال كود OTP المستلم على Gmail -->
+    <div id="gateStepOtp" style="display:none;">
       <div style="background:rgba(0, 229, 255, 0.08); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; padding:10px; margin-bottom:12px;">
-        <span style="font-size:11px; color:#cbd5e1;">تم إرسال كود التفعيل إلى بريدك. افتح تطبيق Gmail وانسخ الكود:</span>
+        <span style="font-size:11px; color:#cbd5e1;" id="otpNoticeTxt">تم إرسال كود التفعيل إلى بريدك. افتح تطبيق Gmail وانسخ الكود:</span>
       </div>
       <input type="number" id="gateOtpInput" class="order-input" placeholder="أدخل الكود (4 أرقام)" style="text-align:center; font-size:20px; letter-spacing:6px; margin-bottom:12px;">
       <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyEmailOtp()">
         تأكيد الكود وفتح التطبيق 🚀
       </button>
-      <button onclick="backToStep1()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; margin-top:10px; cursor:pointer;">
-        تعديل البريد الإلكتروني ✏️
+      <button onclick="backToAuthHome()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; margin-top:10px; cursor:pointer;">
+        رجوع ↩️
       </button>
     </div>
+
   </div>
 </div>
 
@@ -643,7 +685,7 @@ body {
 
 <script>
 // -------------------------------------------------------------
-// 1. مفاتيح ربط EmailJS الخاصة بحسابك (تم التفعيل بنجاح ✅)
+// 1. مفاتيح ربط EmailJS الخاصة بحسابك
 // -------------------------------------------------------------
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
@@ -657,11 +699,28 @@ const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 let pendingClaimUrl = "";
 let currentGeneratedOtp = null;
-let clientTempSignup = {};
+let activeAuthTargetUser = null;
+
+// قاعدة بيانات المستخدمين المسجلين محلياً وسحابياً
+function getStoredUsers() {
+  return JSON.parse(localStorage.getItem('fly_registered_users') || "[]");
+}
+
+function saveStoredUsers(users) {
+  localStorage.setItem('fly_registered_users', JSON.stringify(users));
+}
 
 // -------------------------------------------------------------
-// 2. التحقق من الدخول وجلسة المستخدم
+// 2. إدارة التبويبات والبوابة
 // -------------------------------------------------------------
+function switchAuthMode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('tabBtnLogin').classList.toggle('active', isLogin);
+  document.getElementById('tabBtnSignup').classList.toggle('active', !isLogin);
+  document.getElementById('formLoginView').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('formSignupView').style.display = isLogin ? 'none' : 'block';
+}
+
 function checkAppAccess() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
   const gateScreen = document.getElementById('authGateScreen');
@@ -687,78 +746,152 @@ function checkAppAccess() {
   }
 }
 
-// توليد وإرسال كود OTP عبر Gmail
-async function requestEmailOtp() {
-  const name = document.getElementById('gateName').value.trim();
-  const phone = document.getElementById('gatePhone').value.trim();
-  const email = document.getElementById('gateEmail').value.trim().toLowerCase();
-  const btn = document.getElementById('sendOtpBtn');
+// -------------------------------------------------------------
+// 3. مسار تسجيل الدخول (لحساب موجود مسبقاً)
+// -------------------------------------------------------------
+async function requestLoginOtp() {
+  const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
+  const btn = document.getElementById('loginOtpBtn');
+  const users = getStoredUsers();
 
-  if (!name || !/^01[0125][0-9]{8}$/.test(phone) || !email || !email.includes('@')) {
-    alert("من فضلك أدخل اسمك، ورقم هاتف مصري صحيح، وبريدك الإلكتروني.");
+  if (!identifier) {
+    alert("من فضلك أدخل رقم هاتفك أو بريدك الإلكتروني.");
     return;
   }
 
-  // توليد كود سري من 4 أرقام
+  // البحث عن الحساب المسجل
+  const foundUser = users.find(u => u.phone === identifier || u.email.toLowerCase() === identifier);
+
+  if (!foundUser) {
+    alert("هذا الحساب غير مسجل لدينا! يرجى الضغط على زر (إنشاء حساب جديد) أولاً.");
+    return;
+  }
+
+  activeAuthTargetUser = foundUser;
   currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-  clientTempSignup = { name, phone, email, otp: currentGeneratedOtp };
 
   btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الكود إلى بريدك...';
-
-  const templateParams = {
-    to_name: name,
-    to_email: email,
-    otp_code: currentGeneratedOtp
-  };
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال كود الدخول...';
 
   try {
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-    alert(`تم إرسال كود التفعيل إلى بريدك (${email}) بنجاح! ✉️\nافتح صندوق الوارد في Gmail وانسخ الكود.`);
-    document.getElementById('gateStep1').style.display = "none";
-    document.getElementById('gateStep2').style.display = "block";
-  } catch (error) {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_name: foundUser.name,
+      to_email: foundUser.email,
+      otp_code: currentGeneratedOtp
+    });
+
+    document.getElementById('authTabsContainer').style.display = 'none';
+    document.getElementById('formLoginView').style.display = 'none';
+    document.getElementById('gateStepOtp').style.display = 'block';
+    document.getElementById('otpNoticeTxt').textContent = `تم إرسال كود تسجيل الدخول إلى بريدك (${foundUser.email}):`;
+    alert(`مرحباً يا ${foundUser.name}! تم إرسال كود تسجيل الدخول إلى بريدك الإلكتروني المسجل.`);
+  } catch (e) {
     btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
-    alert("تعذر إرسال الإيميل! تأكد من أن بريدك صحيح وأنك فعلت المتغيرات داخل القالب.");
+    btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> طلب كود تسجيل الدخول 📩';
+    alert("حدث خطأ أثناء الإرسال، تأكد من اتصال الإنترنت.");
   }
 }
 
-// تأكيد الكود
+// -------------------------------------------------------------
+// 4. مسار إنشاء حساب جديد (مع منع التكرار)
+// -------------------------------------------------------------
+async function requestSignupOtp() {
+  const name = document.getElementById('signupName').value.trim();
+  const phone = document.getElementById('signupPhone').value.trim();
+  const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+  const btn = document.getElementById('signupOtpBtn');
+  const users = getStoredUsers();
+
+  if (!name || !/^01[0125][0-9]{8}$/.test(phone) || !email || !email.includes('@')) {
+    alert("يرجى إدخال اسمك، ورقم هاتف مصري يبدأ بـ 01، وبريد إلكتروني صحيح.");
+    return;
+  }
+
+  // 🛡️ فحص منع تكرار الحساب بنفس الرقم أو نفس الإيميل
+  const exists = users.some(u => u.phone === phone || u.email.toLowerCase() === email);
+  if (exists) {
+    alert("⚠️ هذا الحساب (رقم الهاتف أو البريد) مسجل لدينا بالفعل! يرجى الضغط على زر (تسجيل دخول) في الأعلى.");
+    switchAuthMode('login');
+    document.getElementById('loginIdentifier').value = phone;
+    return;
+  }
+
+  activeAuthTargetUser = { name, phone, email, isNew: true };
+  currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال كود التفعيل...';
+
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_name: name,
+      to_email: email,
+      otp_code: currentGeneratedOtp
+    });
+
+    document.getElementById('authTabsContainer').style.display = 'none';
+    document.getElementById('formSignupView').style.display = 'none';
+    document.getElementById('gateStepOtp').style.display = 'block';
+    document.getElementById('otpNoticeTxt').textContent = `تم إرسال كود التفعيل إلى بريدك (${email}):`;
+    alert(`تم إرسال كود التفعيل إلى بريدك الإلكتروني بنجاح! ✉️`);
+  } catch (e) {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
+    alert("تعذر إرسال الإيميل، يرجى مراجعة البريد المدخل.");
+  }
+}
+
+// -------------------------------------------------------------
+// 5. التحقق من الكود وتثبيت الحساب
+// -------------------------------------------------------------
 function verifyEmailOtp() {
   const code = document.getElementById('gateOtpInput').value.trim();
 
-  if (code === currentGeneratedOtp && currentGeneratedOtp) {
+  if (code === currentGeneratedOtp && currentGeneratedOtp && activeAuthTargetUser) {
+    let users = getStoredUsers();
+
+    // إذا كان حساباً جديداً، نحفظه في قاعدة البيانات الدائمة
+    if (activeAuthTargetUser.isNew) {
+      delete activeAuthTargetUser.isNew;
+      users.push(activeAuthTargetUser);
+      saveStoredUsers(users);
+    }
+
+    // تسجيل الجلسة الحالية
     localStorage.setItem('fly_verified_user', JSON.stringify({
-      name: clientTempSignup.name,
-      phone: clientTempSignup.phone,
-      email: clientTempSignup.email,
+      name: activeAuthTargetUser.name,
+      phone: activeAuthTargetUser.phone,
+      email: activeAuthTargetUser.email,
       time: Date.now()
     }));
-    alert(`تم التحقق بنجاح! مرحباً بك يا ${clientTempSignup.name} في Fly Express 🚀`);
+
+    alert(`تم تأكيد الحساب بنجاح! مرحباً بك يا ${activeAuthTargetUser.name} في Fly Express 🚀`);
     checkAppAccess();
   } else {
-    alert("كود التحقق غير صحيح! تأكد من الرقم المكتوب في رسالة Gmail الواردة.");
+    alert("كود التحقق غير صحيح! تأكد من كتابة الأرقام الـ 4 بشكل سليم.");
   }
 }
 
-function backToStep1() {
-  document.getElementById('gateStep1').style.display = "block";
-  document.getElementById('gateStep2').style.display = "none";
-  const btn = document.getElementById('sendOtpBtn');
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
+function backToAuthHome() {
+  document.getElementById('authTabsContainer').style.display = 'flex';
+  document.getElementById('gateStepOtp').style.display = 'none';
+  switchAuthMode('login');
+  const b1 = document.getElementById('loginOtpBtn');
+  const b2 = document.getElementById('signupOtpBtn');
+  b1.disabled = false; b1.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> طلب كود تسجيل الدخول 📩';
+  b2.disabled = false; b2.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
 }
 
 function logoutUser() {
   if (confirm("هل ترغب بالفعل في تسجيل الخروج وقفل التطبيق؟")) {
     localStorage.removeItem('fly_verified_user');
     checkAppAccess();
+    backToAuthHome();
   }
 }
 
 // -------------------------------------------------------------
-// 3. المزامنة السحابية الحية (رادار + حالة التوصيل)
+// 6. المزامنة السحابية الحية (رادار + حالة التوصيل)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
