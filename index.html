@@ -819,11 +819,59 @@ body {
     </div>
   </div>
 
+  <!-- نافذة تأكيد الخروج الاحترافية (بدون رسائل متصفح) -->
+  <div class="modal-backdrop" id="logoutConfirmModal">
+    <div class="modal-card" style="max-width: 310px; text-align: center;">
+      <div style="font-size: 38px; color: #ef4444; margin-bottom: 8px;">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </div>
+      <h3 style="font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 6px;">تسجيل الخروج</h3>
+      <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 18px;">هل ترغب بالفعل في تسجيل الخروج من حسابك؟</p>
+      
+      <div style="display: flex; gap: 10px;">
+        <button class="order-btn" style="background: #ef4444; margin-top: 0; flex: 1;" onclick="confirmLogoutAction()">خروج</button>
+        <button class="order-btn" style="background: rgba(255,255,255,0.1); color: #fff; margin-top: 0; flex: 1;" onclick="closeLogoutModal()">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة التنبيهات المدمجة لتطبيق الهاتف (بدل Alert) -->
+  <div class="modal-backdrop" id="appAlertModal">
+    <div class="modal-card" style="max-width: 310px; text-align: center;">
+      <div style="font-size: 36px; color: var(--accent); margin-bottom: 8px;" id="appAlertIcon">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <h3 style="font-size: 15px; font-weight: 900; color: #fff; margin-bottom: 6px;" id="appAlertTitle">تنبيه Fly Express</h3>
+      <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px; line-height: 1.5;" id="appAlertMsg"></p>
+      <button class="order-btn" style="margin-top: 0;" onclick="closeAppAlert()">حسناً</button>
+    </div>
+  </div>
+
 </div>
 
 <script>
 // -------------------------------------------------------------
-// 1. مفاتيح EmailJS ومتحكمات الصوت اليدوية
+// 1. نظام التنبيهات المدمج داخل التطبيق (بديل alert و confirm)
+// -------------------------------------------------------------
+function showAppAlert(msg, title = "تطبيق Fly Express", iconClass = "fa-solid fa-circle-info", iconColor = "var(--accent)") {
+  const modal = document.getElementById('appAlertModal');
+  const mTitle = document.getElementById('appAlertTitle');
+  const mMsg = document.getElementById('appAlertMsg');
+  const mIcon = document.getElementById('appAlertIcon');
+
+  mTitle.textContent = title;
+  mMsg.textContent = msg;
+  mIcon.innerHTML = `<i class="${iconClass}"></i>`;
+  mIcon.style.color = iconColor;
+  modal.classList.add('show');
+}
+
+function closeAppAlert() {
+  document.getElementById('appAlertModal').classList.remove('show');
+}
+
+// -------------------------------------------------------------
+// 2. مفاتيح EmailJS ومتحكمات الصوت اليدوية
 // -------------------------------------------------------------
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
@@ -844,7 +892,6 @@ const bgMusic = document.getElementById('bgMusicPlayer');
 const musicBtn = document.getElementById('musicToggleBtn');
 const musicIcon = document.getElementById('musicIcon');
 
-// تشغيل وإيقاف الموسيقى بنقرة زر واحدة
 function toggleBackgroundMusic() {
   if (bgMusic.paused) {
     bgMusic.volume = 0.3;
@@ -852,7 +899,7 @@ function toggleBackgroundMusic() {
       musicBtn.classList.add('playing');
       musicIcon.className = "fa-solid fa-volume-high";
     }).catch(err => {
-      alert("تعذر تشغيل الصوت، تأكد من الاتصال بالإنترنت.");
+      showAppAlert("يرجى التأكد من اتصالك بالإنترنت لتشغيل النغمة.", "الموسيقى", "fa-solid fa-music");
     });
   } else {
     bgMusic.pause();
@@ -862,7 +909,7 @@ function toggleBackgroundMusic() {
 }
 
 // -------------------------------------------------------------
-// 2. إشعارات خدمات وطلبات نجع حمادي الحية كل 30 ثانية
+// 3. إشعارات خدمات وطلبات نجع حمادي الحية كل 30 ثانية
 // -------------------------------------------------------------
 const localServicesList = [
   { icon: "fa-notes-medical", title: "طوارئ علاج وصيدلية 💊", desc: "طلب روشتة عاجلة من صيدلية السلام إلى شارع 30" },
@@ -893,7 +940,6 @@ function showNextServiceToast() {
   }, 6000);
 }
 
-// تشغيل أول إشعار بعد 4 ثوانٍ ثم تكراره كل 30 ثانية
 setTimeout(() => {
   showNextServiceToast();
   setInterval(showNextServiceToast, 30000);
@@ -908,7 +954,7 @@ function saveStoredUsers(users) {
 }
 
 // -------------------------------------------------------------
-// 3. إدارة شاشات الدخول وبوابة الأمان
+// 4. إدارة شاشات الدخول وبوابة الأمان
 // -------------------------------------------------------------
 function switchAuthMode(mode) {
   const isLogin = mode === 'login';
@@ -962,7 +1008,7 @@ function checkAppAccess() {
 }
 
 // -------------------------------------------------------------
-// 4. تسجيل الدخول السريع (بالبريد والباسورد مباشرة دون كود)
+// 5. تسجيل الدخول السريع
 // -------------------------------------------------------------
 function directPasswordLogin() {
   const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
@@ -970,7 +1016,7 @@ function directPasswordLogin() {
   const users = getStoredUsers();
 
   if (!identifier || !password) {
-    alert("من فضلك أدخل البريد الإلكتروني/الهاتف وكلمة المرور.");
+    showAppAlert("من فضلك أدخل البريد الإلكتروني/الهاتف وكلمة المرور.", "بيانات ناقصة", "fa-solid fa-triangle-exclamation", "#f59e0b");
     return;
   }
 
@@ -986,15 +1032,15 @@ function directPasswordLogin() {
       email: user.email,
       time: Date.now()
     }));
-    alert(`أهلاً بعودتك يا ${user.name}! تم تسجيل الدخول بنجاح 🚀`);
     checkAppAccess();
+    showAppAlert(`أهلاً بعودتك يا ${user.name}! تم تسجيل الدخول بنجاح 🚀`, "تسجيل دخول ناجح", "fa-solid fa-circle-check", "#10b981");
   } else {
-    alert("بيانات الدخول غير صحيحة! يرجى التأكد من البريد وكلمة المرور، أو اضغط (نسيت كلمة السر).");
+    showAppAlert("بيانات الدخول غير صحيحة! يرجى التأكد من البريد وكلمة المرور، أو اضغط (نسيت كلمة السر).", "خطأ في الدخول", "fa-solid fa-circle-xmark", "#ef4444");
   }
 }
 
 // -------------------------------------------------------------
-// 5. إنشاء حساب جديد لأول مرة
+// 6. إنشاء حساب جديد
 // -------------------------------------------------------------
 async function requestSignupOtp() {
   const name = document.getElementById('signupName').value.trim();
@@ -1005,13 +1051,13 @@ async function requestSignupOtp() {
   const users = getStoredUsers();
 
   if (!name || !/^01[0125][0-9]{8}$/.test(phone) || !email || !email.includes('@') || password.length < 4) {
-    alert("يرجى إكمال جميع الخانات (كلمة المرور 4 خانات على الأقل، ورقم موبايل مصري).");
+    showAppAlert("يرجى إكمال جميع الخانات (كلمة المرور 4 خانات على الأقل، ورقم هاتف مصري صحيح).", "بيانات غير مكتملة", "fa-solid fa-triangle-exclamation", "#f59e0b");
     return;
   }
 
   const exists = users.some(u => u.phone === phone || u.email.toLowerCase() === email);
   if (exists) {
-    alert("هذا الحساب مسجل لدينا بالفعل! يرجى التوجه لخانة تسجيل الدخول.");
+    showAppAlert("هذا الحساب مسجل لدينا بالفعل! تم نقلك لخانة تسجيل الدخول.", "حساب مسجل", "fa-solid fa-user-check", "#00e5ff");
     switchAuthMode('login');
     document.getElementById('loginIdentifier').value = email;
     return;
@@ -1036,16 +1082,16 @@ async function requestSignupOtp() {
     document.getElementById('gateStepOtp').style.display = 'block';
     document.getElementById('newPasswordSection').style.display = 'none';
     document.getElementById('otpNoticeTxt').textContent = `أدخل كود التفعيل المرسل إلى بريدك (${email}):`;
-    alert("تم إرسال كود التفعيل إلى بريدك في Gmail بنجاح ✉️");
+    showAppAlert("تم إرسال كود التفعيل إلى بريدك في Gmail بنجاح ✉️", "تم الإرسال", "fa-solid fa-envelope-circle-check", "#10b981");
   } catch (e) {
     btn.disabled = false;
     btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
-    alert("تعذر إرسال الإيميل، تأكد من صحة البريد والاتصال بالإنترنت.");
+    showAppAlert("تعذر إرسال الإيميل، تأكد من صحة البريد والاتصال بالإنترنت.", "فشل الإرسال", "fa-solid fa-triangle-exclamation", "#ef4444");
   }
 }
 
 // -------------------------------------------------------------
-// 6. استعادة كلمة المرور
+// 7. استعادة كلمة المرور
 // -------------------------------------------------------------
 async function requestForgotOtp() {
   const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
@@ -1053,13 +1099,13 @@ async function requestForgotOtp() {
   const users = getStoredUsers();
 
   if (!email || !email.includes('@')) {
-    alert("أدخل بريد إلكتروني صحيح.");
+    showAppAlert("أدخل بريد إلكتروني صحيح.", "بريد خاطئ", "fa-solid fa-triangle-exclamation", "#f59e0b");
     return;
   }
 
   const user = users.find(u => u.email.toLowerCase() === email);
   if (!user) {
-    alert("هذا البريد غير مسجل لدينا! تأكد من كتابة البريد المسجل به.");
+    showAppAlert("هذا البريد غير مسجل لدينا! تأكد من كتابة البريد المسجل به.", "غير موجود", "fa-solid fa-circle-xmark", "#ef4444");
     return;
   }
 
@@ -1081,22 +1127,22 @@ async function requestForgotOtp() {
     document.getElementById('gateStepOtp').style.display = 'block';
     document.getElementById('newPasswordSection').style.display = 'block';
     document.getElementById('otpNoticeTxt').textContent = `أدخل الكود المرسل إلى (${email}) واكتب كلمة المرور الجديدة:`;
-    alert("تم إرسال كود استعادة كلمة المرور إلى بريدك ✉️");
+    showAppAlert("تم إرسال كود استعادة كلمة المرور إلى بريدك ✉️", "كود الاستعادة", "fa-solid fa-envelope-circle-check", "#10b981");
   } catch(e) {
     btn.disabled = false;
     btn.textContent = "إرسال كود الاستعادة 📩";
-    alert("تعذر إرسال الكود.");
+    showAppAlert("تعذر إرسال الكود، يرجى إعادة المحاولة.", "خطأ", "fa-solid fa-circle-xmark", "#ef4444");
   }
 }
 
 // -------------------------------------------------------------
-// 7. التحقق النهائي من الكود
+// 8. التحقق النهائي من الكود
 // -------------------------------------------------------------
 function verifyAndFinishOtp() {
   const code = document.getElementById('gateOtpInput').value.trim();
 
   if (code !== currentGeneratedOtp || !currentGeneratedOtp) {
-    alert("كود التحقق غير صحيح!");
+    showAppAlert("كود التحقق غير صحيح!", "كود خاطئ", "fa-solid fa-circle-xmark", "#ef4444");
     return;
   }
 
@@ -1113,12 +1159,12 @@ function verifyAndFinishOtp() {
       time: Date.now()
     }));
 
-    alert(`تم تأكيد حسابك بنجاح! مرحباً بك يا ${activeAuthTargetUser.name} في Fly Express 🚀`);
     checkAppAccess();
+    showAppAlert(`تم تأكيد حسابك بنجاح! مرحباً بك يا ${activeAuthTargetUser.name} في Fly Express 🚀`, "حساب موثق", "fa-solid fa-circle-check", "#10b981");
   } else if (currentOtpFlow === 'forgot') {
     const newPass = document.getElementById('gateNewPassword').value.trim();
     if (newPass.length < 4) {
-      alert("يرجى كتابة كلمة مرور جديدة لا تقل عن 4 خانات.");
+      showAppAlert("يرجى كتابة كلمة مرور جديدة لا تقل عن 4 خانات.", "تنبيه", "fa-solid fa-triangle-exclamation", "#f59e0b");
       return;
     }
 
@@ -1135,21 +1181,31 @@ function verifyAndFinishOtp() {
       time: Date.now()
     }));
 
-    alert("تم تغيير كلمة المرور بنجاح وتسجيل الدخول مباشرة! 🎉");
     checkAppAccess();
-  }
-}
-
-function logoutUser() {
-  if (confirm("هل ترغب بالفعل في تسجيل الخروج؟")) {
-    localStorage.removeItem('fly_verified_user');
-    checkAppAccess();
-    backToAuthHome();
+    showAppAlert("تم تغيير كلمة المرور بنجاح وتسجيل الدخول مباشرة! 🎉", "تم التعديل", "fa-solid fa-circle-check", "#10b981");
   }
 }
 
 // -------------------------------------------------------------
-// 8. خدمة طلب الأدوية والصيدلية
+// 9. تسجيل الخروج بنظام النافذة المدمجة (بدون confirm)
+// -------------------------------------------------------------
+function logoutUser() {
+  document.getElementById('logoutConfirmModal').classList.add('show');
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutConfirmModal').classList.remove('show');
+}
+
+function confirmLogoutAction() {
+  closeLogoutModal();
+  localStorage.removeItem('fly_verified_user');
+  checkAppAccess();
+  backToAuthHome();
+}
+
+// -------------------------------------------------------------
+// 10. طلبات الصيدلية والطوارئ
 // -------------------------------------------------------------
 function openPharmacyModal() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
@@ -1175,7 +1231,7 @@ function sendPharmacyOrder() {
   const address = document.getElementById('pharmAddress').value.trim();
 
   if (!name || !phone || !meds || !address) {
-    alert("من فضلك اكتب اسمك، والعلاج المطلوب، وعنوان التوصيل.");
+    showAppAlert("من فضلك اكتب اسمك، والعلاج المطلوب، وعنوان التوصيل.", "بيانات ناقصة", "fa-solid fa-notes-medical", "#34d399");
     return;
   }
 
@@ -1186,7 +1242,7 @@ function sendPharmacyOrder() {
 }
 
 // -------------------------------------------------------------
-// 9. المزامنة السحابية الحية (رادار + حالة التوصيل)
+// 11. المزامنة السحابية الحية (رادار + حالة التوصيل)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1237,7 +1293,6 @@ function applyLiveState(step, status) {
 setInterval(listenToCloudState, 3000);
 listenToCloudState();
 
-// نقاط الولاء
 function getLoyaltyRides() { return parseInt(localStorage.getItem('fly_loyalty_rides') || '0', 10); }
 function updateLoyalty() {
   const rides = getLoyaltyRides() % 5;
@@ -1288,28 +1343,40 @@ function calcMonthlyEstimate() {
 calcMonthlyEstimate();
 
 function sendOrder() {
-  if (!orderName.value || !orderPhone.value || !orderFrom.value || !orderTo.value) { alert("أكمل البيانات المطلوبة أولاً"); return; }
+  if (!orderName.value || !orderPhone.value || !orderFrom.value || !orderTo.value) { 
+    showAppAlert("يرجى إكمال جميع بيانات الأوردر والعناوين أولاً.", "بيانات ناقصة"); 
+    return; 
+  }
   addLoyaltyRide();
   const text = `طلب ${orderKind.value} ${orderAction.value} 📦\nالاسم: ${orderName.value} — ${orderPhone.value}\nمن: ${orderFrom.value}\nإلى: ${orderTo.value}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 }
 
 function sendMarket() {
-  if (!marketName.value || !marketPhone.value || !marketList.value || !marketTo.value) { alert("أكمل بيانات الطلب"); return; }
+  if (!marketName.value || !marketPhone.value || !marketList.value || !marketTo.value) { 
+    showAppAlert("يرجى كتابة قائمة الطلبات وعنوان التوصيل.", "بيانات ناقصة"); 
+    return; 
+  }
   addLoyaltyRide();
   const text = `طلبات سوق 🛒\nالاسم: ${marketName.value} — ${marketPhone.value}\nالطلبات:\n${marketList.value}\nإلى: ${marketTo.value}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 }
 
 function sendSchool() {
-  if (!schoolChild.value || !schoolPhone.value || !schoolFrom.value || !schoolTo.value) { alert("أكمل البيانات"); return; }
+  if (!schoolChild.value || !schoolPhone.value || !schoolFrom.value || !schoolTo.value) { 
+    showAppAlert("يرجى إدخال اسم الطالب ورقم ولي الأمر والمدرسة.", "بيانات ناقصة"); 
+    return; 
+  }
   addLoyaltyRide();
   const text = `طلب توصيل مدرسة 🏫\nالطالب: ${schoolChild.value}\nولي الأمر: ${schoolPhone.value}\nمن: ${schoolFrom.value}\nإلى: ${schoolTo.value}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
 }
 
 function sendMonthlyOrder() {
-  if (!pmName.value || !pmPhone.value) { alert("أكمل البيانات المطلوبة أولاً"); return; }
+  if (!pmName.value || !pmPhone.value) { 
+    showAppAlert("يرجى كتابة اسم ولي الأمر ورقم الموبايل لحجز الاشتراك.", "بيانات ناقصة"); 
+    return; 
+  }
   addLoyaltyRide();
   const text = `حجز اشتراك شهري (مدارس/دروس) 📘\nولي الأمر: ${pmName.value} — ${pmPhone.value}\nالعدد: ${pmChildrenCount.options[pmChildrenCount.selectedIndex].text}\nالتكلفة التقديرية: ${monthlyEstimateTxt.textContent}\n— أُرسل عبر تطبيق Fly Express`;
   waSend(text);
@@ -1371,7 +1438,7 @@ function spinWheel() {
   const waClaimBtn = document.getElementById('waClaimBtn');
 
   if (!phone) {
-    alert("رقم الهاتف غير مسجل");
+    showAppAlert("رقم الهاتف غير مسجل لدينا.", "تنبيه");
     return;
   }
 
