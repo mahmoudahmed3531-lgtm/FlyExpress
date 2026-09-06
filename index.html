@@ -72,6 +72,43 @@ body {
   touch-action: pan-y !important;
 }
 
+/* شريط تحميل التطبيق العائم */
+.app-download-banner {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1.5px solid var(--primary);
+  padding: 8px 14px;
+  border-radius: 999px;
+  box-shadow: 0 0 20px var(--primary-glow);
+  text-decoration: none;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  animation: pulseDownload 2s infinite ease-in-out;
+}
+
+.download-arrow {
+  color: var(--primary);
+  font-size: 14px;
+  animation: bounceArrow 1.2s infinite alternate ease-in-out;
+}
+
+@keyframes pulseDownload {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 15px var(--primary-glow); }
+  50% { transform: scale(1.04); box-shadow: 0 0 25px rgba(255, 107, 0, 0.7); }
+}
+
+@keyframes bounceArrow {
+  0% { transform: translateY(-2px); }
+  100% { transform: translateY(3px); }
+}
+
 /* شاشة التحميل الأولية */
 #appPreloader {
   position: fixed;
@@ -503,6 +540,12 @@ body {
 
 <body>
 
+<!-- شريط تحميل التطبيق العائم في الزاوية العلوية -->
+<a href="flyexpress.apk" download class="app-download-banner" id="downloadAppBanner">
+  <i class="fa-solid fa-cloud-arrow-down download-arrow"></i>
+  <span>حمّل التطبيق الآن</span>
+</a>
+
 <!-- شاشة التحميل الافتتاحية -->
 <div id="appPreloader">
   <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="loader-logo-img">
@@ -524,8 +567,9 @@ body {
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
 
-<audio id="bgMusicPlayer" loop preload="none">
-  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mp3">
+<!-- مشغل موسيقى مونامور (Mon Amour) -->
+<audio id="bgMusicPlayer" loop preload="auto">
+  <source src="https://ia801503.us.archive.org/15/items/mon-amour-guitar/MonAmour.mp3" type="audio/mp3">
 </audio>
 
 <!-- شاشة القفل وبوابة الدخول -->
@@ -974,7 +1018,7 @@ const musicIcon = document.getElementById('musicIcon');
 
 function toggleBackgroundMusic() {
   if (bgMusic.paused) {
-    bgMusic.volume = 0.3;
+    bgMusic.volume = 0.35;
     bgMusic.play().then(() => {
       musicBtn.classList.add('playing');
       musicIcon.className = "fa-solid fa-volume-high";
@@ -986,6 +1030,30 @@ function toggleBackgroundMusic() {
     musicBtn.classList.remove('playing');
     musicIcon.className = "fa-solid fa-music";
   }
+}
+
+// تشغيل موسيقى مونامور تلقائياً فور أول لمسة للمستخدم
+function startAutoMusic() {
+  if (bgMusic && bgMusic.paused) {
+    bgMusic.volume = 0.35;
+    bgMusic.play().then(() => {
+      if (musicBtn) musicBtn.classList.add('playing');
+      if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
+      ['click', 'touchstart', 'scroll'].forEach(evt => 
+        document.removeEventListener(evt, startAutoMusic)
+      );
+    }).catch(() => {});
+  }
+}
+
+['click', 'touchstart', 'scroll'].forEach(evt => 
+  document.addEventListener(evt, startAutoMusic, { once: true })
+);
+
+// إخفاء زر التحميل إذا كان المستخدم يتصفح من داخل تطبيق الأندرويد نفسه
+if (window.matchMedia('(display-mode: standalone)').matches || navigator.userAgent.includes('wv')) {
+  const downloadBtn = document.getElementById('downloadAppBanner');
+  if (downloadBtn) downloadBtn.style.display = 'none';
 }
 
 // الاتصال المباشر بالسيرفر السحابي
