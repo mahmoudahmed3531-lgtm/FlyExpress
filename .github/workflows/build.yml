@@ -55,7 +55,7 @@ jobs:
                   versionName "1.0"
               }
               buildTypes {
-                  release {
+                  debug {
                       minifyEnabled false
                   }
               }
@@ -140,12 +140,14 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.5'
 
       - name: Build APK with Gradle
-        run: gradle :app:assembleRelease
+        run: gradle :app:assembleDebug
 
       - name: Upload Clean APK
         uses: actions/upload-artifact@v4
         with:
           name: FlyExpress-Clean-APK
-          path: app/build/outputs/apk/release/*.apk
+          path: app/build/outputs/apk/debug/*.apk
