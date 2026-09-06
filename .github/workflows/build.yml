@@ -1,0 +1,29 @@
+name: Build Fullscreen APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Clone WebView Template
+        run: |
+          git clone https://github.com/xtpatil/WebView-App.git app
+          cd app
+          # استبدال الرابط برابط موقعك FlyExpress
+          sed -i 's|https://google.com|https://mahmoudahmed3531-lgtm.github.io/FlyExpress/|g' app/src/main/java/com/example/webviewapp/MainActivity.java || true
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlyExpress-Fullscreen-APK
+          path: app/app/build/outputs/apk/debug/*.apk
