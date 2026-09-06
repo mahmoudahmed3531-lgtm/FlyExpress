@@ -110,7 +110,7 @@ body {
   margin-top: 14px;
 }
 
-/* مؤشر تحميل فوري للتنقل */
+/* مؤشر تحميل فوري */
 #fastSpinner {
   position: fixed;
   inset: 0;
@@ -256,7 +256,7 @@ body {
   text-align: right;
 }
 
-/* Header أصلي بدون فواصل ويب */
+/* Header */
 .app-header {
   position: sticky;
   top: 0;
@@ -422,7 +422,6 @@ body {
   background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
 }
 
-/* سرعة واستجابة الكروت مع السماح الكامل بالسحب والتمرير */
 .service-card { 
   display: flex; 
   flex-direction: column; 
@@ -445,7 +444,7 @@ body {
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
-/* شريط التنقل السفلي الأصلي */
+/* شريط التنقل السفلي */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 68px; background: rgba(7, 11, 18, 0.98);
   backdrop-filter: blur(14px);
@@ -516,7 +515,7 @@ body {
 <div id="fastSpinner">
   <div class="fast-spinner-card">
     <div style="width:22px; height:22px; border:3px solid rgba(255,255,255,0.2); border-top-color:var(--primary); border-radius:50%; animation:spinLoader 0.6s linear infinite;"></div>
-    <span>جاري فتح الخدمة...</span>
+    <span>جاري المعالجة...</span>
   </div>
 </div>
 
@@ -607,7 +606,7 @@ body {
   </div>
 </div>
 
-<!-- المحتوى الرئيسي للتطبيق -->
+<!-- المحتوى الرئيسي -->
 <div class="app-container" id="mainAppContent" style="display:none;">
 
   <header class="app-header">
@@ -842,7 +841,7 @@ body {
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
 
-  <!-- نافذة طلب أدوية الصيدلية -->
+  <!-- نافذة الصيدلية -->
   <div class="modal-backdrop" id="pharmacyModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closePharmacyModal()">&times;</button>
@@ -916,7 +915,6 @@ body {
 </div>
 
 <script>
-// إخفاء شاشة البداية فور التحميل
 window.addEventListener('load', () => {
   const p = document.getElementById('appPreloader');
   if (p) {
@@ -925,9 +923,6 @@ window.addEventListener('load', () => {
   }
 });
 
-// -------------------------------------------------------------
-// نظام التنبيهات المدمج
-// -------------------------------------------------------------
 function showAppAlert(msg, title = "تطبيق Fly Express", iconClass = "fa-solid fa-circle-info", iconColor = "var(--accent)") {
   const modal = document.getElementById('appAlertModal');
   const mTitle = document.getElementById('appAlertTitle');
@@ -955,8 +950,9 @@ function showAuthInlineError(msg) {
 }
 
 // -------------------------------------------------------------
-// إعدادات الصوت والمفاتيح
+// إعدادات الخدمات السحابية ومفاتيح الربط
 // -------------------------------------------------------------
+const USERS_API_URL = "https://6a9de5152f89be7fb70d8140.mockapi.io/users";
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
 const EMAILJS_TEMPLATE_ID = "template_4ovzrts";
@@ -992,16 +988,19 @@ function toggleBackgroundMusic() {
   }
 }
 
-function getStoredUsers() {
-  return JSON.parse(localStorage.getItem('fly_registered_users') || "[]");
-}
-
-function saveStoredUsers(users) {
-  localStorage.setItem('fly_registered_users', JSON.stringify(users));
+// الاتصال المباشر بالسيرفر السحابي
+async function fetchCloudUsers() {
+  try {
+    const res = await fetch(USERS_API_URL);
+    if (!res.ok) return [];
+    return await res.json();
+  } catch (e) {
+    return [];
+  }
 }
 
 // -------------------------------------------------------------
-// شاشات الدخول
+// بوابات وشاشات الدخول
 // -------------------------------------------------------------
 function switchAuthMode(mode) {
   const isLogin = mode === 'login';
@@ -1055,33 +1054,42 @@ function checkAppAccess() {
   }
 }
 
-function directPasswordLogin() {
+async function directPasswordLogin() {
   const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
   const password = document.getElementById('loginPassword').value.trim();
-  const users = getStoredUsers();
 
   if (!identifier || !password) {
     showAuthInlineError("⚠️ من فضلك اكتب البريد الإلكتروني أو الهاتف وكلمة المرور.");
     return;
   }
 
-  const user = users.find(u => 
-    (u.email.toLowerCase() === identifier || u.phone === identifier) && 
-    u.password === password
-  );
+  const spinner = document.getElementById('fastSpinner');
+  if (spinner) spinner.classList.add('active');
 
-  if (user) {
-    localStorage.setItem('fly_verified_user', JSON.stringify({
-      name: user.name,
-      phone: user.phone,
-      email: user.email,
-      time: Date.now()
-    }));
-    checkAppAccess();
-    showAppAlert(`أهلاً بعودتك يا ${user.name}! تم الدخول بنجاح 🚀`, "تم تسجيل الدخول", "fa-solid fa-circle-check", "#10b981");
-  } else {
-    showAuthInlineError("❌ البريد الإلكتروني أو كلمة المرور غير صحيحة! تأكد من الحساب أو اضغط (نسيت كلمة السر).");
-    showAppAlert("البريد الإلكتروني أو كلمة المرور غير صحيحة! يرجى التأكد من البيانات أو الضغط على (نسيت كلمة السر).", "خطأ في تسجيل الدخول", "fa-solid fa-circle-xmark", "#ef4444");
+  try {
+    const users = await fetchCloudUsers();
+    const user = users.find(u => 
+      ((u.email && u.email.toLowerCase() === identifier) || (u.phone && u.phone === identifier)) && 
+      u.password === password
+    );
+
+    if (user) {
+      localStorage.setItem('fly_verified_user', JSON.stringify({
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        time: Date.now()
+      }));
+      checkAppAccess();
+      showAppAlert(`أهلاً بعودتك يا ${user.name}! تم الدخول بنجاح 🚀`, "تم تسجيل الدخول", "fa-solid fa-circle-check", "#10b981");
+    } else {
+      showAuthInlineError("❌ البريد أو كلمة المرور غير صحيحة! تأكد من الحساب أو اضغط (نسيت كلمة السر).");
+      showAppAlert("البريد الإلكتروني أو كلمة المرور غير صحيحة! يرجى التأكد من الحساب.", "خطأ في تسجيل الدخول", "fa-solid fa-circle-xmark", "#ef4444");
+    }
+  } catch(err) {
+    showAuthInlineError("⚠️ حدث خطأ في الاتصال بالإنترنت، يرجى المحاولة ثانية.");
+  } finally {
+    if (spinner) spinner.classList.remove('active');
   }
 }
 
@@ -1091,29 +1099,34 @@ async function requestSignupOtp() {
   const email = document.getElementById('signupEmail').value.trim().toLowerCase();
   const password = document.getElementById('signupPassword').value.trim();
   const btn = document.getElementById('signupOtpBtn');
-  const users = getStoredUsers();
 
   if (!name || !/^01[0125][0-9]{8}$/.test(phone) || !email || !email.includes('@') || password.length < 4) {
     showAuthInlineError("⚠️ يرجى إكمال جميع الخانات بشكل صحيح (موبايل مصري صحيح وكلمة مرور 4 خانات فأكثر).");
     return;
   }
 
-  const exists = users.some(u => u.phone === phone || u.email.toLowerCase() === email);
-  if (exists) {
-    showAuthInlineError("ℹ️ هذا الحساب مسجل لدينا بالفعل! يمكنك تسجيل الدخول مباشرة.");
-    switchAuthMode('login');
-    document.getElementById('loginIdentifier').value = email;
-    return;
-  }
-
-  currentOtpFlow = 'signup';
-  activeAuthTargetUser = { name, phone, email, password };
-  currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-
   btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الكود...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق...';
 
   try {
+    const users = await fetchCloudUsers();
+    const exists = users.some(u => (u.phone && u.phone === phone) || (u.email && u.email.toLowerCase() === email));
+
+    if (exists) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
+      showAuthInlineError("ℹ️ هذا الحساب مسجل لدينا بالفعل! يمكنك تسجيل الدخول مباشرة.");
+      switchAuthMode('login');
+      document.getElementById('loginIdentifier').value = email;
+      return;
+    }
+
+    currentOtpFlow = 'signup';
+    activeAuthTargetUser = { name, phone, email, password };
+    currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الكود...';
+
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
       to_name: name,
       to_email: email,
@@ -1136,27 +1149,32 @@ async function requestSignupOtp() {
 async function requestForgotOtp() {
   const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
   const btn = document.getElementById('forgotOtpBtn');
-  const users = getStoredUsers();
 
   if (!email || !email.includes('@')) {
     showAuthInlineError("⚠️ أدخل بريد إلكتروني صحيح.");
     return;
   }
 
-  const user = users.find(u => u.email.toLowerCase() === email);
-  if (!user) {
-    showAuthInlineError("❌ هذا البريد غير مسجل لدينا! تأكد من كتابة البريد المسجل به.");
-    return;
-  }
-
-  currentOtpFlow = 'forgot';
-  activeAuthTargetUser = user;
-  currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-
   btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الكود...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري البحث عن الحساب...';
 
   try {
+    const users = await fetchCloudUsers();
+    const user = users.find(u => u.email && u.email.toLowerCase() === email);
+
+    if (!user) {
+      btn.disabled = false;
+      btn.textContent = "إرسال كود الاستعادة 📩";
+      showAuthInlineError("❌ هذا البريد غير مسجل لدينا! تأكد من كتابة البريد المسجل به.");
+      return;
+    }
+
+    currentOtpFlow = 'forgot';
+    activeAuthTargetUser = user;
+    currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الكود...';
+
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
       to_name: user.name,
       to_email: email,
@@ -1175,7 +1193,7 @@ async function requestForgotOtp() {
   }
 }
 
-function verifyAndFinishOtp() {
+async function verifyAndFinishOtp() {
   const code = document.getElementById('gateOtpInput').value.trim();
 
   if (code !== currentGeneratedOtp || !currentGeneratedOtp) {
@@ -1183,43 +1201,56 @@ function verifyAndFinishOtp() {
     return;
   }
 
-  let users = getStoredUsers();
+  const spinner = document.getElementById('fastSpinner');
+  if (spinner) spinner.classList.add('active');
 
-  if (currentOtpFlow === 'signup') {
-    users.push(activeAuthTargetUser);
-    saveStoredUsers(users);
+  try {
+    if (currentOtpFlow === 'signup') {
+      await fetch(USERS_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(activeAuthTargetUser)
+      });
 
-    localStorage.setItem('fly_verified_user', JSON.stringify({
-      name: activeAuthTargetUser.name,
-      phone: activeAuthTargetUser.phone,
-      email: activeAuthTargetUser.email,
-      time: Date.now()
-    }));
+      localStorage.setItem('fly_verified_user', JSON.stringify({
+        name: activeAuthTargetUser.name,
+        phone: activeAuthTargetUser.phone,
+        email: activeAuthTargetUser.email,
+        time: Date.now()
+      }));
 
-    checkAppAccess();
-    showAppAlert(`تم تأكيد حسابك بنجاح! مرحباً بك يا ${activeAuthTargetUser.name} في Fly Express 🚀`, "حساب موثق", "fa-solid fa-circle-check", "#10b981");
-  } else if (currentOtpFlow === 'forgot') {
-    const newPass = document.getElementById('gateNewPassword').value.trim();
-    if (newPass.length < 4) {
-      showAppAlert("يرجى كتابة كلمة مرور جديدة لا تقل عن 4 خانات.", "تنبيه", "fa-solid fa-triangle-exclamation", "#f59e0b");
-      return;
+      checkAppAccess();
+      showAppAlert(`تم تأكيد حسابك وحفظه سحابياً بنجاح! مرحباً بك يا ${activeAuthTargetUser.name} 🚀`, "حساب موثق", "fa-solid fa-circle-check", "#10b981");
+    } else if (currentOtpFlow === 'forgot') {
+      const newPass = document.getElementById('gateNewPassword').value.trim();
+      if (newPass.length < 4) {
+        if (spinner) spinner.classList.remove('active');
+        showAppAlert("يرجى كتابة كلمة مرور جديدة لا تقل عن 4 خانات.", "تنبيه", "fa-solid fa-triangle-exclamation", "#f59e0b");
+        return;
+      }
+
+      if (activeAuthTargetUser.id) {
+        await fetch(`${USERS_API_URL}/${activeAuthTargetUser.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: newPass })
+        });
+      }
+
+      localStorage.setItem('fly_verified_user', JSON.stringify({
+        name: activeAuthTargetUser.name,
+        phone: activeAuthTargetUser.phone,
+        email: activeAuthTargetUser.email,
+        time: Date.now()
+      }));
+
+      checkAppAccess();
+      showAppAlert("تم تحديث كلمة المرور في السيرفر بنجاح وتسجيل الدخول! 🎉", "تم التعديل", "fa-solid fa-circle-check", "#10b981");
     }
-
-    const idx = users.findIndex(u => u.email.toLowerCase() === activeAuthTargetUser.email.toLowerCase());
-    if (idx !== -1) {
-      users[idx].password = newPass;
-      saveStoredUsers(users);
-    }
-
-    localStorage.setItem('fly_verified_user', JSON.stringify({
-      name: activeAuthTargetUser.name,
-      phone: activeAuthTargetUser.phone,
-      email: activeAuthTargetUser.email,
-      time: Date.now()
-    }));
-
-    checkAppAccess();
-    showAppAlert("تم تغيير كلمة المرور بنجاح وتسجيل الدخول مباشرة! 🎉", "تم التعديل", "fa-solid fa-circle-check", "#10b981");
+  } catch (err) {
+    showAppAlert("حدث خطأ أثناء حفظ البيانات سحابياً، تحقق من اتصالك بالإنترنت.", "خطأ", "fa-solid fa-triangle-exclamation", "#ef4444");
+  } finally {
+    if (spinner) spinner.classList.remove('active');
   }
 }
 
@@ -1276,7 +1307,7 @@ function sendPharmacyOrder() {
 }
 
 // -------------------------------------------------------------
-// المزامنة السحابية الحية
+// المزامنة الحية
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1348,9 +1379,6 @@ function getActiveDiscount() {
   return '';
 }
 
-// -------------------------------------------------------------
-// محرك توجيه واتساب الآمن للـ WebView
-// -------------------------------------------------------------
 function openWhatsAppDirectly(messageText) {
   const fullText = enc(messageText);
   const targetUrl = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${fullText}`;
@@ -1433,7 +1461,6 @@ function sendMonthlyOrder() {
   waSend(text);
 }
 
-// عجلة الحظ
 const slices = [
   { text: "خصم 5 ج", key: "5EGP", color: "#ff6b00" },
   { text: "حظ أوفر", key: null, color: "#1e293b" },
@@ -1535,11 +1562,10 @@ function openClaimWhatsApp() {
   if (pendingClaimMsg) openWhatsAppDirectly(pendingClaimMsg);
 }
 
-// 5 ضغطات على الشعار لفتح لوحة الأدمن
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
   logoClicks++;
-  clearLogoTimer();
+  clearTimeout(logoTimer);
   logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
   if (logoClicks >= 5) {
     logoClicks = 0;
@@ -1547,9 +1573,6 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
   }
 });
 
-// -------------------------------------------------------------
-// التنقل المباشر
-// -------------------------------------------------------------
 function switchTab(tabId, navBtn) {
   const tabs = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
   for (let i = 0; i < tabs.length; i++) {
