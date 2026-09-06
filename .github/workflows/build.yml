@@ -7,23 +7,145 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Java
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
-          java-version: 17
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Clone WebView Template
+      - name: Generate Android Project
         run: |
-          git clone https://github.com/xtpatil/WebView-App.git app
-          cd app
-          # استبدال الرابط برابط موقعك FlyExpress
-          sed -i 's|https://google.com|https://mahmoudahmed3531-lgtm.github.io/FlyExpress/|g' app/src/main/java/com/example/webviewapp/MainActivity.java || true
-          chmod +x gradlew
-          ./gradlew assembleDebug
+          mkdir -p app/src/main/java/com/flyexpress/app
+          mkdir -p app/src/main/res/values
 
-      - name: Upload APK
+          cat << 'EOF' > settings.gradle
+          include ':app'
+          EOF
+
+          cat << 'EOF' > build.gradle
+          buildscript {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:8.1.4'
+              }
+          }
+          allprojects {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          EOF
+
+          cat << 'EOF' > app/build.gradle
+          plugins {
+              id 'com.android.application'
+          }
+          android {
+              namespace 'com.flyexpress.app'
+              compileSdk 34
+              defaultConfig {
+                  applicationId "com.flyexpress.app"
+                  minSdk 21
+                  targetSdk 34
+                  versionCode 1
+                  versionName "1.0"
+              }
+              buildTypes {
+                  release {
+                      minifyEnabled false
+                  }
+              }
+          }
+          EOF
+
+          cat << 'EOF' > app/src/main/AndroidManifest.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET"/>
+              <application
+                  android:label="Fly Express"
+                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                  android:usesCleartextTraffic="true">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true"
+                      android:configChanges="orientation|screenSize">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN"/>
+                          <category android:name="android.intent.category.LAUNCHER"/>
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+          cat << 'EOF' > app/src/main/java/com/flyexpress/app/MainActivity.java
+          package com.flyexpress.app;
+
+          import android.app.Activity;
+          import android.content.Intent;
+          import android.net.Uri;
+          import android.os.Bundle;
+          import android.webkit.WebSettings;
+          import android.webkit.WebView;
+          import android.webkit.WebViewClient;
+
+          public class MainActivity extends Activity {
+              private WebView webView;
+
+              @Override
+              protected void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  webView = new WebView(this);
+                  setContentView(webView);
+
+                  WebSettings settings = webView.getSettings();
+                  settings.setJavaScriptEnabled(true);
+                  settings.setDomStorageEnabled(true);
+                  settings.setDatabaseEnabled(true);
+
+                  webView.setWebViewClient(new WebViewClient() {
+                      @Override
+                      public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                          if (url.startsWith("whatsapp://") || url.contains("api.whatsapp.com") || url.contains("wa.me") || url.startsWith("tel:")) {
+                              try {
+                                  Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                  startActivity(intent);
+                                  return true;
+                              } catch (Exception e) {
+                                  return false;
+                              }
+                          }
+                          return false;
+                      }
+                  });
+
+                  webView.loadUrl("https://mahmoudahmed3531-lgtm.github.io/FlyExpress/");
+              }
+
+              @Override
+              public void onBackPressed() {
+                  if (webView.canGoBack()) {
+                      webView.goBack();
+                  } else {
+                      super.onBackPressed();
+                  }
+              }
+          }
+          EOF
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build APK with Gradle
+        run: gradle :app:assembleRelease
+
+      - name: Upload Clean APK
         uses: actions/upload-artifact@v4
         with:
-          name: FlyExpress-Fullscreen-APK
-          path: app/app/build/outputs/apk/debug/*.apk
+          name: FlyExpress-Clean-APK
+          path: app/build/outputs/apk/release/*.apk
