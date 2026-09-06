@@ -540,8 +540,8 @@ body {
 
 <body>
 
-<!-- شريط تحميل التطبيق العائم للمتصفح -->
-<a href="https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/fly%20express.apk" class="app-download-banner" id="downloadAppBanner" target="_blank" rel="noopener noreferrer">
+<!-- شريط تحميل التطبيق العائم (رابط مباشر للتحميل بدون 404) -->
+<a href="https://github.com/mahmoudahmed3531-lgtm/FlyExpress/raw/main/fly%20express.apk" class="app-download-banner" id="downloadAppBanner">
   <i class="fa-solid fa-cloud-arrow-down download-arrow"></i>
   <span>حمّل التطبيق الآن</span>
 </a>
@@ -567,10 +567,9 @@ body {
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
 
-<!-- مشغل الموسيقى (جيتار مونامور Mon Amour مباشر وسريع) -->
+<!-- مشغل الموسيقى (جيتار إسباني نقي يعمل فوراً في مصر) -->
 <audio id="bgMusicPlayer" loop preload="auto">
-  <source src="https://ia601503.us.archive.org/15/items/mon-amour-guitar/MonAmour.mp3" type="audio/mp3">
-  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=guitar.mp3" type="audio/mp3">
+  <source src="https://cdn.freesound.org/previews/612/612627_5674468-lq.mp3" type="audio/mp3">
 </audio>
 
 <!-- شاشة القفل وبوابة الدخول -->
@@ -1028,7 +1027,7 @@ function toggleBackgroundMusic() {
         if (musicBtn) musicBtn.classList.add('playing');
         if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
       }).catch(() => {
-        showAppAlert("اضغط في أي مكان على الشاشة لتفعيل تشغيل الصوت.", "الموسيقى", "fa-solid fa-music");
+        showAppAlert("اضغط في أي مكان على الشاشة لتشغيل الموسيقى.", "الموسيقى", "fa-solid fa-music");
       });
     }
   } else {
@@ -1051,7 +1050,7 @@ function autoStartAudio() {
 }
 ['click', 'touchstart', 'scroll'].forEach(evt => document.addEventListener(evt, autoStartAudio, { once: true }));
 
-// إخفاء زر التحميل تلقائياً إذا كان المستخدم داخل تطبيق الأندرويد نفسه
+// إخفاء زر التحميل تلقائياً إذا كان المستخدم يتصفح من داخل تطبيق الأندرويد نفسه
 function checkEnvironment() {
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
   const isWebView = /(wv|Android.*Version\/[0-9]\.[0-9])/i.test(navigator.userAgent);
