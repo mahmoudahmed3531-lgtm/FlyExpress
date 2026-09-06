@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
 <title>Fly Express — أسرع وأأمن توصيل في نجع حمادي</title>
 <meta name="description" content="Fly Express: توصيل طلاب المدارس والدليفري السريع في نجع حمادي وقراها.">
 <meta name="theme-color" content="#070b12">
@@ -42,11 +42,18 @@
   margin: 0; 
   padding: 0; 
   user-select: none; 
+  -webkit-user-select: none;
   touch-action: manipulation;
+  -webkit-touch-callout: none;
 }
-input, textarea, select { user-select: auto; }
 
-body {
+input, textarea, select { 
+  user-select: auto; 
+  -webkit-user-select: auto;
+}
+
+html, body {
+  overscroll-behavior-y: none;
   background-color: var(--bg-dark);
   color: var(--text-main);
   min-height: 100vh;
@@ -56,7 +63,7 @@ body {
   background: #070b12;
 }
 
-/* شاشة التحميل الافتتاحية */
+/* شاشة التحميل الأولية */
 #appPreloader {
   position: fixed;
   inset: 0;
@@ -94,7 +101,7 @@ body {
   margin-top: 14px;
 }
 
-/* مؤشر تحميل فوري للتنقل بين الخدمات */
+/* مؤشر تحميل فوري للتنقل */
 #fastSpinner {
   position: fixed;
   inset: 0;
@@ -154,6 +161,11 @@ body {
   box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
   cursor: pointer;
   z-index: 150;
+  transition: transform 0.15s ease;
+}
+
+.music-fab-btn:active {
+  transform: scale(0.9);
 }
 
 .music-fab-btn.playing {
@@ -233,13 +245,14 @@ body {
   text-align: right;
 }
 
-/* Header */
+/* Header أصلي بدون فواصل ويب */
 .app-header {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(7, 11, 18, 0.95);
-  padding: 10px 16px;
+  background: rgba(7, 11, 18, 0.96);
+  backdrop-filter: blur(12px);
+  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -254,8 +267,8 @@ body {
 }
 
 .profile-img {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 14px;
   object-fit: cover;
   border: 2px solid var(--primary);
@@ -300,6 +313,12 @@ body {
 .tab-view {
   display: none;
   padding: 16px;
+  animation: fadeInTab 0.2s ease-out;
+}
+
+@keyframes fadeInTab {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .tab-view.active { 
@@ -357,7 +376,7 @@ body {
 .step-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
 
 .pharmacy-order-banner {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 107, 0, 0.18));
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(6, 78, 59, 0.2));
   border: 1px dashed var(--success);
   border-radius: 18px;
   padding: 14px;
@@ -366,7 +385,9 @@ body {
   justify-content: space-between;
   margin-bottom: 16px;
   cursor: pointer;
+  transition: transform 0.15s ease;
 }
+.pharmacy-order-banner:active { transform: scale(0.97); }
 
 .wheel-promo-card {
   background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 107, 0, 0.18));
@@ -378,7 +399,9 @@ body {
   justify-content: space-between;
   margin-bottom: 16px;
   cursor: pointer;
+  transition: transform 0.15s ease;
 }
+.wheel-promo-card:active { transform: scale(0.97); }
 
 .section-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
 .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
@@ -386,6 +409,7 @@ body {
   background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
 }
 
+/* سرعة واستجابة الكروت كأزرار تطبيق أصلي */
 .service-card { 
   display: flex; 
   flex-direction: column; 
@@ -393,15 +417,15 @@ body {
   gap: 12px; 
   cursor: pointer;
   touch-action: manipulation;
-  transition: transform 0.1s ease, border-color 0.1s ease;
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.12s ease;
 }
 .service-card * {
   pointer-events: none !important;
 }
 .service-card:active { 
-  transform: scale(0.95); 
+  transform: scale(0.94); 
   border-color: var(--primary) !important;
-  background: #1e293b !important;
+  background: #162238 !important;
 }
 
 .service-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
@@ -410,15 +434,19 @@ body {
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
-/* شريط التنقل السفلي */
+/* شريط التنقل السفلي الأصلي */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 68px; background: rgba(7, 11, 18, 0.98);
+  backdrop-filter: blur(14px);
   border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 .nav-item {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--text-sub); background: transparent;
   border: 0; font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer; flex: 1; height: 100%;
+  transition: transform 0.1s ease, color 0.15s ease;
 }
+.nav-item:active { transform: scale(0.92); }
 .nav-item.active { color: var(--primary); }
 
 .order-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
@@ -427,11 +455,16 @@ body {
   width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(8, 12, 20, 0.9);
   color: #fff; font-family: inherit; font-size: 13px; outline: none;
 }
+.order-input:focus, .order-select:focus, .order-textarea:focus {
+  border-color: var(--primary);
+}
+
 .order-btn {
   width: 100%; border: 0; cursor: pointer; padding: 12px 14px; border-radius: 12px; font-weight: 800; font-size: 13px; color: #fff;
   background: linear-gradient(90deg, #ff6b00, #ff8c00); margin-top: 6px; font-family: inherit;
+  transition: transform 0.12s ease;
 }
-.order-btn:active { transform: scale(0.98); }
+.order-btn:active { transform: scale(0.96); }
 
 .modal-backdrop {
   position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 2500; display: none;
@@ -1304,13 +1337,12 @@ function getActiveDiscount() {
 }
 
 // -------------------------------------------------------------
-// محرك توجيه واتساب الآمن للـ WebView (بدون أخطاء URL Scheme)
+// محرك توجيه واتساب الآمن للـ WebView
 // -------------------------------------------------------------
 function openWhatsAppDirectly(messageText) {
   const fullText = enc(messageText);
   const targetUrl = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${fullText}`;
   
-  // إنشاء رابط خارجي صريح بـ _blank لإلزام المتصفح بتمريره لتطبيق واتساب الخارجي
   const link = document.createElement('a');
   link.href = targetUrl;
   link.target = '_blank';
