@@ -195,12 +195,12 @@ body {
   position: fixed;
   bottom: 80px;
   left: 16px;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(12px);
-  border: 1.5px solid var(--accent);
+  border: 2px solid var(--accent);
   color: var(--accent);
   display: flex;
   align-items: center;
@@ -208,7 +208,7 @@ body {
   box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
   cursor: pointer;
   z-index: 150;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, background-color 0.2s ease;
 }
 
 .music-fab-btn:active {
@@ -541,7 +541,7 @@ body {
 
 <body>
 
-<!-- شريط تحميل التطبيق العائم المربوط بـ MediaFire المباشر -->
+<!-- شريط تحميل التطبيق العائم المباشر لـ MediaFire -->
 <a href="https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file" target="_blank" rel="noopener noreferrer" class="app-download-banner" id="downloadAppBanner" onclick="forceDownloadRedirect(event, this.href)">
   <i class="fa-solid fa-cloud-arrow-down download-arrow"></i>
   <span>حمّل التطبيق الآن</span>
@@ -567,11 +567,6 @@ body {
 <button class="music-fab-btn" id="musicToggleBtn" onclick="toggleBackgroundMusic()" title="تشغيل / إيقاف الموسيقى">
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
-
-<!-- مشغل الموسيقى المتوافق والمجرب -->
-<audio id="bgMusicPlayer" loop preload="auto" playsinline>
-  <source src="https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3" type="audio/mp3">
-</audio>
 
 <!-- شاشة القفل وبوابة الدخول -->
 <div class="auth-gate-screen" id="authGateScreen">
@@ -999,9 +994,132 @@ function showAuthInlineError(msg) {
 // -------------------------------------------------------------
 function forceDownloadRedirect(e, targetUrl) {
   if (e) e.preventDefault();
-  // فتح صفحة التحميل من ميديا فاير في نافذة مستقلة أو المتصفح الخارجي
   window.open(targetUrl, '_blank');
 }
+
+// -------------------------------------------------------------
+// محرك الصوت الداخلي (Web Audio API) + كليك الويندوز والموسيقى
+// -------------------------------------------------------------
+let globalAudioCtx = null;
+
+function getAudioContext() {
+  if (!globalAudioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      globalAudioCtx = new AudioContextClass();
+    }
+  }
+  if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
+    globalAudioCtx.resume();
+  }
+  return globalAudioCtx;
+}
+
+// توليد صوت نقرة أزرار نظام ويندوز برمجياً (Windows Click Sound)
+function playWindowsClick() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    const now = ctx.currentTime;
+    
+    // تردد كليك الويندوز السريع
+    osc.frequency.setValueAtTime(1050, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.035);
+
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.035);
+  } catch (e) {}
+}
+
+// مشغل الموسيقى المدمج (Audio Element برابط مباشر فائق الموثوقية)
+let backgroundAudio = null;
+let isMusicPlaying = false;
+
+function initMusicElement() {
+  if (!backgroundAudio) {
+    backgroundAudio = new Audio();
+    backgroundAudio.loop = true;
+    backgroundAudio.crossOrigin = "anonymous";
+    backgroundAudio.preload = "auto";
+    // رابط موسيقى جيتار هادئة متوافقة مع كافة الهواتف وWebView
+    backgroundAudio.src = "https://ia801503.us.archive.org/15/items/mon-amour-guitar/MonAmour.mp3";
+    backgroundAudio.volume = 0.4;
+  }
+  return backgroundAudio;
+}
+
+function startMusicPlayback() {
+  const audio = initMusicElement();
+  getAudioContext();
+
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      isMusicPlaying = true;
+      const btn = document.getElementById('musicToggleBtn');
+      const icon = document.getElementById('musicIcon');
+      if (btn) btn.classList.add('playing');
+      if (icon) icon.className = "fa-solid fa-volume-high";
+    }).catch(err => {
+      // محاولة بديلة إذا كان السيرفر الأول مقطوعاً
+      audio.src = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=guitar.mp3";
+      audio.play().then(() => {
+        isMusicPlaying = true;
+        const btn = document.getElementById('musicToggleBtn');
+        const icon = document.getElementById('musicIcon');
+        if (btn) btn.classList.add('playing');
+        if (icon) icon.className = "fa-solid fa-volume-high";
+      }).catch(() => {});
+    });
+  }
+}
+
+function stopMusicPlayback() {
+  if (backgroundAudio) {
+    backgroundAudio.pause();
+    isMusicPlaying = false;
+    const btn = document.getElementById('musicToggleBtn');
+    const icon = document.getElementById('musicIcon');
+    if (btn) btn.classList.remove('playing');
+    if (icon) icon.className = "fa-solid fa-music";
+  }
+}
+
+function toggleBackgroundMusic() {
+  playWindowsClick();
+  if (isMusicPlaying) {
+    stopMusicPlayback();
+  } else {
+    startMusicPlayback();
+  }
+}
+
+// تشغيل الصوت فور أول لمسة للمستخدم في أي مكان (لحل حظر Android WebView وBrave)
+function unlockAudioEngine() {
+  getAudioContext();
+  playWindowsClick();
+  if (!isMusicPlaying) {
+    startMusicPlayback();
+  }
+  ['touchstart', 'touchend', 'click'].forEach(evt => 
+    document.removeEventListener(evt, unlockAudioEngine)
+  );
+}
+
+['touchstart', 'touchend', 'click'].forEach(evt => 
+  document.addEventListener(evt, unlockAudioEngine, { once: true, passive: true })
+);
 
 // -------------------------------------------------------------
 // الخدمات السحابية ومفاتيح الربط
@@ -1022,43 +1140,6 @@ let currentGeneratedOtp = null;
 let activeAuthTargetUser = null;
 let currentOtpFlow = "";
 
-const bgMusic = document.getElementById('bgMusicPlayer');
-const musicBtn = document.getElementById('musicToggleBtn');
-const musicIcon = document.getElementById('musicIcon');
-
-function playAudioStream() {
-  if (!bgMusic) return;
-  bgMusic.volume = 0.45;
-  const playPromise = bgMusic.play();
-  if (playPromise !== undefined) {
-    playPromise.then(() => {
-      if (musicBtn) musicBtn.classList.add('playing');
-      if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
-    }).catch(err => {
-      console.log("Audio awaiting click");
-    });
-  }
-}
-
-function toggleBackgroundMusic() {
-  if (!bgMusic) return;
-  if (bgMusic.paused) {
-    playAudioStream();
-  } else {
-    bgMusic.pause();
-    if (musicBtn) musicBtn.classList.remove('playing');
-    if (musicIcon) musicIcon.className = "fa-solid fa-music";
-  }
-}
-
-// تفعيل الصوت مع أول لمسة للشاشة
-function unlockAudio() {
-  playAudioStream();
-  ['click', 'touchstart'].forEach(evt => document.removeEventListener(evt, unlockAudio));
-}
-['click', 'touchstart'].forEach(evt => document.addEventListener(evt, unlockAudio, { once: true }));
-
-// الاتصال السحابي بقاعدة البيانات
 async function fetchCloudUsers() {
   try {
     const res = await fetch(USERS_API_URL);
@@ -1073,6 +1154,7 @@ async function fetchCloudUsers() {
 // بوابات وشاشات الدخول
 // -------------------------------------------------------------
 function switchAuthMode(mode) {
+  playWindowsClick();
   const isLogin = mode === 'login';
   document.getElementById('authErrorDisplay').style.display = 'none';
   document.getElementById('tabBtnLogin').classList.toggle('active', isLogin);
@@ -1085,6 +1167,7 @@ function switchAuthMode(mode) {
 }
 
 function switchToForgotView() {
+  playWindowsClick();
   document.getElementById('authErrorDisplay').style.display = 'none';
   document.getElementById('authTabsContainer').style.display = 'none';
   document.getElementById('formLoginView').style.display = 'none';
@@ -1093,6 +1176,7 @@ function switchToForgotView() {
 }
 
 function backToAuthHome() {
+  playWindowsClick();
   switchAuthMode('login');
   const b1 = document.getElementById('signupOtpBtn');
   const b2 = document.getElementById('forgotOtpBtn');
@@ -1125,6 +1209,7 @@ function checkAppAccess() {
 }
 
 async function directPasswordLogin() {
+  playWindowsClick();
   const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
   const password = document.getElementById('loginPassword').value.trim();
 
@@ -1164,6 +1249,7 @@ async function directPasswordLogin() {
 }
 
 async function requestSignupOtp() {
+  playWindowsClick();
   const name = document.getElementById('signupName').value.trim();
   const phone = document.getElementById('signupPhone').value.trim();
   const email = document.getElementById('signupEmail').value.trim().toLowerCase();
@@ -1217,6 +1303,7 @@ async function requestSignupOtp() {
 }
 
 async function requestForgotOtp() {
+  playWindowsClick();
   const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
   const btn = document.getElementById('forgotOtpBtn');
 
@@ -1264,6 +1351,7 @@ async function requestForgotOtp() {
 }
 
 async function verifyAndFinishOtp() {
+  playWindowsClick();
   const code = document.getElementById('gateOtpInput').value.trim();
 
   if (code !== currentGeneratedOtp || !currentGeneratedOtp) {
@@ -1325,14 +1413,17 @@ async function verifyAndFinishOtp() {
 }
 
 function logoutUser() {
+  playWindowsClick();
   document.getElementById('logoutConfirmModal').classList.add('show');
 }
 
 function closeLogoutModal() {
+  playWindowsClick();
   document.getElementById('logoutConfirmModal').classList.remove('show');
 }
 
 function confirmLogoutAction() {
+  playWindowsClick();
   closeLogoutModal();
   localStorage.removeItem('fly_verified_user');
   checkAppAccess();
@@ -1343,6 +1434,7 @@ function confirmLogoutAction() {
 // الصيدلية
 // -------------------------------------------------------------
 function openPharmacyModal() {
+  playWindowsClick();
   const verifiedUser = localStorage.getItem('fly_verified_user');
   if (verifiedUser) {
     const u = JSON.parse(verifiedUser);
@@ -1355,10 +1447,12 @@ function openPharmacyModal() {
 }
 
 function closePharmacyModal() {
+  playWindowsClick();
   document.getElementById('pharmacyModal').classList.remove('show');
 }
 
 function sendPharmacyOrder() {
+  playWindowsClick();
   const name = document.getElementById('pharmName').value.trim();
   const phone = document.getElementById('pharmPhone').value.trim();
   const pharmacy = document.getElementById('pharmPrefPharmacy').value.trim() || 'أقرب صيدلية مفتوحة';
@@ -1468,6 +1562,7 @@ const waSend = txt => {
 };
 
 function openDirectWhatsApp(customTxt = '') {
+  playWindowsClick();
   openWhatsAppDirectly(customTxt);
 }
 
@@ -1492,6 +1587,7 @@ function calcMonthlyEstimate() {
 calcMonthlyEstimate();
 
 function sendOrder() {
+  playWindowsClick();
   if (!orderName.value || !orderPhone.value || !orderFrom.value || !orderTo.value) { 
     showAppAlert("يرجى إكمال جميع بيانات الأوردر والعناوين أولاً.", "بيانات ناقصة"); 
     return; 
@@ -1502,6 +1598,7 @@ function sendOrder() {
 }
 
 function sendMarket() {
+  playWindowsClick();
   if (!marketName.value || !marketPhone.value || !marketList.value || !marketTo.value) { 
     showAppAlert("يرجى كتابة قائمة الطلبات وعنوان التوصيل.", "بيانات ناقصة"); 
     return; 
@@ -1512,6 +1609,7 @@ function sendMarket() {
 }
 
 function sendSchool() {
+  playWindowsClick();
   if (!schoolChild.value || !schoolPhone.value || !schoolFrom.value || !schoolTo.value) { 
     showAppAlert("يرجى إدخال اسم الطالب ورقم ولي الأمر والمدرسة.", "بيانات ناقصة"); 
     return; 
@@ -1522,6 +1620,7 @@ function sendSchool() {
 }
 
 function sendMonthlyOrder() {
+  playWindowsClick();
   if (!pmName.value || !pmPhone.value) { 
     showAppAlert("يرجى كتابة اسم ولي الأمر ورقم الموبايل لحجز الاشتراك.", "بيانات ناقصة"); 
     return; 
@@ -1569,8 +1668,14 @@ function drawWheel() {
 drawWheel();
 
 let currentRotation = 0, isSpinning = false;
-function openWheel() { document.getElementById('wheelModal').classList.add('show'); }
-function closeWheel() { document.getElementById('wheelModal').classList.remove('show'); }
+function openWheel() { 
+  playWindowsClick();
+  document.getElementById('wheelModal').classList.add('show'); 
+}
+function closeWheel() { 
+  playWindowsClick();
+  document.getElementById('wheelModal').classList.remove('show'); 
+}
 
 function hashString(str) {
   let hash = 5381;
@@ -1579,6 +1684,7 @@ function hashString(str) {
 }
 
 function spinWheel() {
+  playWindowsClick();
   if (isSpinning) return;
   const phone = (document.getElementById('wheelPhone').value || "").trim();
   const res = document.getElementById('wheelResult');
@@ -1629,11 +1735,13 @@ function spinWheel() {
 }
 
 function openClaimWhatsApp() {
+  playWindowsClick();
   if (pendingClaimMsg) openWhatsAppDirectly(pendingClaimMsg);
 }
 
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
+  playWindowsClick();
   logoClicks++;
   clearTimeout(logoTimer);
   logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
@@ -1644,6 +1752,7 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
 });
 
 function switchTab(tabId, navBtn) {
+  playWindowsClick();
   const tabs = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
   for (let i = 0; i < tabs.length; i++) {
     const el = document.getElementById(tabs[i]);
@@ -1664,6 +1773,7 @@ function switchTab(tabId, navBtn) {
 }
 
 function openServiceInstantly(formId) {
+  playWindowsClick();
   const spinner = document.getElementById('fastSpinner');
   if (spinner) spinner.classList.add('active');
 
