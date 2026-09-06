@@ -20,7 +20,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- مكتبة EmailJS الرسمية -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <style>
@@ -57,7 +56,7 @@ body {
   background: #070b12;
 }
 
-/* شاشة التحميل الافتتاحية */
+/* شاشة التحميل الأولية */
 #appPreloader {
   position: fixed;
   inset: 0;
@@ -67,7 +66,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 #appPreloader.fade-out {
@@ -77,75 +76,56 @@ body {
 }
 
 .loader-logo-img {
-  width: 84px;
-  height: 84px;
-  border-radius: 22px;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
   border: 2px solid var(--primary);
-  box-shadow: 0 0 24px var(--primary-glow);
-  margin-bottom: 16px;
-  animation: pulseLogo 1.4s ease-in-out infinite alternate;
+  box-shadow: 0 0 20px var(--primary-glow);
+  margin-bottom: 14px;
 }
 
 .loader-spinner {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border: 3px solid rgba(255, 255, 255, 0.1);
   border-top-color: var(--primary);
   border-radius: 50%;
-  animation: spinLoader 0.8s linear infinite;
+  animation: spinLoader 0.7s linear infinite;
   margin-top: 14px;
 }
 
-/* مؤشر التحميل الذكي الفوري للتنقل */
-#navLoadingOverlay {
+/* شاشة تحميل فورية للتنقل (تظهر فور لمس الشاشة) */
+#fastSpinner {
   position: fixed;
   inset: 0;
-  background: rgba(7, 11, 18, 0.55);
+  background: rgba(7, 11, 18, 0.65);
   backdrop-filter: blur(4px);
-  z-index: 9999;
-  display: flex;
+  z-index: 999999;
+  display: none;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.15s ease, visibility 0.15s ease;
-  pointer-events: none;
 }
 
-#navLoadingOverlay.show {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+#fastSpinner.active {
+  display: flex !important;
 }
 
-.nav-loading-box {
-  background: #0d1527;
+.fast-spinner-card {
+  background: #0f172a;
   border: 1.5px solid var(--primary);
-  box-shadow: 0 10px 30px var(--primary-glow);
-  padding: 16px 24px;
+  padding: 16px 28px;
   border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255, 107, 0, 0.5);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px;
-}
-
-.nav-loading-spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid rgba(255, 255, 255, 0.15);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spinLoader 0.6s linear infinite;
+  gap: 12px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
 }
 
 @keyframes spinLoader {
   to { transform: rotate(360deg); }
-}
-
-@keyframes pulseLogo {
-  from { transform: scale(0.96); }
-  to { transform: scale(1.04); }
 }
 
 .app-container {
@@ -156,7 +136,7 @@ body {
   z-index: 1;
 }
 
-/* زر الموسيقى العائم */
+/* زر الموسيقى العائم الفوري */
 .music-fab-btn {
   position: fixed;
   bottom: 80px;
@@ -182,46 +162,7 @@ body {
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
 }
 
-/* شريط إشعار خدمات نجع حمادي */
-.live-toast-box {
-  position: fixed;
-  bottom: 76px;
-  right: 14px;
-  left: 68px;
-  background: rgba(13, 21, 39, 0.95);
-  border: 1px solid var(--accent);
-  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
-  backdrop-filter: blur(10px);
-  border-radius: 14px;
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  z-index: 140;
-  transform: translateY(120%);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.live-toast-box.show {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.live-toast-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: rgba(0, 229, 255, 0.15);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  flex-shrink: 0;
-}
-
-/* شاشة القفل وبوابة الدخول */
+/* شاشة القفل */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -292,7 +233,7 @@ body {
   text-align: right;
 }
 
-/* الهيدر العلوي */
+/* Header */
 .app-header {
   position: sticky;
   top: 0;
@@ -444,17 +385,25 @@ body {
 .service-card, .price-box, .form-card {
   background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
 }
+
+/* سرعة الاستجابة الصاروخية لكروت الخدمات */
 .service-card { 
   display: flex; 
   flex-direction: column; 
   align-items: flex-start; 
   gap: 12px; 
   cursor: pointer;
-  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition: transform 0.1s ease, border-color 0.1s ease;
+}
+/* منع العناصر الداخلية من اعتراض النقرة أو تأخيرها */
+.service-card * {
+  pointer-events: none !important;
 }
 .service-card:active { 
-  transform: scale(0.96); 
-  border-color: var(--primary);
+  transform: scale(0.95); 
+  border-color: var(--primary) !important;
+  background: #1e293b !important;
 }
 
 .service-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
@@ -520,20 +469,11 @@ body {
   <div class="loader-spinner"></div>
 </div>
 
-<!-- مؤشر تحميل التبديل اللحظي -->
-<div id="navLoadingOverlay">
-  <div class="nav-loading-box">
-    <div class="nav-loading-spinner"></div>
-    <span style="font-size:12px; font-weight:800; color:#fff;">جاري الفتح...</span>
-  </div>
-</div>
-
-<!-- شريط إشعار خدمات وطلبات نجع حمادي -->
-<div class="live-toast-box" id="liveOrderToast">
-  <div class="live-toast-icon" id="toastIcon"><i class="fa-solid fa-motorcycle"></i></div>
-  <div style="text-align:right; overflow:hidden;">
-    <div style="font-size:11px; font-weight:900; color:#fff;" id="toastTitle">طلب توصيل جديد الآن 🛵</div>
-    <div style="font-size:10px; color:var(--text-sub); white-space:nowrap; text-overflow:ellipsis;" id="toastDesc">من شارع المحطة إلى قرية بركة</div>
+<!-- مؤشر تحميل التبديل اللحظي الصريح -->
+<div id="fastSpinner">
+  <div class="fast-spinner-card">
+    <div style="width:22px; height:22px; border:3px solid rgba(255,255,255,0.2); border-top-color:var(--primary); border-radius:50%; animation:spinLoader 0.6s linear infinite;"></div>
+    <span>جاري فتح الخدمة...</span>
   </div>
 </div>
 
@@ -717,19 +657,19 @@ body {
 
     <div class="section-title"><i class="fa-solid fa-shapes"></i> خدمات التوصيل السريع</div>
     <div class="services-grid">
-      <div class="service-card" onclick="triggerFastForm('sec-order')">
+      <div class="service-card" onclick="openServiceInstantly('sec-order')">
         <div class="service-icon ic-orange"><i class="fa-solid fa-box"></i></div>
         <div><h4>طلب أوردر / طرد</h4><span>توصيل واستلام فوري</span></div>
       </div>
-      <div class="service-card" onclick="triggerFastForm('sec-market')">
+      <div class="service-card" onclick="openServiceInstantly('sec-market')">
         <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
         <div><h4>طلبات السوق</h4><span>خضار، بقالة، طلبات بيت</span></div>
       </div>
-      <div class="service-card" onclick="triggerFastForm('sec-school')">
+      <div class="service-card" onclick="openServiceInstantly('sec-school')">
         <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
         <div><h4>مشاوير المدرسة</h4><span>ذهاب وعودة بأمان تام</span></div>
       </div>
-      <div class="service-card" onclick="triggerFastForm('sec-monthly')">
+      <div class="service-card" onclick="openServiceInstantly('sec-monthly')">
         <div class="service-icon ic-purple"><i class="fa-solid fa-calculator"></i></div>
         <div><h4>حاسبة اشتراك الدروس</h4><span>احسب اشتراكك بخصم الإخوة</span></div>
       </div>
@@ -933,14 +873,12 @@ body {
 </div>
 
 <script>
-// إخفاء شاشة التحميل الافتتاحية فور جاهزية الصفحة
+// إخفاء شاشة البداية فور التحميل
 window.addEventListener('load', () => {
-  const preloader = document.getElementById('appPreloader');
-  if (preloader) {
-    setTimeout(() => {
-      preloader.classList.add('fade-out');
-      setTimeout(() => preloader.remove(), 350);
-    }, 300);
+  const p = document.getElementById('appPreloader');
+  if (p) {
+    p.classList.add('fade-out');
+    setTimeout(() => p.remove(), 300);
   }
 });
 
@@ -1010,43 +948,6 @@ function toggleBackgroundMusic() {
     musicIcon.className = "fa-solid fa-music";
   }
 }
-
-// -------------------------------------------------------------
-// إشعارات خدمات وطلبات نجع حمادي
-// -------------------------------------------------------------
-const localServicesList = [
-  { icon: "fa-notes-medical", title: "طوارئ علاج وصيدلية 💊", desc: "طلب روشتة عاجلة من صيدلية السلام إلى شارع 30" },
-  { icon: "fa-box", title: "توصيل طرد فوري 📦", desc: "استلام أوردر من شارع المحطة والتوصيل لقرية بركة" },
-  { icon: "fa-graduation-cap", title: "مشوار مدرسة صباحي 🏫", desc: "توصيل طالب بأمان من قرية هو إلى مدرسة الزراعة" },
-  { icon: "fa-basket-shopping", title: "طلبات سوبرماركت وخضار 🛒", desc: "توصيل طلبات منزلية طازجة من السوق إلى نجع حمادي" },
-  { icon: "fa-calculator", title: "حجز اشتراك دروس شهري 📘", desc: "اشتراك شهري لطالبين مع تطبيق خصم الإخوة بالألمنيوم" },
-  { icon: "fa-motorcycle", title: "دليفري مطاعم سريع 🍔", desc: "طلب وجبة من شارع الترعة إلى عمارات الساحل" }
-];
-
-let toastIndex = 0;
-function showNextServiceToast() {
-  const toast = document.getElementById('liveOrderToast');
-  const tIcon = document.getElementById('toastIcon');
-  const tTitle = document.getElementById('toastTitle');
-  const tDesc = document.getElementById('toastDesc');
-  const item = localServicesList[toastIndex % localServicesList.length];
-
-  tIcon.innerHTML = `<i class="fa-solid ${item.icon}"></i>`;
-  tTitle.textContent = item.title;
-  tDesc.textContent = item.desc;
-
-  toast.classList.add('show');
-  toastIndex++;
-
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 5000);
-}
-
-setTimeout(() => {
-  showNextServiceToast();
-  setInterval(showNextServiceToast, 40000);
-}, 4000);
 
 function getStoredUsers() {
   return JSON.parse(localStorage.getItem('fly_registered_users') || "[]");
@@ -1332,7 +1233,7 @@ function sendPharmacyOrder() {
 }
 
 // -------------------------------------------------------------
-// المزامنة السحابية الحية (كل 30 ثانية لتوفير موارد الهاتف تماماً)
+// المزامنة السحابية الحية (مخففة جداً لمنع تعليق النظام)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1377,7 +1278,7 @@ function applyLiveState(step, status) {
   }
 }
 
-setInterval(listenToCloudState, 30000);
+setInterval(listenToCloudState, 45000);
 listenToCloudState();
 
 function getLoyaltyRides() { return parseInt(localStorage.getItem('fly_loyalty_rides') || '0', 10); }
@@ -1585,24 +1486,20 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
 });
 
 // -------------------------------------------------------------
-// التنقل فائق السرعة مع مؤشر التحميل المؤكد
+// التنقل المباشر الصاروخي المماثل لزر الموسيقى
 // -------------------------------------------------------------
-const allTabIds = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
-
-function showOverlaySpinner() {
-  const overlay = document.getElementById('navLoadingOverlay');
-  if (overlay) overlay.classList.add('show');
-}
-
-function hideOverlaySpinner() {
-  const overlay = document.getElementById('navLoadingOverlay');
-  if (overlay) overlay.classList.remove('show');
-}
+const tabElements = {
+  'tab-home': document.getElementById('tab-home'),
+  'tab-orders': document.getElementById('tab-orders'),
+  'tab-prices': document.getElementById('tab-prices'),
+  'tab-contact': document.getElementById('tab-contact')
+};
 
 function switchTab(tabId, navBtn) {
-  for (let i = 0; i < allTabIds.length; i++) {
-    const el = document.getElementById(allTabIds[i]);
-    if (el) el.style.display = (allTabIds[i] === tabId) ? 'block' : 'none';
+  const tabs = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
+  for (let i = 0; i < tabs.length; i++) {
+    const el = document.getElementById(tabs[i]);
+    if (el) el.style.display = (tabs[i] === tabId) ? 'block' : 'none';
   }
 
   const btns = document.querySelectorAll('.nav-item');
@@ -1618,20 +1515,24 @@ function switchTab(tabId, navBtn) {
   window.scrollTo(0, 0);
 }
 
-// دالة الضغط على كروت الخدمات - تضمن ظهور علامة التحميل فور لمس الشاشة
-function triggerFastForm(formId) {
-  showOverlaySpinner();
+// دالة فتح الخدمة الفورية مع علامة التحميل الصريحة
+function openServiceInstantly(formId) {
+  const spinner = document.getElementById('fastSpinner');
+  if (spinner) spinner.classList.add('active');
 
-  // إعطاء جزء من الثانية لإظهار علامة التحميل بوضوح للمستخدم
   setTimeout(() => {
+    // 1. الانتقال الفوري لتبويب المشاوير
     switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
+
+    // 2. التمرير الفوري لنموذج الخدمة المطلوبة
     const target = document.getElementById(formId);
     if (target) {
       target.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
-    // إخفاء علامة التحميل بعد الانتقال مباشرة
-    setTimeout(hideOverlaySpinner, 180);
-  }, 100);
+
+    // 3. إخفاء مؤشر التحميل
+    if (spinner) spinner.classList.remove('active');
+  }, 120);
 }
 
 checkAppAccess();
