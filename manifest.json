@@ -1,7 +1,7 @@
 {
   "name": "Fly Express",
   "short_name": "Fly Express",
-  "description": "أسرع وأأمن خدمة توصيل وطلبات ومدارس في نجع حمادي"
+  "description": "Fast and safe delivery service in Naga Hammadi",
   "start_url": "/FlyExpress/",
   "scope": "/FlyExpress/",
   "display": "standalone",
@@ -12,13 +12,13 @@
     {
       "src": "/FlyExpress/icon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
       "purpose": "any"
     },
     {
       "src": "/FlyExpress/icon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
       "purpose": "any"
     }
   ]
