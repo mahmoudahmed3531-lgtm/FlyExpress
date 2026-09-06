@@ -1,7 +1,7 @@
 {
   "name": "Fly Express",
   "short_name": "Fly Express",
-  "description": "أسرع وأأمن خدمة توصيل وطلبات ومدارس في نجع حمادي",
+  "description": "أسرع وأأمن خدمة توصيل وطلبات ومدارس في نجع حمادي"
   "start_url": "/FlyExpress/",
   "scope": "/FlyExpress/",
   "display": "standalone",
