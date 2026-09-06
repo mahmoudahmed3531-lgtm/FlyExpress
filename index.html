@@ -57,6 +57,91 @@ body {
   background: #070b12;
 }
 
+/* شاشة التحميل الافتتاحية */
+#appPreloader {
+  position: fixed;
+  inset: 0;
+  background: #070b12;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+#appPreloader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-logo-img {
+  width: 84px;
+  height: 84px;
+  border-radius: 22px;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 24px var(--primary-glow);
+  margin-bottom: 16px;
+  animation: pulseLogo 1.4s ease-in-out infinite alternate;
+}
+
+.loader-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spinLoader 0.8s linear infinite;
+  margin-top: 14px;
+}
+
+/* مؤشر التحميل الصغير أثناء التنقل بين الخدمات */
+#navLoadingIndicator {
+  position: fixed;
+  bottom: 74px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid var(--primary);
+  box-shadow: 0 4px 16px var(--primary-glow);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+#navLoadingIndicator.active {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.nav-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spinLoader 0.7s linear infinite;
+}
+
+@keyframes spinLoader {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseLogo {
+  from { transform: scale(0.96); }
+  to { transform: scale(1.04); }
+}
+
 .app-container {
   max-width: 480px;
   margin: 0 auto;
@@ -91,7 +176,7 @@ body {
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
 }
 
-/* شريط إشعار خدمات وطلبات نجع حمادي */
+/* شريط إشعار خدمات نجع حمادي */
 .live-toast-box {
   position: fixed;
   bottom: 76px;
@@ -109,7 +194,7 @@ body {
   z-index: 140;
   transform: translateY(120%);
   opacity: 0;
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .live-toast-box.show {
@@ -130,7 +215,7 @@ body {
   flex-shrink: 0;
 }
 
-/* شاشة القفل وبوابة الدخول */
+/* شاشة القفل */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -264,7 +349,7 @@ body {
   box-shadow: 0 0 8px #10b981;
 }
 
-/* التبويبات - سريعة وفورية */
+/* التبويبات */
 .tab-view {
   display: none;
   padding: 16px;
@@ -362,7 +447,7 @@ body {
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
-/* شريط التنقل السفلي السريع */
+/* شريط التنقل السفلي */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 68px; background: rgba(7, 11, 18, 0.98);
   border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100;
@@ -410,6 +495,20 @@ body {
 </head>
 
 <body>
+
+<!-- شاشة التحميل الافتتاحية السريعة -->
+<div id="appPreloader">
+  <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="loader-logo-img">
+  <div style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">Fly Express</div>
+  <div style="font-size:11px; color:#ffb703; font-weight:700;">أسرع وأأمن توصيل في نجع حمادي 🚀</div>
+  <div class="loader-spinner"></div>
+</div>
+
+<!-- مؤشر تحميل خفيف أثناء التبديل السريع -->
+<div id="navLoadingIndicator">
+  <div class="nav-spinner"></div>
+  <span>جاري الفتح...</span>
+</div>
 
 <!-- شريط إشعار خدمات وطلبات نجع حمادي -->
 <div class="live-toast-box" id="liveOrderToast">
@@ -816,6 +915,17 @@ body {
 </div>
 
 <script>
+// إخفاء شاشة التحميل الأولية بمجرد اكتمال الجاهزية
+window.addEventListener('load', () => {
+  const preloader = document.getElementById('appPreloader');
+  if (preloader) {
+    setTimeout(() => {
+      preloader.classList.add('fade-out');
+      setTimeout(() => preloader.remove(), 350);
+    }, 400);
+  }
+});
+
 // -------------------------------------------------------------
 // 1. نظام التنبيهات المدمج
 // -------------------------------------------------------------
@@ -846,7 +956,7 @@ function showAuthInlineError(msg) {
 }
 
 // -------------------------------------------------------------
-// 2. إعدادات الصوت ومفاتيح النظام
+// 2. إعدادات الصوت والمفاتيح
 // -------------------------------------------------------------
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
@@ -917,7 +1027,7 @@ function showNextServiceToast() {
 
 setTimeout(() => {
   showNextServiceToast();
-  setInterval(showNextServiceToast, 30000);
+  setInterval(showNextServiceToast, 35000);
 }, 4000);
 
 function getStoredUsers() {
@@ -1219,7 +1329,7 @@ function sendPharmacyOrder() {
 }
 
 // -------------------------------------------------------------
-// 11. المزامنة السحابية الحية
+// 11. المزامنة السحابية الحية (كل 20 ثانية لمنع تعليق المعالج)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1264,7 +1374,7 @@ function applyLiveState(step, status) {
   }
 }
 
-setInterval(listenToCloudState, 3000);
+setInterval(listenToCloudState, 20000);
 listenToCloudState();
 
 function getLoyaltyRides() { return parseInt(localStorage.getItem('fly_loyalty_rides') || '0', 10); }
@@ -1472,33 +1582,62 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
 });
 
 // -------------------------------------------------------------
-// التنقل الفوري اللحظي الصاروخي (0ms Delay)
+// التنقل الذكي مع مؤشر التحميل عند وجود أي بطء
 // -------------------------------------------------------------
-const allTabViews = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
-const allNavButtons = document.querySelectorAll('.nav-item');
+const allTabIds = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
+let navTimer = null;
+
+function showNavLoader() {
+  const loader = document.getElementById('navLoadingIndicator');
+  if (loader) loader.classList.add('active');
+}
+
+function hideNavLoader() {
+  const loader = document.getElementById('navLoadingIndicator');
+  if (loader) loader.classList.remove('active');
+}
 
 function switchTab(tabId, navBtn) {
-  for (let i = 0; i < allTabViews.length; i++) {
-    const view = document.getElementById(allTabViews[i]);
-    if (view) view.style.display = (allTabViews[i] === tabId) ? 'block' : 'none';
-    if (allNavButtons[i]) allNavButtons[i].classList.remove('active');
-  }
+  // إذا استغرق التبديل أكثر من 80 ميلي ثانية يظهر مؤشر التحميل فوراً
+  clearTimeout(navTimer);
+  navTimer = setTimeout(showNavLoader, 80);
+
+  // إخفاء كافة التبويبات وإظهار التبويب المطلوب
+  allTabIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = (id === tabId) ? 'block' : 'none';
+  });
+
+  const btns = document.querySelectorAll('.nav-item');
+  btns.forEach(b => b.classList.remove('active'));
 
   if (navBtn) {
     navBtn.classList.add('active');
   } else {
-    if (tabId === 'tab-orders' && allNavButtons[1]) allNavButtons[1].classList.add('active');
+    if (tabId === 'tab-orders' && btns[1]) btns[1].classList.add('active');
   }
 
   window.scrollTo(0, 0);
+
+  // إخفاء مؤشر التحميل فور الانتهاء
+  clearTimeout(navTimer);
+  hideNavLoader();
 }
 
 function switchToForm(formId) {
-  switchTab('tab-orders', allNavButtons[1]);
-  const el = document.getElementById(formId);
-  if (el) {
-    el.scrollIntoView({ behavior: 'auto', block: 'start' });
-  }
+  // إظهار مؤشر التحميل عند النقر على الخدمة
+  showNavLoader();
+
+  setTimeout(() => {
+    const btns = document.querySelectorAll('.nav-item');
+    switchTab('tab-orders', btns[1]);
+
+    const target = document.getElementById(formId);
+    if (target) {
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+    hideNavLoader();
+  }, 50);
 }
 
 checkAppAccess();
