@@ -10,15 +10,15 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/FlyExpress/icon-192.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/2830/2830312.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/FlyExpress/icon-512.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/2830/2830312.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
