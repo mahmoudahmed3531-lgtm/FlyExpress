@@ -72,7 +72,7 @@ body {
   touch-action: pan-y !important;
 }
 
-/* شريط تحميل التطبيق العائم */
+/* شريط تحميل التطبيق العائم للمتصفح فقط */
 .app-download-banner {
   position: fixed;
   top: 12px;
@@ -424,7 +424,7 @@ body {
 .step-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
 
 .pharmacy-order-banner {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(6, 78, 59, 0.2));
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 107, 0, 0.18));
   border: 1px dashed var(--success);
   border-radius: 18px;
   padding: 14px;
@@ -540,8 +540,8 @@ body {
 
 <body>
 
-<!-- شريط تحميل التطبيق العائم في الزاوية العلوية -->
-<a href="flyexpress.apk" download class="app-download-banner" id="downloadAppBanner">
+<!-- شريط تحميل التطبيق العائم (يعمل برابط مباشر عبر جيت هاب للزوار) -->
+<a href="https://github.com/mahmoudahmed3531-lgtm/FlyExpress/releases/download/v1.0/FlyExpress.apk" class="app-download-banner" id="downloadAppBanner" target="_blank" rel="noopener noreferrer">
   <i class="fa-solid fa-cloud-arrow-down download-arrow"></i>
   <span>حمّل التطبيق الآن</span>
 </a>
@@ -567,9 +567,9 @@ body {
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
 
-<!-- مشغل موسيقى مونامور (Mon Amour) -->
+<!-- مشغل الموسيقى عبر رابط CDN مباشر وسريع لا ينقطع -->
 <audio id="bgMusicPlayer" loop preload="auto">
-  <source src="https://ia801503.us.archive.org/15/items/mon-amour-guitar/MonAmour.mp3" type="audio/mp3">
+  <source src="https://actions.google.com/sounds/v1/water/rain_heavy.ogg" type="audio/ogg">
 </audio>
 
 <!-- شاشة القفل وبوابة الدخول -->
@@ -994,7 +994,7 @@ function showAuthInlineError(msg) {
 }
 
 // -------------------------------------------------------------
-// إعدادات الخدمات السحابية ومفاتيح الربط
+// الخدمات السحابية
 // -------------------------------------------------------------
 const USERS_API_URL = "https://6a9de5152f89be7fb70d8140.mockapi.io/users";
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
@@ -1017,46 +1017,54 @@ const musicBtn = document.getElementById('musicToggleBtn');
 const musicIcon = document.getElementById('musicIcon');
 
 function toggleBackgroundMusic() {
+  if (!bgMusic) return;
+
   if (bgMusic.paused) {
-    bgMusic.volume = 0.35;
-    bgMusic.play().then(() => {
-      musicBtn.classList.add('playing');
-      musicIcon.className = "fa-solid fa-volume-high";
-    }).catch(() => {
-      showAppAlert("يرجى التأكد من اتصالك بالإنترنت لتشغيل النغمة.", "الموسيقى", "fa-solid fa-music");
-    });
+    bgMusic.volume = 0.4;
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        if (musicBtn) musicBtn.classList.add('playing');
+        if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
+      }).catch(() => {
+        showAppAlert("المتصفح يطلب لمس الشاشة أولاً لتفعيل الصوت.", "الموسيقى", "fa-solid fa-music");
+      });
+    }
   } else {
     bgMusic.pause();
-    musicBtn.classList.remove('playing');
-    musicIcon.className = "fa-solid fa-music";
+    if (musicBtn) musicBtn.classList.remove('playing');
+    if (musicIcon) musicIcon.className = "fa-solid fa-music";
   }
 }
 
-// تشغيل موسيقى مونامور تلقائياً فور أول لمسة للمستخدم
-function startAutoMusic() {
+// تشغيل ذاتي عند أول لمسة للشاشة
+function autoStartAudio() {
   if (bgMusic && bgMusic.paused) {
     bgMusic.volume = 0.35;
     bgMusic.play().then(() => {
       if (musicBtn) musicBtn.classList.add('playing');
       if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
-      ['click', 'touchstart', 'scroll'].forEach(evt => 
-        document.removeEventListener(evt, startAutoMusic)
-      );
     }).catch(() => {});
   }
+  ['click', 'touchstart', 'scroll'].forEach(evt => document.removeEventListener(evt, autoStartAudio));
 }
+['click', 'touchstart', 'scroll'].forEach(evt => document.addEventListener(evt, autoStartAudio, { once: true }));
 
-['click', 'touchstart', 'scroll'].forEach(evt => 
-  document.addEventListener(evt, startAutoMusic, { once: true })
-);
+// إخفاء شريط التحميل تلقائياً إذا كان المستخدم داخل تطبيق الأندرويد نفسه
+function checkEnvironment() {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+  const isWebView = /(wv|Android.*Version\/[0-9]\.[0-9])/i.test(navigator.userAgent);
+  const isAppSaved = localStorage.getItem('fly_is_app') === 'true';
 
-// إخفاء زر التحميل إذا كان المستخدم يتصفح من داخل تطبيق الأندرويد نفسه
-if (window.matchMedia('(display-mode: standalone)').matches || navigator.userAgent.includes('wv')) {
-  const downloadBtn = document.getElementById('downloadAppBanner');
-  if (downloadBtn) downloadBtn.style.display = 'none';
+  if (isStandalone || isWebView || isAppSaved) {
+    localStorage.setItem('fly_is_app', 'true');
+    const dlBtn = document.getElementById('downloadAppBanner');
+    if (dlBtn) dlBtn.style.setProperty('display', 'none', 'important');
+  }
 }
+checkEnvironment();
 
-// الاتصال المباشر بالسيرفر السحابي
+// الاتصال السحابي بقاعدة البيانات
 async function fetchCloudUsers() {
   try {
     const res = await fetch(USERS_API_URL);
