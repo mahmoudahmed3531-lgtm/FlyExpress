@@ -91,6 +91,7 @@ body {
   font-size: 12px;
   font-weight: 800;
   animation: pulseDownload 2s infinite ease-in-out;
+  cursor: pointer;
 }
 
 .download-arrow {
@@ -540,8 +541,8 @@ body {
 
 <body>
 
-<!-- شريط تحميل التطبيق العائم المباشر لجميع الزوار -->
-<a href="./fly%20express.apk" download="FlyExpress.apk" class="app-download-banner" id="downloadAppBanner">
+<!-- شريط تحميل التطبيق العائم المربوط بـ MediaFire المباشر -->
+<a href="https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file" target="_blank" rel="noopener noreferrer" class="app-download-banner" id="downloadAppBanner" onclick="forceDownloadRedirect(event, this.href)">
   <i class="fa-solid fa-cloud-arrow-down download-arrow"></i>
   <span>حمّل التطبيق الآن</span>
 </a>
@@ -567,9 +568,9 @@ body {
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
 
-<!-- مشغل الموسيقى (جيتار نقي سريع الاستجابة) -->
-<audio id="bgMusicPlayer" loop preload="auto">
-  <source src="https://cdn.freesound.org/previews/612/612627_5674468-lq.mp3" type="audio/mp3">
+<!-- مشغل الموسيقى المتوافق والمجرب -->
+<audio id="bgMusicPlayer" loop preload="auto" playsinline>
+  <source src="https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3" type="audio/mp3">
 </audio>
 
 <!-- شاشة القفل وبوابة الدخول -->
@@ -994,6 +995,15 @@ function showAuthInlineError(msg) {
 }
 
 // -------------------------------------------------------------
+// معالجة التحميل والتوجيه الخارجي لـ MediaFire
+// -------------------------------------------------------------
+function forceDownloadRedirect(e, targetUrl) {
+  if (e) e.preventDefault();
+  // فتح صفحة التحميل من ميديا فاير في نافذة مستقلة أو المتصفح الخارجي
+  window.open(targetUrl, '_blank');
+}
+
+// -------------------------------------------------------------
 // الخدمات السحابية ومفاتيح الربط
 // -------------------------------------------------------------
 const USERS_API_URL = "https://6a9de5152f89be7fb70d8140.mockapi.io/users";
@@ -1016,17 +1026,24 @@ const bgMusic = document.getElementById('bgMusicPlayer');
 const musicBtn = document.getElementById('musicToggleBtn');
 const musicIcon = document.getElementById('musicIcon');
 
-function toggleBackgroundMusic() {
+function playAudioStream() {
   if (!bgMusic) return;
-
-  if (bgMusic.paused) {
-    bgMusic.volume = 0.4;
-    bgMusic.play().then(() => {
+  bgMusic.volume = 0.45;
+  const playPromise = bgMusic.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
       if (musicBtn) musicBtn.classList.add('playing');
       if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
     }).catch(err => {
-      console.log("Audio play error:", err);
+      console.log("Audio awaiting click");
     });
+  }
+}
+
+function toggleBackgroundMusic() {
+  if (!bgMusic) return;
+  if (bgMusic.paused) {
+    playAudioStream();
   } else {
     bgMusic.pause();
     if (musicBtn) musicBtn.classList.remove('playing');
@@ -1034,18 +1051,12 @@ function toggleBackgroundMusic() {
   }
 }
 
-// تشغيل الصوت فوراً مع أول لمسة للشاشة في أي مكان وبدون نوافذ خطأ
-function initAudioOnFirstTouch() {
-  if (bgMusic && bgMusic.paused) {
-    bgMusic.volume = 0.35;
-    bgMusic.play().then(() => {
-      if (musicBtn) musicBtn.classList.add('playing');
-      if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
-    }).catch(() => {});
-  }
-  ['click', 'touchstart', 'scroll'].forEach(evt => document.removeEventListener(evt, initAudioOnFirstTouch));
+// تفعيل الصوت مع أول لمسة للشاشة
+function unlockAudio() {
+  playAudioStream();
+  ['click', 'touchstart'].forEach(evt => document.removeEventListener(evt, unlockAudio));
 }
-['click', 'touchstart', 'scroll'].forEach(evt => document.addEventListener(evt, initAudioOnFirstTouch, { once: true }));
+['click', 'touchstart'].forEach(evt => document.addEventListener(evt, unlockAudio, { once: true }));
 
 // الاتصال السحابي بقاعدة البيانات
 async function fetchCloudUsers() {
