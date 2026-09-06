@@ -87,8 +87,8 @@ body {
 }
 
 .loader-spinner {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border: 3px solid rgba(255, 255, 255, 0.1);
   border-top-color: var(--primary);
   border-radius: 50%;
@@ -96,41 +96,47 @@ body {
   margin-top: 14px;
 }
 
-/* مؤشر التحميل الصغير أثناء التنقل بين الخدمات */
-#navLoadingIndicator {
+/* مؤشر التحميل الذكي الفوري للتنقل */
+#navLoadingOverlay {
   position: fixed;
-  bottom: 74px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: rgba(15, 23, 42, 0.95);
-  border: 1px solid var(--primary);
-  box-shadow: 0 4px 16px var(--primary-glow);
-  color: #fff;
-  padding: 6px 16px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 800;
+  inset: 0;
+  background: rgba(7, 11, 18, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
   display: flex;
   align-items: center;
-  gap: 8px;
-  z-index: 2000;
+  justify-content: center;
   opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
   pointer-events: none;
-  transition: all 0.2s ease;
 }
 
-#navLoadingIndicator.active {
-  transform: translateX(-50%) translateY(0);
+#navLoadingOverlay.show {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-.nav-spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+.nav-loading-box {
+  background: #0d1527;
+  border: 1.5px solid var(--primary);
+  box-shadow: 0 10px 30px var(--primary-glow);
+  padding: 16px 24px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-loading-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
   border-top-color: var(--primary);
   border-radius: 50%;
-  animation: spinLoader 0.7s linear infinite;
+  animation: spinLoader 0.6s linear infinite;
 }
 
 @keyframes spinLoader {
@@ -215,7 +221,7 @@ body {
   flex-shrink: 0;
 }
 
-/* شاشة القفل */
+/* شاشة القفل وبوابة الدخول */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -286,7 +292,7 @@ body {
   text-align: right;
 }
 
-/* Header */
+/* الهيدر العلوي */
 .app-header {
   position: sticky;
   top: 0;
@@ -438,8 +444,18 @@ body {
 .service-card, .price-box, .form-card {
   background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
 }
-.service-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; cursor: pointer; }
-.service-card:active { transform: scale(0.97); }
+.service-card { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 12px; 
+  cursor: pointer;
+  -webkit-user-select: none;
+}
+.service-card:active { 
+  transform: scale(0.96); 
+  border-color: var(--primary);
+}
 
 .service-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 .ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; }
@@ -496,7 +512,7 @@ body {
 
 <body>
 
-<!-- شاشة التحميل الافتتاحية السريعة -->
+<!-- شاشة التحميل الافتتاحية -->
 <div id="appPreloader">
   <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="loader-logo-img">
   <div style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">Fly Express</div>
@@ -504,10 +520,12 @@ body {
   <div class="loader-spinner"></div>
 </div>
 
-<!-- مؤشر تحميل خفيف أثناء التبديل السريع -->
-<div id="navLoadingIndicator">
-  <div class="nav-spinner"></div>
-  <span>جاري الفتح...</span>
+<!-- مؤشر تحميل التبديل اللحظي -->
+<div id="navLoadingOverlay">
+  <div class="nav-loading-box">
+    <div class="nav-loading-spinner"></div>
+    <span style="font-size:12px; font-weight:800; color:#fff;">جاري الفتح...</span>
+  </div>
 </div>
 
 <!-- شريط إشعار خدمات وطلبات نجع حمادي -->
@@ -699,19 +717,19 @@ body {
 
     <div class="section-title"><i class="fa-solid fa-shapes"></i> خدمات التوصيل السريع</div>
     <div class="services-grid">
-      <div class="service-card" onclick="switchToForm('sec-order')">
+      <div class="service-card" onclick="triggerFastForm('sec-order')">
         <div class="service-icon ic-orange"><i class="fa-solid fa-box"></i></div>
         <div><h4>طلب أوردر / طرد</h4><span>توصيل واستلام فوري</span></div>
       </div>
-      <div class="service-card" onclick="switchToForm('sec-market')">
+      <div class="service-card" onclick="triggerFastForm('sec-market')">
         <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
         <div><h4>طلبات السوق</h4><span>خضار، بقالة، طلبات بيت</span></div>
       </div>
-      <div class="service-card" onclick="switchToForm('sec-school')">
+      <div class="service-card" onclick="triggerFastForm('sec-school')">
         <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
         <div><h4>مشاوير المدرسة</h4><span>ذهاب وعودة بأمان تام</span></div>
       </div>
-      <div class="service-card" onclick="switchToForm('sec-monthly')">
+      <div class="service-card" onclick="triggerFastForm('sec-monthly')">
         <div class="service-icon ic-purple"><i class="fa-solid fa-calculator"></i></div>
         <div><h4>حاسبة اشتراك الدروس</h4><span>احسب اشتراكك بخصم الإخوة</span></div>
       </div>
@@ -915,19 +933,19 @@ body {
 </div>
 
 <script>
-// إخفاء شاشة التحميل الأولية بمجرد اكتمال الجاهزية
+// إخفاء شاشة التحميل الافتتاحية فور جاهزية الصفحة
 window.addEventListener('load', () => {
   const preloader = document.getElementById('appPreloader');
   if (preloader) {
     setTimeout(() => {
       preloader.classList.add('fade-out');
       setTimeout(() => preloader.remove(), 350);
-    }, 400);
+    }, 300);
   }
 });
 
 // -------------------------------------------------------------
-// 1. نظام التنبيهات المدمج
+// نظام التنبيهات المدمج
 // -------------------------------------------------------------
 function showAppAlert(msg, title = "تطبيق Fly Express", iconClass = "fa-solid fa-circle-info", iconColor = "var(--accent)") {
   const modal = document.getElementById('appAlertModal');
@@ -956,7 +974,7 @@ function showAuthInlineError(msg) {
 }
 
 // -------------------------------------------------------------
-// 2. إعدادات الصوت والمفاتيح
+// إعدادات الصوت والمفاتيح
 // -------------------------------------------------------------
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
@@ -994,7 +1012,7 @@ function toggleBackgroundMusic() {
 }
 
 // -------------------------------------------------------------
-// 3. إشعارات خدمات وطلبات نجع حمادي
+// إشعارات خدمات وطلبات نجع حمادي
 // -------------------------------------------------------------
 const localServicesList = [
   { icon: "fa-notes-medical", title: "طوارئ علاج وصيدلية 💊", desc: "طلب روشتة عاجلة من صيدلية السلام إلى شارع 30" },
@@ -1027,7 +1045,7 @@ function showNextServiceToast() {
 
 setTimeout(() => {
   showNextServiceToast();
-  setInterval(showNextServiceToast, 35000);
+  setInterval(showNextServiceToast, 40000);
 }, 4000);
 
 function getStoredUsers() {
@@ -1039,7 +1057,7 @@ function saveStoredUsers(users) {
 }
 
 // -------------------------------------------------------------
-// 4. إدارة شاشات الدخول وبوابة الأمان
+// شاشات الدخول
 // -------------------------------------------------------------
 function switchAuthMode(mode) {
   const isLogin = mode === 'login';
@@ -1093,9 +1111,6 @@ function checkAppAccess() {
   }
 }
 
-// -------------------------------------------------------------
-// 5. تسجيل الدخول السريع
-// -------------------------------------------------------------
 function directPasswordLogin() {
   const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
   const password = document.getElementById('loginPassword').value.trim();
@@ -1126,9 +1141,6 @@ function directPasswordLogin() {
   }
 }
 
-// -------------------------------------------------------------
-// 6. إنشاء حساب جديد
-// -------------------------------------------------------------
 async function requestSignupOtp() {
   const name = document.getElementById('signupName').value.trim();
   const phone = document.getElementById('signupPhone').value.trim();
@@ -1177,9 +1189,6 @@ async function requestSignupOtp() {
   }
 }
 
-// -------------------------------------------------------------
-// 7. استعادة كلمة المرور
-// -------------------------------------------------------------
 async function requestForgotOtp() {
   const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
   const btn = document.getElementById('forgotOtpBtn');
@@ -1222,9 +1231,6 @@ async function requestForgotOtp() {
   }
 }
 
-// -------------------------------------------------------------
-// 8. التحقق النهائي من الكود
-// -------------------------------------------------------------
 function verifyAndFinishOtp() {
   const code = document.getElementById('gateOtpInput').value.trim();
 
@@ -1273,9 +1279,6 @@ function verifyAndFinishOtp() {
   }
 }
 
-// -------------------------------------------------------------
-// 9. تسجيل الخروج
-// -------------------------------------------------------------
 function logoutUser() {
   document.getElementById('logoutConfirmModal').classList.add('show');
 }
@@ -1292,7 +1295,7 @@ function confirmLogoutAction() {
 }
 
 // -------------------------------------------------------------
-// 10. طلبات الصيدلية والطوارئ
+// الصيدلية
 // -------------------------------------------------------------
 function openPharmacyModal() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
@@ -1329,7 +1332,7 @@ function sendPharmacyOrder() {
 }
 
 // -------------------------------------------------------------
-// 11. المزامنة السحابية الحية (كل 20 ثانية لمنع تعليق المعالج)
+// المزامنة السحابية الحية (كل 30 ثانية لتوفير موارد الهاتف تماماً)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1374,7 +1377,7 @@ function applyLiveState(step, status) {
   }
 }
 
-setInterval(listenToCloudState, 20000);
+setInterval(listenToCloudState, 30000);
 listenToCloudState();
 
 function getLoyaltyRides() { return parseInt(localStorage.getItem('fly_loyalty_rides') || '0', 10); }
@@ -1582,31 +1585,25 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
 });
 
 // -------------------------------------------------------------
-// التنقل الذكي مع مؤشر التحميل عند وجود أي بطء
+// التنقل فائق السرعة مع مؤشر التحميل المؤكد
 // -------------------------------------------------------------
 const allTabIds = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
-let navTimer = null;
 
-function showNavLoader() {
-  const loader = document.getElementById('navLoadingIndicator');
-  if (loader) loader.classList.add('active');
+function showOverlaySpinner() {
+  const overlay = document.getElementById('navLoadingOverlay');
+  if (overlay) overlay.classList.add('show');
 }
 
-function hideNavLoader() {
-  const loader = document.getElementById('navLoadingIndicator');
-  if (loader) loader.classList.remove('active');
+function hideOverlaySpinner() {
+  const overlay = document.getElementById('navLoadingOverlay');
+  if (overlay) overlay.classList.remove('show');
 }
 
 function switchTab(tabId, navBtn) {
-  // إذا استغرق التبديل أكثر من 80 ميلي ثانية يظهر مؤشر التحميل فوراً
-  clearTimeout(navTimer);
-  navTimer = setTimeout(showNavLoader, 80);
-
-  // إخفاء كافة التبويبات وإظهار التبويب المطلوب
-  allTabIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = (id === tabId) ? 'block' : 'none';
-  });
+  for (let i = 0; i < allTabIds.length; i++) {
+    const el = document.getElementById(allTabIds[i]);
+    if (el) el.style.display = (allTabIds[i] === tabId) ? 'block' : 'none';
+  }
 
   const btns = document.querySelectorAll('.nav-item');
   btns.forEach(b => b.classList.remove('active'));
@@ -1615,29 +1612,26 @@ function switchTab(tabId, navBtn) {
     navBtn.classList.add('active');
   } else {
     if (tabId === 'tab-orders' && btns[1]) btns[1].classList.add('active');
+    if (tabId === 'tab-home' && btns[0]) btns[0].classList.add('active');
   }
 
   window.scrollTo(0, 0);
-
-  // إخفاء مؤشر التحميل فور الانتهاء
-  clearTimeout(navTimer);
-  hideNavLoader();
 }
 
-function switchToForm(formId) {
-  // إظهار مؤشر التحميل عند النقر على الخدمة
-  showNavLoader();
+// دالة الضغط على كروت الخدمات - تضمن ظهور علامة التحميل فور لمس الشاشة
+function triggerFastForm(formId) {
+  showOverlaySpinner();
 
+  // إعطاء جزء من الثانية لإظهار علامة التحميل بوضوح للمستخدم
   setTimeout(() => {
-    const btns = document.querySelectorAll('.nav-item');
-    switchTab('tab-orders', btns[1]);
-
+    switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
     const target = document.getElementById(formId);
     if (target) {
       target.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
-    hideNavLoader();
-  }, 50);
+    // إخفاء علامة التحميل بعد الانتقال مباشرة
+    setTimeout(hideOverlaySpinner, 180);
+  }, 100);
 }
 
 checkAppAccess();
