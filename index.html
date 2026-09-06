@@ -43,7 +43,7 @@
   margin: 0; 
   padding: 0; 
   user-select: none; 
-  touch-action: manipulation; /* يلغي تأخير الـ 300ms فوراً في الأندرويد */
+  touch-action: manipulation;
 }
 input, textarea, select { user-select: auto; }
 
@@ -83,7 +83,6 @@ body {
   box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
   cursor: pointer;
   z-index: 150;
-  transition: transform 0.1s ease;
 }
 
 .music-fab-btn.playing {
@@ -110,7 +109,7 @@ body {
   z-index: 140;
   transform: translateY(120%);
   opacity: 0;
-  transition: all 0.4s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 .live-toast-box.show {
@@ -131,7 +130,7 @@ body {
   flex-shrink: 0;
 }
 
-/* 🔒 شاشة القفل وبوابة الدخول */
+/* شاشة القفل وبوابة الدخول */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -189,7 +188,6 @@ body {
   color: #fff;
 }
 
-/* رسالة الخطأ المباشرة في شاشة الدخول */
 .auth-error-msg {
   display: none;
   background: rgba(239, 68, 68, 0.15);
@@ -224,24 +222,25 @@ body {
 }
 
 .profile-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   object-fit: cover;
   border: 2px solid var(--primary);
-  box-shadow: 0 0 16px var(--primary-glow);
+  box-shadow: 0 0 14px var(--primary-glow);
   flex-shrink: 0;
 }
 
 .profile-info h1 {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 900;
   line-height: 1.2;
 }
 
 .profile-info p {
   font-size: 11px;
-  color: var(--text-sub);
+  color: #ffb703;
+  font-weight: 700;
 }
 
 .status-badge {
@@ -265,7 +264,7 @@ body {
   box-shadow: 0 0 8px #10b981;
 }
 
-/* التبويبات - سريعة وفورية بدون بطء */
+/* التبويبات - سريعة وفورية */
 .tab-view {
   display: none;
   padding: 16px;
@@ -355,7 +354,7 @@ body {
   background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
 }
 .service-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; cursor: pointer; }
-.service-card:active { transform: scale(0.96); }
+.service-card:active { transform: scale(0.97); }
 
 .service-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 .ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; }
@@ -363,7 +362,7 @@ body {
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
-/* شريط التنقل السفلي - استجابة فورية بدون أي لاج */
+/* شريط التنقل السفلي السريع */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 68px; background: rgba(7, 11, 18, 0.98);
   border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100;
@@ -386,7 +385,6 @@ body {
 }
 .order-btn:active { transform: scale(0.98); }
 
-/* النوافذ المنبثقة التفاعلية - z-index أعلى من شاشة القفل لمنع الاختفاء */
 .modal-backdrop {
   position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 2500; display: none;
   align-items: center; justify-content: center; padding: 20px;
@@ -431,14 +429,13 @@ body {
   <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mp3">
 </audio>
 
-<!-- 🔒 شاشة القفل وبوابة الدخول -->
+<!-- شاشة القفل وبوابة الدخول -->
 <div class="auth-gate-screen" id="authGateScreen">
   <div class="gate-card">
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
     <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">خدمة التوصيل الأسرع في نجع حمادي 🚀</p>
 
-    <!-- مكان إظهار رسالة الخطأ المباشرة في شاشة القفل -->
     <div class="auth-error-msg" id="authErrorDisplay"></div>
 
     <div class="auth-tabs" id="authTabsContainer">
@@ -446,7 +443,7 @@ body {
       <button class="auth-tab-btn" id="tabBtnSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
     </div>
 
-    <!-- تسجيل دخول سريع بالبريد وكلمة المرور دون كود -->
+    <!-- تسجيل دخول سريع -->
     <div id="formLoginView">
       <input type="text" id="loginIdentifier" class="order-input" placeholder="البريد الإلكتروني (Gmail) أو الهاتف" style="margin-bottom:8px;">
       <input type="password" id="loginPassword" class="order-input" placeholder="كلمة المرور" style="margin-bottom:6px;">
@@ -462,7 +459,7 @@ body {
       </button>
     </div>
 
-    <!-- إنشاء حساب جديد لأول مرة -->
+    <!-- إنشاء حساب جديد -->
     <div id="formSignupView" style="display:none;">
       <input type="text" id="signupName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
       <input type="tel" id="signupPhone" class="order-input" placeholder="رقم الموبايل (واتساب)" style="margin-bottom:8px;">
@@ -474,7 +471,7 @@ body {
       </button>
     </div>
 
-    <!-- نسيت كلمة المرور -->
+    <!-- استعادة الحساب -->
     <div id="formForgotView" style="display:none;">
       <div style="font-size:11px; color:#cbd5e1; margin-bottom:10px;">
         أدخل بريدك الإلكتروني المسجل وسيصلك كود لتعيين كلمة مرور جديدة:
@@ -488,7 +485,7 @@ body {
       </button>
     </div>
 
-    <!-- شاشة كتابة الكود المستلم عبر Gmail -->
+    <!-- تأكيد الكود -->
     <div id="gateStepOtp" style="display:none;">
       <div style="background:rgba(0, 229, 255, 0.08); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; padding:10px; margin-bottom:12px;">
         <span style="font-size:11px; color:#cbd5e1;" id="otpNoticeTxt">افتح تطبيق Gmail واكتب الكود هنا:</span>
@@ -518,7 +515,7 @@ body {
       <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="profile-info">
         <h1>Fly Express</h1>
-        <p id="userStatusTxt">حساب موثق ✅</p>
+        <p>أسرع توصيل في نجع حمادي 🚀</p>
       </div>
     </div>
     
@@ -542,7 +539,7 @@ body {
       </button>
     </div>
 
-    <!-- برنامج الأبطال والولاء -->
+    <!-- برنامج الأبطال -->
     <div class="loyalty-card">
       <div class="loyalty-header">
         <div class="loyalty-title"><i class="fa-solid fa-crown"></i> برنامج أبطال Fly Express</div>
@@ -577,7 +574,7 @@ body {
       </div>
     </div>
 
-    <!-- خدمة طوارئ الصيدلية والعلاج السريع -->
+    <!-- خدمة طوارئ الصيدلية -->
     <div class="pharmacy-order-banner" onclick="openPharmacyModal()">
       <div style="display:flex; align-items:center; gap:12px;">
         <i class="fa-solid fa-notes-medical" style="font-size:26px; color:#34d399;"></i>
@@ -788,7 +785,7 @@ body {
     </div>
   </div>
 
-  <!-- نافذة تأكيد الخروج الاحترافية (بدون رسائل متصفح) -->
+  <!-- نافذة تأكيد الخروج -->
   <div class="modal-backdrop" id="logoutConfirmModal">
     <div class="modal-card" style="max-width: 310px; text-align: center;">
       <div style="font-size: 38px; color: #ef4444; margin-bottom: 8px;">
@@ -804,7 +801,7 @@ body {
     </div>
   </div>
 
-  <!-- نافذة التنبيهات المدمجة لتطبيق الهاتف (z-index 2500 تظهر فوق كل شيء) -->
+  <!-- نافذة التنبيهات المدمجة -->
   <div class="modal-backdrop" id="appAlertModal">
     <div class="modal-card" style="max-width: 310px; text-align: center;">
       <div style="font-size: 36px; color: var(--accent); margin-bottom: 8px;" id="appAlertIcon">
@@ -849,7 +846,7 @@ function showAuthInlineError(msg) {
 }
 
 // -------------------------------------------------------------
-// 2. مفاتيح EmailJS ومتحكمات الصوت
+// 2. إعدادات الصوت ومفاتيح النظام
 // -------------------------------------------------------------
 const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
 const EMAILJS_SERVICE_ID = "service_xylpe3a";
@@ -972,7 +969,6 @@ function checkAppAccess() {
     gateScreen.style.display = "none";
     mainApp.style.display = "block";
     
-    document.getElementById('userStatusTxt').textContent = user.name;
     document.getElementById('welcomeUserName').textContent = user.name;
     
     ['orderName', 'marketName', 'pmName', 'pharmName'].forEach(id => {
@@ -988,7 +984,7 @@ function checkAppAccess() {
 }
 
 // -------------------------------------------------------------
-// 5. تسجيل الدخول السريع وفحص كلمة المرور المباشر
+// 5. تسجيل الدخول السريع
 // -------------------------------------------------------------
 function directPasswordLogin() {
   const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
@@ -1015,7 +1011,6 @@ function directPasswordLogin() {
     checkAppAccess();
     showAppAlert(`أهلاً بعودتك يا ${user.name}! تم الدخول بنجاح 🚀`, "تم تسجيل الدخول", "fa-solid fa-circle-check", "#10b981");
   } else {
-    // إظهار تنبيه الخطأ مباشرة وواضحاً فوق الشاشة
     showAuthInlineError("❌ البريد الإلكتروني أو كلمة المرور غير صحيحة! تأكد من الحساب أو اضغط (نسيت كلمة السر).");
     showAppAlert("البريد الإلكتروني أو كلمة المرور غير صحيحة! يرجى التأكد من البيانات أو الضغط على (نسيت كلمة السر).", "خطأ في تسجيل الدخول", "fa-solid fa-circle-xmark", "#ef4444");
   }
@@ -1169,7 +1164,7 @@ function verifyAndFinishOtp() {
 }
 
 // -------------------------------------------------------------
-// 9. تسجيل الخروج بنظام النافذة المدمجة
+// 9. تسجيل الخروج
 // -------------------------------------------------------------
 function logoutUser() {
   document.getElementById('logoutConfirmModal').classList.add('show');
@@ -1224,7 +1219,7 @@ function sendPharmacyOrder() {
 }
 
 // -------------------------------------------------------------
-// 11. المزامنة السحابية الحية (رادار + حالة التوصيل)
+// 11. المزامنة السحابية الحية
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1476,30 +1471,34 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
   }
 });
 
-// التنقل بين التبويبات - استجابة فورية (Instant Switching)
+// -------------------------------------------------------------
+// التنقل الفوري اللحظي الصاروخي (0ms Delay)
+// -------------------------------------------------------------
+const allTabViews = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
+const allNavButtons = document.querySelectorAll('.nav-item');
+
 function switchTab(tabId, navBtn) {
-  const views = document.querySelectorAll('.tab-view');
-  for (let i = 0; i < views.length; i++) {
-    views[i].style.display = 'none';
-  }
-  
-  const navBtns = document.querySelectorAll('.nav-item');
-  for (let i = 0; i < navBtns.length; i++) {
-    navBtns[i].classList.remove('active');
+  for (let i = 0; i < allTabViews.length; i++) {
+    const view = document.getElementById(allTabViews[i]);
+    if (view) view.style.display = (allTabViews[i] === tabId) ? 'block' : 'none';
+    if (allNavButtons[i]) allNavButtons[i].classList.remove('active');
   }
 
-  const target = document.getElementById(tabId);
-  if (target) target.style.display = 'block';
-  if (navBtn) navBtn.classList.add('active');
+  if (navBtn) {
+    navBtn.classList.add('active');
+  } else {
+    if (tabId === 'tab-orders' && allNavButtons[1]) allNavButtons[1].classList.add('active');
+  }
 
-  // تمرير فوري مباشر بدون تأخير Smooth Scroll
   window.scrollTo(0, 0);
 }
 
 function switchToForm(formId) {
-  switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
+  switchTab('tab-orders', allNavButtons[1]);
   const el = document.getElementById(formId);
-  if (el) el.scrollIntoView();
+  if (el) {
+    el.scrollIntoView({ behavior: 'auto', block: 'start' });
+  }
 }
 
 checkAppAccess();
