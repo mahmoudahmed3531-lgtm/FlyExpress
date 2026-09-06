@@ -94,7 +94,7 @@ body {
   margin-top: 14px;
 }
 
-/* شاشة تحميل فورية للتنقل (تظهر فور لمس الشاشة) */
+/* مؤشر تحميل فوري للتنقل بين الخدمات */
 #fastSpinner {
   position: fixed;
   inset: 0;
@@ -136,7 +136,7 @@ body {
   z-index: 1;
 }
 
-/* زر الموسيقى العائم الفوري */
+/* زر الموسيقى العائم */
 .music-fab-btn {
   position: fixed;
   bottom: 80px;
@@ -162,7 +162,7 @@ body {
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
 }
 
-/* شاشة القفل */
+/* شاشة القفل وبوابة الدخول */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -396,7 +396,6 @@ body {
   touch-action: manipulation;
   transition: transform 0.1s ease, border-color 0.1s ease;
 }
-/* منع العناصر الداخلية من اعتراض النقرة أو تأخيرها */
 .service-card * {
   pointer-events: none !important;
 }
@@ -469,7 +468,7 @@ body {
   <div class="loader-spinner"></div>
 </div>
 
-<!-- مؤشر تحميل التبديل اللحظي الصريح -->
+<!-- مؤشر تحميل التبديل اللحظي -->
 <div id="fastSpinner">
   <div class="fast-spinner-card">
     <div style="width:22px; height:22px; border:3px solid rgba(255,255,255,0.2); border-top-color:var(--primary); border-radius:50%; animation:spinLoader 0.6s linear infinite;"></div>
@@ -780,13 +779,13 @@ body {
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;">20 ج</span></div>
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى الألمنيوم</span><span style="color:#ff8c00; font-weight:900;">35 ج</span></div>
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
-    <button class="order-btn" onclick="window.open('https://wa.me/201017908076','_blank')"><i class="fa-brands fa-whatsapp"></i> تأكيد تكلفة مشوار خاص عبر واتساب</button>
+    <button class="order-btn" onclick="window.location.href='https://api.whatsapp.com/send?phone=201017908076'"><i class="fa-brands fa-whatsapp"></i> تأكيد تكلفة مشوار خاص عبر واتساب</button>
   </section>
 
   <!-- تبويب 4: التواصل -->
   <section id="tab-contact" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
-    <a class="order-btn" style="background:#25d366; color:#000; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://wa.me/201017908076" target="_blank">
+    <a class="order-btn" style="background:#25d366; color:#000; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://api.whatsapp.com/send?phone=201017908076">
       <i class="fa-brands fa-whatsapp"></i> واتساب المباشر
     </a>
   </section>
@@ -1233,7 +1232,7 @@ function sendPharmacyOrder() {
 }
 
 // -------------------------------------------------------------
-// المزامنة السحابية الحية (مخففة جداً لمنع تعليق النظام)
+// المزامنة السحابية الحية (مخففة لتوفير موارد الهاتف تماماً)
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1305,9 +1304,13 @@ function getActiveDiscount() {
   return '';
 }
 
+// -------------------------------------------------------------
+// دالة إرسال واتساب المتوافقة 100% مع تطبيقات الأندرويد والـ WebView
+// -------------------------------------------------------------
 const waSend = txt => {
   const finalTxt = txt + getActiveDiscount();
-  window.open(`https://wa.me/${ADMIN_PHONE}?text=${enc(finalTxt)}`, '_blank', 'noopener');
+  // استخدام رابط api المباشر مع window.location.href يفتح تطبيق الواتساب مباشرة دون خطأ
+  window.location.href = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${enc(finalTxt)}`;
 };
 
 function calcMonthlyEstimate() {
@@ -1461,16 +1464,16 @@ function spinWheel() {
       const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
       const waMsg = `مرحباً Fly Express 🚀\nلقد قمت بلف عجلة الحظ وربحت:\n🎁 الجائزة: ${winner.text}\n🏷️ كود الخصم الموثق: ${code}\n⏰ وقت اللف: ${nowStr}\n(يرجى تأكيد وتثبيت الخصم لمشواري القادم - صالح لساعتين)`;
       
-      pendingClaimUrl = `https://wa.me/${ADMIN_PHONE}?text=${enc(waMsg)}`;
+      pendingClaimUrl = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${enc(waMsg)}`;
       waClaimBtn.style.display = 'block';
 
-      setTimeout(() => { window.open(pendingClaimUrl, '_blank', 'noopener'); }, 2000);
+      setTimeout(() => { window.location.href = pendingClaimUrl; }, 1800);
     }
   }, 4200);
 }
 
 function openClaimWhatsApp() {
-  if (pendingClaimUrl) window.open(pendingClaimUrl, '_blank', 'noopener');
+  if (pendingClaimUrl) window.location.href = pendingClaimUrl;
 }
 
 // 5 ضغطات على الشعار لفتح لوحة الأدمن
@@ -1488,13 +1491,6 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
 // -------------------------------------------------------------
 // التنقل المباشر الصاروخي المماثل لزر الموسيقى
 // -------------------------------------------------------------
-const tabElements = {
-  'tab-home': document.getElementById('tab-home'),
-  'tab-orders': document.getElementById('tab-orders'),
-  'tab-prices': document.getElementById('tab-prices'),
-  'tab-contact': document.getElementById('tab-contact')
-};
-
 function switchTab(tabId, navBtn) {
   const tabs = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
   for (let i = 0; i < tabs.length; i++) {
@@ -1515,22 +1511,18 @@ function switchTab(tabId, navBtn) {
   window.scrollTo(0, 0);
 }
 
-// دالة فتح الخدمة الفورية مع علامة التحميل الصريحة
 function openServiceInstantly(formId) {
   const spinner = document.getElementById('fastSpinner');
   if (spinner) spinner.classList.add('active');
 
   setTimeout(() => {
-    // 1. الانتقال الفوري لتبويب المشاوير
     switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
 
-    // 2. التمرير الفوري لنموذج الخدمة المطلوبة
     const target = document.getElementById(formId);
     if (target) {
       target.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
 
-    // 3. إخفاء مؤشر التحميل
     if (spinner) spinner.classList.remove('active');
   }, 120);
 }
