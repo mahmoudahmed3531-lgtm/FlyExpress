@@ -72,7 +72,7 @@ body {
   touch-action: pan-y !important;
 }
 
-/* شريط تحميل التطبيق العائم للمتصفح */
+/* شريط تحميل التطبيق العائم */
 .app-download-banner {
   position: fixed;
   top: 12px;
@@ -540,8 +540,8 @@ body {
 
 <body>
 
-<!-- شريط تحميل التطبيق العائم (رابط مباشر للتحميل بدون 404) -->
-<a href="https://github.com/mahmoudahmed3531-lgtm/FlyExpress/raw/main/fly%20express.apk" class="app-download-banner" id="downloadAppBanner">
+<!-- شريط تحميل التطبيق العائم المباشر لجميع الزوار -->
+<a href="./fly%20express.apk" download="FlyExpress.apk" class="app-download-banner" id="downloadAppBanner">
   <i class="fa-solid fa-cloud-arrow-down download-arrow"></i>
   <span>حمّل التطبيق الآن</span>
 </a>
@@ -567,7 +567,7 @@ body {
   <i class="fa-solid fa-music" id="musicIcon"></i>
 </button>
 
-<!-- مشغل الموسيقى (جيتار إسباني نقي يعمل فوراً في مصر) -->
+<!-- مشغل الموسيقى (جيتار نقي سريع الاستجابة) -->
 <audio id="bgMusicPlayer" loop preload="auto">
   <source src="https://cdn.freesound.org/previews/612/612627_5674468-lq.mp3" type="audio/mp3">
 </audio>
@@ -1021,15 +1021,12 @@ function toggleBackgroundMusic() {
 
   if (bgMusic.paused) {
     bgMusic.volume = 0.4;
-    const playPromise = bgMusic.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        if (musicBtn) musicBtn.classList.add('playing');
-        if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
-      }).catch(() => {
-        showAppAlert("اضغط في أي مكان على الشاشة لتشغيل الموسيقى.", "الموسيقى", "fa-solid fa-music");
-      });
-    }
+    bgMusic.play().then(() => {
+      if (musicBtn) musicBtn.classList.add('playing');
+      if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
+    }).catch(err => {
+      console.log("Audio play error:", err);
+    });
   } else {
     bgMusic.pause();
     if (musicBtn) musicBtn.classList.remove('playing');
@@ -1037,8 +1034,8 @@ function toggleBackgroundMusic() {
   }
 }
 
-// تشغيل ذاتي للصوت مع أول لمسة للشاشة
-function autoStartAudio() {
+// تشغيل الصوت فوراً مع أول لمسة للشاشة في أي مكان وبدون نوافذ خطأ
+function initAudioOnFirstTouch() {
   if (bgMusic && bgMusic.paused) {
     bgMusic.volume = 0.35;
     bgMusic.play().then(() => {
@@ -1046,23 +1043,9 @@ function autoStartAudio() {
       if (musicIcon) musicIcon.className = "fa-solid fa-volume-high";
     }).catch(() => {});
   }
-  ['click', 'touchstart', 'scroll'].forEach(evt => document.removeEventListener(evt, autoStartAudio));
+  ['click', 'touchstart', 'scroll'].forEach(evt => document.removeEventListener(evt, initAudioOnFirstTouch));
 }
-['click', 'touchstart', 'scroll'].forEach(evt => document.addEventListener(evt, autoStartAudio, { once: true }));
-
-// إخفاء زر التحميل تلقائياً إذا كان المستخدم يتصفح من داخل تطبيق الأندرويد نفسه
-function checkEnvironment() {
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-  const isWebView = /(wv|Android.*Version\/[0-9]\.[0-9])/i.test(navigator.userAgent);
-  const isAppSaved = localStorage.getItem('fly_is_app') === 'true';
-
-  if (isStandalone || isWebView || isAppSaved) {
-    localStorage.setItem('fly_is_app', 'true');
-    const dlBtn = document.getElementById('downloadAppBanner');
-    if (dlBtn) dlBtn.style.setProperty('display', 'none', 'important');
-  }
-}
-checkEnvironment();
+['click', 'touchstart', 'scroll'].forEach(evt => document.addEventListener(evt, initAudioOnFirstTouch, { once: true }));
 
 // الاتصال السحابي بقاعدة البيانات
 async function fetchCloudUsers() {
