@@ -56,7 +56,7 @@ body {
   background: #070b12;
 }
 
-/* شاشة التحميل الأولية */
+/* شاشة التحميل الافتتاحية */
 #appPreloader {
   position: fixed;
   inset: 0;
@@ -94,7 +94,7 @@ body {
   margin-top: 14px;
 }
 
-/* مؤشر تحميل فوري للتنقل */
+/* مؤشر تحميل فوري للتنقل بين الخدمات */
 #fastSpinner {
   position: fixed;
   inset: 0;
@@ -357,7 +357,7 @@ body {
 .step-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
 
 .pharmacy-order-banner {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(6, 78, 59, 0.2));
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 107, 0, 0.18));
   border: 1px dashed var(--success);
   border-radius: 18px;
   padding: 14px;
@@ -1304,33 +1304,29 @@ function getActiveDiscount() {
 }
 
 // -------------------------------------------------------------
-// محرك توجيه واتساب المباشر لأجهزة الأندرويد والـ WebView الخالص
+// محرك توجيه واتساب الآمن للـ WebView (بدون أخطاء URL Scheme)
 // -------------------------------------------------------------
-function launchWhatsAppIntent(textMessage) {
-  const fullText = enc(textMessage);
-  // صيغة الـ Intent الرسمية لتطبيق أندرويد
-  const intentUri = `intent://send?phone=${ADMIN_PHONE}&text=${fullText}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
+function openWhatsAppDirectly(messageText) {
+  const fullText = enc(messageText);
+  const targetUrl = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${fullText}`;
   
-  // إنشاء رابط مؤقت للنقر لمنع حظر المتصفح الداخلي
-  const a = document.createElement('a');
-  a.href = intentUri;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  // نظام حماية في حال لم يستجب الـ Intent خلال ثانية واحدة
-  setTimeout(() => {
-    window.location.href = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${fullText}`;
-  }, 1000);
+  // إنشاء رابط خارجي صريح بـ _blank لإلزام المتصفح بتمريره لتطبيق واتساب الخارجي
+  const link = document.createElement('a');
+  link.href = targetUrl;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 const waSend = txt => {
   const finalTxt = txt + getActiveDiscount();
-  launchWhatsAppIntent(finalTxt);
+  openWhatsAppDirectly(finalTxt);
 };
 
 function openDirectWhatsApp(customTxt = '') {
-  launchWhatsAppIntent(customTxt);
+  openWhatsAppDirectly(customTxt);
 }
 
 function calcMonthlyEstimate() {
@@ -1486,13 +1482,13 @@ function spinWheel() {
       
       waClaimBtn.style.display = 'block';
 
-      setTimeout(() => { launchWhatsAppIntent(pendingClaimMsg); }, 1800);
+      setTimeout(() => { openWhatsAppDirectly(pendingClaimMsg); }, 1800);
     }
   }, 4200);
 }
 
 function openClaimWhatsApp() {
-  if (pendingClaimMsg) launchWhatsAppIntent(pendingClaimMsg);
+  if (pendingClaimMsg) openWhatsAppDirectly(pendingClaimMsg);
 }
 
 // 5 ضغطات على الشعار لفتح لوحة الأدمن
