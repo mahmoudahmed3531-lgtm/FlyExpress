@@ -94,7 +94,7 @@ body {
   margin-top: 14px;
 }
 
-/* مؤشر تحميل فوري للتنقل بين الخدمات */
+/* مؤشر تحميل فوري للتنقل */
 #fastSpinner {
   position: fixed;
   inset: 0;
@@ -386,7 +386,6 @@ body {
   background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
 }
 
-/* سرعة الاستجابة الصاروخية لكروت الخدمات */
 .service-card { 
   display: flex; 
   flex-direction: column; 
@@ -779,15 +778,15 @@ body {
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;">20 ج</span></div>
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى الألمنيوم</span><span style="color:#ff8c00; font-weight:900;">35 ج</span></div>
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
-    <button class="order-btn" onclick="window.location.href='https://api.whatsapp.com/send?phone=201017908076'"><i class="fa-brands fa-whatsapp"></i> تأكيد تكلفة مشوار خاص عبر واتساب</button>
+    <button class="order-btn" onclick="openDirectWhatsApp('مرحباً Fly Express، استفسار عن تكلفة مشوار خاص')"><i class="fa-brands fa-whatsapp"></i> تأكيد تكلفة مشوار خاص عبر واتساب</button>
   </section>
 
   <!-- تبويب 4: التواصل -->
   <section id="tab-contact" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
-    <a class="order-btn" style="background:#25d366; color:#000; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" href="https://api.whatsapp.com/send?phone=201017908076">
+    <button class="order-btn" style="background:#25d366; color:#000; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="openDirectWhatsApp('مرحباً Fly Express، أريد التواصل معكم')">
       <i class="fa-brands fa-whatsapp"></i> واتساب المباشر
-    </a>
+    </button>
   </section>
 
   <!-- شريط التنقل السفلي -->
@@ -923,7 +922,7 @@ const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
-let pendingClaimUrl = "";
+let pendingClaimMsg = "";
 let currentGeneratedOtp = null;
 let activeAuthTargetUser = null;
 let currentOtpFlow = "";
@@ -1232,7 +1231,7 @@ function sendPharmacyOrder() {
 }
 
 // -------------------------------------------------------------
-// المزامنة السحابية الحية (مخففة لتوفير موارد الهاتف تماماً)
+// المزامنة السحابية الحية
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1305,13 +1304,34 @@ function getActiveDiscount() {
 }
 
 // -------------------------------------------------------------
-// دالة إرسال واتساب المتوافقة 100% مع تطبيقات الأندرويد والـ WebView
+// محرك توجيه واتساب المباشر لأجهزة الأندرويد والـ WebView الخالص
 // -------------------------------------------------------------
+function launchWhatsAppIntent(textMessage) {
+  const fullText = enc(textMessage);
+  // صيغة الـ Intent الرسمية لتطبيق أندرويد
+  const intentUri = `intent://send?phone=${ADMIN_PHONE}&text=${fullText}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
+  
+  // إنشاء رابط مؤقت للنقر لمنع حظر المتصفح الداخلي
+  const a = document.createElement('a');
+  a.href = intentUri;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  // نظام حماية في حال لم يستجب الـ Intent خلال ثانية واحدة
+  setTimeout(() => {
+    window.location.href = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${fullText}`;
+  }, 1000);
+}
+
 const waSend = txt => {
   const finalTxt = txt + getActiveDiscount();
-  // استخدام رابط api المباشر مع window.location.href يفتح تطبيق الواتساب مباشرة دون خطأ
-  window.location.href = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${enc(finalTxt)}`;
+  launchWhatsAppIntent(finalTxt);
 };
+
+function openDirectWhatsApp(customTxt = '') {
+  launchWhatsAppIntent(customTxt);
+}
 
 function calcMonthlyEstimate() {
   const count = parseInt(document.getElementById('pmChildrenCount').value || '1', 10);
@@ -1462,18 +1482,17 @@ function spinWheel() {
       document.getElementById('couponStatusTxt').textContent = `كوبونك: ${code}`;
       
       const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-      const waMsg = `مرحباً Fly Express 🚀\nلقد قمت بلف عجلة الحظ وربحت:\n🎁 الجائزة: ${winner.text}\n🏷️ كود الخصم الموثق: ${code}\n⏰ وقت اللف: ${nowStr}\n(يرجى تأكيد وتثبيت الخصم لمشواري القادم - صالح لساعتين)`;
+      pendingClaimMsg = `مرحباً Fly Express 🚀\nلقد قمت بلف عجلة الحظ وربحت:\n🎁 الجائزة: ${winner.text}\n🏷️ كود الخصم الموثق: ${code}\n⏰ وقت اللف: ${nowStr}\n(يرجى تأكيد وتثبيت الخصم لمشواري القادم - صالح لساعتين)`;
       
-      pendingClaimUrl = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${enc(waMsg)}`;
       waClaimBtn.style.display = 'block';
 
-      setTimeout(() => { window.location.href = pendingClaimUrl; }, 1800);
+      setTimeout(() => { launchWhatsAppIntent(pendingClaimMsg); }, 1800);
     }
   }, 4200);
 }
 
 function openClaimWhatsApp() {
-  if (pendingClaimUrl) window.location.href = pendingClaimUrl;
+  if (pendingClaimMsg) launchWhatsAppIntent(pendingClaimMsg);
 }
 
 // 5 ضغطات على الشعار لفتح لوحة الأدمن
@@ -1489,7 +1508,7 @@ document.getElementById('logoTrigger').addEventListener('click', () => {
 });
 
 // -------------------------------------------------------------
-// التنقل المباشر الصاروخي المماثل لزر الموسيقى
+// التنقل المباشر
 // -------------------------------------------------------------
 function switchTab(tabId, navBtn) {
   const tabs = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
