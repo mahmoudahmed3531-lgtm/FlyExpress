@@ -1,0 +1,43 @@
+name: Build FlyExpress Clean APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Bubblewrap CLI
+        run: npm install -g @bubblewrap/cli
+
+      - name: Init Bubblewrap Project
+        run: |
+          bubblewrap init --manifest="https://mahmoudahmed3531-lgtm.github.io/FlyExpress/manifest.json" --directory=app
+        continue-on-error: true
+
+      - name: Build APK
+        run: |
+          if [ -d "app" ]; then
+            cd app && bubblewrap build
+          fi
+        continue-on-error: true
+
+      - name: Upload Output Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlyExpress-APK
+          path: "**/*.apk"
