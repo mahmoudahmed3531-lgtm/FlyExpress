@@ -43,24 +43,33 @@
   padding: 0; 
   user-select: none; 
   -webkit-user-select: none;
-  touch-action: manipulation;
+  touch-action: pan-y pinch-zoom;
   -webkit-touch-callout: none;
 }
 
 input, textarea, select { 
   user-select: auto; 
   -webkit-user-select: auto;
+  touch-action: auto;
 }
 
-html, body {
-  overscroll-behavior-y: none;
+html {
+  overflow-x: hidden;
+  overflow-y: auto !important;
+  height: 100%;
+}
+
+body {
   background-color: var(--bg-dark);
   color: var(--text-main);
-  min-height: 100vh;
+  min-height: 100%;
   padding-bottom: 90px;
   overflow-x: hidden;
+  overflow-y: auto !important;
   position: relative;
   background: #070b12;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
 }
 
 /* شاشة التحميل الأولية */
@@ -138,7 +147,7 @@ html, body {
 .app-container {
   max-width: 480px;
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 100%;
   position: relative;
   z-index: 1;
 }
@@ -186,6 +195,8 @@ html, body {
   justify-content: center;
   padding: 24px;
   text-align: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .gate-card {
@@ -385,6 +396,7 @@ html, body {
   justify-content: space-between;
   margin-bottom: 16px;
   cursor: pointer;
+  touch-action: manipulation;
   transition: transform 0.15s ease;
 }
 .pharmacy-order-banner:active { transform: scale(0.97); }
@@ -399,6 +411,7 @@ html, body {
   justify-content: space-between;
   margin-bottom: 16px;
   cursor: pointer;
+  touch-action: manipulation;
   transition: transform 0.15s ease;
 }
 .wheel-promo-card:active { transform: scale(0.97); }
@@ -409,19 +422,17 @@ html, body {
   background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
 }
 
-/* سرعة واستجابة الكروت كأزرار تطبيق أصلي */
+/* سرعة واستجابة الكروت مع السماح الكامل بالسحب والتمرير */
 .service-card { 
   display: flex; 
   flex-direction: column; 
   align-items: flex-start; 
   gap: 12px; 
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: pan-y pinch-zoom !important;
   transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.12s ease;
 }
-.service-card * {
-  pointer-events: none !important;
-}
+
 .service-card:active { 
   transform: scale(0.94); 
   border-color: var(--primary) !important;
@@ -463,6 +474,7 @@ html, body {
   width: 100%; border: 0; cursor: pointer; padding: 12px 14px; border-radius: 12px; font-weight: 800; font-size: 13px; color: #fff;
   background: linear-gradient(90deg, #ff6b00, #ff8c00); margin-top: 6px; font-family: inherit;
   transition: transform 0.12s ease;
+  touch-action: manipulation;
 }
 .order-btn:active { transform: scale(0.96); }
 
@@ -1527,7 +1539,7 @@ function openClaimWhatsApp() {
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
   logoClicks++;
-  clearTimeout(logoTimer);
+  clearLogoTimer();
   logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
   if (logoClicks >= 5) {
     logoClicks = 0;
