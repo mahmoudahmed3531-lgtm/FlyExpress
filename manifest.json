@@ -1,7 +1,9 @@
 {
   "name": "Fly Express",
   "short_name": "Fly Express",
+  "description": "أسرع وأأمن خدمة توصيل وطلبات ومدارس في نجع حمادي",
   "start_url": "/FlyExpress/index.html",
+  "scope": "/FlyExpress/",
   "display": "standalone",
   "background_color": "#070b12",
   "theme_color": "#070b12",
@@ -10,13 +12,13 @@
     {
       "src": "https://i.ibb.co/B5MQWCWF/fly-express.jpg",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
       "src": "https://i.ibb.co/B5MQWCWF/fly-express.jpg",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
