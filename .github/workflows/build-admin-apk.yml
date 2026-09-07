@@ -28,15 +28,12 @@ jobs:
           cordova create admin_app com.flyexpress.admin "Fly Admin"
           cd admin_app
           cordova platform add android
-          # نسخ ملفات الأدمن كواجهة أساسية للتطبيق
-          rm -rf www/*
-          cp ../admin.html www/index.html
-          # تعديل إعدادات الوصول
-          echo '<widget id="com.flyexpress.admin" version="1.0.0" xmlns="http://www.w3.org/ns/widgets"><name>Fly Admin</name><description>Fly Express Admin Panel</description><content src="index.html" /><access origin="*" /><allow-navigation href="*" /></widget>' > config.xml
+          # توجيه التطبيق للرابط المباشر الحي مع منع الكاش
+          echo '<widget id="com.flyexpress.admin" version="1.0.1" xmlns="http://www.w3.org/ns/widgets"><name>Fly Admin</name><description>Fly Express Admin Panel</description><content src="https://mahmoudahmed3531-lgtm.github.io/FlyExpress/admin.html" /><access origin="*" /><allow-navigation href="*" /></widget>' > config.xml
           cordova build android --debug
 
       - name: Upload Admin APK
         uses: actions/upload-artifact@v4
         with:
-          name: FlyExpress-Admin-APK
+          name: FlyExpress-Admin-Live-APK
           path: admin_app/platforms/android/app/build/outputs/apk/debug/app-debug.apk
