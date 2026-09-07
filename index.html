@@ -20,8 +20,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
 <style>
 :root {
   --bg-dark: #070b12;
@@ -153,7 +151,7 @@ body {
   z-index: 1;
 }
 
-/* شاشة القفل وبوابة الدخول */
+/* شاشة القفل */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -225,7 +223,6 @@ body {
   text-align: right;
 }
 
-/* صندوق رسالة قفل التطبيق للتحديث والصيانة */
 #maintenanceNoticeBox {
   display: none;
   background: rgba(239, 68, 68, 0.15);
@@ -321,7 +318,6 @@ body {
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
-/* كارت البانر في الرئيسية */
 .games-hub-banner {
   background: linear-gradient(135deg, #ff6b00, #a855f7);
   border-radius: 20px;
@@ -359,26 +355,111 @@ body {
   border: 1px solid rgba(239, 68, 68, 0.4);
 }
 
-/* شبكة لعبة اختيار الصور */
-.photo-matrix-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 14px 0;
-}
-.photo-matrix-item {
-  height: 75px;
-  background: #1e293b;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
+/* -------------------------------------------------------------
+   أنماط قسم السوق وسلة المشتريات
+------------------------------------------------------------- */
+.market-nav-tabs {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  cursor: pointer;
-  transition: transform 0.1s ease;
+  gap: 8px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  padding-bottom: 4px;
 }
-.photo-matrix-item:active { transform: scale(0.92); }
+.market-cat-btn {
+  flex: 1;
+  min-width: 90px;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-sub);
+  padding: 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+}
+.market-cat-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.market-products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.product-card {
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+.product-thumb-icon {
+  font-size: 34px;
+  margin-bottom: 2px;
+}
+.product-unit-select {
+  width: 100%;
+  padding: 6px;
+  border-radius: 8px;
+  background: #070b12;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  outline: none;
+  margin-top: 4px;
+}
+.product-add-btn {
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+  padding: 7px;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid #10b981;
+  font-weight: 800;
+  font-size: 11px;
+  font-family: inherit;
+  margin-top: 4px;
+}
+.product-add-btn:active { transform: scale(0.95); }
+
+/* زر السلة العائم */
+.floating-cart-bar {
+  position: fixed;
+  bottom: 84px;
+  left: 16px;
+  right: 16px;
+  max-width: 448px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 16px;
+  padding: 12px 18px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  cursor: pointer;
+  z-index: 120;
+  animation: slideUpCart 0.25s ease-out;
+}
+@keyframes slideUpCart {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
 
 /* شريط التنقل السفلي */
 .bottom-nav {
@@ -440,7 +521,6 @@ body {
     
     <div class="auth-error-msg" id="authErrorDisplay"></div>
 
-    <!-- رسالة قفل التحديث في شاشة الدخول -->
     <div id="maintenanceNoticeBox">
       <div style="font-size:36px; color:#ef4444; margin-bottom:6px;"><i class="fa-solid fa-screwdriver-wrench"></i></div>
       <h3 style="font-size:15px; font-weight:900; color:#fff; margin-bottom:6px;">تحديث جديد قيد التنفيذ 🛠️</h3>
@@ -511,13 +591,13 @@ body {
 
     <div class="section-title"><i class="fa-solid fa-shapes"></i> خدمات التوصيل السريع</div>
     <div class="services-grid">
+      <div class="service-card" onclick="switchTab('tab-market', document.querySelectorAll('.nav-item')[1])">
+        <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
+        <div><h4>السوق المتكامل 🛒</h4><span>خضار، بقالة، عطارة</span></div>
+      </div>
       <div class="service-card" onclick="openServiceInstantly('sec-order')">
         <div class="service-icon ic-orange"><i class="fa-solid fa-box"></i></div>
         <div><h4>طلب أوردر / طرد</h4><span>توصيل واستلام فوري</span></div>
-      </div>
-      <div class="service-card" onclick="openServiceInstantly('sec-market')">
-        <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
-        <div><h4>طلبات السوق</h4><span>خضار، بقالة، طلبات بيت</span></div>
       </div>
       <div class="service-card" onclick="openServiceInstantly('sec-school')">
         <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
@@ -530,9 +610,25 @@ body {
     </div>
   </main>
 
-  <!-- 2. الطلبات -->
+  <!-- 2. تبويب السوق المتكامل الجديد (خضار، بقالة، عطارة) -->
+  <section id="tab-market" class="tab-view">
+    <div class="section-title"><i class="fa-solid fa-store"></i> سوق Fly Express في بيتك 🛒</div>
+    <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;">اختر الخضار والبقالة والعطارة وسيصلك المندوب بأفضل جودة وسعر في نجع حمادي.</p>
+
+    <!-- تصنيفات السوق -->
+    <div class="market-nav-tabs">
+      <button class="market-cat-btn active" onclick="switchMarketCategory('veg', this)">🥬 الخضار والفاكهة</button>
+      <button class="market-cat-btn" onclick="switchMarketCategory('gro', this)">🛒 البقالة والماركت</button>
+      <button class="market-cat-btn" onclick="switchMarketCategory('spices', this)">🌿 العطارة والبهارات</button>
+    </div>
+
+    <!-- شبكة المنتجات المعروضة -->
+    <div class="market-products-grid" id="marketProductsGrid"></div>
+  </section>
+
+  <!-- 3. الطلبات العادية -->
   <section id="tab-orders" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار</div>
+    <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار الخاص</div>
     <div class="form-card" id="sec-order">
       <h3 style="font-size:15px; margin-bottom:10px; color:#ff8c00;">📦 أوردر / طرد فوري</h3>
       <div class="order-row">
@@ -547,33 +643,23 @@ body {
     </div>
   </section>
 
-  <!-- 3. الأسعار -->
-  <section id="tab-prices" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار التقديرية</div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>داخل نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">30 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;">20 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
-  </section>
-
-  <!-- 4. تبويب ركن الألعاب («العب واكسب») -->
+  <!-- 4. تبويب ركن الألعاب -->
   <section id="tab-games" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-gamepad"></i> ركن التحديات: العب واكسب 🏆</div>
     <p style="font-size:11px; color:var(--text-sub); margin-bottom:16px;">ألعاب صعبة تتطلب تركيزاً ورد فعل خاطف.. الفوز يمنحك كود خصم موثق فوراً!</p>
 
-    <!-- لعبة 1: تحدي الأسئلة الصعب -->
     <div class="hard-game-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="font-size:14px; font-weight:900; color:#ffd166;"><i class="fa-solid fa-brain"></i> 1. تحدي الـ 500 سؤال (عارف بلدك؟)</h4>
+        <h4 style="font-size:14px; font-weight:900; color:#ffd166;"><i class="fa-solid fa-brain"></i> 1. تحدي الـ 500 سؤال</h4>
         <span class="hard-game-badge">وقت ضيق 🔥</span>
       </div>
       <p style="font-size:11px; color:#cbd5e1;">معك 10 ثوانٍ فقط لكل سؤال! مطلوب 10 إجابات صحيحة متتالية بدون أي خطأ لنيل الجائزة.</p>
       <button class="order-btn" style="background:linear-gradient(90deg, #ffd166, #ff8c00); color:#000;" onclick="openQuizGame()">دخول تحدي الأسئلة 🧠</button>
     </div>
 
-    <!-- لعبة 2: قوة الملاحظة والصور الصحيحة -->
     <div class="hard-game-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="font-size:14px; font-weight:900; color:var(--accent);"><i class="fa-solid fa-eye"></i> 2. تحدي اختيار الصورة الصحيحة الخاطف</h4>
+        <h4 style="font-size:14px; font-weight:900; color:var(--accent);"><i class="fa-solid fa-eye"></i> 2. تحدي اختيار الصورة الصحيحة</h4>
         <span class="hard-game-badge">سرعة وملاحظة ⚡</span>
       </div>
       <p style="font-size:11px; color:#cbd5e1;">يطلب منك عنصر محدد، وعليك رصده والضغط عليه وسط خيارات مضللة خلال 3 ثوانٍ فقط لـ 10 جولات متتالية!</p>
@@ -587,58 +673,78 @@ body {
     <button class="order-btn" style="background:#25d366; color:#000;" onclick="openDirectWhatsApp('مرحباً Fly Express، أريد الاستفسار')"><i class="fa-brands fa-whatsapp"></i> واتساب المباشر</button>
   </section>
 
+  <!-- شريط السلة العائم -->
+  <div class="floating-cart-bar" id="floatingCartBar" onclick="openCartModal()">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <i class="fa-solid fa-basket-shopping" style="font-size:18px;"></i>
+      <span>سلة السوق (<span id="cartCountTxt">0</span> أصناف)</span>
+    </div>
+    <span style="font-size:12px; background:rgba(0,0,0,0.2); padding:4px 10px; border-radius:10px;">عرض السلة 🛍️</span>
+  </div>
+
   <!-- شريط التنقل السفلي -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
-    <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-motorcycle"></i><span>الطلبات</span></button>
-    <button class="nav-item" onclick="switchTab('tab-prices', this)"><i class="fa-solid fa-tag"></i><span>الأسعار</span></button>
+    <button class="nav-item" onclick="switchTab('tab-market', this)"><i class="fa-solid fa-store"></i><span>السوق</span></button>
+    <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-motorcycle"></i><span>أوردر فوري</span></button>
     <button class="nav-item" style="color:#ffd166;" onclick="switchTab('tab-games', this)"><i class="fa-solid fa-gamepad" style="font-size:18px;"></i><span>العب واكسب</span></button>
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
 
-  <!-- نافذة 1: لعبة الأسئلة الصعبة -->
+  <!-- نافذة سلة المشتريات وإرسالها للمندوب -->
+  <div class="modal-backdrop" id="cartModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeCartModal()">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:#10b981;"><i class="fa-solid fa-cart-shopping"></i> سلة طلبات السوق</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">راجع طلباتك قبل الإرسال للمندوب</p>
+
+      <div id="cartItemsList" style="max-height:220px; overflow-y:auto; text-align:right; margin-bottom:12px; display:flex; flex-direction:column; gap:6px;"></div>
+
+      <input type="text" id="marketDeliveryAddress" class="order-input" placeholder="عنوان التوصيل في نجع حمادي بالتفصيل..." style="margin-bottom:8px;" required>
+
+      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="sendMarketCartToWhatsApp()">
+        <i class="fa-brands fa-whatsapp"></i> إرسال الطلبات للمندوب عبر واتساب 🛵
+      </button>
+    </div>
+  </div>
+
+  <!-- نافذة 1: لعبة الأسئلة -->
   <div class="modal-backdrop" id="quizModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeGameAndResumeMusic('quizModal')">&times;</button>
       <h3 style="font-size:16px; font-weight:900; color:#ffd166;">🧠 تحدي الـ 500 سؤال</h3>
-      
       <div style="display:flex; justify-content:space-between; font-size:12px; margin:8px 0; font-weight:800;">
         <span>المرحلة: <strong id="quizProgTxt" style="color:var(--primary);">1 / 10</strong></span>
         <span>الوقت المتبقي: <strong id="quizTimerTxt" style="color:#ef4444;">10s</strong></span>
       </div>
-
       <div style="width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:10px; margin-bottom:12px; overflow:hidden;">
         <div id="quizTimerBar" style="width:100%; height:100%; background:#ef4444; transition:width 1s linear;"></div>
       </div>
-
       <p id="quizQuestionBox" style="font-size:13px; font-weight:800; margin:10px 0; min-height:44px; color:#fff;"></p>
       <div id="quizAnswersGrid" style="display:flex; flex-direction:column; gap:8px;"></div>
       <div id="quizStatusTxt" style="font-size:12px; font-weight:800; margin-top:8px;"></div>
     </div>
   </div>
 
-  <!-- نافذة 2: لعبة اختيار الصور الصحيحة الصعبة -->
+  <!-- نافذة 2: لعبة الصور -->
   <div class="modal-backdrop" id="photoGameModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeGameAndResumeMusic('photoGameModal')">&times;</button>
       <h3 style="font-size:16px; font-weight:900; color:var(--accent);">🎯 تحدي الصور السريع الخاطف</h3>
-      
       <div style="display:flex; justify-content:space-between; font-size:12px; margin:8px 0; font-weight:800;">
         <span>الجولة: <strong id="photoRoundTxt" style="color:#10b981;">1 / 10</strong></span>
         <span>المؤقت: <strong id="photoTimerTxt" style="color:#ef4444;">3.5s</strong></span>
       </div>
-
       <div style="background:rgba(0, 229, 255, 0.1); border:1.5px dashed var(--accent); border-radius:12px; padding:8px; margin-bottom:8px;">
         <span style="font-size:11px; color:var(--text-sub);">المطلوب اختياره بسرعة:</span>
         <div id="photoTargetName" style="font-size:14px; font-weight:900; color:#fff; margin-top:2px;">جاري التحديد...</div>
       </div>
-
       <div class="photo-matrix-grid" id="photoMatrixContainer"></div>
       <div id="photoStatusTxt" style="font-size:12px; font-weight:800; margin-top:6px;"></div>
     </div>
   </div>
 
-  <!-- نافذة تأكيد الخروج بصورة متمشيش -->
+  <!-- نافذة تأكيد الخروج -->
   <div class="modal-backdrop" id="logoutConfirmModal">
     <div class="modal-card" style="max-width: 320px; text-align: center; padding: 18px;">
       <div style="width: 100%; max-width: 220px; margin: 0 auto 12px; border-radius: 18px; overflow: hidden; border: 2px solid var(--primary); box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);">
@@ -670,7 +776,7 @@ function forceDownloadRedirect(e, url) {
 }
 
 // -------------------------------------------------------------
-// إدارة الصوت
+// إدارة الصوت والموسيقى
 // -------------------------------------------------------------
 let globalAudioCtx = null;
 function getAudioContext() {
@@ -727,7 +833,7 @@ function initMusicElement() {
     backgroundAudio = new Audio();
     backgroundAudio.loop = true;
     backgroundAudio.preload = "auto";
-    backgroundAudio.src = "bgmusic.mp3";
+    backgroundAudio.src = "bgmusic.mp3?v=2";
     backgroundAudio.volume = 0.45;
   }
   return backgroundAudio;
@@ -750,7 +856,7 @@ function pauseMainMusicForGame() {
 function resumeMainMusicAfterGame() {
   isGameActive = false;
   const activeTab = document.querySelector('.tab-view.active');
-  if (activeTab && (activeTab.id === 'tab-home' || activeTab.id === 'tab-orders' || activeTab.id === 'tab-prices')) {
+  if (activeTab && (activeTab.id === 'tab-home' || activeTab.id === 'tab-market' || activeTab.id === 'tab-orders')) {
     if (backgroundAudio) {
       backgroundAudio.play().catch(() => {});
     }
@@ -765,7 +871,176 @@ function autoStartOnFirstTouch() {
 ['touchstart', 'touchend', 'click'].forEach(evt => document.addEventListener(evt, autoStartOnFirstTouch, { once: true, passive: true }));
 
 // -------------------------------------------------------------
-// الأكواد الموثقة
+// قاعدة بيانات منتجات السوق وسلة المشتريات
+// -------------------------------------------------------------
+const marketData = {
+  veg: [
+    { id: "v1", name: "طماطم بلدي طازجة", icon: "🍅", units: ["1 كيلو", "2 كيلو", "3 كيلو", "نصف كيلو"] },
+    { id: "v2", name: "بطاطس تحمير وطبيخ", icon: "🥔", units: ["1 كيلو", "2 كيلو", "3 كيلو", "5 كيلو"] },
+    { id: "v3", name: "بصل أحمر نجع حمادي", icon: "🧅", units: ["1 كيلو", "2 كيلو", "3 كيلو"] },
+    { id: "v4", name: "خيار بلدي طازة", icon: "🥒", units: ["1 كيلو", "2 كيلو", "نصف كيلو"] },
+    { id: "v5", name: "ليمون أصفر بلدي", icon: "🍋", units: ["نصف كيلو", "1 كيلو", "ربع كيلو"] },
+    { id: "v6", name: "فلفل رومي وحار", icon: "🫑", units: ["نصف كيلو", "1 كيلو", "ربع كيلو"] },
+    { id: "v7", name: "موز بلدي فاخر", icon: "🍌", units: ["1 كيلو", "2 كيلو", "3 كيلو"] },
+    { id: "v8", name: "تفاح سكري أحمر", icon: "🍎", units: ["1 كيلو", "2 كيلو"] }
+  ],
+  gro: [
+    { id: "g1", name: "سكر أبيض ناعم", icon: "🧂", units: ["1 كيس (1 ك)", "2 كيس", "3 أكياس"] },
+    { id: "g2", name: "أرز مصري معبأ ممتاز", icon: "🍚", units: ["1 كيس (1 ك)", "2 كيس", "5 كيس"] },
+    { id: "g3", name: "زيت ذرة / عباد", icon: "🫗", units: ["1 زجاجة لتر", "2 زجاجة"] },
+    { id: "g4", name: "مكرونة مشكلة", icon: "🍝", units: ["1 كيس (400 جم)", "2 كيس", "3 أكياس"] },
+    { id: "g5", name: "شاي العروسة / ليبتون", icon: "☕", units: ["1 باكو صغير", "1 باكو ربع كيلو"] },
+    { id: "g6", name: "جبنة بيضاء / رومي", icon: "🧀", units: ["علبة نصف كيلو", "علبة 1 كيلو", "ربع رومي"] },
+    { id: "g7", name: "كرتونة / طبق بيض", icon: "🥚", units: ["طبق 30 بيضة", "نصف طبق (15)"] },
+    { id: "g8", name: "حليب طازج / معبأ", icon: "🥛", units: ["1 لتر", "2 لتر"] }
+  ],
+  spices: [
+    { id: "s1", name: "كمون بلدي مطحون", icon: "🌿", units: ["ثمن كيلو (125 جم)", "ربع كيلو", "نصف كيلو"] },
+    { id: "s2", name: "فلفل أسود برازيلي خشن", icon: "🌶️", units: ["ثمن كيلو (125 جم)", "ربع كيلو"] },
+    { id: "s3", name: "كزبرة ناشفة مطحونة", icon: "🌱", units: ["ثمن كيلو", "ربع كيلو"] },
+    { id: "s4", name: "شطة حمراء صعيدي حامية", icon: "🌶️", units: ["ثمن كيلو", "ربع كيلو"] },
+    { id: "s5", name: "حبهان وقرفة وقرنفل", icon: "🪵", units: ["برطمان مشكل", "ثمن كيلو"] },
+    { id: "s6", name: "كركديه صعيدي فاخر", icon: "🌺", units: ["ربع كيلو", "نصف كيلو", "1 كيلو"] }
+  ]
+};
+
+let userCart = [];
+
+function renderMarketProducts(catKey) {
+  const container = document.getElementById('marketProductsGrid');
+  if (!container) return;
+  container.innerHTML = "";
+
+  const items = marketData[catKey] || [];
+  items.forEach(prod => {
+    const card = document.createElement('div');
+    card.className = "product-card";
+    
+    let optionsHtml = prod.units.map(u => `<option value="${u}">${u}</option>`).join('');
+
+    card.innerHTML = `
+      <div class="product-thumb-icon">${prod.icon}</div>
+      <strong style="font-size:12px; color:#fff; line-height:1.2;">${prod.name}</strong>
+      <select class="product-unit-select" id="unit_${prod.id}">
+        ${optionsHtml}
+      </select>
+      <button class="product-add-btn" onclick="addToCart('${prod.id}', '${prod.name}', '${prod.icon}')">
+        <i class="fa-solid fa-cart-plus"></i> إضافة إلى السلة
+      </button>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function switchMarketCategory(catKey, btn) {
+  playWindowsClick();
+  document.querySelectorAll('.market-cat-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderMarketProducts(catKey);
+}
+
+function addToCart(prodId, prodName, prodIcon) {
+  playWindowsClick();
+  const selectEl = document.getElementById(`unit_${prodId}`);
+  const chosenUnit = selectEl ? selectEl.value : "1 كيلو";
+
+  userCart.push({
+    id: prodId,
+    name: prodName,
+    icon: prodIcon,
+    unit: chosenUnit
+  });
+
+  updateCartBar();
+}
+
+function updateCartBar() {
+  const bar = document.getElementById('floatingCartBar');
+  const countTxt = document.getElementById('cartCountTxt');
+  if (countTxt) countTxt.textContent = userCart.length;
+
+  if (userCart.length > 0) {
+    if (bar) bar.style.display = "flex";
+  } else {
+    if (bar) bar.style.display = "none";
+  }
+}
+
+function openCartModal() {
+  playWindowsClick();
+  const list = document.getElementById('cartItemsList');
+  if (!list) return;
+  list.innerHTML = "";
+
+  if (userCart.length === 0) {
+    list.innerHTML = `<div style="text-align:center; color:var(--text-sub); font-size:12px; padding:12px;">السلة فارغة حالياً 🛒</div>`;
+  } else {
+    userCart.forEach((item, index) => {
+      const itemRow = document.createElement('div');
+      itemRow.style.display = "flex";
+      itemRow.style.justifyContent = "space-between";
+      itemRow.style.alignItems = "center";
+      itemRow.style.background = "#1e293b";
+      itemRow.style.padding = "8px 10px";
+      itemRow.style.borderRadius = "10px";
+      itemRow.innerHTML = `
+        <div style="font-size:12px; color:#fff;">
+          <span>${item.icon}</span> <strong>${item.name}</strong> (${item.unit})
+        </div>
+        <button onclick="removeFromCart(${index})" style="background:transparent; border:0; color:#ef4444; font-size:14px; cursor:pointer;">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      `;
+      list.appendChild(itemRow);
+    });
+  }
+
+  document.getElementById('cartModal').classList.add('show');
+}
+
+function removeFromCart(index) {
+  playWindowsClick();
+  userCart.splice(index, 1);
+  updateCartBar();
+  openCartModal();
+}
+
+function closeCartModal() {
+  playWindowsClick();
+  document.getElementById('cartModal').classList.remove('show');
+}
+
+function sendMarketCartToWhatsApp() {
+  playWindowsClick();
+  if (userCart.length === 0) {
+    alert("السلة فارغة! اختر بعض المنتجات أولاً.");
+    return;
+  }
+  const address = document.getElementById('marketDeliveryAddress').value.trim();
+  if (!address) {
+    alert("من فضلك اكتب عنوان التوصيل بالتفصيل.");
+    return;
+  }
+
+  const verifiedUser = JSON.parse(localStorage.getItem('fly_verified_user') || '{}');
+  const clientName = verifiedUser.name || "عميل Fly Express";
+  const clientPhone = verifiedUser.phone || "";
+
+  let itemsText = "";
+  userCart.forEach((it, i) => {
+    itemsText += `${i + 1}. ${it.name} — (${it.unit})\n`;
+  });
+
+  const finalMsg = `طلب شراء من سوق Fly Express 🛒🛵\nالعميل: ${clientName} (${clientPhone})\nالعنوان: ${address}\n\nقائمة المشتريات المطلوبة:\n${itemsText}\n— أُرسل عبر تطبيق Fly Express بنجاح`;
+
+  closeCartModal();
+  userCart = [];
+  updateCartBar();
+  openWhatsAppDirectly(finalMsg);
+}
+
+// -------------------------------------------------------------
+// الألعاب والربط السحابي
 // -------------------------------------------------------------
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
@@ -810,9 +1085,7 @@ function closeGameAndResumeMusic(modalId) {
   resumeMainMusicAfterGame();
 }
 
-// -------------------------------------------------------------
-// 1. لعبة الأسئلة الصعبة
-// -------------------------------------------------------------
+// لعبة الأسئلة
 const questionBank = [
   { q: "ما هي المدينة الملقبة بمدينة السكر في قنا وتشتهر بقناطرها التاريخية؟", a: ["نجع حمادي", "دشنا", "فرشوط", "أبو تشت"], r: 0 },
   { q: "قرية بنجع حمادي تقع قرب مصنع الألمنيوم ويربطها خط توصيل مباشر في التطبيق؟", a: ["قرية بركة", "هو", "الرئيسية", "الحلفاية"], r: 0 },
@@ -826,9 +1099,7 @@ const questionBank = [
   { q: "ما الميزة الأمنية في كوبونات الخصم التي تصدرها ألعاب Fly Express؟", a: ["كود مشفر وصالح لساعتين ومرتبط برقمك", "كود عام مكرر", "بدون كود", "رقم غير موثق"], r: 0 }
 ];
 
-let quizStreak = 0;
-let quizTimer = 10;
-let quizTimerInterval = null;
+let quizStreak = 0, quizTimer = 10, quizTimerInterval = null;
 
 function openQuizGame() {
   playWindowsClick();
@@ -903,9 +1174,7 @@ function onQuizSelect(isCorrect) {
   }
 }
 
-// -------------------------------------------------------------
-// 2. لعبة اختيار الصور الصحيحة
-// -------------------------------------------------------------
+// لعبة الصور
 const photoItemsCatalog = [
   { name: "موتوسيكل دليفري Fly", icon: "🛵" },
   { name: "طرد وأوردر فوري", icon: "📦" },
@@ -914,13 +1183,8 @@ const photoItemsCatalog = [
   { name: "بقالة وطلبات السوق", icon: "🛒" },
   { name: "كوبون خصم موثق", icon: "🏷️" }
 ];
-
 const distractorIcons = ["🚗", "🚲", "⚡", "🍔", "☕", "⚽", "🎮", "📱", "🏠", "🍕", "⏰", "⛔", "🔑", "🎈"];
-
-let photoRound = 1;
-let photoTimer = 3.5;
-let photoTimerInterval = null;
-let currentTargetIcon = "";
+let photoRound = 1, photoTimer = 3.5, photoTimerInterval = null, currentTargetIcon = "";
 
 function openPhotoChallengeGame() {
   playWindowsClick();
@@ -950,14 +1214,11 @@ function startPhotoRound() {
 
   let pool = [currentTargetIcon];
   let shuffledDistractors = [...distractorIcons].sort(() => Math.random() - 0.5);
-  for (let i = 0; i < 8; i++) {
-    pool.push(shuffledDistractors[i]);
-  }
+  for (let i = 0; i < 8; i++) pool.push(shuffledDistractors[i]);
   pool.sort(() => Math.random() - 0.5);
 
   const container = document.getElementById('photoMatrixContainer');
   container.innerHTML = "";
-
   pool.forEach(ic => {
     const div = document.createElement('div');
     div.className = "photo-matrix-item";
@@ -969,12 +1230,11 @@ function startPhotoRound() {
   photoTimerInterval = setInterval(() => {
     photoTimer -= 0.1;
     document.getElementById('photoTimerTxt').textContent = `${Math.max(0, photoTimer).toFixed(1)}s`;
-
     if (photoTimer <= 0) {
       clearInterval(photoTimerInterval);
       playRetroTone(110, 'sawtooth', 0.3, 0.25);
       photoRound = 1;
-      document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#ef4444;'>فات الوقت! سرعة رصدك لم تسعفك.. تم تصفير الجولات.</span>";
+      document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#ef4444;'>فات الوقت! تم تصفير الجولات.</span>";
       setTimeout(startPhotoRound, 1200);
     }
   }, 100);
@@ -990,13 +1250,13 @@ function onPhotoItemClick(isTarget) {
   } else {
     playRetroTone(110, 'sawtooth', 0.3, 0.25);
     photoRound = 1;
-    document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#ef4444;'>صورة خاطئة! ركّز في الهدف المطلوب.. تم تصفير الجولات.</span>";
+    document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#ef4444;'>صورة خاطئة! تم تصفير الجولات.</span>";
     setTimeout(startPhotoRound, 1200);
   }
 }
 
 // -------------------------------------------------------------
-// الاستماع السحابي وتطبيق الصيانة والقفل
+// الاستماع السحابي وتطبيق الصيانة
 // -------------------------------------------------------------
 async function listenToCloudState() {
   try {
@@ -1006,7 +1266,6 @@ async function listenToCloudState() {
       const lines = text.trim().split('\n');
       const latest = JSON.parse(lines[lines.length - 1]);
       const data = JSON.parse(latest.message);
-      
       applyServiceState(data.service);
       applyMaintenanceLock(data.maintenance);
     }
@@ -1060,7 +1319,7 @@ setInterval(listenToCloudState, 25000);
 listenToCloudState();
 
 // -------------------------------------------------------------
-// الحسابات والتبويبات
+// الحسابات والتنقل
 // -------------------------------------------------------------
 function switchAuthMode(mode) {
   playWindowsClick();
@@ -1086,6 +1345,7 @@ function checkAppAccess() {
     const phoneInput = document.getElementById('orderPhone');
     if (phoneInput) phoneInput.value = user.phone;
     startMusicPlayback();
+    renderMarketProducts('veg'); // تشغيل منتجات الخضار كبداية
   } else {
     gateScreen.style.display = "flex";
     mainApp.style.display = "none";
@@ -1130,7 +1390,7 @@ function confirmLogoutAction() {
 
 function switchTab(tabId, navBtn) {
   playWindowsClick();
-  const tabs = ['tab-home', 'tab-orders', 'tab-prices', 'tab-games', 'tab-contact'];
+  const tabs = ['tab-home', 'tab-market', 'tab-orders', 'tab-games', 'tab-contact'];
   tabs.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = (id === tabId) ? 'block' : 'none';
@@ -1150,7 +1410,7 @@ function switchTab(tabId, navBtn) {
 
 function openServiceInstantly(formId) {
   playWindowsClick();
-  switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
+  switchTab('tab-orders', document.querySelectorAll('.nav-item')[2]);
   const target = document.getElementById(formId);
   if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
 }
@@ -1165,17 +1425,6 @@ function sendOrder() {
   const text = `طلب أوردر جديد 📦\nالاسم: ${name} (${phone})\nمن: ${from} إلى: ${to}${code ? '\nكود الخصم: ' + code : ''}`;
   openWhatsAppDirectly(text);
 }
-
-let logoClicks = 0, logoTimer = null;
-document.getElementById('logoTrigger').addEventListener('click', () => {
-  logoClicks++;
-  clearTimeout(logoTimer);
-  logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
-  if (logoClicks >= 5) {
-    logoClicks = 0;
-    location.href = 'admin.html';
-  }
-});
 
 checkAppAccess();
 </script>
