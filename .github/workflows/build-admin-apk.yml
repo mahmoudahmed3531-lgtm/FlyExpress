@@ -6,19 +6,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Java
+        uses: actions/setup-java@v4
         with:
-          node-version: 18
+          distribution: 'zulu'
+          java-version: '17'
 
-      - name: Install Bubblewrap CLI
-        run: npm install -g @bubblewrap/cli
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Build Standalone APK
+      - name: Install Cordova CLI
+        run: npm install -g cordova
+
+      - name: Create Admin App Project
         run: |
-          echo "Building Fly Express Admin APK..."
-          # يستخدم الرابط المباشر للوحة الإدارة لبناء الحزمة المستقلة
+          cordova create admin_app com.flyexpress.admin "Fly Admin"
+          cd admin_app
+          cordova platform add android
+          # نسخ ملفات الأدمن كواجهة أساسية للتطبيق
+          rm -rf www/*
+          cp ../admin.html www/index.html
+          # تعديل إعدادات الوصول
+          echo '<widget id="com.flyexpress.admin" version="1.0.0" xmlns="http://www.w3.org/ns/widgets"><name>Fly Admin</name><description>Fly Express Admin Panel</description><content src="index.html" /><access origin="*" /><allow-navigation href="*" /></widget>' > config.xml
+          cordova build android --debug
+
+      - name: Upload Admin APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlyExpress-Admin-APK
+          path: admin_app/platforms/android/app/build/outputs/apk/debug/app-debug.apk
