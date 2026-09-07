@@ -153,7 +153,7 @@ body {
   z-index: 1;
 }
 
-/* شاشة القفل */
+/* شاشة القفل وبوابة الدخول */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -223,6 +223,17 @@ body {
   border-radius: 10px;
   margin-bottom: 10px;
   text-align: right;
+}
+
+/* صندوق رسالة قفل التطبيق للتحديث والصيانة */
+#maintenanceNoticeBox {
+  display: none;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1.5px solid var(--danger);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  text-align: center;
 }
 
 /* الهيدر */
@@ -365,7 +376,7 @@ body {
   justify-content: center;
   font-size: 32px;
   cursor: pointer;
-  transition: transform 0.1s ease, border-color 0.15s ease;
+  transition: transform 0.1s ease;
 }
 .photo-matrix-item:active { transform: scale(0.92); }
 
@@ -426,7 +437,15 @@ body {
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
     <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">أسرع وأأمن توصيل في نجع حمادي 🚀</p>
+    
     <div class="auth-error-msg" id="authErrorDisplay"></div>
+
+    <!-- رسالة قفل التحديث في شاشة الدخول -->
+    <div id="maintenanceNoticeBox">
+      <div style="font-size:36px; color:#ef4444; margin-bottom:6px;"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+      <h3 style="font-size:15px; font-weight:900; color:#fff; margin-bottom:6px;">تحديث جديد قيد التنفيذ 🛠️</h3>
+      <p style="font-size:12px; color:#cbd5e1; line-height:1.5;" id="maintenanceDisplayMsg">جاري عمل تحديثات وتحسينات للتطبيق حالياً.. يرجى الانتظار وسنعود قريباً.</p>
+    </div>
 
     <div class="auth-tabs" id="authTabsContainer">
       <button class="auth-tab-btn active" id="tabBtnLogin" onclick="switchAuthMode('login')">تسجيل دخول</button>
@@ -458,14 +477,14 @@ body {
 <div class="app-container" id="mainAppContent" style="display:none;">
 
   <header class="app-header">
-    <div class="profile-section">
+    <div class="profile-section" id="logoTrigger">
       <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="profile-info">
         <h1>Fly Express</h1>
         <p>أسرع توصيل في نجع حمادي 🚀</p>
       </div>
     </div>
-    <div class="status-badge"><span class="status-dot"></span><span>متاح</span></div>
+    <div class="status-badge" id="serviceBadge"><span class="status-dot" id="serviceDot"></span><span id="serviceTxt">متاح</span></div>
   </header>
 
   <!-- 1. الرئيسية -->
@@ -536,7 +555,7 @@ body {
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
   </section>
 
-  <!-- 4. تبويب ركن الألعاب («العب واكسب») - لعبتين فقط بصعوبة حقيقية -->
+  <!-- 4. تبويب ركن الألعاب («العب واكسب») -->
   <section id="tab-games" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-gamepad"></i> ركن التحديات: العب واكسب 🏆</div>
     <p style="font-size:11px; color:var(--text-sub); margin-bottom:16px;">ألعاب صعبة تتطلب تركيزاً ورد فعل خاطف.. الفوز يمنحك كود خصم موثق فوراً!</p>
@@ -651,7 +670,7 @@ function forceDownloadRedirect(e, url) {
 }
 
 // -------------------------------------------------------------
-// إدارة الصوت: عزل صوت الموسيقى الأساسية وأصوات الألعاب
+// إدارة الصوت
 // -------------------------------------------------------------
 let globalAudioCtx = null;
 function getAudioContext() {
@@ -746,11 +765,12 @@ function autoStartOnFirstTouch() {
 ['touchstart', 'touchend', 'click'].forEach(evt => document.addEventListener(evt, autoStartOnFirstTouch, { once: true, passive: true }));
 
 // -------------------------------------------------------------
-// نظام الأكواد الموثقة
+// الأكواد الموثقة
 // -------------------------------------------------------------
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
+const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 
 function hashString(str) {
   let hash = 5381;
@@ -791,7 +811,7 @@ function closeGameAndResumeMusic(modalId) {
 }
 
 // -------------------------------------------------------------
-// 1. لعبة الأسئلة الصعبة (10 أسئلة متتالية بدون خطأ وبوقت 10 ثوانٍ)
+// 1. لعبة الأسئلة الصعبة
 // -------------------------------------------------------------
 const questionBank = [
   { q: "ما هي المدينة الملقبة بمدينة السكر في قنا وتشتهر بقناطرها التاريخية؟", a: ["نجع حمادي", "دشنا", "فرشوط", "أبو تشت"], r: 0 },
@@ -837,7 +857,6 @@ function nextQuizQuestion() {
   const qObj = questionBank[Math.floor(Math.random() * questionBank.length)];
   document.getElementById('quizQuestionBox').textContent = qObj.q;
 
-  // خلط الإجابات عشوائياً لزيادة الصعوبة
   let combined = qObj.a.map((txt, idx) => ({ txt, isCorrect: idx === qObj.r }));
   combined.sort(() => Math.random() - 0.5);
 
@@ -885,7 +904,7 @@ function onQuizSelect(isCorrect) {
 }
 
 // -------------------------------------------------------------
-// 2. لعبة اختيار الصور الصحيحة الصعبة (Photo Reflex Challenge)
+// 2. لعبة اختيار الصور الصحيحة
 // -------------------------------------------------------------
 const photoItemsCatalog = [
   { name: "موتوسيكل دليفري Fly", icon: "🛵" },
@@ -921,17 +940,14 @@ function startPhotoRound() {
     return;
   }
 
-  // تقليل الوقت تدريجياً مع تقدم الجولات لزيادة الصعوبة
   photoTimer = Math.max(1.8, 3.5 - (photoRound * 0.15));
   document.getElementById('photoRoundTxt').textContent = `${photoRound} / 10`;
   document.getElementById('photoTimerTxt').textContent = `${photoTimer.toFixed(1)}s`;
 
-  // اختيار الهدف
   const target = photoItemsCatalog[Math.floor(Math.random() * photoItemsCatalog.length)];
   currentTargetIcon = target.icon;
   document.getElementById('photoTargetName').textContent = `${target.name} (${target.icon})`;
 
-  // تجهيز مصفوفة 9 عناصر (العنصر الصحيح + 8 مشتتات قريبة)
   let pool = [currentTargetIcon];
   let shuffledDistractors = [...distractorIcons].sort(() => Math.random() - 0.5);
   for (let i = 0; i < 8; i++) {
@@ -980,18 +996,72 @@ function onPhotoItemClick(isTarget) {
 }
 
 // -------------------------------------------------------------
-// الحسابات والتبويبات
+// الاستماع السحابي وتطبيق الصيانة والقفل
 // -------------------------------------------------------------
-async function fetchCloudUsers() {
+async function listenToCloudState() {
   try {
-    const res = await fetch("https://6a9de5152f89be7fb70d8140.mockapi.io/users");
-    if (!res.ok) return [];
-    return await res.json();
-  } catch (e) {
-    return [];
+    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
+    const text = await res.text();
+    if (text) {
+      const lines = text.trim().split('\n');
+      const latest = JSON.parse(lines[lines.length - 1]);
+      const data = JSON.parse(latest.message);
+      
+      applyServiceState(data.service);
+      applyMaintenanceLock(data.maintenance);
+    }
+  } catch(e) {}
+}
+
+function applyServiceState(status) {
+  const badge = document.getElementById('serviceBadge');
+  const dot = document.getElementById('serviceDot');
+  const txt = document.getElementById('serviceTxt');
+  if (!badge || !dot || !txt) return;
+
+  if (status === 'busy') {
+    txt.textContent = "مشغول";
+    dot.style.background = "#f59e0b";
+    badge.style.color = "#fbbf24";
+  } else if (status === 'offline') {
+    txt.textContent = "مغلق";
+    dot.style.background = "#ef4444";
+    badge.style.color = "#f87171";
+  } else {
+    txt.textContent = "متاح";
+    dot.style.background = "#10b981";
+    badge.style.color = "#34d399";
   }
 }
 
+function applyMaintenanceLock(maint) {
+  const noticeBox = document.getElementById('maintenanceNoticeBox');
+  const displayMsg = document.getElementById('maintenanceDisplayMsg');
+  const authTabs = document.getElementById('authTabsContainer');
+  const formLogin = document.getElementById('formLoginView');
+  const formSignup = document.getElementById('formSignupView');
+
+  if (maint && maint.isLocked) {
+    if (noticeBox) {
+      noticeBox.style.display = 'block';
+      if (maint.message && displayMsg) displayMsg.textContent = maint.message;
+    }
+    if (authTabs) authTabs.style.display = 'none';
+    if (formLogin) formLogin.style.display = 'none';
+    if (formSignup) formSignup.style.display = 'none';
+  } else {
+    if (noticeBox) noticeBox.style.display = 'none';
+    if (authTabs) authTabs.style.display = 'flex';
+    if (formLogin) formLogin.style.display = 'block';
+  }
+}
+
+setInterval(listenToCloudState, 25000);
+listenToCloudState();
+
+// -------------------------------------------------------------
+// الحسابات والتبويبات
+// -------------------------------------------------------------
 function switchAuthMode(mode) {
   playWindowsClick();
   const isLogin = mode === 'login';
@@ -1095,6 +1165,17 @@ function sendOrder() {
   const text = `طلب أوردر جديد 📦\nالاسم: ${name} (${phone})\nمن: ${from} إلى: ${to}${code ? '\nكود الخصم: ' + code : ''}`;
   openWhatsAppDirectly(text);
 }
+
+let logoClicks = 0, logoTimer = null;
+document.getElementById('logoTrigger').addEventListener('click', () => {
+  logoClicks++;
+  clearTimeout(logoTimer);
+  logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
+  if (logoClicks >= 5) {
+    logoClicks = 0;
+    location.href = 'admin.html';
+  }
+});
 
 checkAppAccess();
 </script>
