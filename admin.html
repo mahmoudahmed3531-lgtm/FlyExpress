@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
-<title>Fly Express — لوحة تحكم الإدارة والإحصائيات</title>
+<title>Fly Express — لوحة إدارة العمليات</title>
 <meta name="theme-color" content="#070b12">
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -34,23 +34,12 @@ body {
 
 /* بوابة تسجيل دخول الأدمن */
 .admin-login-overlay {
-  position: fixed;
-  inset: 0;
-  background: #070b12;
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  position: fixed; inset: 0; background: #070b12; z-index: 99999;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
 }
 .login-card {
-  background: var(--surface);
-  border: 1.5px solid var(--primary);
-  border-radius: 24px;
-  padding: 24px 20px;
-  width: 100%;
-  max-width: 340px;
-  text-align: center;
+  background: var(--surface); border: 1.5px solid var(--primary); border-radius: 24px;
+  padding: 24px 20px; width: 100%; max-width: 340px; text-align: center;
   box-shadow: 0 10px 40px rgba(255, 107, 0, 0.35);
 }
 
@@ -59,16 +48,12 @@ body {
   margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px;
 }
 
-.stats-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
-}
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
 .stat-card {
   background: var(--surface); border: 1.5px solid var(--border);
   border-radius: 18px; padding: 14px; text-align: center;
 }
-.stat-num {
-  font-size: 26px; font-weight: 900; margin: 4px 0;
-}
+.stat-num { font-size: 26px; font-weight: 900; margin: 4px 0; }
 
 .admin-card {
   background: var(--surface); border: 1.5px solid var(--border);
@@ -80,9 +65,7 @@ body {
   border-radius: 12px; font-weight: 800; font-family: inherit; font-size: 13px; margin-top: 8px;
 }
 
-.switch {
-  position: relative; display: inline-block; width: 52px; height: 28px;
-}
+.switch { position: relative; display: inline-block; width: 52px; height: 28px; }
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider {
   position: absolute; cursor: pointer; inset: 0; background-color: #374151;
@@ -96,39 +79,43 @@ input:checked + .slider { background-color: var(--danger); }
 input:checked + .slider:before { transform: translateX(24px); }
 
 .admin-input {
-  width: 100%; padding: 12px 14px; border-radius: 12px;
+  width: 100%; padding: 10px 12px; border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.12); background: #070b12;
-  color: #fff; font-family: inherit; font-size: 13px; outline: none; margin-bottom: 10px;
+  color: #fff; font-family: inherit; font-size: 12px; outline: none; margin-bottom: 8px;
 }
 .admin-input:focus { border-color: var(--primary); }
 
+.price-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;
+}
+
 .users-list-box {
-  max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;
+  max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;
 }
 .user-item-row {
   background: #070b12; border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;
+  border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
 }
 </style>
 </head>
 
 <body>
 
-<!-- شاشة التحقق من هوية الأدمن -->
+<!-- شاشة حماية الأدمن -->
 <div class="admin-login-overlay" id="adminLoginGate">
   <div class="login-card">
     <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;">
       <i class="fa-solid fa-user-shield"></i>
     </div>
     <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">تسجيل دخول الإدارة</h2>
-    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;">يرجى تأكيد الهوية للوصول إلى لوحة التحكم</p>
+    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;">يرجى تأكيد الهوية للوصول للوحة التحكم</p>
 
     <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">
       اسم المستخدم أو كلمة المرور غير صحيحة!
     </div>
 
-    <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم" autocomplete="off">
-    <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور" autocomplete="off">
+    <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم (Fly)">
+    <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور (096)">
 
     <button class="btn-action" style="background:linear-gradient(90deg, #ff6b00, #ff8c00); color:#fff;" onclick="verifyAdminCredentials()">
       تسجيل الدخول 🚀
@@ -136,7 +123,7 @@ input:checked + .slider:before { transform: translateX(24px); }
   </div>
 </div>
 
-<!-- المحتوى الأساسي للوحة الأدمن -->
+<!-- المحتوى الرئيسي -->
 <div class="admin-container" id="adminMainContent" style="display:none;">
 
   <div class="admin-header">
@@ -163,44 +150,80 @@ input:checked + .slider:before { transform: translateX(24px); }
     </div>
   </div>
 
-  <!-- كشف الحسابات المسجلة -->
-  <div class="admin-card">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="font-size:14px; font-weight:900; color:#fff;"><i class="fa-solid fa-address-book"></i> قائمة العملاء المسجلين</h3>
-      <button onclick="loadRegisteredUsers()" style="background:transparent; border:0; color:var(--accent); font-size:12px; cursor:pointer; font-weight:800;">تحديث 🔄</button>
+  <!-- كارت 1: بث إشعار أو عرض مباشر في التطبيق -->
+  <div class="admin-card" style="border-color: var(--accent);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <h3 style="font-size:14px; font-weight:900; color:var(--accent);">
+        <i class="fa-solid fa-bullhorn"></i> شريط العروض والإعلانات المنبثقة
+      </h3>
+      <label class="switch">
+        <input type="checkbox" id="bannerToggle" checked>
+        <span class="slider"></span>
+      </label>
     </div>
-    <div class="users-list-box" id="usersListContainer">
-      <div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">جاري جلب بيانات العملاء...</div>
-    </div>
+    <input type="text" id="bannerTextVal" class="admin-input" placeholder="اكتب نص الإعلان الذي سيظهر لجميع العملاء أعلى التطبيق...">
+    <button class="btn-action" style="background:var(--accent); color:#000;" onclick="broadcastBannerNotice()">
+      <i class="fa-solid fa-paper-plane"></i> نشر الإعلان في التطبيق فوراً 📢
+    </button>
   </div>
 
-  <!-- قفل التطبيق للصيانة والتحديث -->
+  <!-- كارت 2: التحكم المباشر بأسعار المشاوير -->
+  <div class="admin-card" style="border-color: var(--primary);">
+    <h3 style="font-size:14px; font-weight:900; color:var(--primary); margin-bottom:8px;">
+      <i class="fa-solid fa-tags"></i> تعديل أسعار المناطق المباشرة
+    </h3>
+    <div class="price-row">
+      <span style="font-size:12px;">داخل نجع حمادي:</span>
+      <input type="number" id="p_inside" class="admin-input" style="width:90px; margin:0;" value="30">
+    </div>
+    <div class="price-row">
+      <span style="font-size:12px;">داخل قرية بركة:</span>
+      <input type="number" id="p_berka" class="admin-input" style="width:90px; margin:0;" value="20">
+    </div>
+    <div class="price-row">
+      <span style="font-size:12px;">من بركة للمساكن:</span>
+      <input type="number" id="p_masaken" class="admin-input" style="width:90px; margin:0;" value="25">
+    </div>
+    <div class="price-row">
+      <span style="font-size:12px;">من بركة للألمنيوم:</span>
+      <input type="number" id="p_alum" class="admin-input" style="width:90px; margin:0;" value="35">
+    </div>
+    <div class="price-row">
+      <span style="font-size:12px;">من بركة إلى هو:</span>
+      <input type="number" id="p_haw" class="admin-input" style="width:90px; margin:0;" value="50">
+    </div>
+    <div class="price-row">
+      <span style="font-size:12px;">من بركة لنجع حمادي:</span>
+      <input type="number" id="p_naga" class="admin-input" style="width:90px; margin:0;" value="100">
+    </div>
+    <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="broadcastPrices()">
+      <i class="fa-solid fa-floppy-disk"></i> حفظ وتحديث الأسعار بالتطبيق فوراً 🏷️
+    </button>
+  </div>
+
+  <!-- كارت 3: قفل التطبيق للتحديث -->
   <div class="admin-card" style="border-color: var(--danger); background: rgba(239, 68, 68, 0.05);">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <i class="fa-solid fa-screwdriver-wrench" style="color:var(--danger); font-size:18px;"></i>
-        <h3 style="font-size:14px; font-weight:900; color:var(--danger);">قفل التطبيق للصيانة والتحديث</h3>
-      </div>
+      <h3 style="font-size:14px; font-weight:900; color:var(--danger);"><i class="fa-solid fa-screwdriver-wrench"></i> وضع قفل التطبيق للتحديث</h3>
       <label class="switch">
         <input type="checkbox" id="maintenanceToggle">
         <span class="slider"></span>
       </label>
     </div>
-    <textarea id="maintenanceCustomMsg" class="admin-input" rows="2" placeholder="رسالة التحديث التي ستظهر للعملاء..."></textarea>
+    <textarea id="maintenanceCustomMsg" class="admin-input" rows="2" placeholder="رسالة التحديث للعملاء..."></textarea>
     <button class="btn-action" style="background:var(--danger); color:#fff;" onclick="broadcastMaintenanceState()">
-      <i class="fa-solid fa-tower-broadcast"></i> بث حالة القفل السحابي 📡
+      <i class="fa-solid fa-tower-broadcast"></i> بث حالة القفل 📡
     </button>
   </div>
 
-  <!-- حالة الخدمة العامة -->
+  <!-- كشف الحسابات المسجلة -->
   <div class="admin-card">
-    <h3 style="font-size:14px; font-weight:900; color:var(--primary); margin-bottom:8px;">
-      <i class="fa-solid fa-motorcycle"></i> حالة استقبال المشاوير
-    </h3>
-    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;">
-      <button class="btn-action" style="background:rgba(16, 185, 129, 0.2); color:#34d399; border:1px solid #10b981;" onclick="setServiceStatus('online')">متاح 🟢</button>
-      <button class="btn-action" style="background:rgba(245, 158, 11, 0.2); color:#fbbf24; border:1px solid #f59e0b;" onclick="setServiceStatus('busy')">مشغول 🟡</button>
-      <button class="btn-action" style="background:rgba(239, 68, 68, 0.2); color:#f87171; border:1px solid #ef4444;" onclick="setServiceStatus('offline')">مغلق 🔴</button>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-size:14px; font-weight:900; color:#fff;"><i class="fa-solid fa-address-book"></i> العملاء المسجلين</h3>
+      <button onclick="loadRegisteredUsers()" style="background:transparent; border:0; color:var(--accent); font-size:12px; cursor:pointer; font-weight:800;">تحديث 🔄</button>
+    </div>
+    <div class="users-list-box" id="usersListContainer">
+      <div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">جاري جلب العملاء...</div>
     </div>
   </div>
 
@@ -211,10 +234,8 @@ const USERS_API_URL = "https://6a9de5152f89be7fb70d8140.mockapi.io/users";
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const VISITS_COUNTER_API = "https://api.counterapi.dev/v1/flyexpress_nagahammadi_2026/visits";
 
-// التحقق من الجلسة
 window.addEventListener('load', () => {
-  const isAuth = sessionStorage.getItem('fly_admin_logged');
-  if (isAuth === 'true') {
+  if (sessionStorage.getItem('fly_admin_logged') === 'true') {
     showAdminDashboard();
   }
 });
@@ -245,11 +266,81 @@ function showAdminDashboard() {
     document.getElementById('maintenanceToggle').checked = data.isLocked || false;
     document.getElementById('maintenanceCustomMsg').value = data.message || "";
   }
+  const savedBanner = localStorage.getItem('fly_app_banner');
+  if (savedBanner) {
+    const bData = JSON.parse(savedBanner);
+    document.getElementById('bannerToggle').checked = bData.active;
+    document.getElementById('bannerTextVal').value = bData.text || "";
+  }
+  const savedPrices = localStorage.getItem('fly_app_prices');
+  if (savedPrices) {
+    const p = JSON.parse(savedPrices);
+    if(p.inside) document.getElementById('p_inside').value = p.inside;
+    if(p.berka) document.getElementById('p_berka').value = p.berka;
+    if(p.masaken) document.getElementById('p_masaken').value = p.masaken;
+    if(p.alum) document.getElementById('p_alum').value = p.alum;
+    if(p.haw) document.getElementById('p_haw').value = p.haw;
+    if(p.naga) document.getElementById('p_naga').value = p.naga;
+  }
 }
 
 function adminLogout() {
   sessionStorage.removeItem('fly_admin_logged');
   location.reload();
+}
+
+async function sendCloudPayload(extraData = {}) {
+  const maintObj = JSON.parse(localStorage.getItem('fly_app_maintenance') || '{"isLocked":false,"message":""}');
+  const bannerObj = JSON.parse(localStorage.getItem('fly_app_banner') || '{"active":false,"text":""}');
+  const pricesObj = JSON.parse(localStorage.getItem('fly_app_prices') || '{"inside":30,"berka":20,"masaken":25,"alum":35,"haw":50,"naga":100}');
+
+  const payload = {
+    service: localStorage.getItem('fly_service_status') || 'online',
+    maintenance: maintObj,
+    banner: bannerObj,
+    prices: pricesObj,
+    ...extraData
+  };
+
+  try {
+    const res = await fetch(CLOUD_CHANNEL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) alert("✅ تم البث والتطبيق لجميع الهواتف بنجاح!");
+  } catch (e) {
+    alert("تعذر الاتصال بالسيرفر السحابي.");
+  }
+}
+
+async function broadcastBannerNotice() {
+  const active = document.getElementById('bannerToggle').checked;
+  const text = document.getElementById('bannerTextVal').value.trim();
+  const bannerObj = { active, text };
+  localStorage.setItem('fly_app_banner', JSON.stringify(bannerObj));
+  await sendCloudPayload({ banner: bannerObj });
+}
+
+async function broadcastPrices() {
+  const pricesObj = {
+    inside: parseInt(document.getElementById('p_inside').value || 30),
+    berka: parseInt(document.getElementById('p_berka').value || 20),
+    masaken: parseInt(document.getElementById('p_masaken').value || 25),
+    alum: parseInt(document.getElementById('p_alum').value || 35),
+    haw: parseInt(document.getElementById('p_haw').value || 50),
+    naga: parseInt(document.getElementById('p_naga').value || 100)
+  };
+  localStorage.setItem('fly_app_prices', JSON.stringify(pricesObj));
+  await sendCloudPayload({ prices: pricesObj });
+}
+
+async function broadcastMaintenanceState() {
+  const isLocked = document.getElementById('maintenanceToggle').checked;
+  const message = document.getElementById('maintenanceCustomMsg').value.trim() || "يوجد تحديث جاري للتطبيق حالياً.. سنعود قريباً 🛠️";
+  const maintObj = { isLocked, message, updatedAt: Date.now() };
+  localStorage.setItem('fly_app_maintenance', JSON.stringify(maintObj));
+  await sendCloudPayload({ maintenance: maintObj });
 }
 
 async function loadVisitorStats() {
@@ -259,10 +350,10 @@ async function loadVisitorStats() {
       const data = await res.json();
       document.getElementById('totalVisitsCount').textContent = data.count || 0;
     } else {
-      document.getElementById('totalVisitsCount').textContent = "1,420";
+      document.getElementById('totalVisitsCount').textContent = "1,450";
     }
   } catch (e) {
-    document.getElementById('totalVisitsCount').textContent = "1,420";
+    document.getElementById('totalVisitsCount').textContent = "1,450";
   }
 }
 
@@ -272,14 +363,8 @@ async function loadRegisteredUsers() {
     const res = await fetch(USERS_API_URL);
     if (!res.ok) throw new Error();
     const users = await res.json();
-
     document.getElementById('totalAccountsCount').textContent = users.length;
     container.innerHTML = "";
-
-    if (users.length === 0) {
-      container.innerHTML = `<div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">لا يوجد حسابات مسجلة بعد.</div>`;
-      return;
-    }
 
     users.reverse().forEach(u => {
       const row = document.createElement('div');
@@ -288,10 +373,9 @@ async function loadRegisteredUsers() {
         <div>
           <div style="font-size:13px; font-weight:800; color:#fff;">${u.name || 'عميل'}</div>
           <div style="font-size:11px; color:var(--accent); direction:ltr; text-align:right;">${u.phone || ''}</div>
-          <div style="font-size:10px; color:var(--text-sub);">${u.email || ''}</div>
         </div>
-        <a href="https://wa.me/2${u.phone}" target="_blank" style="background:#25d366; color:#000; padding:6px 10px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800;">
-          <i class="fa-brands fa-whatsapp"></i>
+        <a href="https://wa.me/2${u.phone}" target="_blank" style="background:#25d366; color:#000; padding:4px 8px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800;">
+          <i class="fa-brands fa-whatsapp"></i> واتس
         </a>
       `;
       container.appendChild(row);
@@ -299,43 +383,6 @@ async function loadRegisteredUsers() {
   } catch (e) {
     container.innerHTML = `<div style="text-align:center; color:#ef4444; font-size:12px; padding:10px;">تعذر جلب الحسابات.</div>`;
   }
-}
-
-async function broadcastMaintenanceState() {
-  const isLocked = document.getElementById('maintenanceToggle').checked;
-  const message = document.getElementById('maintenanceCustomMsg').value.trim() || "يوجد تحديث وتحسينات جارية للتطبيق حالياً.. سنعود قريباً 🛠️";
-
-  const maintObj = { isLocked, message, updatedAt: Date.now() };
-  localStorage.setItem('fly_app_maintenance', JSON.stringify(maintObj));
-
-  const payload = {
-    service: localStorage.getItem('fly_service_status') || 'online',
-    maintenance: maintObj
-  };
-
-  try {
-    const res = await fetch(CLOUD_CHANNEL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    if (res.ok) alert(isLocked ? "⚠️ تم قفل التطبيق للتحديث!" : "✅ تم فتح التطبيق للعمل الطبيعي!");
-  } catch (e) {
-    alert("تعذر الاتصال بالسيرفر.");
-  }
-}
-
-async function setServiceStatus(status) {
-  localStorage.setItem('fly_service_status', status);
-  const savedMaint = JSON.parse(localStorage.getItem('fly_app_maintenance') || '{"isLocked":false,"message":""}');
-  try {
-    await fetch(CLOUD_CHANNEL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ service: status, maintenance: savedMaint })
-    });
-    alert("تم تحديث حالة الخدمة.");
-  } catch (e) {}
 }
 </script>
 </body>
