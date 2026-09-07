@@ -310,7 +310,7 @@ body {
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
-/* كارت البانر الخاص بقسم الألعاب في الصفحة الرئيسية */
+/* كارت البانر في الرئيسية */
 .games-hub-banner {
   background: linear-gradient(135deg, #ff6b00, #a855f7);
   border-radius: 20px;
@@ -328,7 +328,6 @@ body {
   50% { transform: scale(1.02); }
 }
 
-/* كروت الألعاب داخل تبويب الألعاب */
 .hard-game-card {
   background: #0f172a;
   border: 1.5px solid rgba(255, 255, 255, 0.1);
@@ -349,6 +348,27 @@ body {
   border: 1px solid rgba(239, 68, 68, 0.4);
 }
 
+/* شبكة لعبة اختيار الصور */
+.photo-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 14px 0;
+}
+.photo-matrix-item {
+  height: 75px;
+  background: #1e293b;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  cursor: pointer;
+  transition: transform 0.1s ease, border-color 0.15s ease;
+}
+.photo-matrix-item:active { transform: scale(0.92); }
+
 /* شريط التنقل السفلي */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 72px; background: rgba(7, 11, 18, 0.98);
@@ -363,8 +383,7 @@ body {
 .nav-item.active { color: var(--primary); }
 
 .order-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-.order-row.single { grid-template-columns: 1fr; }
-.order-input, .order-select, .order-textarea {
+.order-input {
   width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(8, 12, 20, 0.9);
   color: #fff; font-family: inherit; font-size: 13px; outline: none;
 }
@@ -401,7 +420,7 @@ body {
   <div class="loader-spinner"></div>
 </div>
 
-<!-- بوابة الدخول -->
+<!-- شاشة القفل -->
 <div class="auth-gate-screen" id="authGateScreen">
   <div class="gate-card">
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
@@ -449,7 +468,7 @@ body {
     <div class="status-badge"><span class="status-dot"></span><span>متاح</span></div>
   </header>
 
-  <!-- 1. تبويب الرئيسية -->
+  <!-- 1. الرئيسية -->
   <main id="tab-home" class="tab-view active">
     <div class="user-welcome-card">
       <div>
@@ -459,13 +478,13 @@ body {
       <button onclick="logoutUser()" style="background:transparent; border:0; color:#ef4444; font-size:11px; font-weight:800; cursor:pointer;">خروج 🚪</button>
     </div>
 
-    <!-- كارت مباشر لصالة الألعاب التنافسية -->
+    <!-- كارت الألعاب في الواجهة -->
     <div class="games-hub-banner" onclick="switchTab('tab-games', document.querySelectorAll('.nav-item')[3])">
       <div style="display:flex; align-items:center; gap:12px;">
         <div style="font-size:32px;">🎮</div>
         <div>
           <h3 style="font-size:15px; font-weight:900; color:#fff;">ركن تحديات: العب واكسب! 🏆</h3>
-          <p style="font-size:11px; color:#fff; opacity:0.9;">ألعاب حقيقية وصعبة: سباق موتوسيكلات، ماريو، و500 فزورة!</p>
+          <p style="font-size:11px; color:#fff; opacity:0.9;">اختبر سرعتك ومعلوماتك واكسب خصومات وتوصيلات مجانية!</p>
         </div>
       </div>
       <i class="fa-solid fa-chevron-left" style="color:#fff;"></i>
@@ -492,7 +511,7 @@ body {
     </div>
   </main>
 
-  <!-- 2. تبويب الطلبات -->
+  <!-- 2. الطلبات -->
   <section id="tab-orders" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار</div>
     <div class="form-card" id="sec-order">
@@ -509,7 +528,7 @@ body {
     </div>
   </section>
 
-  <!-- 3. تبويب الأسعار -->
+  <!-- 3. الأسعار -->
   <section id="tab-prices" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار التقديرية</div>
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>داخل نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">30 ج</span></div>
@@ -517,49 +536,39 @@ body {
     <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
   </section>
 
-  <!-- 4. تبويب ركن الألعاب الجديد («العب واكسب») -->
+  <!-- 4. تبويب ركن الألعاب («العب واكسب») - لعبتين فقط بصعوبة حقيقية -->
   <section id="tab-games" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-gamepad"></i> صالة الألعاب والتحديات الكبرى 🏆</div>
-    <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">الألعاب هنا صعبة وتتطلب مهارة وسرعة، انجح في التحدي واكسب خصمك الموثق فوراً!</p>
+    <div class="section-title"><i class="fa-solid fa-gamepad"></i> ركن التحديات: العب واكسب 🏆</div>
+    <p style="font-size:11px; color:var(--text-sub); margin-bottom:16px;">ألعاب صعبة تتطلب تركيزاً ورد فعل خاطف.. الفوز يمنحك كود خصم موثق فوراً!</p>
 
-    <!-- لعبة 1 -->
+    <!-- لعبة 1: تحدي الأسئلة الصعب -->
     <div class="hard-game-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="font-size:14px; font-weight:900; color:var(--primary);"><i class="fa-solid fa-motorcycle"></i> 1. سباق التوصيل الخارق (Traffic Rush)</h4>
-        <span class="hard-game-badge">صعوبة: عالية 🔥</span>
+        <h4 style="font-size:14px; font-weight:900; color:#ffd166;"><i class="fa-solid fa-brain"></i> 1. تحدي الـ 500 سؤال (عارف بلدك؟)</h4>
+        <span class="hard-game-badge">وقت ضيق 🔥</span>
       </div>
-      <p style="font-size:11px; color:#cbd5e1;">أنت دليفري في نجع حمادي، مطلوب توصل 1000 متر في أقل من 35 ثانية وتتفادى سيارات وعوائق الطريق!</p>
-      <button class="order-btn" onclick="openMotoGame()">دخول السباق 🛵</button>
+      <p style="font-size:11px; color:#cbd5e1;">معك 10 ثوانٍ فقط لكل سؤال! مطلوب 10 إجابات صحيحة متتالية بدون أي خطأ لنيل الجائزة.</p>
+      <button class="order-btn" style="background:linear-gradient(90deg, #ffd166, #ff8c00); color:#000;" onclick="openQuizGame()">دخول تحدي الأسئلة 🧠</button>
     </div>
 
-    <!-- لعبة 2 -->
+    <!-- لعبة 2: قوة الملاحظة والصور الصحيحة -->
     <div class="hard-game-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="font-size:14px; font-weight:900; color:var(--accent);"><i class="fa-solid fa-person-running"></i> 2. مغامرات كابتن Fly (ماريو نجع حمادي)</h4>
-        <span class="hard-game-badge">40 مرحلة 🏰</span>
+        <h4 style="font-size:14px; font-weight:900; color:var(--accent);"><i class="fa-solid fa-eye"></i> 2. تحدي اختيار الصورة الصحيحة الخاطف</h4>
+        <span class="hard-game-badge">سرعة وملاحظة ⚡</span>
       </div>
-      <p style="font-size:11px; color:#cbd5e1;">لعبة منصات حقيقية: اقفز وتفادى الحفر والوحوش واجمع صناديق Fly Express للوصول لخط النهاية!</p>
-      <button class="order-btn" style="background:linear-gradient(90deg, #00e5ff, #0077b6); color:#000;" onclick="openMarioGame()">بدء المغامرة 🕹️</button>
-    </div>
-
-    <!-- لعبة 3 -->
-    <div class="hard-game-card">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="font-size:14px; font-weight:900; color:#ffd166;"><i class="fa-solid fa-brain"></i> 3. تحدي الـ 500 سؤال (عارف بلدك؟)</h4>
-        <span class="hard-game-badge">كل 10 مراحل هدية 🎁</span>
-      </div>
-      <p style="font-size:11px; color:#cbd5e1;">أجب على 10 أسئلة متتالية بدون أي خطأ عن نجع حمادي والمعلومات العامة لاقتناص التوصيلة المجانية!</p>
-      <button class="order-btn" style="background:linear-gradient(90deg, #ffd166, #ff8c00); color:#000;" onclick="openQuiz500Game()">بدء الاختبار 🧠</button>
+      <p style="font-size:11px; color:#cbd5e1;">يطلب منك عنصر محدد، وعليك رصده والضغط عليه وسط خيارات مضللة خلال 3 ثوانٍ فقط لـ 10 جولات متتالية!</p>
+      <button class="order-btn" style="background:linear-gradient(90deg, #00e5ff, #0077b6); color:#000;" onclick="openPhotoChallengeGame()">دخول تحدي الصور 🎯</button>
     </div>
   </section>
 
-  <!-- 5. تبويب التواصل -->
+  <!-- 5. التواصل -->
   <section id="tab-contact" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
     <button class="order-btn" style="background:#25d366; color:#000;" onclick="openDirectWhatsApp('مرحباً Fly Express، أريد الاستفسار')"><i class="fa-brands fa-whatsapp"></i> واتساب المباشر</button>
   </section>
 
-  <!-- شريط التنقل السفلي المطور -->
+  <!-- شريط التنقل السفلي -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
     <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-motorcycle"></i><span>الطلبات</span></button>
@@ -568,57 +577,45 @@ body {
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
 
-  <!-- نافذة لعبة 1: سباق الموتوسيكل الصعب -->
-  <div class="modal-backdrop" id="motoGameModal">
+  <!-- نافذة 1: لعبة الأسئلة الصعبة -->
+  <div class="modal-backdrop" id="quizModal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closeGameAndResumeMusic('motoGameModal')">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:var(--primary);">🛵 سباق التوصيل السريع</h3>
-      <div style="display:flex; justify-content:space-between; font-size:12px; margin:6px 0; font-weight:800;">
-        <span>الوقت: <strong id="motoTimerTxt" style="color:#ef4444;">35</strong> ث</span>
-        <span>المسافة: <strong id="motoDistTxt" style="color:var(--accent);">0</strong> / 1000م</span>
+      <button class="modal-close" onclick="closeGameAndResumeMusic('quizModal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:#ffd166;">🧠 تحدي الـ 500 سؤال</h3>
+      
+      <div style="display:flex; justify-content:space-between; font-size:12px; margin:8px 0; font-weight:800;">
+        <span>المرحلة: <strong id="quizProgTxt" style="color:var(--primary);">1 / 10</strong></span>
+        <span>الوقت المتبقي: <strong id="quizTimerTxt" style="color:#ef4444;">10s</strong></span>
       </div>
-      <canvas id="motoCanvas" width="280" height="240" style="background:#111827; border-radius:14px; border:2px solid #ff6b00;"></canvas>
-      <div style="display:flex; gap:10px; margin-top:8px;">
-        <button class="order-btn" style="flex:1;" onpointerdown="motoMove(-1)">◀ يسار</button>
-        <button class="order-btn" style="flex:1;" onpointerdown="motoMove(1)">يمين ▶</button>
-      </div>
-      <button class="order-btn" style="background:#10b981; margin-top:8px;" id="startMotoBtn" onclick="startMotoGameLoop()">ابدأ السباق 🏁</button>
-      <div id="motoGameStatus" style="font-size:12px; font-weight:800; margin-top:6px; color:#34d399;"></div>
-    </div>
-  </div>
 
-  <!-- نافذة لعبة 2: ماريو كابتن Fly -->
-  <div class="modal-backdrop" id="marioGameModal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeGameAndResumeMusic('marioGameModal')">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:var(--accent);">🕹️ مغامرات كابتن Fly</h3>
-      <div style="display:flex; justify-content:space-between; font-size:12px; margin:6px 0; font-weight:800;">
-        <span>المرحلة: <strong id="marioStageTxt" style="color:#ffd166;">1 / 40</strong></span>
-        <span>العملات: <strong id="marioCoinsTxt" style="color:var(--accent);">0</strong></span>
+      <div style="width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:10px; margin-bottom:12px; overflow:hidden;">
+        <div id="quizTimerBar" style="width:100%; height:100%; background:#ef4444; transition:width 1s linear;"></div>
       </div>
-      <canvas id="marioCanvas" width="280" height="210" style="background:#0b1329; border-radius:14px; border:2px solid #00e5ff;"></canvas>
-      <div style="display:flex; gap:6px; margin-top:8px;">
-        <button class="order-btn" style="flex:1;" onpointerdown="marioMove(-1)" onpointerup="marioStop()">◀</button>
-        <button class="order-btn" style="flex:1; background:#00e5ff; color:#000;" onpointerdown="marioJump()">قفز ⬆</button>
-        <button class="order-btn" style="flex:1;" onpointerdown="marioMove(1)" onpointerup="marioStop()">▶</button>
-      </div>
-      <button class="order-btn" style="background:#10b981; margin-top:8px;" id="startMarioBtn" onclick="startMarioGameLoop()">دخول المرحلة 🚀</button>
-      <div id="marioGameStatus" style="font-size:12px; font-weight:800; margin-top:6px; color:#34d399;"></div>
-    </div>
-  </div>
 
-  <!-- نافذة لعبة 3: الـ 500 سؤال -->
-  <div class="modal-backdrop" id="quiz500Modal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeGameAndResumeMusic('quiz500Modal')">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:#ffd166;">🧠 تحدي المعرفة ونجع حمادي</h3>
-      <div style="display:flex; justify-content:space-between; font-size:12px; margin:6px 0; font-weight:800;">
-        <span>السؤال: <strong id="quizProgTxt" style="color:var(--primary);">1 / 10</strong></span>
-        <span>الرصيد: <strong id="quizStreakTxt" style="color:#10b981;">0 صح</strong></span>
-      </div>
-      <p id="quizQuestionBox" style="font-size:13px; font-weight:800; margin:12px 0; min-height:40px; color:#fff;"></p>
+      <p id="quizQuestionBox" style="font-size:13px; font-weight:800; margin:10px 0; min-height:44px; color:#fff;"></p>
       <div id="quizAnswersGrid" style="display:flex; flex-direction:column; gap:8px;"></div>
       <div id="quizStatusTxt" style="font-size:12px; font-weight:800; margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <!-- نافذة 2: لعبة اختيار الصور الصحيحة الصعبة -->
+  <div class="modal-backdrop" id="photoGameModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeGameAndResumeMusic('photoGameModal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:var(--accent);">🎯 تحدي الصور السريع الخاطف</h3>
+      
+      <div style="display:flex; justify-content:space-between; font-size:12px; margin:8px 0; font-weight:800;">
+        <span>الجولة: <strong id="photoRoundTxt" style="color:#10b981;">1 / 10</strong></span>
+        <span>المؤقت: <strong id="photoTimerTxt" style="color:#ef4444;">3.5s</strong></span>
+      </div>
+
+      <div style="background:rgba(0, 229, 255, 0.1); border:1.5px dashed var(--accent); border-radius:12px; padding:8px; margin-bottom:8px;">
+        <span style="font-size:11px; color:var(--text-sub);">المطلوب اختياره بسرعة:</span>
+        <div id="photoTargetName" style="font-size:14px; font-weight:900; color:#fff; margin-top:2px;">جاري التحديد...</div>
+      </div>
+
+      <div class="photo-matrix-grid" id="photoMatrixContainer"></div>
+      <div id="photoStatusTxt" style="font-size:12px; font-weight:800; margin-top:6px;"></div>
     </div>
   </div>
 
@@ -654,7 +651,7 @@ function forceDownloadRedirect(e, url) {
 }
 
 // -------------------------------------------------------------
-// إدارة الصوت: موسيقى الخلفية + محرك أصوات الألعاب المعزول
+// إدارة الصوت: عزل صوت الموسيقى الأساسية وأصوات الألعاب
 // -------------------------------------------------------------
 let globalAudioCtx = null;
 function getAudioContext() {
@@ -666,7 +663,6 @@ function getAudioContext() {
   return globalAudioCtx;
 }
 
-// صوت كليك الويندوز السريع
 function playWindowsClick() {
   try {
     const ctx = getAudioContext();
@@ -685,7 +681,6 @@ function playWindowsClick() {
   } catch (e) {}
 }
 
-// مولد أصوات الألعاب التفاعلية (بدون تحميل ملفات خارجية لتجنب الحظر والبطء)
 function playRetroTone(freq, type = 'square', duration = 0.1, gainVal = 0.15) {
   try {
     const ctx = getAudioContext();
@@ -704,10 +699,9 @@ function playRetroTone(freq, type = 'square', duration = 0.1, gainVal = 0.15) {
   } catch (e) {}
 }
 
-// موسيقى التطبيق الأساسية
 let backgroundAudio = null;
 let isMusicPlaying = false;
-let isGameActive = false; // لمراقبة حالة الألعاب
+let isGameActive = false;
 
 function initMusicElement() {
   if (!backgroundAudio) {
@@ -721,7 +715,7 @@ function initMusicElement() {
 }
 
 function startMusicPlayback() {
-  if (isGameActive) return; // منع التشغيل لو اللعبة مفتوحة
+  if (isGameActive) return;
   const audio = initMusicElement();
   getAudioContext();
   audio.play().then(() => { isMusicPlaying = true; }).catch(() => {});
@@ -737,7 +731,7 @@ function pauseMainMusicForGame() {
 function resumeMainMusicAfterGame() {
   isGameActive = false;
   const activeTab = document.querySelector('.tab-view.active');
-  if (activeTab && (activeTab.id === 'tab-home' || activeTab.id === 'tab-orders')) {
+  if (activeTab && (activeTab.id === 'tab-home' || activeTab.id === 'tab-orders' || activeTab.id === 'tab-prices')) {
     if (backgroundAudio) {
       backgroundAudio.play().catch(() => {});
     }
@@ -774,7 +768,7 @@ function awardCoupon(gameName, prizeTxt, prizeKey) {
   localStorage.setItem('fly_discount_code', code);
   localStorage.setItem('fly_locked_phone', phone);
 
-  playRetroTone(880, 'triangle', 0.5, 0.3); // صوت نغمة الفوز
+  playRetroTone(880, 'triangle', 0.5, 0.3);
   setTimeout(() => playRetroTone(1174, 'triangle', 0.6, 0.3), 150);
 
   const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
@@ -791,296 +785,217 @@ function openWhatsAppDirectly(text) {
 function closeGameAndResumeMusic(modalId) {
   playWindowsClick();
   document.getElementById(modalId).classList.remove('show');
-  stopAllGameLoops();
+  clearInterval(quizTimerInterval);
+  clearInterval(photoTimerInterval);
   resumeMainMusicAfterGame();
 }
 
-function stopAllGameLoops() {
-  motoRunning = false;
-  marioRunning = false;
-}
-
 // -------------------------------------------------------------
-// 1. لعبة سباق التوصيل الخارق (Traffic Rush)
-// -------------------------------------------------------------
-let motoRunning = false, motoX = 120, motoDist = 0, motoTime = 35, motoObstacles = [], motoLoop = null;
-
-function openMotoGame() {
-  playWindowsClick();
-  pauseMainMusicForGame();
-  document.getElementById('motoGameStatus').textContent = "";
-  document.getElementById('motoTimerTxt').textContent = "35";
-  document.getElementById('motoDistTxt').textContent = "0";
-  document.getElementById('startMotoBtn').style.display = "block";
-  document.getElementById('motoGameModal').classList.add('show');
-  drawMotoInitial();
-}
-
-function drawMotoInitial() {
-  const c = document.getElementById('motoCanvas').getContext('2d');
-  c.clearRect(0,0,280,240);
-  c.fillStyle = "#374151";
-  c.fillRect(30, 0, 220, 240); // الطريق
-  c.font = "26px Cairo";
-  c.fillText("🛵", motoX, 210);
-}
-
-function motoMove(dir) {
-  playRetroTone(400, 'square', 0.05, 0.1); // صوت المحرك
-  motoX = Math.max(45, Math.min(205, motoX + dir * 40));
-  if (!motoRunning) drawMotoInitial();
-}
-
-function startMotoGameLoop() {
-  playWindowsClick();
-  motoRunning = true;
-  motoDist = 0;
-  motoTime = 35;
-  motoObstacles = [];
-  document.getElementById('startMotoBtn').style.display = "none";
-  const c = document.getElementById('motoCanvas').getContext('2d');
-
-  const timerInt = setInterval(() => {
-    if (!motoRunning) { clearInterval(timerInt); return; }
-    motoTime--;
-    document.getElementById('motoTimerTxt').textContent = motoTime;
-    if (motoTime <= 0) {
-      motoRunning = false;
-      clearInterval(timerInt);
-      playRetroTone(150, 'sawtooth', 0.4, 0.2); // صوت الخسارة
-      document.getElementById('startMotoBtn').style.display = "block";
-      document.getElementById('motoGameStatus').innerHTML = "<span style='color:#ef4444;'>انتهى الوقت! الزحمة عطلتك، حاول مجدداً.</span>";
-    }
-  }, 1000);
-
-  motoLoop = setInterval(() => {
-    if (!motoRunning) { clearInterval(motoLoop); return; }
-    motoDist += 6;
-    document.getElementById('motoDistTxt').textContent = motoDist;
-
-    // توليد عوائق وسيارات بطيئة
-    if (Math.random() < 0.22) {
-      const laneX = [50, 120, 190][Math.floor(Math.random() * 3)];
-      motoObstacles.push({ x: laneX, y: -20, icon: Math.random() > 0.5 ? "🚗" : "🚧" });
-    }
-
-    c.clearRect(0,0,280,240);
-    // رسم الطريق وخطوطه
-    c.fillStyle = "#1f2937";
-    c.fillRect(30, 0, 220, 240);
-    c.fillStyle = "#fbbf24";
-    for(let y = (motoDist % 40); y < 240; y += 40) {
-      c.fillRect(100, y, 4, 15);
-      c.fillRect(170, y, 4, 15);
-    }
-
-    // رسم الموتوسيكل
-    c.font = "26px Cairo";
-    c.fillText("🛵", motoX, 210);
-
-    // تحديث العوائق
-    for (let i = 0; i < motoObstacles.length; i++) {
-      let ob = motoObstacles[i];
-      ob.y += 7;
-      c.fillText(ob.icon, ob.x, ob.y);
-
-      // تصادم
-      if (Math.abs(ob.x - motoX) < 28 && Math.abs(ob.y - 210) < 26) {
-        playRetroTone(120, 'sawtooth', 0.15, 0.2);
-        motoDist = Math.max(0, motoDist - 120); // عقوبة الاصطدام
-        motoObstacles.splice(i, 1);
-        i--;
-      }
-    }
-
-    // الفوز بإنهاء 1000 متر
-    if (motoDist >= 1000) {
-      motoRunning = false;
-      clearInterval(motoLoop);
-      clearInterval(timerInt);
-      document.getElementById('startMotoBtn').style.display = "block";
-      const code = awardCoupon("سباق التوصيل الخارق", "توصيلة مجانية 🛵", "FREE");
-      document.getElementById('motoGameStatus').innerHTML = `🏆 كفو يا طيار! وصلت بالموعد.<br>كودك: <strong>${code}</strong>`;
-    }
-  }, 45);
-}
-
-// -------------------------------------------------------------
-// 2. مغامرات كابتن Fly (ماريو نجع حمادي)
-// -------------------------------------------------------------
-let marioRunning = false, mX = 20, mY = 160, mVy = 0, mG = 1.2, isJumping = false, mDir = 0, mCoins = 0, currentStage = 1;
-const marioStagesMax = 40;
-
-function openMarioGame() {
-  playWindowsClick();
-  pauseMainMusicForGame();
-  document.getElementById('marioGameStatus').textContent = "";
-  document.getElementById('marioGameModal').classList.add('show');
-  drawMarioScene();
-}
-
-function drawMarioScene() {
-  const c = document.getElementById('marioCanvas').getContext('2d');
-  c.clearRect(0,0,280,210);
-  c.fillStyle = "#1e293b";
-  c.fillRect(0, 185, 280, 25); // الأرضية
-  c.font = "22px Cairo";
-  c.fillText("📦", 130, 140); // صندوق
-  c.fillText("🏁", 245, 180); // علم النهاية
-  c.fillText("🏃", mX, mY);
-}
-
-function marioMove(dir) { mDir = dir; }
-function marioStop() { mDir = 0; }
-function marioJump() {
-  if (!isJumping) {
-    playRetroTone(600, 'square', 0.12, 0.2);
-    mVy = -11;
-    isJumping = true;
-  }
-}
-
-function startMarioGameLoop() {
-  playWindowsClick();
-  marioRunning = true;
-  mX = 20; mY = 160; mVy = 0; isJumping = false;
-  document.getElementById('startMarioBtn').style.display = "none";
-  const c = document.getElementById('marioCanvas').getContext('2d');
-
-  const mLoop = setInterval(() => {
-    if (!marioRunning) { clearInterval(mLoop); return; }
-    mX += mDir * 4;
-    mY += mVy;
-    mVy += mG;
-
-    // الاصطدام بالأرض
-    if (mY >= 160) {
-      mY = 160;
-      mVy = 0;
-      isJumping = false;
-    }
-
-    c.clearRect(0,0,280,210);
-    // أرضية مع فجوة حفرة خطيرة في المنتصف تزداد صعوبتها بالمراحل
-    c.fillStyle = "#1e293b";
-    c.fillRect(0, 185, 90, 25);
-    c.fillRect(150, 185, 130, 25);
-
-    // وحش متحرك
-    const monsterX = 180 + Math.sin(Date.now() / 250) * 35;
-    c.font = "20px Cairo";
-    c.fillText("👾", monsterX, 180);
-
-    // علم النهاية
-    c.fillText("🏁", 250, 180);
-    c.fillText("🏃", mX, mY);
-
-    // السقوط في الحفرة
-    if (mX > 90 && mX < 145 && mY >= 160) {
-      marioRunning = false;
-      clearInterval(mLoop);
-      playRetroTone(100, 'sawtooth', 0.3, 0.25);
-      document.getElementById('startMarioBtn').style.display = "block";
-      document.getElementById('marioGameStatus').innerHTML = "<span style='color:#ef4444;'>سقطت في الحفرة! حاول ثانية.</span>";
-    }
-
-    // الاصطدام بالوحش
-    if (Math.abs(mX - monsterX) < 18 && Math.abs(mY - 170) < 15) {
-      marioRunning = false;
-      clearInterval(mLoop);
-      playRetroTone(90, 'sawtooth', 0.3, 0.25);
-      document.getElementById('startMarioBtn').style.display = "block";
-      document.getElementById('marioGameStatus').innerHTML = "<span style='color:#ef4444;'>الوحش صدمك! ركّز في القفز.</span>";
-    }
-
-    // الوصول لخط النهاية
-    if (mX >= 240) {
-      marioRunning = false;
-      clearInterval(mLoop);
-      currentStage++;
-      document.getElementById('marioStageTxt').textContent = `${currentStage} / ${marioStagesMax}`;
-      document.getElementById('startMarioBtn').style.display = "block";
-      const code = awardCoupon(`مغامرات كابتن Fly - مرحلة ${currentStage-1}`, "خصم 10 جنيه", "10EGP");
-      document.getElementById('marioGameStatus').innerHTML = `🎉 بطل! عديت المرحلة.<br>كودك الموثق: <strong>${code}</strong>`;
-    }
-  }, 35);
-}
-
-// -------------------------------------------------------------
-// 3. بنك الـ 500 سؤال (عارف بلدك؟)
+// 1. لعبة الأسئلة الصعبة (10 أسئلة متتالية بدون خطأ وبوقت 10 ثوانٍ)
 // -------------------------------------------------------------
 const questionBank = [
-  { q: "ما هي المدينة الملقبة بمدينة السكر في قنا وتشتهر بقناطرها الشهيرة؟", a: ["نجع حمادي", "دشنا", "فرشوط", "أبو تشت"], r: 0 },
-  { q: "قرية مشهورة بنجع حمادي تقع قرب مصنع الألمنيوم ويربطها خط توصيل سريع مع Fly Express؟", a: ["قرية بركة", "هو", "الرئيسية", "الحلفاية"], r: 0 },
-  { q: "أكبر مجمع صناعي للألمنيوم في الشرق الأوسط يقع في مدينة؟", a: ["نجع حمادي", "سفاجا", "قوص", "كوم أمبو"], r: 0 },
-  { q: "كم دقيقة يستغرق دليفري Fly Express في المتوسط للمشاوير الداخلية العاجلة؟", a: ["10 إلى 15 دقيقة", "ساعتين", "يومين", "60 دقيقة"], r: 0 },
+  { q: "ما هي المدينة الملقبة بمدينة السكر في قنا وتشتهر بقناطرها التاريخية؟", a: ["نجع حمادي", "دشنا", "فرشوط", "أبو تشت"], r: 0 },
+  { q: "قرية بنجع حمادي تقع قرب مصنع الألمنيوم ويربطها خط توصيل مباشر في التطبيق؟", a: ["قرية بركة", "هو", "الرئيسية", "الحلفاية"], r: 0 },
+  { q: "أكبر مجمع ومصنع لصناعة الألمنيوم في الشرق الأوسط يقع في؟", a: ["نجع حمادي", "سفاجا", "قوص", "كوم أمبو"], r: 0 },
+  { q: "كم دقيقة يستغرق دليفري Fly Express في المتوسط للمشاوير الداخلية العاجلة؟", a: ["10 إلى 15 دقيقة", "ساعتين", "يوم كامل", "60 دقيقة"], r: 0 },
   { q: "خدمة رادار الأمان في تطبيق Fly Express مخصصة لمتابعة أي رحلة؟", a: ["رحلة المدرسة اليومية للطلاب", "رحلات الطيران الدولي", "أسعار العملات", "مباريات الدوري"], r: 0 },
-  { q: "ما هي القرية التاريخية بنجع حمادي التي تحتوي على معبد حتحور الشهير بالمنطقة؟", a: ["قرية هو", "بهجورة", "أولاد نجم", "القصر"], r: 0 },
-  { q: "عند طلب مشوار صيدلية طارئة في Fly Express، متى يتم التحرك؟", a: ["فوراً وبأولوية طارئة", "في اليوم التالي", "بعد أسبوع", "وقت الفراغ"], r: 0 },
-  { q: "كوبري نجع حمادي القديم الشهير على النيل تم تشييده في عهد من؟", a: ["الخديوي عباس حلمي الثاني", "محمد علي باشا", "الملك فاروق", "السادات"], r: 0 },
-  { q: "ما هي الخدمة التي يقدمها Fly Express لأولياء الأمور لتوفير تكلفة مشاوير الإخوة؟", a: ["خصم الإخوة بحاسبة الاشتراكات", "منع التوصيل", "مضاعفة السعر", "لا يوجد"], r: 0 },
-  { q: "ما هو الرمز الموثق لكوبونات الخصم التي تصدرها ألعاب Fly Express؟", a: ["كود مشفر وصالح لمدة ساعتين", "كود ورقي يضيع", "بدون كود", "رقم عشوائي"], r: 0 }
+  { q: "القرية التاريخية بنجع حمادي التي تحتوي على معبد وثروة أثرية عريقة هي؟", a: ["قرية هو", "بهجورة", "أولاد نجم", "القصر"], r: 0 },
+  { q: "عند طلب مشوار صيدلية طارئة في التطبيق، متى يتم التحرك فوراً؟", a: ["فوراً وبأولوية طارئة", "في اليوم التالي", "بعد أسبوع", "وقت الفراغ"], r: 0 },
+  { q: "كوبري وقناطر نجع حمادي القديمة الشهيرة على النيل شُيدت في عهد من؟", a: ["الخديوي عباس حلمي الثاني", "محمد علي باشا", "الملك فاروق", "جمال عبد الناصر"], r: 0 },
+  { q: "ما الخدمة التي يقدمها التطبيق لأولياء الأمور لتوفير تكلفة مشاوير الأبناء والإخوة؟", a: ["خصم الإخوة بحاسبة المدارس", "منع التوصيل", "مضاعفة السعر", "رسوم إضافية"], r: 0 },
+  { q: "ما الميزة الأمنية في كوبونات الخصم التي تصدرها ألعاب Fly Express؟", a: ["كود مشفر وصالح لساعتين ومرتبط برقمك", "كود عام مكرر", "بدون كود", "رقم غير موثق"], r: 0 }
 ];
 
-let quizCurrentIdx = 0, quizCorrectStreak = 0;
+let quizStreak = 0;
+let quizTimer = 10;
+let quizTimerInterval = null;
 
-function openQuiz500Game() {
+function openQuizGame() {
   playWindowsClick();
   pauseMainMusicForGame();
-  quizCurrentIdx = 0;
-  quizCorrectStreak = 0;
+  quizStreak = 0;
   document.getElementById('quizStatusTxt').textContent = "";
-  document.getElementById('quiz500Modal').classList.add('show');
-  renderQuizQuestion();
+  document.getElementById('quizModal').classList.add('show');
+  nextQuizQuestion();
 }
 
-function renderQuizQuestion() {
-  const item = questionBank[quizCurrentIdx % questionBank.length];
-  document.getElementById('quizProgTxt').textContent = `${quizCurrentIdx + 1} / 10`;
-  document.getElementById('quizStreakTxt').textContent = `${quizCorrectStreak} صح`;
-  document.getElementById('quizQuestionBox').textContent = item.q;
+function nextQuizQuestion() {
+  clearInterval(quizTimerInterval);
+  if (quizStreak >= 10) {
+    const code = awardCoupon("تحدي الـ 500 سؤال", "توصيلة مجانية 🎁", "FREE");
+    document.getElementById('quizStatusTxt').innerHTML = `<span style="color:#10b981;">🔥 أسطورة! أتممت 10 إجابات صحيحة متتالية بنجاح.<br>كودك الموثق: <strong>${code}</strong></span>`;
+    document.getElementById('quizAnswersGrid').innerHTML = "";
+    document.getElementById('quizTimerBar').style.width = "0%";
+    return;
+  }
+
+  quizTimer = 10;
+  document.getElementById('quizProgTxt').textContent = `${quizStreak + 1} / 10`;
+  document.getElementById('quizTimerTxt').textContent = `${quizTimer}s`;
+  document.getElementById('quizTimerBar').style.width = "100%";
+
+  const qObj = questionBank[Math.floor(Math.random() * questionBank.length)];
+  document.getElementById('quizQuestionBox').textContent = qObj.q;
+
+  // خلط الإجابات عشوائياً لزيادة الصعوبة
+  let combined = qObj.a.map((txt, idx) => ({ txt, isCorrect: idx === qObj.r }));
+  combined.sort(() => Math.random() - 0.5);
 
   const box = document.getElementById('quizAnswersGrid');
   box.innerHTML = "";
 
-  item.a.forEach((ansText, i) => {
+  combined.forEach(opt => {
     const btn = document.createElement('button');
     btn.className = "order-btn";
     btn.style.background = "#1e293b";
     btn.style.border = "1px solid rgba(255,255,255,0.1)";
-    btn.textContent = ansText;
-    btn.onclick = () => handleQuizAnswer(i, item.r);
+    btn.textContent = opt.txt;
+    btn.onclick = () => onQuizSelect(opt.isCorrect);
     box.appendChild(btn);
   });
+
+  quizTimerInterval = setInterval(() => {
+    quizTimer--;
+    document.getElementById('quizTimerTxt').textContent = `${quizTimer}s`;
+    document.getElementById('quizTimerBar').style.width = `${(quizTimer / 10) * 100}%`;
+
+    if (quizTimer <= 0) {
+      clearInterval(quizTimerInterval);
+      playRetroTone(130, 'sawtooth', 0.35, 0.25);
+      quizStreak = 0;
+      document.getElementById('quizStatusTxt').innerHTML = "<span style='color:#ef4444;'>انتهى الوقت! تم تصفير الرصيد.. التركيز والسرعة مطلوبان.</span>";
+      setTimeout(nextQuizQuestion, 1200);
+    }
+  }, 1000);
 }
 
-function handleQuizAnswer(selected, correct) {
-  if (selected === correct) {
+function onQuizSelect(isCorrect) {
+  clearInterval(quizTimerInterval);
+  if (isCorrect) {
     playRetroTone(750, 'sine', 0.15, 0.2);
-    quizCorrectStreak++;
-    quizCurrentIdx++;
-
-    if (quizCorrectStreak >= 10) {
-      const code = awardCoupon("تحدي الـ 500 سؤال", "توصيلة مجانية 🎁", "FREE");
-      document.getElementById('quizStatusTxt').innerHTML = `<span style="color:#10b981;">عبقري نجع حمادي! أتممت 10 إجابات صحيحة.<br>كودك: <strong>${code}</strong></span>`;
-      document.getElementById('quizAnswersGrid').innerHTML = "";
-    } else {
-      renderQuizQuestion();
-    }
+    quizStreak++;
+    document.getElementById('quizStatusTxt').innerHTML = "<span style='color:#10b981;'>إجابة صحيحة! التالي...</span>";
+    setTimeout(nextQuizQuestion, 600);
   } else {
     playRetroTone(130, 'sawtooth', 0.35, 0.25);
-    document.getElementById('quizStatusTxt').innerHTML = "<span style='color:#ef4444;'>خطأ! التحدي يتطلب 10 متتالية صحيحة. تم تصفير الرصيد.</span>";
-    quizCorrectStreak = 0;
-    setTimeout(renderQuizQuestion, 1200);
+    quizStreak = 0;
+    document.getElementById('quizStatusTxt').innerHTML = "<span style='color:#ef4444;'>إجابة خاطئة! التحدي يتطلب 10 متتالية صحيحة. حاول مجدداً.</span>";
+    setTimeout(nextQuizQuestion, 1200);
   }
 }
 
 // -------------------------------------------------------------
-// إدارة الحسابات والتبويبات
+// 2. لعبة اختيار الصور الصحيحة الصعبة (Photo Reflex Challenge)
 // -------------------------------------------------------------
+const photoItemsCatalog = [
+  { name: "موتوسيكل دليفري Fly", icon: "🛵" },
+  { name: "طرد وأوردر فوري", icon: "📦" },
+  { name: "علاج وصيدلية طارئة", icon: "💊" },
+  { name: "توصيل طالب مدرسة", icon: "🎒" },
+  { name: "بقالة وطلبات السوق", icon: "🛒" },
+  { name: "كوبون خصم موثق", icon: "🏷️" }
+];
+
+const distractorIcons = ["🚗", "🚲", "⚡", "🍔", "☕", "⚽", "🎮", "📱", "🏠", "🍕", "⏰", "⛔", "🔑", "🎈"];
+
+let photoRound = 1;
+let photoTimer = 3.5;
+let photoTimerInterval = null;
+let currentTargetIcon = "";
+
+function openPhotoChallengeGame() {
+  playWindowsClick();
+  pauseMainMusicForGame();
+  photoRound = 1;
+  document.getElementById('photoStatusTxt').textContent = "";
+  document.getElementById('photoGameModal').classList.add('show');
+  startPhotoRound();
+}
+
+function startPhotoRound() {
+  clearInterval(photoTimerInterval);
+  if (photoRound > 10) {
+    const code = awardCoupon("تحدي الصور الخاطف", "خصم 10 جنيه", "10EGP");
+    document.getElementById('photoStatusTxt').innerHTML = `<span style="color:#10b981;">⚡ خارق الملاحظة! أتممت 10 جولات بنجاح.<br>كودك الموثق: <strong>${code}</strong></span>`;
+    document.getElementById('photoMatrixContainer').innerHTML = "";
+    return;
+  }
+
+  // تقليل الوقت تدريجياً مع تقدم الجولات لزيادة الصعوبة
+  photoTimer = Math.max(1.8, 3.5 - (photoRound * 0.15));
+  document.getElementById('photoRoundTxt').textContent = `${photoRound} / 10`;
+  document.getElementById('photoTimerTxt').textContent = `${photoTimer.toFixed(1)}s`;
+
+  // اختيار الهدف
+  const target = photoItemsCatalog[Math.floor(Math.random() * photoItemsCatalog.length)];
+  currentTargetIcon = target.icon;
+  document.getElementById('photoTargetName').textContent = `${target.name} (${target.icon})`;
+
+  // تجهيز مصفوفة 9 عناصر (العنصر الصحيح + 8 مشتتات قريبة)
+  let pool = [currentTargetIcon];
+  let shuffledDistractors = [...distractorIcons].sort(() => Math.random() - 0.5);
+  for (let i = 0; i < 8; i++) {
+    pool.push(shuffledDistractors[i]);
+  }
+  pool.sort(() => Math.random() - 0.5);
+
+  const container = document.getElementById('photoMatrixContainer');
+  container.innerHTML = "";
+
+  pool.forEach(ic => {
+    const div = document.createElement('div');
+    div.className = "photo-matrix-item";
+    div.textContent = ic;
+    div.onclick = () => onPhotoItemClick(ic === currentTargetIcon);
+    container.appendChild(div);
+  });
+
+  photoTimerInterval = setInterval(() => {
+    photoTimer -= 0.1;
+    document.getElementById('photoTimerTxt').textContent = `${Math.max(0, photoTimer).toFixed(1)}s`;
+
+    if (photoTimer <= 0) {
+      clearInterval(photoTimerInterval);
+      playRetroTone(110, 'sawtooth', 0.3, 0.25);
+      photoRound = 1;
+      document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#ef4444;'>فات الوقت! سرعة رصدك لم تسعفك.. تم تصفير الجولات.</span>";
+      setTimeout(startPhotoRound, 1200);
+    }
+  }, 100);
+}
+
+function onPhotoItemClick(isTarget) {
+  clearInterval(photoTimerInterval);
+  if (isTarget) {
+    playRetroTone(650, 'sine', 0.12, 0.2);
+    photoRound++;
+    document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#10b981;'>رائع! إجابة صحيحة.</span>";
+    setTimeout(startPhotoRound, 400);
+  } else {
+    playRetroTone(110, 'sawtooth', 0.3, 0.25);
+    photoRound = 1;
+    document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#ef4444;'>صورة خاطئة! ركّز في الهدف المطلوب.. تم تصفير الجولات.</span>";
+    setTimeout(startPhotoRound, 1200);
+  }
+}
+
+// -------------------------------------------------------------
+// الحسابات والتبويبات
+// -------------------------------------------------------------
+async function fetchCloudUsers() {
+  try {
+    const res = await fetch("https://6a9de5152f89be7fb70d8140.mockapi.io/users");
+    if (!res.ok) return [];
+    return await res.json();
+  } catch (e) {
+    return [];
+  }
+}
+
 function switchAuthMode(mode) {
   playWindowsClick();
   const isLogin = mode === 'login';
+  document.getElementById('authErrorDisplay').style.display = 'none';
   document.getElementById('tabBtnLogin').classList.toggle('active', isLogin);
   document.getElementById('tabBtnSignup').classList.toggle('active', !isLogin);
   document.getElementById('formLoginView').style.display = isLogin ? 'block' : 'none';
@@ -1090,17 +1005,20 @@ function switchAuthMode(mode) {
 
 function checkAppAccess() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
+  const gateScreen = document.getElementById('authGateScreen');
+  const mainApp = document.getElementById('mainAppContent');
+
   if (verifiedUser) {
     const user = JSON.parse(verifiedUser);
-    document.getElementById('authGateScreen').style.display = "none";
-    document.getElementById('mainAppContent').style.display = "block";
+    gateScreen.style.display = "none";
+    mainApp.style.display = "block";
     document.getElementById('welcomeUserName').textContent = user.name;
     const phoneInput = document.getElementById('orderPhone');
     if (phoneInput) phoneInput.value = user.phone;
     startMusicPlayback();
   } else {
-    document.getElementById('authGateScreen').style.display = "flex";
-    document.getElementById('mainAppContent').style.display = "none";
+    gateScreen.style.display = "flex";
+    mainApp.style.display = "none";
   }
 }
 
@@ -1152,7 +1070,6 @@ function switchTab(tabId, navBtn) {
   btns.forEach(b => b.classList.remove('active'));
   if (navBtn) navBtn.classList.add('active');
 
-  // إذا خرج المستخدم من تبويب الألعاب لأي تبويب آخر يستأنف الموسيقى الأساسية
   if (tabId !== 'tab-games') {
     resumeMainMusicAfterGame();
   } else {
