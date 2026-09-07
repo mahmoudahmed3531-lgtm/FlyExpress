@@ -888,18 +888,24 @@ body {
     </div>
   </div>
 
-  <!-- نافذة تأكيد الخروج -->
+  <!-- نافذة تأكيد الخروج (مع صورة متمشيش الكوميدية) -->
   <div class="modal-backdrop" id="logoutConfirmModal">
-    <div class="modal-card" style="max-width: 310px; text-align: center;">
-      <div style="font-size: 38px; color: #ef4444; margin-bottom: 8px;">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <div class="modal-card" style="max-width: 320px; text-align: center; padding: 18px;">
+      
+      <div style="width: 100%; max-width: 220px; margin: 0 auto 12px; border-radius: 18px; overflow: hidden; border: 2px solid var(--primary); box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);">
+        <img src="stay.png" alt="متمشيش" style="width: 100%; height: auto; display: block; object-fit: cover;">
       </div>
-      <h3 style="font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 6px;">تسجيل الخروج</h3>
-      <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 18px;">هل ترغب بالفعل في تسجيل الخروج من حسابك؟</p>
+
+      <h3 style="font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 6px;">رايح فين؟ 🥺</h3>
+      <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">هل أنت متأكد من تسجيل الخروج من Fly Express؟</p>
       
       <div style="display: flex; gap: 10px;">
-        <button class="order-btn" style="background: #ef4444; margin-top: 0; flex: 1;" onclick="confirmLogoutAction()">خروج</button>
-        <button class="order-btn" style="background: rgba(255,255,255,0.1); color: #fff; margin-top: 0; flex: 1;" onclick="closeLogoutModal()">إلغاء</button>
+        <button class="order-btn" style="background: rgba(255,255,255,0.12); color: #fff; margin-top: 0; flex: 1;" onclick="closeLogoutModal()">
+          قاعد معاكم ❤️
+        </button>
+        <button class="order-btn" style="background: #ef4444; margin-top: 0; flex: 1;" onclick="confirmLogoutAction()">
+          خروج 🚪
+        </button>
       </div>
     </div>
   </div>
@@ -1135,7 +1141,7 @@ function checkAppAccess() {
       const el = document.getElementById(id); if (el) el.value = user.phone;
     });
 
-    // تشغيل الموسيقى فوراً إذا كان المستخدم مسجل دخول
+    // تشغيل الموسيقى تلقائياً للمستخدم المسجل
     startMusicPlayback();
   } else {
     gateScreen.style.display = "flex";
@@ -1170,7 +1176,7 @@ async function directPasswordLogin() {
         email: user.email,
         time: Date.now()
       }));
-      // بدء الموسيقى فور الضغط على تسجيل الدخول
+      // بدء الموسيقى فور تسجيل الدخول
       startMusicPlayback();
       checkAppAccess();
       showAppAlert(`أهلاً بعودتك يا ${user.name}! تم الدخول بنجاح 🚀`, "تم تسجيل الدخول", "fa-solid fa-circle-check", "#10b981");
