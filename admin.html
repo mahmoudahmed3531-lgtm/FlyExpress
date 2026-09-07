@@ -2,10 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-<title>Fly Express — لوحة التحكم الإدارية</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
+<title>Fly Express — لوحة تحكم الإدارة</title>
 <meta name="theme-color" content="#070b12">
-<link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -13,327 +12,226 @@
 <style>
 :root {
   --bg-dark: #070b12;
-  --surface: #0d1527;
+  --surface: #0f172a;
   --primary: #ff6b00;
   --accent: #00e5ff;
   --success: #10b981;
-  --warning: #f59e0b;
   --danger: #ef4444;
   --text-main: #f8fafc;
   --text-sub: #94a3b8;
   --border: rgba(255, 255, 255, 0.08);
   font-family: 'Cairo', system-ui, sans-serif;
-  -webkit-tap-highlight-color: transparent;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-input, button, select { user-select: auto; font-family: inherit; }
-
 body {
   background-color: var(--bg-dark);
   color: var(--text-main);
-  min-height: 100vh;
   padding: 16px;
-  max-width: 500px;
+  min-height: 100vh;
+}
+.admin-container {
+  max-width: 480px;
   margin: 0 auto;
 }
 
-/* شاشة حماية ودخول الأدمن */
-.admin-lock-screen {
-  position: fixed; inset: 0; background: var(--bg-dark); z-index: 999;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;
-}
-.lock-card {
-  background: var(--surface); border: 1.5px solid var(--primary); border-radius: 20px;
-  padding: 24px; width: 100%; max-width: 340px; box-shadow: 0 8px 30px rgba(255, 107, 0, 0.25);
+.admin-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 16px;
 }
 
-.header-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
-  padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;
-}
-.header-title { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 900; }
-.header-title img { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--primary); }
-
-.control-panel {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
-  padding: 16px; margin-bottom: 16px;
-}
-.panel-title {
-  font-size: 14px; font-weight: 800; color: #cbd5e1; margin-bottom: 12px;
-  display: flex; align-items: center; gap: 8px;
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
 }
 
-.status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.status-btn {
-  padding: 12px 8px; border-radius: 12px; border: 1.5px solid transparent;
-  background: rgba(255, 255, 255, 0.04); color: var(--text-sub); font-weight: 800;
-  font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;
-  transition: all 0.2s ease;
-}
-.status-btn.active.online { background: rgba(16, 185, 129, 0.15); border-color: var(--success); color: var(--success); }
-.status-btn.active.busy { background: rgba(245, 158, 11, 0.15); border-color: var(--warning); color: var(--warning); }
-.status-btn.active.offline { background: rgba(239, 68, 68, 0.15); border-color: var(--danger); color: var(--danger); }
-
-.radar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-.radar-btn {
-  padding: 12px 6px; border-radius: 12px; border: 1.5px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03); color: var(--text-sub); font-size: 11px; font-weight: 800;
-  cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.2s ease;
-}
-.radar-btn.active {
-  background: rgba(0, 229, 255, 0.15); border-color: var(--accent); color: var(--accent);
-  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+.btn-action {
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-family: inherit;
+  font-size: 13px;
+  margin-top: 8px;
 }
 
-.input-box {
-  width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(8, 12, 20, 0.7); color: #fff; font-size: 13px; outline: none; margin-bottom: 10px;
+/* Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
 }
-.action-btn {
-  width: 100%; border: 0; cursor: pointer; padding: 12px; border-radius: 12px;
-  font-weight: 800; font-size: 13px; color: #fff; background: linear-gradient(90deg, #ff6b00, #ff8c00);
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer; inset: 0;
+  background-color: #374151;
+  transition: .3s;
+  border-radius: 28px;
 }
+.slider:before {
+  position: absolute; content: "";
+  height: 20px; width: 20px; left: 4px; bottom: 4px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+input:checked + .slider { background-color: var(--danger); }
+input:checked + .slider:before { transform: translateX(24px); }
 
-.sync-status {
-  text-align: center; font-size: 11px; color: var(--text-sub); margin-top: 14px;
+.admin-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #070b12;
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  resize: vertical;
 }
 </style>
 </head>
 
 <body>
+<div class="admin-container">
 
-<!-- شاشة قفل الأدمن: تسجيل الدخول بالاسم وكلمة المرور -->
-<div class="admin-lock-screen" id="adminLock">
-  <div class="lock-card">
-    <i class="fa-solid fa-user-shield" style="font-size:38px; color:var(--primary); margin-bottom:12px;"></i>
-    <h3 style="font-size:17px; font-weight:900; margin-bottom:4px;">لوحة تحكم Fly Express</h3>
-    <p style="font-size:11px; color:var(--text-sub); margin-bottom:18px;">تسجيل الدخول للمسؤولين فقط 🛡️</p>
-    
-    <input type="text" id="adminUser" class="input-box" placeholder="اسم المستخدم (User)" autocomplete="off">
-    <input type="password" id="adminPass" class="input-box" placeholder="كلمة المرور (Password)">
-    
-    <button class="action-btn" onclick="checkAdminCredentials()">تسجيل الدخول 🚀</button>
-  </div>
-</div>
-
-<!-- المحتوى الرئيسي للوحة الأدمن -->
-<div id="adminPanelContent" style="display:none;">
-
-  <div class="header-card">
-    <div class="header-title">
-      <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Logo">
-      <div>
-        <div>Fly Express Admin</div>
-        <div style="font-size:10px; color:var(--text-sub);">المسؤول: <span style="color:#00e5ff; font-weight:900;">Fly</span> ✅</div>
-      </div>
-    </div>
+  <div class="admin-header">
     <div style="display:flex; align-items:center; gap:10px;">
-      <a href="index.html" style="color:var(--text-sub); text-decoration:none; font-size:12px; font-weight:700;">
-        <i class="fa-solid fa-store"></i> المتجر
-      </a>
-      <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
-      </button>
+      <i class="fa-solid fa-shield-halved" style="font-size:24px; color:var(--primary);"></i>
+      <h2 style="font-size:18px; font-weight:900;">لوحة تحكم Fly Express</h2>
     </div>
+    <a href="index.html" style="color:var(--text-sub); text-decoration:none; font-size:12px; font-weight:800;">
+      <i class="fa-solid fa-arrow-left"></i> رجوع
+    </a>
   </div>
 
-  <!-- 1. التحكم في حالة التوصيل للعملاء -->
-  <div class="control-panel">
-    <div class="panel-title"><i class="fa-solid fa-power-off"></i> حالة العمل الحالية للعملاء</div>
-    <div class="status-grid">
-      <button class="status-btn active online" id="btnOnline" onclick="setServiceState('online')">
-        <i class="fa-solid fa-circle-check" style="font-size:18px;"></i>
-        <span>متاح</span>
-      </button>
-      <button class="status-btn busy" id="btnBusy" onclick="setServiceState('busy')">
-        <i class="fa-solid fa-triangle-exclamation" style="font-size:18px;"></i>
-        <span>مشغول</span>
-      </button>
-      <button class="status-btn offline" id="btnOffline" onclick="setServiceState('offline')">
-        <i class="fa-solid fa-ban" style="font-size:18px;"></i>
-        <span>مغلق</span>
-      </button>
+  <!-- 1. كارت قفل التطبيق للصيانة والتحديث -->
+  <div class="admin-card" style="border-color: var(--danger); background: rgba(239, 68, 68, 0.05);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-screwdriver-wrench" style="color:var(--danger); font-size:18px;"></i>
+        <h3 style="font-size:15px; font-weight:900; color:var(--danger);">وضع قفل التطبيق للتحديث</h3>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="maintenanceToggle">
+        <span class="slider"></span>
+      </label>
     </div>
-  </div>
-
-  <!-- 2. التحكم في رادار رحلة المدارس المباشر -->
-  <div class="control-panel">
-    <div class="panel-title"><i class="fa-solid fa-shield-halved"></i> رادار رحلة المدارس المباشر</div>
-    <div style="font-size:11px; color:var(--text-sub); margin-bottom:8px;">اضغط على المرحلة لتحديثها فوراً في شاشات أولياء الأمور:</div>
-    <div class="radar-grid">
-      <button class="radar-btn active" id="radar1" onclick="setRadarStep(1)">
-        <i class="fa-solid fa-house" style="font-size:16px;"></i>
-        <span>1. استلام الطالب</span>
-      </button>
-      <button class="radar-btn" id="radar2" onclick="setRadarStep(2)">
-        <i class="fa-solid fa-motorcycle" style="font-size:16px;"></i>
-        <span>2. في الطريق</span>
-      </button>
-      <button class="radar-btn" id="radar3" onclick="setRadarStep(3)">
-        <i class="fa-solid fa-school" style="font-size:16px;"></i>
-        <span>3. وصل بسلام</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- 3. فحص كوبونات الخصم الواردة -->
-  <div class="control-panel">
-    <div class="panel-title"><i class="fa-solid fa-ticket"></i> مدقق كوبونات عجلة الحظ</div>
-    <input type="text" id="couponCodeInput" class="input-box" placeholder="الصق كود الخصم المستلم عبر واتساب">
-    <button class="action-btn" style="background:linear-gradient(90deg, #00e5ff, #00a8ff); color:#000;" onclick="verifyCoupon()">
-      <i class="fa-solid fa-magnifying-glass"></i> فحص صلاحية الكوبون
+    <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">
+      تفعيل هذا الخيار يقفل شاشة تسجيل الدخول في تطبيق العملاء فوراً ويمنعهم من الدخول ويعرض رسالة التحديث.
+    </p>
+    
+    <label style="font-size:11px; font-weight:800; color:#cbd5e1; display:block; margin-bottom:4px;">رسالة التحديث التي ستظهر للعميل:</label>
+    <textarea id="maintenanceCustomMsg" class="admin-input" rows="3" placeholder="مثال: يوجد تحديث وتحسينات جارية للتطبيق حالياً.. سنعود للعمل خلال دقائق 🛠️"></textarea>
+    
+    <button class="btn-action" style="background:var(--danger); color:#fff;" onclick="broadcastMaintenanceState()">
+      <i class="fa-solid fa-tower-broadcast"></i> حفظ وبث حالة القفل لجميع الهواتف 📡
     </button>
-    <div id="couponResult" style="margin-top:10px; font-size:12px; line-height:1.4;"></div>
   </div>
 
-  <div class="sync-status" id="syncStatusTxt">
-    <i class="fa-solid fa-satellite-dish"></i> السيرفر السحابي متصل ويعمل بنجاح
+  <!-- 2. رادار الأمان اليومي -->
+  <div class="admin-card">
+    <h3 style="font-size:15px; font-weight:900; color:#34d399; margin-bottom:10px;">
+      <i class="fa-solid fa-shield-halved"></i> تحديث رادار أمان رحلة المدارس
+    </h3>
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;">
+      <button class="btn-action" style="background:#1e293b; color:#fff;" onclick="setRadarStep(1)">1. استلام 🏠</button>
+      <button class="btn-action" style="background:#1e293b; color:#fff;" onclick="setRadarStep(2)">2. في الطريق 🛵</button>
+      <button class="btn-action" style="background:#1e293b; color:#fff;" onclick="setRadarStep(3)">3. وصل بسلام 🏫</button>
+    </div>
+  </div>
+
+  <!-- 3. حالة استقبال الطلبات العامة -->
+  <div class="admin-card">
+    <h3 style="font-size:15px; font-weight:900; color:var(--primary); margin-bottom:10px;">
+      <i class="fa-solid fa-toggle-on"></i> حالة خدمة التوصيل
+    </h3>
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;">
+      <button class="btn-action" style="background:rgba(16, 185, 129, 0.2); color:#34d399; border:1px solid #10b981;" onclick="setServiceStatus('online')">متاح 🟢</button>
+      <button class="btn-action" style="background:rgba(245, 158, 11, 0.2); color:#fbbf24; border:1px solid #f59e0b;" onclick="setServiceStatus('busy')">مشغول 🟡</button>
+      <button class="btn-action" style="background:rgba(239, 68, 68, 0.2); color:#f87171; border:1px solid #ef4444;" onclick="setServiceStatus('offline')">مغلق 🔴</button>
+    </div>
   </div>
 
 </div>
 
 <script>
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
-const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
 
-// بيانات الدخول المعتمدة
-const AUTH_USER = "Fly";
-const AUTH_PASS = "5060";
-
-let currentState = {
-  radar: 1,
-  service: 'online'
-};
-
-// فحص بيانات الدخول
-function checkAdminCredentials() {
-  const user = document.getElementById('adminUser').value.trim();
-  const pass = document.getElementById('adminPass').value.trim();
-
-  if (user === AUTH_USER && pass === AUTH_PASS) {
-    sessionStorage.setItem('fly_admin_logged', 'true');
-    unlockPanel();
-  } else {
-    alert("بيانات الدخول غير صحيحة! يرجى التأكد من اسم المستخدم وكلمة المرور.");
+// استرجاع الإعدادات المحفوظة
+window.addEventListener('load', () => {
+  const savedMaint = localStorage.getItem('fly_app_maintenance');
+  if (savedMaint) {
+    const data = JSON.parse(savedMaint);
+    document.getElementById('maintenanceToggle').checked = data.isLocked || false;
+    document.getElementById('maintenanceCustomMsg').value = data.message || "";
   }
-}
-
-function unlockPanel() {
-  document.getElementById('adminLock').style.display = 'none';
-  document.getElementById('adminPanelContent').style.display = 'block';
-  loadCurrentCloudState();
-}
-
-function adminLogout() {
-  sessionStorage.removeItem('fly_admin_logged');
-  document.getElementById('adminLock').style.display = 'flex';
-  document.getElementById('adminPanelContent').style.display = 'none';
-  document.getElementById('adminUser').value = '';
-  document.getElementById('adminPass').value = '';
-}
-
-// دعم الدخول بالضغط على Enter
-document.getElementById('adminPass').addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') checkAdminCredentials();
-});
-document.getElementById('adminUser').addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') document.getElementById('adminPass').focus();
 });
 
-// فحص الجلسة عند فتح الصفحة
-if (sessionStorage.getItem('fly_admin_logged') === 'true') {
-  unlockPanel();
-}
-
-async function loadCurrentCloudState() {
+async function broadcastData(payload) {
   try {
-    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
-    const text = await res.text();
-    if (text) {
-      const lines = text.trim().split('\n');
-      const latest = JSON.parse(lines[lines.length - 1]);
-      const data = JSON.parse(latest.message);
-      currentState.radar = data.radar || 1;
-      currentState.service = data.service || 'online';
-      updateUI();
-    }
-  } catch(e) {
-    console.log("استخدام الحالة المحلية");
-  }
-}
-
-function updateUI() {
-  ['online', 'busy', 'offline'].forEach(s => {
-    const btn = document.getElementById(`btn${s.charAt(0).toUpperCase() + s.slice(1)}`);
-    if (btn) btn.classList.toggle('active', currentState.service === s);
-  });
-
-  for (let i = 1; i <= 3; i++) {
-    const rBtn = document.getElementById(`radar${i}`);
-    if (rBtn) rBtn.classList.toggle('active', i <= currentState.radar);
-  }
-}
-
-async function broadcastState() {
-  const statusTxt = document.getElementById('syncStatusTxt');
-  statusTxt.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري بث التحديث لجميع الهواتف...';
-  
-  updateUI();
-
-  try {
-    await fetch(CLOUD_CHANNEL, {
-      method: 'POST',
-      body: JSON.stringify(currentState)
+    const res = await fetch(CLOUD_CHANNEL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
-    statusTxt.innerHTML = '<i class="fa-solid fa-check-circle" style="color:#10b981;"></i> تم التحديث لجميع هواتف العملاء فوراً ⚡';
-  } catch(e) {
-    statusTxt.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i> تعذر الإرسال السحابي، تأكد من اتصال الإنترنت.';
+    if (res.ok) {
+      alert("✅ تم إرسال التحديث بنجاح إلى جميع الأجهزة المشتركة!");
+    } else {
+      alert("⚠️ حدث خطأ في الخادم أثناء الإرسال.");
+    }
+  } catch (e) {
+    alert("❌ تعذر الاتصال بالسيرفر السحابي، تحقق من الإنترنت.");
   }
 }
 
-function setServiceState(state) {
-  currentState.service = state;
-  broadcastState();
+async function broadcastMaintenanceState() {
+  const isLocked = document.getElementById('maintenanceToggle').checked;
+  const message = document.getElementById('maintenanceCustomMsg').value.trim() || "يوجد تحديث وتحسينات جارية للتطبيق حالياً.. سنعود قريباً 🛠️";
+
+  const maintObj = { isLocked, message, updatedAt: Date.now() };
+  localStorage.setItem('fly_app_maintenance', JSON.stringify(maintObj));
+
+  const payload = {
+    radar: parseInt(localStorage.getItem('fly_radar_step') || '1', 10),
+    service: localStorage.getItem('fly_service_status') || 'online',
+    maintenance: maintObj
+  };
+
+  await broadcastData(payload);
 }
 
-function setRadarStep(step) {
-  currentState.radar = step;
-  broadcastState();
+async function setRadarStep(step) {
+  localStorage.setItem('fly_radar_step', step);
+  const savedMaint = JSON.parse(localStorage.getItem('fly_app_maintenance') || '{"isLocked":false,"message":""}');
+  const payload = {
+    radar: step,
+    service: localStorage.getItem('fly_service_status') || 'online',
+    maintenance: savedMaint
+  };
+  await broadcastData(payload);
 }
 
-// فحص صحة الكوبونات
-function verifyCoupon() {
-  const rawCode = document.getElementById('couponCodeInput').value.trim();
-  const resDiv = document.getElementById('couponResult');
-  
-  if (!rawCode.startsWith("FLY-")) {
-    resDiv.innerHTML = '<span style="color:#ef4444; font-weight:800;">❌ هذا الكود غير صالح أو لم يُنشأ بواسطة التطبيق.</span>';
-    return;
-  }
-
-  const parts = rawCode.split('-');
-  if (parts.length < 5) {
-    resDiv.innerHTML = '<span style="color:#ef4444; font-weight:800;">❌ صيغة الكود غير مكتملة.</span>';
-    return;
-  }
-
-  const [_, key, phoneHash, epochStr, sig] = parts;
-  const createdMins = parseInt(epochStr, 36);
-  const currentMins = Math.floor(Date.now() / (1000 * 60));
-  const diffMins = currentMins - createdMins;
-
-  if (diffMins > 120) {
-    resDiv.innerHTML = `<span style="color:#ef4444; font-weight:800;">⏰ هذا الكوبون منتهي الصلاحية (مضى عليه ${Math.round(diffMins/60)} ساعة). الصلاحية ساعتان فقط.</span>`;
-  } else {
-    resDiv.innerHTML = `
-      <div style="background:rgba(16, 185, 129, 0.15); border:1px solid #10b981; border-radius:10px; padding:10px; color:#34d399; font-weight:800;">
-        ✅ كوبون أصلي ومطابق!<br>
-        🎁 الجائزة: ${key}<br>
-        ⏱️ الوقت المتبقي: حوالي ${120 - diffMins} دقيقة
-      </div>
-    `;
-  }
+async function setServiceStatus(status) {
+  localStorage.setItem('fly_service_status', status);
+  const savedMaint = JSON.parse(localStorage.getItem('fly_app_maintenance') || '{"isLocked":false,"message":""}');
+  const payload = {
+    radar: parseInt(localStorage.getItem('fly_radar_step') || '1', 10),
+    service: status,
+    maintenance: savedMaint
+  };
+  await broadcastData(payload);
 }
 </script>
 </body>
