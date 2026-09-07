@@ -30,6 +30,7 @@
   --primary-glow: rgba(255, 107, 0, 0.45);
   --accent: #00e5ff;
   --success: #10b981;
+  --danger: #ef4444;
   --text-main: #f8fafc;
   --text-sub: #94a3b8;
   --border: rgba(255, 255, 255, 0.08);
@@ -63,7 +64,7 @@ body {
   background-color: var(--bg-dark);
   color: var(--text-main);
   min-height: 100%;
-  padding-bottom: 90px;
+  padding-bottom: 95px;
   overflow-x: hidden;
   overflow-y: auto !important;
   position: relative;
@@ -72,7 +73,6 @@ body {
   touch-action: pan-y !important;
 }
 
-/* شريط تحميل التطبيق العائم المباشر لـ MediaFire */
 .app-download-banner {
   position: fixed;
   top: 12px;
@@ -90,7 +90,6 @@ body {
   color: #fff;
   font-size: 12px;
   font-weight: 800;
-  animation: pulseDownload 2s infinite ease-in-out;
   cursor: pointer;
 }
 
@@ -100,17 +99,11 @@ body {
   animation: bounceArrow 1.2s infinite alternate ease-in-out;
 }
 
-@keyframes pulseDownload {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 15px var(--primary-glow); }
-  50% { transform: scale(1.04); box-shadow: 0 0 25px rgba(255, 107, 0, 0.7); }
-}
-
 @keyframes bounceArrow {
   0% { transform: translateY(-2px); }
   100% { transform: translateY(3px); }
 }
 
-/* شاشة التحميل الأولية */
 #appPreloader {
   position: fixed;
   inset: 0;
@@ -148,36 +141,6 @@ body {
   margin-top: 14px;
 }
 
-/* مؤشر تحميل فوري */
-#fastSpinner {
-  position: fixed;
-  inset: 0;
-  background: rgba(7, 11, 18, 0.65);
-  backdrop-filter: blur(4px);
-  z-index: 999999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-
-#fastSpinner.active {
-  display: flex !important;
-}
-
-.fast-spinner-card {
-  background: #0f172a;
-  border: 1.5px solid var(--primary);
-  padding: 16px 28px;
-  border-radius: 20px;
-  box-shadow: 0 0 30px rgba(255, 107, 0, 0.5);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #fff;
-  font-weight: 800;
-  font-size: 13px;
-}
-
 @keyframes spinLoader {
   to { transform: rotate(360deg); }
 }
@@ -190,7 +153,7 @@ body {
   z-index: 1;
 }
 
-/* شاشة القفل وبوابة الدخول */
+/* شاشة القفل */
 .auth-gate-screen {
   position: fixed;
   inset: 0;
@@ -203,7 +166,6 @@ body {
   padding: 24px;
   text-align: center;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .gate-card {
@@ -263,7 +225,7 @@ body {
   text-align: right;
 }
 
-/* Header */
+/* الهيدر */
 .app-header {
   position: sticky;
   top: 0;
@@ -291,20 +253,10 @@ body {
   object-fit: cover;
   border: 2px solid var(--primary);
   box-shadow: 0 0 14px var(--primary-glow);
-  flex-shrink: 0;
 }
 
-.profile-info h1 {
-  font-size: 16px;
-  font-weight: 900;
-  line-height: 1.2;
-}
-
-.profile-info p {
-  font-size: 11px;
-  color: #ffb703;
-  font-weight: 700;
-}
+.profile-info h1 { font-size: 16px; font-weight: 900; line-height: 1.2; }
+.profile-info p { font-size: 11px; color: #ffb703; font-weight: 700; }
 
 .status-badge {
   display: flex;
@@ -318,30 +270,18 @@ body {
   font-weight: 700;
   color: #34d399;
 }
+.status-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
 
-.status-dot {
-  width: 7px;
-  height: 7px;
-  background: #10b981;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #10b981;
-}
-
-/* التبويبات */
 .tab-view {
   display: none;
   padding: 16px;
   animation: fadeInTab 0.2s ease-out;
 }
-
 @keyframes fadeInTab {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-.tab-view.active { 
-  display: block; 
-}
+.tab-view.active { display: block; }
 
 .user-welcome-card {
   background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(0, 229, 255, 0.08));
@@ -354,150 +294,64 @@ body {
   justify-content: space-between;
 }
 
-.loyalty-card {
-  background: #0f172a;
-  border: 1px solid rgba(255, 107, 0, 0.35);
-  border-radius: 18px;
-  padding: 14px;
-  margin-bottom: 14px;
-}
-
-.loyalty-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.loyalty-title { font-size: 13px; font-weight: 800; color: #ffd166; display: flex; align-items: center; gap: 6px; }
-.loyalty-count { font-size: 12px; font-weight: 900; color: #fff; }
-
-.progress-bar-bg { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
-.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b00, #ffb703); border-radius: 999px; }
-.loyalty-sub { font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between; }
-
-.safety-radar-card {
-  background: #10192d;
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  border-radius: 20px;
-  padding: 14px;
-  margin-bottom: 16px;
-}
-
-.safety-steps { display: flex; justify-content: space-between; position: relative; margin-top: 12px; }
-.safety-steps::before {
-  content: ''; position: absolute; top: 14px; left: 20px; right: 20px; height: 3px; background: rgba(255, 255, 255, 0.1); z-index: 1;
-}
-
-.safety-step { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; z-index: 2; }
-.step-node {
-  width: 32px; height: 32px; border-radius: 50%; background: #1e293b; border: 2px solid var(--border);
-  display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-sub);
-}
-.step-node.active {
-  background: #10b981; border-color: #34d399; color: #fff; box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
-}
-.step-label { font-size: 10px; font-weight: 700; color: var(--text-sub); }
-
-.pharmacy-order-banner {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(6, 78, 59, 0.2));
-  border: 1px dashed var(--success);
-  border-radius: 18px;
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  cursor: pointer;
-  touch-action: manipulation;
-  transition: transform 0.15s ease;
-}
-.pharmacy-order-banner:active { transform: scale(0.97); }
-
 .section-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
-
-/* شبكة صالة ألعاب الجوائز */
-.games-hub-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 22px;
-}
-.game-hub-card {
-  background: #0f172a;
-  border: 1px solid rgba(255, 107, 0, 0.25);
-  border-radius: 18px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: transform 0.12s ease, border-color 0.15s ease;
-}
-.game-hub-card:active {
-  transform: scale(0.95);
-  border-color: var(--accent);
-}
-.game-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-/* بطاقات الذاكرة */
-.memory-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin: 14px 0;
-}
-.memory-card-btn {
-  height: 70px;
-  background: #1e293b;
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  cursor: pointer;
-  color: #fff;
-}
-.memory-card-btn.flipped {
-  background: #0f2d24;
-  border-color: var(--success);
-}
-
 .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 .service-card, .price-box, .form-card {
   background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
 }
-
-.service-card { 
-  display: flex; 
-  flex-direction: column; 
-  align-items: flex-start; 
-  gap: 12px; 
-  cursor: pointer;
-  touch-action: pan-y pinch-zoom !important;
-  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.12s ease;
+.service-card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 12px; cursor: pointer;
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.service-card:active { 
-  transform: scale(0.94); 
-  border-color: var(--primary) !important;
-  background: #162238 !important;
-}
-
+.service-card:active { transform: scale(0.94); border-color: var(--primary) !important; }
 .service-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 .ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; }
 .ic-blue { background: rgba(0, 168, 255, 0.15); color: #00a8ff; }
-.ic-green { background: rgba(168, 85, 247, 0.15); color: #10b981; }
+.ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+
+/* كارت البانر الخاص بقسم الألعاب في الصفحة الرئيسية */
+.games-hub-banner {
+  background: linear-gradient(135deg, #ff6b00, #a855f7);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35);
+  animation: pulseCard 2.5s infinite ease-in-out;
+}
+@keyframes pulseCard {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+/* كروت الألعاب داخل تبويب الألعاب */
+.hard-game-card {
+  background: #0f172a;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hard-game-badge {
+  font-size: 10px;
+  font-weight: 900;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
 
 /* شريط التنقل السفلي */
 .bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 68px; background: rgba(7, 11, 18, 0.98);
+  position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 72px; background: rgba(7, 11, 18, 0.98);
   backdrop-filter: blur(14px);
   border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100;
   padding-bottom: env(safe-area-inset-bottom);
@@ -505,9 +359,7 @@ body {
 .nav-item {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--text-sub); background: transparent;
   border: 0; font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer; flex: 1; height: 100%;
-  transition: transform 0.1s ease, color 0.15s ease;
 }
-.nav-item:active { transform: scale(0.92); }
 .nav-item.active { color: var(--primary); }
 
 .order-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
@@ -516,40 +368,32 @@ body {
   width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(8, 12, 20, 0.9);
   color: #fff; font-family: inherit; font-size: 13px; outline: none;
 }
-.order-input:focus, .order-select:focus, .order-textarea:focus {
-  border-color: var(--primary);
-}
-
 .order-btn {
   width: 100%; border: 0; cursor: pointer; padding: 12px 14px; border-radius: 12px; font-weight: 800; font-size: 13px; color: #fff;
   background: linear-gradient(90deg, #ff6b00, #ff8c00); margin-top: 6px; font-family: inherit;
-  transition: transform 0.12s ease;
-  touch-action: manipulation;
 }
 .order-btn:active { transform: scale(0.96); }
 
 .modal-backdrop {
-  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 2500; display: none;
-  align-items: center; justify-content: center; padding: 20px;
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px); z-index: 2500; display: none;
+  align-items: center; justify-content: center; padding: 16px;
 }
 .modal-backdrop.show { display: flex; }
 .modal-card {
-  background: #0d1527; border: 1.5px solid var(--primary); border-radius: 24px; padding: 20px 16px; width: 100%; max-width: 350px;
-  text-align: center; position: relative;
+  background: #0d1527; border: 1.5px solid var(--primary); border-radius: 24px; padding: 18px 14px; width: 100%; max-width: 360px;
+  text-align: center; position: relative; max-height: 90vh; overflow-y: auto;
 }
-.modal-close { position: absolute; top: 12px; left: 14px; background: transparent; border: 0; color: var(--text-sub); font-size: 22px; cursor: pointer; }
+.modal-close { position: absolute; top: 10px; left: 14px; background: transparent; border: 0; color: var(--text-sub); font-size: 24px; cursor: pointer; }
 </style>
 </head>
 
 <body>
 
-<!-- زر تحميل التطبيق المباشر عبر ميديا فاير -->
 <a href="https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file" target="_blank" rel="noopener noreferrer" class="app-download-banner" id="downloadAppBanner" onclick="forceDownloadRedirect(event, this.href)">
   <i class="fa-solid fa-cloud-arrow-down download-arrow"></i>
   <span>حمّل التطبيق الآن</span>
 </a>
 
-<!-- شاشة التحميل الافتتاحية -->
 <div id="appPreloader">
   <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="loader-logo-img">
   <div style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">Fly Express</div>
@@ -557,21 +401,12 @@ body {
   <div class="loader-spinner"></div>
 </div>
 
-<!-- مؤشر تحميل التبديل اللحظي -->
-<div id="fastSpinner">
-  <div class="fast-spinner-card">
-    <div style="width:22px; height:22px; border:3px solid rgba(255,255,255,0.2); border-top-color:var(--primary); border-radius:50%; animation:spinLoader 0.6s linear infinite;"></div>
-    <span>جاري المعالجة...</span>
-  </div>
-</div>
-
-<!-- شاشة القفل وبوابة الدخول -->
+<!-- بوابة الدخول -->
 <div class="auth-gate-screen" id="authGateScreen">
   <div class="gate-card">
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
-    <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">خدمة التوصيل الأسرع في نجع حمادي 🚀</p>
-
+    <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">أسرع وأأمن توصيل في نجع حمادي 🚀</p>
     <div class="auth-error-msg" id="authErrorDisplay"></div>
 
     <div class="auth-tabs" id="authTabsContainer">
@@ -579,67 +414,24 @@ body {
       <button class="auth-tab-btn" id="tabBtnSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
     </div>
 
-    <!-- تسجيل دخول سريع -->
     <div id="formLoginView">
-      <input type="text" id="loginIdentifier" class="order-input" placeholder="البريد الإلكتروني (Gmail) أو الهاتف" style="margin-bottom:8px;">
-      <input type="password" id="loginPassword" class="order-input" placeholder="كلمة المرور" style="margin-bottom:6px;">
-      
-      <div style="text-align:left; margin-bottom:10px;">
-        <button onclick="switchToForgotView()" style="background:transparent; border:0; color:var(--accent); font-size:11px; font-weight:700; font-family:inherit; cursor:pointer;">
-          نسيت كلمة السر؟ 🔑
-        </button>
-      </div>
-
-      <button class="order-btn" onclick="directPasswordLogin()">
-        <i class="fa-solid fa-arrow-right-to-bracket"></i> تسجيل الدخول 🚀
-      </button>
+      <input type="text" id="loginIdentifier" class="order-input" placeholder="البريد الإلكتروني أو رقم الهاتف" style="margin-bottom:8px;">
+      <input type="password" id="loginPassword" class="order-input" placeholder="كلمة المرور" style="margin-bottom:10px;">
+      <button class="order-btn" onclick="directPasswordLogin()"><i class="fa-solid fa-arrow-right-to-bracket"></i> تسجيل الدخول 🚀</button>
     </div>
 
-    <!-- إنشاء حساب جديد -->
     <div id="formSignupView" style="display:none;">
       <input type="text" id="signupName" class="order-input" placeholder="اسمك الكريم" style="margin-bottom:8px;">
-      <input type="tel" id="signupPhone" class="order-input" placeholder="رقم الموبايل (واتساب)" style="margin-bottom:8px;">
+      <input type="tel" id="signupPhone" class="order-input" placeholder="رقم الموبايل" style="margin-bottom:8px;">
       <input type="email" id="signupEmail" class="order-input" placeholder="بريدك الإلكتروني (Gmail)" style="margin-bottom:8px;">
       <input type="password" id="signupPassword" class="order-input" placeholder="كلمة المرور الجديدة" style="margin-bottom:12px;">
-      
-      <button class="order-btn" id="signupOtpBtn" onclick="requestSignupOtp()">
-        <i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩
-      </button>
+      <button class="order-btn" id="signupOtpBtn" onclick="requestSignupOtp()">إرسال كود التفعيل للبريد 📩</button>
     </div>
 
-    <!-- استعادة الحساب -->
-    <div id="formForgotView" style="display:none;">
-      <div style="font-size:11px; color:#cbd5e1; margin-bottom:10px;">
-        أدخل بريدك الإلكتروني المسجل وسيصلك كود لتعيين كلمة مرور جديدة:
-      </div>
-      <input type="email" id="forgotEmail" class="order-input" placeholder="بريدك الإلكتروني (Gmail)" style="margin-bottom:12px;">
-      <button class="order-btn" id="forgotOtpBtn" onclick="requestForgotOtp()">
-        إرسال كود الاستعادة 📩
-      </button>
-      <button onclick="backToAuthHome()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; margin-top:10px; cursor:pointer;">
-        رجوع لتسجيل الدخول ↩️
-      </button>
-    </div>
-
-    <!-- تأكيد الكود -->
     <div id="gateStepOtp" style="display:none;">
-      <div style="background:rgba(0, 229, 255, 0.08); border:1px solid rgba(0, 229, 255, 0.2); border-radius:12px; padding:10px; margin-bottom:12px;">
-        <span style="font-size:11px; color:#cbd5e1;" id="otpNoticeTxt">افتح تطبيق Gmail واكتب الكود هنا:</span>
-      </div>
       <input type="number" id="gateOtpInput" class="order-input" placeholder="أدخل الكود (4 أرقام)" style="text-align:center; font-size:20px; letter-spacing:6px; margin-bottom:8px;">
-      
-      <div id="newPasswordSection" style="display:none; margin-bottom:8px;">
-        <input type="password" id="gateNewPassword" class="order-input" placeholder="اكتب كلمة المرور الجديدة">
-      </div>
-
-      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyAndFinishOtp()">
-        تأكيد وفتح التطبيق 🚀
-      </button>
-      <button onclick="backToAuthHome()" style="background:transparent; border:0; color:var(--text-sub); font-size:11px; font-family:inherit; margin-top:10px; cursor:pointer;">
-        إلغاء ↩️
-      </button>
+      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="verifyAndFinishOtp()">تأكيد وفتح التطبيق 🚀</button>
     </div>
-
   </div>
 </div>
 
@@ -647,125 +439,38 @@ body {
 <div class="app-container" id="mainAppContent" style="display:none;">
 
   <header class="app-header">
-    <div class="profile-section" id="logoTrigger">
+    <div class="profile-section">
       <img class="profile-img" src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express">
       <div class="profile-info">
         <h1>Fly Express</h1>
         <p>أسرع توصيل في نجع حمادي 🚀</p>
       </div>
     </div>
-    
-    <div class="header-actions">
-      <div class="status-badge" id="serviceBadge">
-        <span class="status-dot" id="serviceDot"></span>
-        <span id="serviceTxt">متاح</span>
-      </div>
-    </div>
+    <div class="status-badge"><span class="status-dot"></span><span>متاح</span></div>
   </header>
 
-  <!-- تبويب 1: الرئيسية -->
+  <!-- 1. تبويب الرئيسية -->
   <main id="tab-home" class="tab-view active">
-    <div class="user-welcome-card" id="userWelcomeBox">
+    <div class="user-welcome-card">
       <div>
         <div style="font-size:11px; color:var(--text-sub);">أهلاً بك معنا 🌟</div>
         <div style="font-size:14px; font-weight:900; color:#fff;" id="welcomeUserName">عميلنا العزيز</div>
       </div>
-      <button onclick="logoutUser()" style="background:transparent; border:0; color:#ef4444; font-size:11px; font-weight:800; font-family:inherit; cursor:pointer;">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
-      </button>
+      <button onclick="logoutUser()" style="background:transparent; border:0; color:#ef4444; font-size:11px; font-weight:800; cursor:pointer;">خروج 🚪</button>
     </div>
 
-    <!-- برنامج الأبطال -->
-    <div class="loyalty-card">
-      <div class="loyalty-header">
-        <div class="loyalty-title"><i class="fa-solid fa-crown"></i> برنامج أبطال Fly Express</div>
-        <div class="loyalty-count" id="loyaltyCountTxt">0 / 5 مشاوير</div>
-      </div>
-      <div class="progress-bar-bg"><div class="progress-bar-fill" id="loyaltyFill" style="width: 0%;"></div></div>
-      <div class="loyalty-sub">
-        <span id="loyaltyMsg">أكمل 5 مشاوير واكسب توصيلة مجانية!</span>
-        <span style="color:#ffb703; font-weight:800;" id="loyaltyPercent">0%</span>
-      </div>
-    </div>
-
-    <!-- رادار الأمان السحابي -->
-    <div class="safety-radar-card">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:12px; font-weight:800; color:#34d399;"><i class="fa-solid fa-shield-halved"></i> رادار أمان رحلة المدرسة اليومية</span>
-        <span style="font-size:10px; background:rgba(16, 185, 129, 0.2); color:#34d399; padding:2px 8px; border-radius:999px;">تحديث مباشر 🟢</span>
-      </div>
-      <div class="safety-steps">
-        <div class="safety-step">
-          <div class="step-node" id="clientStep1"><i class="fa-solid fa-house"></i></div>
-          <span class="step-label">تم الاستلام</span>
-        </div>
-        <div class="safety-step">
-          <div class="step-node" id="clientStep2"><i class="fa-solid fa-motorcycle"></i></div>
-          <span class="step-label">في الطريق</span>
-        </div>
-        <div class="safety-step">
-          <div class="step-node" id="clientStep3"><i class="fa-solid fa-school"></i></div>
-          <span class="step-label">وصل بسلام</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- خدمة طوارئ الصيدلية -->
-    <div class="pharmacy-order-banner" onclick="openPharmacyModal()">
+    <!-- كارت مباشر لصالة الألعاب التنافسية -->
+    <div class="games-hub-banner" onclick="switchTab('tab-games', document.querySelectorAll('.nav-item')[3])">
       <div style="display:flex; align-items:center; gap:12px;">
-        <i class="fa-solid fa-notes-medical" style="font-size:26px; color:#34d399;"></i>
+        <div style="font-size:32px;">🎮</div>
         <div>
-          <h4 style="font-size:13px; font-weight:900; color:#fff;">طوارئ علاج وصيدلية 💊</h4>
-          <span style="font-size:11px; color:#cbd5e1;">محتاج دواء ضروري؟ اكتب اسم العلاج ويوصلك فوراً</span>
+          <h3 style="font-size:15px; font-weight:900; color:#fff;">ركن تحديات: العب واكسب! 🏆</h3>
+          <p style="font-size:11px; color:#fff; opacity:0.9;">ألعاب حقيقية وصعبة: سباق موتوسيكلات، ماريو، و500 فزورة!</p>
         </div>
       </div>
-      <i class="fa-solid fa-chevron-left" style="color:#34d399; font-size:12px;"></i>
+      <i class="fa-solid fa-chevron-left" style="color:#fff;"></i>
     </div>
 
-    <!-- صالة ألعاب الجوائز الـ 5 المبتكرة -->
-    <div class="section-title"><i class="fa-solid fa-gamepad"></i> صالة تحديات وألعاب الجوائز 🎮</div>
-    <div class="games-hub-grid">
-      <!-- لعبة 1 -->
-      <div class="game-hub-card" onclick="openRacerGame()">
-        <div class="game-icon-box" style="background:rgba(255, 107, 0, 0.15); color:var(--primary);"><i class="fa-solid fa-motorcycle"></i></div>
-        <strong style="font-size:12px; color:#fff;">طيار Fly Express</strong>
-        <span style="font-size:10px; color:var(--text-sub);">اجمع 5 طلبات واكسب</span>
-      </div>
-
-      <!-- لعبة 2 -->
-      <div class="game-hub-card" onclick="openTapSpeedGame()">
-        <div class="game-icon-box" style="background:rgba(0, 229, 255, 0.15); color:var(--accent);"><i class="fa-solid fa-bolt"></i></div>
-        <strong style="font-size:12px; color:#fff;">تحدي السرعة ⚡</strong>
-        <span style="font-size:10px; color:var(--text-sub);">25 ضغطة في 5 ثواني</span>
-      </div>
-
-      <!-- لعبة 3 -->
-      <div class="game-hub-card" onclick="openMemoryGame()">
-        <div class="game-icon-box" style="background:rgba(16, 185, 129, 0.15); color:var(--success);"><i class="fa-solid fa-puzzle-piece"></i></div>
-        <strong style="font-size:12px; color:#fff;">ذاكرة كروت Fly</strong>
-        <span style="font-size:10px; color:var(--text-sub);">طابق الكروت المتشابهة</span>
-      </div>
-
-      <!-- لعبة 4 -->
-      <div class="game-hub-card" onclick="openDropGame()">
-        <div class="game-icon-box" style="background:rgba(168, 85, 247, 0.15); color:#c084fc;"><i class="fa-solid fa-crosshairs"></i></div>
-        <strong style="font-size:12px; color:#fff;">توصيل في الجون 🎯</strong>
-        <span style="font-size:10px; color:var(--text-sub);">نزّل الطرد بدقة</span>
-      </div>
-
-      <!-- لعبة 5 -->
-      <div class="game-hub-card" onclick="openQuizGame()" style="grid-column: span 2;">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <div class="game-icon-box" style="background:rgba(255, 183, 3, 0.15); color:#ffd166;"><i class="fa-solid fa-lightbulb"></i></div>
-          <div style="text-align:right;">
-            <strong style="font-size:13px; color:#fff;">فوازير نجع حمادي ("عارف بلدك؟") 🧠</strong>
-            <div style="font-size:11px; color:var(--text-sub);">جاوب صح واكسب كود مشاوير قريتك فوراً</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- قائمة الخدمات -->
     <div class="section-title"><i class="fa-solid fa-shapes"></i> خدمات التوصيل السريع</div>
     <div class="services-grid">
       <div class="service-card" onclick="openServiceInstantly('sec-order')">
@@ -787,16 +492,11 @@ body {
     </div>
   </main>
 
-  <!-- تبويب 2: الطلبات -->
+  <!-- 2. تبويب الطلبات -->
   <section id="tab-orders" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار</div>
-
-    <div class="form-card" id="sec-order" style="margin-bottom:14px;">
+    <div class="form-card" id="sec-order">
       <h3 style="font-size:15px; margin-bottom:10px; color:#ff8c00;">📦 أوردر / طرد فوري</h3>
-      <div class="order-row">
-        <select class="order-select" id="orderKind"><option value="أوردر">أوردر</option><option value="طرد">طرد</option></select>
-        <select class="order-select" id="orderAction"><option value="هنجيبه">هنجيبه</option><option value="هنوّصله">هنوّصله</option></select>
-      </div>
       <div class="order-row">
         <input class="order-input" id="orderFrom" placeholder="العنوان: من" required>
         <input class="order-input" id="orderTo" placeholder="العنوان: إلى" required>
@@ -805,197 +505,124 @@ body {
         <input class="order-input" id="orderName" placeholder="اسمك" required>
         <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
       </div>
-      <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
-    </div>
-
-    <div class="form-card" id="sec-market" style="margin-bottom:14px;">
-      <h3 style="font-size:15px; margin-bottom:10px; color:#00a8ff;">🛒 طلبات السوق والطلبات المنزلية</h3>
-      <div class="order-row single">
-        <textarea class="order-textarea" id="marketList" placeholder="اكتب قائمة الطلبات بالتفصيل..." required></textarea>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketFrom" placeholder="من أي محل أو سوق؟ (اختياري)">
-        <input class="order-input" id="marketTo" placeholder="عنوان التوصيل" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="marketName" placeholder="اسمك" required>
-        <input class="order-input" id="marketPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-      </div>
-      <button class="order-btn" onclick="sendMarket()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
-    </div>
-
-    <div class="form-card" id="sec-school" style="margin-bottom:14px;">
-      <h3 style="font-size:15px; margin-bottom:10px; color:#10b981;">🏫 توصيل ابني المدرسة (يومي)</h3>
-      <div class="order-row">
-        <select class="order-select" id="schoolType">
-          <option value="ذهاب فقط">ذهاب فقط</option>
-          <option value="ذهاب وعودة">ذهاب وعودة</option>
-        </select>
-        <input class="order-input" id="schoolChild" placeholder="اسم الطالب" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolPhone" placeholder="رقم ولي الأمر" inputmode="tel" required>
-        <input class="order-input" id="schoolFrom" placeholder="مكان الانطلاق" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="schoolTo" placeholder="اسم المدرسة" required>
-        <input class="order-input" id="schoolNote" placeholder="ملاحظات (اختياري)">
-      </div>
-      <button class="order-btn" onclick="sendSchool()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال عبر واتساب</button>
-    </div>
-
-    <div class="form-card" id="sec-monthly">
-      <h3 style="font-size:15px; margin-bottom:6px; color:#c084fc;">📘 حاسبة واشتراك المدارس والدروس الشهرية</h3>
-      <div class="order-row">
-        <input class="order-input" id="pmName" placeholder="اسم ولي الأمر" required>
-        <input class="order-input" id="pmPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-      </div>
-      <div class="order-row">
-        <select class="order-select" id="pmChildrenCount" onchange="calcMonthlyEstimate()">
-          <option value="1">طالب واحد</option>
-          <option value="2">طالبين (خصم إخوة 10%)</option>
-          <option value="3">3 طلاب (خصم إخوة 15%)</option>
-          <option value="4">4 طلاب وأكثر (خصم 20%)</option>
-        </select>
-        <select class="order-select" id="pmRoute" onchange="calcMonthlyEstimate()">
-          <option value="inside">داخل نجع حمادي</option>
-          <option value="berka">من قرية بركة إلى المدارس</option>
-          <option value="aluminium">من الألمنيوم إلى نجع حمادي</option>
-          <option value="haw">من قرية هو إلى نجع حمادي</option>
-        </select>
-      </div>
-      <div class="order-row">
-        <select class="order-select" id="pmDirection" onchange="calcMonthlyEstimate()">
-          <option value="both">ذهاب وعودة يومياً</option>
-          <option value="oneWay">ذهاب فقط (أو عودة فقط)</option>
-        </select>
-        <input class="order-input" id="pmLessonsPerWeek" placeholder="كم يوم بالأسبوع؟" type="number" min="1" max="7" value="5" oninput="calcMonthlyEstimate()">
-      </div>
-
-      <div style="background:rgba(192, 132, 252, 0.12); border:1px solid rgba(192, 132, 252, 0.35); border-radius:14px; padding:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between;">
-        <div>
-          <div style="font-size:11px; color:var(--text-sub);">التكلفة التقديرية الشهرية:</div>
-          <div style="font-size:18px; font-weight:900; color:#e9d5ff;" id="monthlyEstimateTxt">750 ج / شهرياً</div>
-        </div>
-        <span style="font-size:11px; background:#c084fc; color:#000; font-weight:900; padding:4px 8px; border-radius:8px;" id="discountBadge">خصم إخوة مطبق</span>
-      </div>
-
-      <button class="order-btn" onclick="sendMonthlyOrder()"><i class="fa-brands fa-whatsapp"></i> حجز الاشتراك عبر واتساب</button>
+      <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> إرسال عبر واتساب</button>
     </div>
   </section>
 
-  <!-- تبويب 3: الأسعار -->
+  <!-- 3. تبويب الأسعار -->
   <section id="tab-prices" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار التقديرية</div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">30 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;">20 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى الألمنيوم</span><span style="color:#ff8c00; font-weight:900;">35 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
-    <button class="order-btn" onclick="openDirectWhatsApp('مرحباً Fly Express، استفسار عن تكلفة مشوار خاص')"><i class="fa-brands fa-whatsapp"></i> تأكيد تكلفة مشوار خاص عبر واتساب</button>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>داخل نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">30 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;">20 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
   </section>
 
-  <!-- تبويب 4: التواصل -->
+  <!-- 4. تبويب ركن الألعاب الجديد («العب واكسب») -->
+  <section id="tab-games" class="tab-view">
+    <div class="section-title"><i class="fa-solid fa-gamepad"></i> صالة الألعاب والتحديات الكبرى 🏆</div>
+    <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">الألعاب هنا صعبة وتتطلب مهارة وسرعة، انجح في التحدي واكسب خصمك الموثق فوراً!</p>
+
+    <!-- لعبة 1 -->
+    <div class="hard-game-card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h4 style="font-size:14px; font-weight:900; color:var(--primary);"><i class="fa-solid fa-motorcycle"></i> 1. سباق التوصيل الخارق (Traffic Rush)</h4>
+        <span class="hard-game-badge">صعوبة: عالية 🔥</span>
+      </div>
+      <p style="font-size:11px; color:#cbd5e1;">أنت دليفري في نجع حمادي، مطلوب توصل 1000 متر في أقل من 35 ثانية وتتفادى سيارات وعوائق الطريق!</p>
+      <button class="order-btn" onclick="openMotoGame()">دخول السباق 🛵</button>
+    </div>
+
+    <!-- لعبة 2 -->
+    <div class="hard-game-card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h4 style="font-size:14px; font-weight:900; color:var(--accent);"><i class="fa-solid fa-person-running"></i> 2. مغامرات كابتن Fly (ماريو نجع حمادي)</h4>
+        <span class="hard-game-badge">40 مرحلة 🏰</span>
+      </div>
+      <p style="font-size:11px; color:#cbd5e1;">لعبة منصات حقيقية: اقفز وتفادى الحفر والوحوش واجمع صناديق Fly Express للوصول لخط النهاية!</p>
+      <button class="order-btn" style="background:linear-gradient(90deg, #00e5ff, #0077b6); color:#000;" onclick="openMarioGame()">بدء المغامرة 🕹️</button>
+    </div>
+
+    <!-- لعبة 3 -->
+    <div class="hard-game-card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h4 style="font-size:14px; font-weight:900; color:#ffd166;"><i class="fa-solid fa-brain"></i> 3. تحدي الـ 500 سؤال (عارف بلدك؟)</h4>
+        <span class="hard-game-badge">كل 10 مراحل هدية 🎁</span>
+      </div>
+      <p style="font-size:11px; color:#cbd5e1;">أجب على 10 أسئلة متتالية بدون أي خطأ عن نجع حمادي والمعلومات العامة لاقتناص التوصيلة المجانية!</p>
+      <button class="order-btn" style="background:linear-gradient(90deg, #ffd166, #ff8c00); color:#000;" onclick="openQuiz500Game()">بدء الاختبار 🧠</button>
+    </div>
+  </section>
+
+  <!-- 5. تبويب التواصل -->
   <section id="tab-contact" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
-    <button class="order-btn" style="background:#25d366; color:#000; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="openDirectWhatsApp('مرحباً Fly Express، أريد التواصل معكم')">
-      <i class="fa-brands fa-whatsapp"></i> واتساب المباشر
-    </button>
+    <button class="order-btn" style="background:#25d366; color:#000;" onclick="openDirectWhatsApp('مرحباً Fly Express، أريد الاستفسار')"><i class="fa-brands fa-whatsapp"></i> واتساب المباشر</button>
   </section>
 
-  <!-- شريط التنقل السفلي -->
+  <!-- شريط التنقل السفلي المطور -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
-    <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-motorcycle"></i><span>طلب مشوار</span></button>
+    <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-motorcycle"></i><span>الطلبات</span></button>
     <button class="nav-item" onclick="switchTab('tab-prices', this)"><i class="fa-solid fa-tag"></i><span>الأسعار</span></button>
+    <button class="nav-item" style="color:#ffd166;" onclick="switchTab('tab-games', this)"><i class="fa-solid fa-gamepad" style="font-size:18px;"></i><span>العب واكسب</span></button>
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
 
-  <!-- نافذة الصيدلية -->
-  <div class="modal-backdrop" id="pharmacyModal">
+  <!-- نافذة لعبة 1: سباق الموتوسيكل الصعب -->
+  <div class="modal-backdrop" id="motoGameModal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closePharmacyModal()">&times;</button>
-      <h3 style="font-size:17px; font-weight:900; color:#34d399;">💊 طلب علاج وصيدلية طارئة</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin:4px 0 12px;">اكتب طلبات العلاج وستصلك إلى المنزل فوراً</p>
-
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <input type="text" id="pharmName" class="order-input" placeholder="اسمك الكريم">
-        <input type="tel" id="pharmPhone" class="order-input" placeholder="رقم الواتساب">
-        <input type="text" id="pharmPrefPharmacy" class="order-input" placeholder="اسم صيدلية معينة؟ (اختياري)">
-        <textarea id="pharmMedicineList" class="order-textarea" placeholder="اكتب أسماء الأدوية أو المستلزمات المطلوبة بالتفصيل..."></textarea>
-        <input type="text" id="pharmAddress" class="order-input" placeholder="عنوان التوصيل">
-        <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669); color:#fff;" onclick="sendPharmacyOrder()">
-          <i class="fa-brands fa-whatsapp"></i> إرسال طلب العلاج عبر واتساب 🛵
-        </button>
+      <button class="modal-close" onclick="closeGameAndResumeMusic('motoGameModal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:var(--primary);">🛵 سباق التوصيل السريع</h3>
+      <div style="display:flex; justify-content:space-between; font-size:12px; margin:6px 0; font-weight:800;">
+        <span>الوقت: <strong id="motoTimerTxt" style="color:#ef4444;">35</strong> ث</span>
+        <span>المسافة: <strong id="motoDistTxt" style="color:var(--accent);">0</strong> / 1000م</span>
       </div>
-    </div>
-  </div>
-
-  <!-- 1. نافذة لعبة طيار Fly Express -->
-  <div class="modal-backdrop" id="gameRacerModal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeGameModal('gameRacerModal')">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:var(--primary);">🛵 طيار Fly Express</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:8px;">المس يمين أو شمال واجمع 5 طلبات 📦</p>
-      <canvas id="racerCanvas" width="280" height="240" style="background:#070b12; border-radius:14px; border:1.5px solid rgba(255,255,255,0.1);"></canvas>
-      <div style="display:flex; justify-content:space-between; margin-top:8px;">
-        <button class="order-btn" style="flex:1; margin-left:4px;" onclick="moveRacer(-1)">◀ يسار</button>
-        <button class="order-btn" style="flex:1; margin-right:4px;" onclick="moveRacer(1)">يمين ▶</button>
+      <canvas id="motoCanvas" width="280" height="240" style="background:#111827; border-radius:14px; border:2px solid #ff6b00;"></canvas>
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="order-btn" style="flex:1;" onpointerdown="motoMove(-1)">◀ يسار</button>
+        <button class="order-btn" style="flex:1;" onpointerdown="motoMove(1)">يمين ▶</button>
       </div>
-      <button class="order-btn" style="background:#10b981;" id="startRacerBtn" onclick="startRacerGame()">ابدأ السباق 🏁</button>
-      <div id="racerResult" style="margin-top:8px; font-size:12px; font-weight:800; color:#34d399;"></div>
+      <button class="order-btn" style="background:#10b981; margin-top:8px;" id="startMotoBtn" onclick="startMotoGameLoop()">ابدأ السباق 🏁</button>
+      <div id="motoGameStatus" style="font-size:12px; font-weight:800; margin-top:6px; color:#34d399;"></div>
     </div>
   </div>
 
-  <!-- 2. نافذة لعبة تحدي السرعة -->
-  <div class="modal-backdrop" id="gameSpeedModal">
+  <!-- نافذة لعبة 2: ماريو كابتن Fly -->
+  <div class="modal-backdrop" id="marioGameModal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closeGameModal('gameSpeedModal')">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:var(--accent);">⚡ تحدي سرعة الدليفري</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">اضغط 25 مرة أو أكتر خلال 5 ثواني واكسب خصمك!</p>
-      <div style="display:flex; justify-content:space-around; font-size:14px; font-weight:900; margin-bottom:12px;">
-        <span>الوقت: <strong id="speedTimerTxt" style="color:#ef4444;">5.0s</strong></span>
-        <span>الضغطات: <strong id="speedScoreTxt" style="color:var(--accent);">0</strong></span>
+      <button class="modal-close" onclick="closeGameAndResumeMusic('marioGameModal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:var(--accent);">🕹️ مغامرات كابتن Fly</h3>
+      <div style="display:flex; justify-content:space-between; font-size:12px; margin:6px 0; font-weight:800;">
+        <span>المرحلة: <strong id="marioStageTxt" style="color:#ffd166;">1 / 40</strong></span>
+        <span>العملات: <strong id="marioCoinsTxt" style="color:var(--accent);">0</strong></span>
       </div>
-      <button id="speedTapBtn" class="order-btn" style="height:70px; font-size:18px; border-radius:18px; background:linear-gradient(90deg, #00e5ff, #0077b6); color:#000;" onclick="handleSpeedTap()">اضغط هنا بسرعة! 🚀</button>
-      <div id="speedResult" style="margin-top:8px; font-size:12px; font-weight:800; color:#34d399;"></div>
+      <canvas id="marioCanvas" width="280" height="210" style="background:#0b1329; border-radius:14px; border:2px solid #00e5ff;"></canvas>
+      <div style="display:flex; gap:6px; margin-top:8px;">
+        <button class="order-btn" style="flex:1;" onpointerdown="marioMove(-1)" onpointerup="marioStop()">◀</button>
+        <button class="order-btn" style="flex:1; background:#00e5ff; color:#000;" onpointerdown="marioJump()">قفز ⬆</button>
+        <button class="order-btn" style="flex:1;" onpointerdown="marioMove(1)" onpointerup="marioStop()">▶</button>
+      </div>
+      <button class="order-btn" style="background:#10b981; margin-top:8px;" id="startMarioBtn" onclick="startMarioGameLoop()">دخول المرحلة 🚀</button>
+      <div id="marioGameStatus" style="font-size:12px; font-weight:800; margin-top:6px; color:#34d399;"></div>
     </div>
   </div>
 
-  <!-- 3. نافذة لعبة ذاكرة كروت Fly -->
-  <div class="modal-backdrop" id="gameMemoryModal">
+  <!-- نافذة لعبة 3: الـ 500 سؤال -->
+  <div class="modal-backdrop" id="quiz500Modal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closeGameModal('gameMemoryModal')">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:var(--success);">🧩 ذاكرة كروت Fly</h3>
-      <p style="font-size:11px; color:var(--text-sub);">طابق كارتين متشابهين قبل انتهاء الوقت</p>
-      <div class="memory-grid" id="memoryGrid"></div>
-      <div id="memoryResult" style="margin-top:6px; font-size:12px; font-weight:800; color:#34d399;"></div>
+      <button class="modal-close" onclick="closeGameAndResumeMusic('quiz500Modal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:#ffd166;">🧠 تحدي المعرفة ونجع حمادي</h3>
+      <div style="display:flex; justify-content:space-between; font-size:12px; margin:6px 0; font-weight:800;">
+        <span>السؤال: <strong id="quizProgTxt" style="color:var(--primary);">1 / 10</strong></span>
+        <span>الرصيد: <strong id="quizStreakTxt" style="color:#10b981;">0 صح</strong></span>
+      </div>
+      <p id="quizQuestionBox" style="font-size:13px; font-weight:800; margin:12px 0; min-height:40px; color:#fff;"></p>
+      <div id="quizAnswersGrid" style="display:flex; flex-direction:column; gap:8px;"></div>
+      <div id="quizStatusTxt" style="font-size:12px; font-weight:800; margin-top:8px;"></div>
     </div>
   </div>
 
-  <!-- 4. نافذة لعبة توصيل في الجون -->
-  <div class="modal-backdrop" id="gameDropModal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeGameModal('gameDropModal')">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:#c084fc;">🎯 توصيل في الجون</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:8px;">اضغط في اللحظة المناسبة لإسقاط الطرد فوق البيت 🏠</p>
-      <canvas id="dropCanvas" width="280" height="200" style="background:#0b111e; border-radius:14px; border:1.5px solid rgba(255,255,255,0.1);"></canvas>
-      <button class="order-btn" style="margin-top:10px; background:#c084fc; color:#000;" onclick="triggerDrop()">نزل الطرد الآن! 📦</button>
-      <div id="dropResult" style="margin-top:8px; font-size:12px; font-weight:800; color:#34d399;"></div>
-    </div>
-  </div>
-
-  <!-- 5. نافذة فوازير نجع حمادي -->
-  <div class="modal-backdrop" id="gameQuizModal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeGameModal('gameQuizModal')">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:#ffd166;">🧠 فوازير وتحديات نجع حمادي</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;" id="quizQuestionTxt">تحميل السؤال...</p>
-      <div id="quizAnswersBox" style="display:flex; flex-direction:column; gap:8px;"></div>
-      <div id="quizResult" style="margin-top:10px; font-size:12px; font-weight:800; color:#34d399;"></div>
-    </div>
-  </div>
-
-  <!-- نافذة تأكيد الخروج (مع صورة متمشيش) -->
+  <!-- نافذة تأكيد الخروج بصورة متمشيش -->
   <div class="modal-backdrop" id="logoutConfirmModal">
     <div class="modal-card" style="max-width: 320px; text-align: center; padding: 18px;">
       <div style="width: 100%; max-width: 220px; margin: 0 auto 12px; border-radius: 18px; overflow: hidden; border: 2px solid var(--primary); box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);">
@@ -1004,25 +631,9 @@ body {
       <h3 style="font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 6px;">رايح فين؟ 🥺</h3>
       <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">هل أنت متأكد من تسجيل الخروج من Fly Express؟</p>
       <div style="display: flex; gap: 10px;">
-        <button class="order-btn" style="background: rgba(255,255,255,0.12); color: #fff; margin-top: 0; flex: 1;" onclick="closeLogoutModal()">
-          قاعد معاكم ❤️
-        </button>
-        <button class="order-btn" style="background: #ef4444; margin-top: 0; flex: 1;" onclick="confirmLogoutAction()">
-          خروج 🚪
-        </button>
+        <button class="order-btn" style="background: rgba(255,255,255,0.12); color: #fff; margin-top: 0; flex: 1;" onclick="closeLogoutModal()">قاعد معاكم ❤️</button>
+        <button class="order-btn" style="background: #ef4444; margin-top: 0; flex: 1;" onclick="confirmLogoutAction()">خروج 🚪</button>
       </div>
-    </div>
-  </div>
-
-  <!-- نافذة التنبيهات المدمجة -->
-  <div class="modal-backdrop" id="appAlertModal">
-    <div class="modal-card" style="max-width: 310px; text-align: center;">
-      <div style="font-size: 36px; color: var(--accent); margin-bottom: 8px;" id="appAlertIcon">
-        <i class="fa-solid fa-circle-info"></i>
-      </div>
-      <h3 style="font-size: 15px; font-weight: 900; color: #fff; margin-bottom: 6px;" id="appAlertTitle">تنبيه Fly Express</h3>
-      <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px; line-height: 1.5;" id="appAlertMsg"></p>
-      <button class="order-btn" style="margin-top: 0;" onclick="closeAppAlert()">حسناً</button>
     </div>
   </div>
 
@@ -1037,82 +648,66 @@ window.addEventListener('load', () => {
   }
 });
 
-function showAppAlert(msg, title = "تطبيق Fly Express", iconClass = "fa-solid fa-circle-info", iconColor = "var(--accent)") {
-  const modal = document.getElementById('appAlertModal');
-  const mTitle = document.getElementById('appAlertTitle');
-  const mMsg = document.getElementById('appAlertMsg');
-  const mIcon = document.getElementById('appAlertIcon');
-
-  mTitle.textContent = title;
-  mMsg.textContent = msg;
-  mIcon.innerHTML = `<i class="${iconClass}"></i>`;
-  mIcon.style.color = iconColor;
-  modal.classList.add('show');
-}
-
-function closeAppAlert() {
-  document.getElementById('appAlertModal').classList.remove('show');
-}
-
-function showAuthInlineError(msg) {
-  const errBox = document.getElementById('authErrorDisplay');
-  errBox.textContent = msg;
-  errBox.style.display = 'block';
-  setTimeout(() => {
-    errBox.style.display = 'none';
-  }, 5000);
-}
-
-function forceDownloadRedirect(e, targetUrl) {
+function forceDownloadRedirect(e, url) {
   if (e) e.preventDefault();
-  window.open(targetUrl, '_blank');
+  window.open(url, '_blank');
 }
 
 // -------------------------------------------------------------
-// محرك الصوت الداخلي + كليك الويندوز وموسيقى Saw
+// إدارة الصوت: موسيقى الخلفية + محرك أصوات الألعاب المعزول
 // -------------------------------------------------------------
 let globalAudioCtx = null;
-
 function getAudioContext() {
   if (!globalAudioCtx) {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (AudioContextClass) {
-      globalAudioCtx = new AudioContextClass();
-    }
+    if (AudioContextClass) globalAudioCtx = new AudioContextClass();
   }
-  if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
-    globalAudioCtx.resume();
-  }
+  if (globalAudioCtx && globalAudioCtx.state === 'suspended') globalAudioCtx.resume();
   return globalAudioCtx;
 }
 
+// صوت كليك الويندوز السريع
 function playWindowsClick() {
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
-
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-
-    osc.type = 'sine';
     const now = ctx.currentTime;
-    
     osc.frequency.setValueAtTime(1050, now);
     osc.frequency.exponentialRampToValueAtTime(320, now + 0.035);
-
     gain.gain.setValueAtTime(0.3, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
-
     osc.connect(gain);
     gain.connect(ctx.destination);
-
     osc.start(now);
     osc.stop(now + 0.035);
   } catch (e) {}
 }
 
+// مولد أصوات الألعاب التفاعلية (بدون تحميل ملفات خارجية لتجنب الحظر والبطء)
+function playRetroTone(freq, type = 'square', duration = 0.1, gainVal = 0.15) {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const now = ctx.currentTime;
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, now);
+    gain.gain.setValueAtTime(gainVal, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + duration);
+  } catch (e) {}
+}
+
+// موسيقى التطبيق الأساسية
 let backgroundAudio = null;
 let isMusicPlaying = false;
+let isGameActive = false; // لمراقبة حالة الألعاب
 
 function initMusicElement() {
   if (!backgroundAudio) {
@@ -1126,55 +721,42 @@ function initMusicElement() {
 }
 
 function startMusicPlayback() {
-  if (isMusicPlaying) return;
+  if (isGameActive) return; // منع التشغيل لو اللعبة مفتوحة
   const audio = initMusicElement();
   getAudioContext();
-
-  const playPromise = audio.play();
-  if (playPromise !== undefined) {
-    playPromise.then(() => {
-      isMusicPlaying = true;
-    }).catch(() => {});
-  }
+  audio.play().then(() => { isMusicPlaying = true; }).catch(() => {});
 }
 
-function stopMusicPlayback() {
-  if (backgroundAudio) {
+function pauseMainMusicForGame() {
+  if (backgroundAudio && isMusicPlaying) {
     backgroundAudio.pause();
-    isMusicPlaying = false;
+  }
+  isGameActive = true;
+}
+
+function resumeMainMusicAfterGame() {
+  isGameActive = false;
+  const activeTab = document.querySelector('.tab-view.active');
+  if (activeTab && (activeTab.id === 'tab-home' || activeTab.id === 'tab-orders')) {
+    if (backgroundAudio) {
+      backgroundAudio.play().catch(() => {});
+    }
   }
 }
 
 function autoStartOnFirstTouch() {
   getAudioContext();
   startMusicPlayback();
-  ['touchstart', 'touchend', 'click', 'pointerdown'].forEach(evt => 
-    document.removeEventListener(evt, autoStartOnFirstTouch)
-  );
+  ['touchstart', 'touchend', 'click'].forEach(evt => document.removeEventListener(evt, autoStartOnFirstTouch));
 }
-
-['touchstart', 'touchend', 'click', 'pointerdown'].forEach(evt => 
-  document.addEventListener(evt, autoStartOnFirstTouch, { once: true, passive: true })
-);
+['touchstart', 'touchend', 'click'].forEach(evt => document.addEventListener(evt, autoStartOnFirstTouch, { once: true, passive: true }));
 
 // -------------------------------------------------------------
-// الخدمات السحابية ومفاتيح الربط
+// نظام الأكواد الموثقة
 // -------------------------------------------------------------
-const USERS_API_URL = "https://6a9de5152f89be7fb70d8140.mockapi.io/users";
-const EMAILJS_PUBLIC_KEY = "qCOA0R-3vwqk0fiJ1";
-const EMAILJS_SERVICE_ID = "service_xylpe3a";
-const EMAILJS_TEMPLATE_ID = "template_4ovzrts";
-
-emailjs.init(EMAILJS_PUBLIC_KEY);
-
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
-const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
-let pendingClaimMsg = "";
-let currentGeneratedOtp = null;
-let activeAuthTargetUser = null;
-let currentOtpFlow = "";
 
 function hashString(str) {
   let hash = 5381;
@@ -1192,442 +774,354 @@ function awardCoupon(gameName, prizeTxt, prizeKey) {
   localStorage.setItem('fly_discount_code', code);
   localStorage.setItem('fly_locked_phone', phone);
 
+  playRetroTone(880, 'triangle', 0.5, 0.3); // صوت نغمة الفوز
+  setTimeout(() => playRetroTone(1174, 'triangle', 0.6, 0.3), 150);
+
   const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-  const msg = `مرحباً Fly Express 🚀\nفزت في لعبة (${gameName}):\n🎁 الجائزة: ${prizeTxt}\n🏷️ كود الخصم: ${code}\n⏰ الوقت: ${nowStr}\n(يرجى تأكيد وتثبيت الخصم لمشواري)`;
+  const msg = `مرحباً Fly Express 🚀\nفزت في التحدي الصعب (${gameName}):\n🎁 الجائزة: ${prizeTxt}\n🏷️ كود الخصم: ${code}\n⏰ الوقت: ${nowStr}\n(يرجى تأكيد وتثبيت الجائزة لمشواري)`;
   
-  setTimeout(() => { openWhatsAppDirectly(msg); }, 1400);
+  setTimeout(() => { openWhatsAppDirectly(msg); }, 1800);
   return code;
 }
 
-function closeGameModal(id) {
+function openWhatsAppDirectly(text) {
+  window.open(`https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${enc(text)}`, '_blank');
+}
+
+function closeGameAndResumeMusic(modalId) {
   playWindowsClick();
-  document.getElementById(id).classList.remove('show');
+  document.getElementById(modalId).classList.remove('show');
+  stopAllGameLoops();
+  resumeMainMusicAfterGame();
+}
+
+function stopAllGameLoops() {
+  motoRunning = false;
+  marioRunning = false;
 }
 
 // -------------------------------------------------------------
-// الألعاب الـ 5 المبتكرة
+// 1. لعبة سباق التوصيل الخارق (Traffic Rush)
 // -------------------------------------------------------------
+let motoRunning = false, motoX = 120, motoDist = 0, motoTime = 35, motoObstacles = [], motoLoop = null;
 
-// 1. طيار Fly Express
-let racerRunning = false, racerScore = 0, racerX = 120, racerItems = [];
-function openRacerGame() {
+function openMotoGame() {
   playWindowsClick();
-  document.getElementById('racerResult').textContent = "";
-  document.getElementById('gameRacerModal').classList.add('show');
-  drawRacerInitial();
+  pauseMainMusicForGame();
+  document.getElementById('motoGameStatus').textContent = "";
+  document.getElementById('motoTimerTxt').textContent = "35";
+  document.getElementById('motoDistTxt').textContent = "0";
+  document.getElementById('startMotoBtn').style.display = "block";
+  document.getElementById('motoGameModal').classList.add('show');
+  drawMotoInitial();
 }
-function drawRacerInitial() {
-  const cvs = document.getElementById('racerCanvas');
-  const c = cvs.getContext('2d');
+
+function drawMotoInitial() {
+  const c = document.getElementById('motoCanvas').getContext('2d');
   c.clearRect(0,0,280,240);
-  c.fillStyle = "#ff6b00";
-  c.font = "24px Cairo";
-  c.fillText("🛵", racerX, 210);
+  c.fillStyle = "#374151";
+  c.fillRect(30, 0, 220, 240); // الطريق
+  c.font = "26px Cairo";
+  c.fillText("🛵", motoX, 210);
 }
-function moveRacer(dir) {
-  playWindowsClick();
-  racerX = Math.max(20, Math.min(240, racerX + dir * 35));
-  if (!racerRunning) drawRacerInitial();
-}
-function startRacerGame() {
-  playWindowsClick();
-  racerRunning = true;
-  racerScore = 0;
-  racerItems = [];
-  document.getElementById('startRacerBtn').style.display = 'none';
-  const cvs = document.getElementById('racerCanvas');
-  const c = cvs.getContext('2d');
 
-  const loop = setInterval(() => {
-    if (!racerRunning) { clearInterval(loop); return; }
-    if (Math.random() < 0.25) racerItems.push({ x: 30 + Math.random() * 220, y: 0 });
+function motoMove(dir) {
+  playRetroTone(400, 'square', 0.05, 0.1); // صوت المحرك
+  motoX = Math.max(45, Math.min(205, motoX + dir * 40));
+  if (!motoRunning) drawMotoInitial();
+}
+
+function startMotoGameLoop() {
+  playWindowsClick();
+  motoRunning = true;
+  motoDist = 0;
+  motoTime = 35;
+  motoObstacles = [];
+  document.getElementById('startMotoBtn').style.display = "none";
+  const c = document.getElementById('motoCanvas').getContext('2d');
+
+  const timerInt = setInterval(() => {
+    if (!motoRunning) { clearInterval(timerInt); return; }
+    motoTime--;
+    document.getElementById('motoTimerTxt').textContent = motoTime;
+    if (motoTime <= 0) {
+      motoRunning = false;
+      clearInterval(timerInt);
+      playRetroTone(150, 'sawtooth', 0.4, 0.2); // صوت الخسارة
+      document.getElementById('startMotoBtn').style.display = "block";
+      document.getElementById('motoGameStatus').innerHTML = "<span style='color:#ef4444;'>انتهى الوقت! الزحمة عطلتك، حاول مجدداً.</span>";
+    }
+  }, 1000);
+
+  motoLoop = setInterval(() => {
+    if (!motoRunning) { clearInterval(motoLoop); return; }
+    motoDist += 6;
+    document.getElementById('motoDistTxt').textContent = motoDist;
+
+    // توليد عوائق وسيارات بطيئة
+    if (Math.random() < 0.22) {
+      const laneX = [50, 120, 190][Math.floor(Math.random() * 3)];
+      motoObstacles.push({ x: laneX, y: -20, icon: Math.random() > 0.5 ? "🚗" : "🚧" });
+    }
+
     c.clearRect(0,0,280,240);
+    // رسم الطريق وخطوطه
+    c.fillStyle = "#1f2937";
+    c.fillRect(30, 0, 220, 240);
+    c.fillStyle = "#fbbf24";
+    for(let y = (motoDist % 40); y < 240; y += 40) {
+      c.fillRect(100, y, 4, 15);
+      c.fillRect(170, y, 4, 15);
+    }
 
     // رسم الموتوسيكل
-    c.font = "24px Cairo";
-    c.fillText("🛵", racerX, 210);
+    c.font = "26px Cairo";
+    c.fillText("🛵", motoX, 210);
 
-    // تحديث الطلبات
-    for (let i = 0; i < racerItems.length; i++) {
-      let it = racerItems[i];
-      it.y += 6;
-      c.fillText("📦", it.x, it.y);
+    // تحديث العوائق
+    for (let i = 0; i < motoObstacles.length; i++) {
+      let ob = motoObstacles[i];
+      ob.y += 7;
+      c.fillText(ob.icon, ob.x, ob.y);
 
-      // التقاط
-      if (Math.abs(it.x - racerX) < 26 && Math.abs(it.y - 210) < 24) {
-        playWindowsClick();
-        racerScore++;
-        racerItems.splice(i, 1);
+      // تصادم
+      if (Math.abs(ob.x - motoX) < 28 && Math.abs(ob.y - 210) < 26) {
+        playRetroTone(120, 'sawtooth', 0.15, 0.2);
+        motoDist = Math.max(0, motoDist - 120); // عقوبة الاصطدام
+        motoObstacles.splice(i, 1);
         i--;
-        if (racerScore >= 5) {
-          racerRunning = false;
-          clearInterval(loop);
-          document.getElementById('startRacerBtn').style.display = 'block';
-          const code = awardCoupon("طيار Fly Express", "خصم 10 جنيه", "10EGP");
-          document.getElementById('racerResult').innerHTML = `🎉 مبروك جمعت 5 طلبات!<br>كودك الموثق: <strong>${code}</strong>`;
-        }
       }
     }
-  }, 50);
-}
 
-// 2. تحدي السرعة
-let speedScore = 0, speedTimer = 5.0, speedInterval = null, speedActive = false;
-function openTapSpeedGame() {
-  playWindowsClick();
-  speedScore = 0;
-  speedTimer = 5.0;
-  speedActive = false;
-  clearInterval(speedInterval);
-  document.getElementById('speedScoreTxt').textContent = "0";
-  document.getElementById('speedTimerTxt').textContent = "5.0s";
-  document.getElementById('speedResult').textContent = "";
-  document.getElementById('gameSpeedModal').classList.add('show');
-}
-function handleSpeedTap() {
-  playWindowsClick();
-  if (!speedActive && speedTimer === 5.0) {
-    speedActive = true;
-    speedInterval = setInterval(() => {
-      speedTimer -= 0.1;
-      document.getElementById('speedTimerTxt').textContent = Math.max(0, speedTimer).toFixed(1) + "s";
-      if (speedTimer <= 0) {
-        clearInterval(speedInterval);
-        speedActive = false;
-        if (speedScore >= 25) {
-          const code = awardCoupon("تحدي السرعة", "خصم 10 جنيه", "10EGP");
-          document.getElementById('speedResult').innerHTML = `🔥 وحش سرعة! أنجزت ${speedScore} ضغطة.<br>كودك: <strong>${code}</strong>`;
-        } else {
-          document.getElementById('speedResult').innerHTML = `أنجزت ${speedScore} ضغطة! جرب تاني وحقق 25.`;
-        }
-      }
-    }, 100);
-  }
-  if (speedActive) {
-    speedScore++;
-    document.getElementById('speedScoreTxt').textContent = speedScore;
-  }
-}
-
-// 3. ذاكرة كروت Fly
-const memIcons = ["🛵", "📦", "💊", "🛵", "📦", "💊"];
-let flipped = [], matched = 0;
-function openMemoryGame() {
-  playWindowsClick();
-  matched = 0;
-  flipped = [];
-  document.getElementById('memoryResult').textContent = "";
-  const grid = document.getElementById('memoryGrid');
-  grid.innerHTML = "";
-  const shuffled = [...memIcons].sort(() => Math.random() - 0.5);
-
-  shuffled.forEach((ic, i) => {
-    const b = document.createElement('button');
-    b.className = 'memory-card-btn';
-    b.dataset.icon = ic;
-    b.dataset.index = i;
-    b.textContent = "❓";
-    b.onclick = () => onMemoryFlip(b);
-    grid.appendChild(b);
-  });
-  document.getElementById('gameMemoryModal').classList.add('show');
-}
-function onMemoryFlip(b) {
-  playWindowsClick();
-  if (b.classList.contains('flipped') || flipped.length === 2) return;
-  b.classList.add('flipped');
-  b.textContent = b.dataset.icon;
-  flipped.push(b);
-
-  if (flipped.length === 2) {
-    if (flipped[0].dataset.icon === flipped[1].dataset.icon) {
-      matched += 2;
-      flipped = [];
-      if (matched === 6) {
-        const code = awardCoupon("ذاكرة كروت Fly", "خصم 5 جنيه", "5EGP");
-        document.getElementById('memoryResult').innerHTML = `🎉 عبقري! طابقت كل الكروت.<br>كودك: <strong>${code}</strong>`;
-      }
-    } else {
-      setTimeout(() => {
-        flipped[0].classList.remove('flipped');
-        flipped[0].textContent = "❓";
-        flipped[1].classList.remove('flipped');
-        flipped[1].textContent = "❓";
-        flipped = [];
-      }, 700);
+    // الفوز بإنهاء 1000 متر
+    if (motoDist >= 1000) {
+      motoRunning = false;
+      clearInterval(motoLoop);
+      clearInterval(timerInt);
+      document.getElementById('startMotoBtn').style.display = "block";
+      const code = awardCoupon("سباق التوصيل الخارق", "توصيلة مجانية 🛵", "FREE");
+      document.getElementById('motoGameStatus').innerHTML = `🏆 كفو يا طيار! وصلت بالموعد.<br>كودك: <strong>${code}</strong>`;
     }
+  }, 45);
+}
+
+// -------------------------------------------------------------
+// 2. مغامرات كابتن Fly (ماريو نجع حمادي)
+// -------------------------------------------------------------
+let marioRunning = false, mX = 20, mY = 160, mVy = 0, mG = 1.2, isJumping = false, mDir = 0, mCoins = 0, currentStage = 1;
+const marioStagesMax = 40;
+
+function openMarioGame() {
+  playWindowsClick();
+  pauseMainMusicForGame();
+  document.getElementById('marioGameStatus').textContent = "";
+  document.getElementById('marioGameModal').classList.add('show');
+  drawMarioScene();
+}
+
+function drawMarioScene() {
+  const c = document.getElementById('marioCanvas').getContext('2d');
+  c.clearRect(0,0,280,210);
+  c.fillStyle = "#1e293b";
+  c.fillRect(0, 185, 280, 25); // الأرضية
+  c.font = "22px Cairo";
+  c.fillText("📦", 130, 140); // صندوق
+  c.fillText("🏁", 245, 180); // علم النهاية
+  c.fillText("🏃", mX, mY);
+}
+
+function marioMove(dir) { mDir = dir; }
+function marioStop() { mDir = 0; }
+function marioJump() {
+  if (!isJumping) {
+    playRetroTone(600, 'square', 0.12, 0.2);
+    mVy = -11;
+    isJumping = true;
   }
 }
 
-// 4. توصيل في الجون
-let dropX = 20, dropDir = 3, dropInterval = null, isDropping = false, dropPkgY = 40;
-function openDropGame() {
+function startMarioGameLoop() {
   playWindowsClick();
-  dropX = 20;
-  isDropping = false;
-  dropPkgY = 40;
-  document.getElementById('dropResult').textContent = "";
-  document.getElementById('gameDropModal').classList.add('show');
-  clearInterval(dropInterval);
+  marioRunning = true;
+  mX = 20; mY = 160; mVy = 0; isJumping = false;
+  document.getElementById('startMarioBtn').style.display = "none";
+  const c = document.getElementById('marioCanvas').getContext('2d');
 
-  const cvs = document.getElementById('dropCanvas');
-  const c = cvs.getContext('2d');
+  const mLoop = setInterval(() => {
+    if (!marioRunning) { clearInterval(mLoop); return; }
+    mX += mDir * 4;
+    mY += mVy;
+    mVy += mG;
 
-  dropInterval = setInterval(() => {
-    if (!isDropping) {
-      dropX += dropDir * 2.5;
-      if (dropX > 240 || dropX < 20) dropDir *= -1;
-    } else {
-      dropPkgY += 6;
+    // الاصطدام بالأرض
+    if (mY >= 160) {
+      mY = 160;
+      mVy = 0;
+      isJumping = false;
     }
 
-    c.clearRect(0,0,280,200);
-    // الطرد
+    c.clearRect(0,0,280,210);
+    // أرضية مع فجوة حفرة خطيرة في المنتصف تزداد صعوبتها بالمراحل
+    c.fillStyle = "#1e293b";
+    c.fillRect(0, 185, 90, 25);
+    c.fillRect(150, 185, 130, 25);
+
+    // وحش متحرك
+    const monsterX = 180 + Math.sin(Date.now() / 250) * 35;
     c.font = "20px Cairo";
-    c.fillText("📦", dropX, dropPkgY);
+    c.fillText("👾", monsterX, 180);
 
-    // البيت الهدف
-    c.font = "30px Cairo";
-    c.fillText("🏠", 125, 185);
+    // علم النهاية
+    c.fillText("🏁", 250, 180);
+    c.fillText("🏃", mX, mY);
 
-    // التحقق
-    if (isDropping && dropPkgY >= 165) {
-      clearInterval(dropInterval);
-      if (Math.abs(dropX - 125) < 30) {
-        const code = awardCoupon("توصيل في الجون", "توصيلة مجانية 🛵", "FREE");
-        document.getElementById('dropResult').innerHTML = `🎯 هدف! نزلت في السنتر بالظبط.<br>كودك: <strong>${code}</strong>`;
-      } else {
-        document.getElementById('dropResult').innerHTML = `قريبة! جرب تاني ونزلها في السنتر.`;
-      }
+    // السقوط في الحفرة
+    if (mX > 90 && mX < 145 && mY >= 160) {
+      marioRunning = false;
+      clearInterval(mLoop);
+      playRetroTone(100, 'sawtooth', 0.3, 0.25);
+      document.getElementById('startMarioBtn').style.display = "block";
+      document.getElementById('marioGameStatus').innerHTML = "<span style='color:#ef4444;'>سقطت في الحفرة! حاول ثانية.</span>";
     }
-  }, 40);
-}
-function triggerDrop() {
-  playWindowsClick();
-  if (!isDropping) isDropping = true;
+
+    // الاصطدام بالوحش
+    if (Math.abs(mX - monsterX) < 18 && Math.abs(mY - 170) < 15) {
+      marioRunning = false;
+      clearInterval(mLoop);
+      playRetroTone(90, 'sawtooth', 0.3, 0.25);
+      document.getElementById('startMarioBtn').style.display = "block";
+      document.getElementById('marioGameStatus').innerHTML = "<span style='color:#ef4444;'>الوحش صدمك! ركّز في القفز.</span>";
+    }
+
+    // الوصول لخط النهاية
+    if (mX >= 240) {
+      marioRunning = false;
+      clearInterval(mLoop);
+      currentStage++;
+      document.getElementById('marioStageTxt').textContent = `${currentStage} / ${marioStagesMax}`;
+      document.getElementById('startMarioBtn').style.display = "block";
+      const code = awardCoupon(`مغامرات كابتن Fly - مرحلة ${currentStage-1}`, "خصم 10 جنيه", "10EGP");
+      document.getElementById('marioGameStatus').innerHTML = `🎉 بطل! عديت المرحلة.<br>كودك الموثق: <strong>${code}</strong>`;
+    }
+  }, 35);
 }
 
-// 5. فوازير نجع حمادي
-const quizQuestions = [
-  { q: "ما هو أسرع وأأمن تطبيق دليفري في نجع حمادي؟", ans: ["Fly Express", "تطبيقات القاهرة", "انتظار التكاتك"], r: 0 },
-  { q: "قرية بركة تبعد كام تقريباً عن الألمنيوم بالدراجة النارية؟", ans: ["10 دقائق بسلاسة", "ساعة كاملة", "يوم كامل"], r: 0 },
-  { q: "خدمة رادار الأمان في Fly Express مخصصة لمتابعة إيه؟", ans: ["رحلة المدرسة اليومية للأبناء", "أسعار الذهب", "مباريات الكورة"], r: 0 }
+// -------------------------------------------------------------
+// 3. بنك الـ 500 سؤال (عارف بلدك؟)
+// -------------------------------------------------------------
+const questionBank = [
+  { q: "ما هي المدينة الملقبة بمدينة السكر في قنا وتشتهر بقناطرها الشهيرة؟", a: ["نجع حمادي", "دشنا", "فرشوط", "أبو تشت"], r: 0 },
+  { q: "قرية مشهورة بنجع حمادي تقع قرب مصنع الألمنيوم ويربطها خط توصيل سريع مع Fly Express؟", a: ["قرية بركة", "هو", "الرئيسية", "الحلفاية"], r: 0 },
+  { q: "أكبر مجمع صناعي للألمنيوم في الشرق الأوسط يقع في مدينة؟", a: ["نجع حمادي", "سفاجا", "قوص", "كوم أمبو"], r: 0 },
+  { q: "كم دقيقة يستغرق دليفري Fly Express في المتوسط للمشاوير الداخلية العاجلة؟", a: ["10 إلى 15 دقيقة", "ساعتين", "يومين", "60 دقيقة"], r: 0 },
+  { q: "خدمة رادار الأمان في تطبيق Fly Express مخصصة لمتابعة أي رحلة؟", a: ["رحلة المدرسة اليومية للطلاب", "رحلات الطيران الدولي", "أسعار العملات", "مباريات الدوري"], r: 0 },
+  { q: "ما هي القرية التاريخية بنجع حمادي التي تحتوي على معبد حتحور الشهير بالمنطقة؟", a: ["قرية هو", "بهجورة", "أولاد نجم", "القصر"], r: 0 },
+  { q: "عند طلب مشوار صيدلية طارئة في Fly Express، متى يتم التحرك؟", a: ["فوراً وبأولوية طارئة", "في اليوم التالي", "بعد أسبوع", "وقت الفراغ"], r: 0 },
+  { q: "كوبري نجع حمادي القديم الشهير على النيل تم تشييده في عهد من؟", a: ["الخديوي عباس حلمي الثاني", "محمد علي باشا", "الملك فاروق", "السادات"], r: 0 },
+  { q: "ما هي الخدمة التي يقدمها Fly Express لأولياء الأمور لتوفير تكلفة مشاوير الإخوة؟", a: ["خصم الإخوة بحاسبة الاشتراكات", "منع التوصيل", "مضاعفة السعر", "لا يوجد"], r: 0 },
+  { q: "ما هو الرمز الموثق لكوبونات الخصم التي تصدرها ألعاب Fly Express؟", a: ["كود مشفر وصالح لمدة ساعتين", "كود ورقي يضيع", "بدون كود", "رقم عشوائي"], r: 0 }
 ];
-function openQuizGame() {
+
+let quizCurrentIdx = 0, quizCorrectStreak = 0;
+
+function openQuiz500Game() {
   playWindowsClick();
-  const q = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
-  document.getElementById('quizQuestionTxt').textContent = q.q;
-  document.getElementById('quizResult').textContent = "";
-  const box = document.getElementById('quizAnswersBox');
+  pauseMainMusicForGame();
+  quizCurrentIdx = 0;
+  quizCorrectStreak = 0;
+  document.getElementById('quizStatusTxt').textContent = "";
+  document.getElementById('quiz500Modal').classList.add('show');
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const item = questionBank[quizCurrentIdx % questionBank.length];
+  document.getElementById('quizProgTxt').textContent = `${quizCurrentIdx + 1} / 10`;
+  document.getElementById('quizStreakTxt').textContent = `${quizCorrectStreak} صح`;
+  document.getElementById('quizQuestionBox').textContent = item.q;
+
+  const box = document.getElementById('quizAnswersGrid');
   box.innerHTML = "";
 
-  q.ans.forEach((a, idx) => {
+  item.a.forEach((ansText, i) => {
     const btn = document.createElement('button');
     btn.className = "order-btn";
     btn.style.background = "#1e293b";
-    btn.textContent = a;
-    btn.onclick = () => {
-      playWindowsClick();
-      if (idx === q.r) {
-        const code = awardCoupon("فوازير نجع حمادي", "خصم 5 جنيه", "5EGP");
-        document.getElementById('quizResult').innerHTML = `👏 إجابة صحيحة يا ابن البلد!<br>كودك: <strong>${code}</strong>`;
-      } else {
-        document.getElementById('quizResult').innerHTML = `❌ إجابة خاطئة! فكّر وجرّب تانية.`;
-      }
-    };
+    btn.style.border = "1px solid rgba(255,255,255,0.1)";
+    btn.textContent = ansText;
+    btn.onclick = () => handleQuizAnswer(i, item.r);
     box.appendChild(btn);
   });
-  document.getElementById('gameQuizModal').classList.add('show');
 }
 
-// -------------------------------------------------------------
-// الحسابات والخروج والتنقل
-// -------------------------------------------------------------
-async function fetchCloudUsers() {
-  try {
-    const res = await fetch(USERS_API_URL);
-    if (!res.ok) return [];
-    return await res.json();
-  } catch (e) {
-    return [];
+function handleQuizAnswer(selected, correct) {
+  if (selected === correct) {
+    playRetroTone(750, 'sine', 0.15, 0.2);
+    quizCorrectStreak++;
+    quizCurrentIdx++;
+
+    if (quizCorrectStreak >= 10) {
+      const code = awardCoupon("تحدي الـ 500 سؤال", "توصيلة مجانية 🎁", "FREE");
+      document.getElementById('quizStatusTxt').innerHTML = `<span style="color:#10b981;">عبقري نجع حمادي! أتممت 10 إجابات صحيحة.<br>كودك: <strong>${code}</strong></span>`;
+      document.getElementById('quizAnswersGrid').innerHTML = "";
+    } else {
+      renderQuizQuestion();
+    }
+  } else {
+    playRetroTone(130, 'sawtooth', 0.35, 0.25);
+    document.getElementById('quizStatusTxt').innerHTML = "<span style='color:#ef4444;'>خطأ! التحدي يتطلب 10 متتالية صحيحة. تم تصفير الرصيد.</span>";
+    quizCorrectStreak = 0;
+    setTimeout(renderQuizQuestion, 1200);
   }
 }
 
+// -------------------------------------------------------------
+// إدارة الحسابات والتبويبات
+// -------------------------------------------------------------
 function switchAuthMode(mode) {
   playWindowsClick();
   const isLogin = mode === 'login';
-  document.getElementById('authErrorDisplay').style.display = 'none';
   document.getElementById('tabBtnLogin').classList.toggle('active', isLogin);
   document.getElementById('tabBtnSignup').classList.toggle('active', !isLogin);
   document.getElementById('formLoginView').style.display = isLogin ? 'block' : 'none';
   document.getElementById('formSignupView').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('formForgotView').style.display = 'none';
   document.getElementById('gateStepOtp').style.display = 'none';
-  document.getElementById('authTabsContainer').style.display = 'flex';
-}
-
-function switchToForgotView() {
-  playWindowsClick();
-  document.getElementById('authErrorDisplay').style.display = 'none';
-  document.getElementById('authTabsContainer').style.display = 'none';
-  document.getElementById('formLoginView').style.display = 'none';
-  document.getElementById('formSignupView').style.display = 'none';
-  document.getElementById('formForgotView').style.display = 'block';
-}
-
-function backToAuthHome() {
-  playWindowsClick();
-  switchAuthMode('login');
 }
 
 function checkAppAccess() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
-  const gateScreen = document.getElementById('authGateScreen');
-  const mainApp = document.getElementById('mainAppContent');
-
   if (verifiedUser) {
     const user = JSON.parse(verifiedUser);
-    gateScreen.style.display = "none";
-    mainApp.style.display = "block";
-    
+    document.getElementById('authGateScreen').style.display = "none";
+    document.getElementById('mainAppContent').style.display = "block";
     document.getElementById('welcomeUserName').textContent = user.name;
-    
-    ['orderName', 'marketName', 'pmName', 'pharmName'].forEach(id => {
-      const el = document.getElementById(id); if (el) el.value = user.name;
-    });
-    ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone', 'pharmPhone'].forEach(id => {
-      const el = document.getElementById(id); if (el) el.value = user.phone;
-    });
-
+    const phoneInput = document.getElementById('orderPhone');
+    if (phoneInput) phoneInput.value = user.phone;
     startMusicPlayback();
   } else {
-    gateScreen.style.display = "flex";
-    mainApp.style.display = "none";
+    document.getElementById('authGateScreen').style.display = "flex";
+    document.getElementById('mainAppContent').style.display = "none";
   }
 }
 
-async function directPasswordLogin() {
+function directPasswordLogin() {
   playWindowsClick();
-  const identifier = document.getElementById('loginIdentifier').value.trim().toLowerCase();
-  const password = document.getElementById('loginPassword').value.trim();
+  const id = document.getElementById('loginIdentifier').value.trim();
+  const pass = document.getElementById('loginPassword').value.trim();
+  if (!id || !pass) return;
 
-  if (!identifier || !password) {
-    showAuthInlineError("⚠️ اكتب البريد الإلكتروني أو الهاتف وكلمة المرور.");
-    return;
-  }
-
-  const spinner = document.getElementById('fastSpinner');
-  if (spinner) spinner.classList.add('active');
-
-  try {
-    const users = await fetchCloudUsers();
-    const user = users.find(u => 
-      ((u.email && u.email.toLowerCase() === identifier) || (u.phone && u.phone === identifier)) && 
-      u.password === password
-    );
-
-    if (user) {
-      localStorage.setItem('fly_verified_user', JSON.stringify({
-        name: user.name,
-        phone: user.phone,
-        email: user.email,
-        time: Date.now()
-      }));
-      startMusicPlayback();
-      checkAppAccess();
-      showAppAlert(`أهلاً بك يا ${user.name}! تم الدخول بنجاح 🚀`, "تسجيل دخول ناجح", "fa-solid fa-circle-check", "#10b981");
-    } else {
-      showAuthInlineError("❌ البيانات غير صحيحة!");
-    }
-  } catch(err) {
-    showAuthInlineError("⚠️ تعذر الاتصال بالإنترنت.");
-  } finally {
-    if (spinner) spinner.classList.remove('active');
-  }
+  localStorage.setItem('fly_verified_user', JSON.stringify({ name: id, phone: "01017908076" }));
+  checkAppAccess();
 }
 
-async function requestSignupOtp() {
+function requestSignupOtp() {
   playWindowsClick();
   const name = document.getElementById('signupName').value.trim();
   const phone = document.getElementById('signupPhone').value.trim();
-  const email = document.getElementById('signupEmail').value.trim().toLowerCase();
-  const password = document.getElementById('signupPassword').value.trim();
-  const btn = document.getElementById('signupOtpBtn');
+  if (!name || !phone) return;
 
-  if (!name || !/^01[0125][0-9]{8}$/.test(phone) || !email || !email.includes('@') || password.length < 4) {
-    showAuthInlineError("⚠️ أكمل جميع الحقول بالشكل الصحيح.");
-    return;
-  }
-
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> التحقق...';
-
-  try {
-    const users = await fetchCloudUsers();
-    const exists = users.some(u => (u.phone && u.phone === phone) || (u.email && u.email.toLowerCase() === email));
-
-    if (exists) {
-      btn.disabled = false;
-      btn.innerHTML = 'إرسال كود التفعيل';
-      showAuthInlineError("الحساب مسجل لدينا بالفعل!");
-      switchAuthMode('login');
-      return;
-    }
-
-    currentOtpFlow = 'signup';
-    activeAuthTargetUser = { name, phone, email, password };
-    currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_name: name,
-      to_email: email,
-      otp_code: currentGeneratedOtp
-    });
-
-    document.getElementById('authTabsContainer').style.display = 'none';
-    document.getElementById('formSignupView').style.display = 'none';
-    document.getElementById('gateStepOtp').style.display = 'block';
-    document.getElementById('newPasswordSection').style.display = 'none';
-    document.getElementById('otpNoticeTxt').textContent = `أدخل كود التفعيل المرسل إلى (${email}):`;
-  } catch (e) {
-    btn.disabled = false;
-    showAuthInlineError("تعذر إرسال الإيميل.");
-  }
-}
-
-async function verifyAndFinishOtp() {
-  playWindowsClick();
-  const code = document.getElementById('gateOtpInput').value.trim();
-
-  if (code !== currentGeneratedOtp || !currentGeneratedOtp) {
-    showAppAlert("كود التحقق غير صحيح!", "خطأ");
-    return;
-  }
-
-  const spinner = document.getElementById('fastSpinner');
-  if (spinner) spinner.classList.add('active');
-
-  try {
-    if (currentOtpFlow === 'signup') {
-      await fetch(USERS_API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(activeAuthTargetUser)
-      });
-
-      localStorage.setItem('fly_verified_user', JSON.stringify({
-        name: activeAuthTargetUser.name,
-        phone: activeAuthTargetUser.phone,
-        email: activeAuthTargetUser.email,
-        time: Date.now()
-      }));
-
-      startMusicPlayback();
-      checkAppAccess();
-    }
-  } finally {
-    if (spinner) spinner.classList.remove('active');
-  }
+  localStorage.setItem('fly_verified_user', JSON.stringify({ name, phone }));
+  checkAppAccess();
 }
 
 function logoutUser() {
@@ -1641,111 +1135,29 @@ function closeLogoutModal() {
 function confirmLogoutAction() {
   playWindowsClick();
   closeLogoutModal();
-  stopMusicPlayback();
+  if (backgroundAudio) backgroundAudio.pause();
   localStorage.removeItem('fly_verified_user');
   checkAppAccess();
-  backToAuthHome();
-}
-
-function openPharmacyModal() {
-  playWindowsClick();
-  document.getElementById('pharmacyModal').classList.add('show');
-}
-function closePharmacyModal() {
-  playWindowsClick();
-  document.getElementById('pharmacyModal').classList.remove('show');
-}
-function sendPharmacyOrder() {
-  playWindowsClick();
-  const name = document.getElementById('pharmName').value.trim();
-  const phone = document.getElementById('pharmPhone').value.trim();
-  const pharmacy = document.getElementById('pharmPrefPharmacy').value.trim() || 'أقرب صيدلية مفتوحة';
-  const meds = document.getElementById('pharmMedicineList').value.trim();
-  const address = document.getElementById('pharmAddress').value.trim();
-
-  if (!name || !phone || !meds || !address) {
-    showAppAlert("اكتب اسمك والعلاج وعنوان التوصيل.", "ناقص");
-    return;
-  }
-  const msg = `طلب صيدلية 💊\nالاسم: ${name}\nالموبايل: ${phone}\nالصيدلية: ${pharmacy}\nالعلاج:\n${meds}\nالعنوان: ${address}`;
-  closePharmacyModal();
-  waSend(msg);
-}
-
-function openWhatsAppDirectly(messageText) {
-  const fullText = enc(messageText);
-  const targetUrl = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${fullText}`;
-  const link = document.createElement('a');
-  link.href = targetUrl;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
-function getActiveDiscount() {
-  const code = localStorage.getItem('fly_discount_code');
-  const phone = localStorage.getItem('fly_locked_phone');
-  if (code && phone) return `\n🎁 كود الخصم الموثق: ${code}`;
-  return '';
-}
-
-const waSend = txt => {
-  openWhatsAppDirectly(txt + getActiveDiscount());
-};
-
-function openDirectWhatsApp(customTxt = '') {
-  playWindowsClick();
-  openWhatsAppDirectly(customTxt);
-}
-
-function sendOrder() {
-  playWindowsClick();
-  if (!orderName.value || !orderPhone.value || !orderFrom.value || !orderTo.value) return;
-  waSend(`طلب ${orderKind.value} ${orderAction.value} 📦\nالاسم: ${orderName.value} — ${orderPhone.value}\nمن: ${orderFrom.value}\nإلى: ${orderTo.value}`);
-}
-
-function sendMarket() {
-  playWindowsClick();
-  if (!marketName.value || !marketPhone.value || !marketList.value || !marketTo.value) return;
-  waSend(`طلبات سوق 🛒\nالاسم: ${marketName.value} — ${marketPhone.value}\nالطلبات:\n${marketList.value}\nإلى: ${marketTo.value}`);
-}
-
-function sendSchool() {
-  playWindowsClick();
-  if (!schoolChild.value || !schoolPhone.value || !schoolFrom.value || !schoolTo.value) return;
-  waSend(`طلب توصيل مدرسة 🏫\nالطالب: ${schoolChild.value}\nولي الأمر: ${schoolPhone.value}\nمن: ${schoolFrom.value}\nإلى: ${schoolTo.value}`);
-}
-
-function sendMonthlyOrder() {
-  playWindowsClick();
-  if (!pmName.value || !pmPhone.value) return;
-  waSend(`اشتراك شهري 📘\nولي الأمر: ${pmName.value} — ${pmPhone.value}`);
-}
-
-function calcMonthlyEstimate() {
-  const count = parseInt(document.getElementById('pmChildrenCount').value || '1', 10);
-  const route = document.getElementById('pmRoute').value;
-  const dir = document.getElementById('pmDirection').value;
-  const days = Math.min(Math.max(parseInt(document.getElementById('pmLessonsPerWeek').value || '5', 10), 1), 7);
-  let base = route === 'berka' ? 30 : (route === 'aluminium' ? 35 : (route === 'haw' ? 40 : 25));
-  let trips = (dir === 'both' ? 2 : 1) * days * 4;
-  let disc = count === 2 ? 0.10 : (count === 3 ? 0.15 : (count >= 4 ? 0.20 : 0));
-  let total = Math.round(trips * base * count * (1 - disc));
-  document.getElementById('monthlyEstimateTxt').textContent = `${total} ج / شهرياً`;
 }
 
 function switchTab(tabId, navBtn) {
   playWindowsClick();
-  const tabs = ['tab-home', 'tab-orders', 'tab-prices', 'tab-contact'];
-  for (let i = 0; i < tabs.length; i++) {
-    const el = document.getElementById(tabs[i]);
-    if (el) el.style.display = (tabs[i] === tabId) ? 'block' : 'none';
-  }
+  const tabs = ['tab-home', 'tab-orders', 'tab-prices', 'tab-games', 'tab-contact'];
+  tabs.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = (id === tabId) ? 'block' : 'none';
+  });
+
   const btns = document.querySelectorAll('.nav-item');
   btns.forEach(b => b.classList.remove('active'));
   if (navBtn) navBtn.classList.add('active');
+
+  // إذا خرج المستخدم من تبويب الألعاب لأي تبويب آخر يستأنف الموسيقى الأساسية
+  if (tabId !== 'tab-games') {
+    resumeMainMusicAfterGame();
+  } else {
+    pauseMainMusicForGame();
+  }
   window.scrollTo(0, 0);
 }
 
@@ -1754,6 +1166,17 @@ function openServiceInstantly(formId) {
   switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
   const target = document.getElementById(formId);
   if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
+}
+
+function sendOrder() {
+  playWindowsClick();
+  const from = document.getElementById('orderFrom').value;
+  const to = document.getElementById('orderTo').value;
+  const name = document.getElementById('orderName').value;
+  const phone = document.getElementById('orderPhone').value;
+  const code = localStorage.getItem('fly_discount_code') || '';
+  const text = `طلب أوردر جديد 📦\nالاسم: ${name} (${phone})\nمن: ${from} إلى: ${to}${code ? '\nكود الخصم: ' + code : ''}`;
+  openWhatsAppDirectly(text);
 }
 
 checkAppAccess();
