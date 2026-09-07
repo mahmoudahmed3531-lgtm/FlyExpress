@@ -72,7 +72,7 @@ body {
   touch-action: pan-y !important;
 }
 
-/* شريط تحميل التطبيق العائم المربوط بميديا فاير */
+/* شريط تحميل التطبيق العائم المباشر لـ MediaFire */
 .app-download-banner {
   position: fixed;
   top: 12px;
@@ -408,22 +408,66 @@ body {
 }
 .pharmacy-order-banner:active { transform: scale(0.97); }
 
-.wheel-promo-card {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 107, 0, 0.18));
-  border: 1px dashed var(--primary);
+.section-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
+
+/* شبكة صالة ألعاب الجوائز */
+.games-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.game-hub-card {
+  background: #0f172a;
+  border: 1px solid rgba(255, 107, 0, 0.25);
   border-radius: 18px;
-  padding: 12px 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.15s ease;
+}
+.game-hub-card:active {
+  transform: scale(0.95);
+  border-color: var(--accent);
+}
+.game-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  cursor: pointer;
-  touch-action: manipulation;
-  transition: transform 0.15s ease;
+  justify-content: center;
+  font-size: 20px;
 }
-.wheel-promo-card:active { transform: scale(0.97); }
 
-.section-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
+/* بطاقات الذاكرة */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 14px 0;
+}
+.memory-card-btn {
+  height: 70px;
+  background: #1e293b;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  color: #fff;
+}
+.memory-card-btn.flipped {
+  background: #0f2d24;
+  border-color: var(--success);
+}
+
 .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 .service-card, .price-box, .form-card {
   background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px;
@@ -448,7 +492,7 @@ body {
 .service-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 .ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; }
 .ic-blue { background: rgba(0, 168, 255, 0.15); color: #00a8ff; }
-.ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.ic-green { background: rgba(168, 85, 247, 0.15); color: #10b981; }
 .ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
 /* شريط التنقل السفلي */
@@ -494,23 +538,12 @@ body {
   text-align: center; position: relative;
 }
 .modal-close { position: absolute; top: 12px; left: 14px; background: transparent; border: 0; color: var(--text-sub); font-size: 22px; cursor: pointer; }
-
-.wheel-container { position: relative; width: 230px; height: 230px; margin: 14px auto; }
-.wheel-pointer {
-  position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0;
-  border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid #ff3b30;
-  z-index: 10;
-}
-.wheel-canvas {
-  width: 100%; height: 100%; border-radius: 50%; border: 4px solid #1e293b;
-  transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
-}
 </style>
 </head>
 
 <body>
 
-<!-- شريط تحميل التطبيق العائم المباشر لـ MediaFire -->
+<!-- زر تحميل التطبيق المباشر عبر ميديا فاير -->
 <a href="https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file" target="_blank" rel="noopener noreferrer" class="app-download-banner" id="downloadAppBanner" onclick="forceDownloadRedirect(event, this.href)">
   <i class="fa-solid fa-cloud-arrow-down download-arrow"></i>
   <span>حمّل التطبيق الآن</span>
@@ -689,18 +722,50 @@ body {
       <i class="fa-solid fa-chevron-left" style="color:#34d399; font-size:12px;"></i>
     </div>
 
-    <!-- عجلة الخصومات -->
-    <div class="wheel-promo-card" onclick="openWheel()">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <i class="fa-solid fa-dharmachakra" style="font-size:26px; color:#ffd166;"></i>
-        <div>
-          <h4 style="font-size:13px; font-weight:900; color:#fff;">عجلة الخصومات الموثقة 🎁</h4>
-          <span style="font-size:11px; color:#cbd5e1;" id="couponStatusTxt">لف العجلة واكسب كود خصم موثق لمشوارك</span>
+    <!-- صالة ألعاب الجوائز الـ 5 المبتكرة -->
+    <div class="section-title"><i class="fa-solid fa-gamepad"></i> صالة تحديات وألعاب الجوائز 🎮</div>
+    <div class="games-hub-grid">
+      <!-- لعبة 1 -->
+      <div class="game-hub-card" onclick="openRacerGame()">
+        <div class="game-icon-box" style="background:rgba(255, 107, 0, 0.15); color:var(--primary);"><i class="fa-solid fa-motorcycle"></i></div>
+        <strong style="font-size:12px; color:#fff;">طيار Fly Express</strong>
+        <span style="font-size:10px; color:var(--text-sub);">اجمع 5 طلبات واكسب</span>
+      </div>
+
+      <!-- لعبة 2 -->
+      <div class="game-hub-card" onclick="openTapSpeedGame()">
+        <div class="game-icon-box" style="background:rgba(0, 229, 255, 0.15); color:var(--accent);"><i class="fa-solid fa-bolt"></i></div>
+        <strong style="font-size:12px; color:#fff;">تحدي السرعة ⚡</strong>
+        <span style="font-size:10px; color:var(--text-sub);">25 ضغطة في 5 ثواني</span>
+      </div>
+
+      <!-- لعبة 3 -->
+      <div class="game-hub-card" onclick="openMemoryGame()">
+        <div class="game-icon-box" style="background:rgba(16, 185, 129, 0.15); color:var(--success);"><i class="fa-solid fa-puzzle-piece"></i></div>
+        <strong style="font-size:12px; color:#fff;">ذاكرة كروت Fly</strong>
+        <span style="font-size:10px; color:var(--text-sub);">طابق الكروت المتشابهة</span>
+      </div>
+
+      <!-- لعبة 4 -->
+      <div class="game-hub-card" onclick="openDropGame()">
+        <div class="game-icon-box" style="background:rgba(168, 85, 247, 0.15); color:#c084fc;"><i class="fa-solid fa-crosshairs"></i></div>
+        <strong style="font-size:12px; color:#fff;">توصيل في الجون 🎯</strong>
+        <span style="font-size:10px; color:var(--text-sub);">نزّل الطرد بدقة</span>
+      </div>
+
+      <!-- لعبة 5 -->
+      <div class="game-hub-card" onclick="openQuizGame()" style="grid-column: span 2;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="game-icon-box" style="background:rgba(255, 183, 3, 0.15); color:#ffd166;"><i class="fa-solid fa-lightbulb"></i></div>
+          <div style="text-align:right;">
+            <strong style="font-size:13px; color:#fff;">فوازير نجع حمادي ("عارف بلدك؟") 🧠</strong>
+            <div style="font-size:11px; color:var(--text-sub);">جاوب صح واكسب كود مشاوير قريتك فوراً</div>
+          </div>
         </div>
       </div>
-      <button style="background:var(--primary); color:#fff; border:0; border-radius:10px; padding:6px 12px; font-size:11px; font-weight:800; font-family:inherit;">العب الآن</button>
     </div>
 
+    <!-- قائمة الخدمات -->
     <div class="section-title"><i class="fa-solid fa-shapes"></i> خدمات التوصيل السريع</div>
     <div class="services-grid">
       <div class="service-card" onclick="openServiceInstantly('sec-order')">
@@ -865,40 +930,79 @@ body {
     </div>
   </div>
 
-  <!-- نافذة عجلة الخصومات -->
-  <div class="modal-backdrop" id="wheelModal">
+  <!-- 1. نافذة لعبة طيار Fly Express -->
+  <div class="modal-backdrop" id="gameRacerModal">
     <div class="modal-card">
-      <button class="modal-close" onclick="closeWheel()">&times;</button>
-      <h3 style="font-size:17px; font-weight:900; color:#fff;">🎡 عجلة الخصومات الموثقة</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-top:2px;">كود الخصم صالح لساعتين من وقت اللف</p>
-      
-      <input type="tel" id="wheelPhone" class="order-input" placeholder="رقم الواتساب" style="text-align:center; font-weight:700; margin:10px 0;" readonly>
-      
-      <div class="wheel-container">
-        <div class="wheel-pointer"></div>
-        <canvas id="wheelCanvas" class="wheel-canvas" width="230" height="230"></canvas>
+      <button class="modal-close" onclick="closeGameModal('gameRacerModal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:var(--primary);">🛵 طيار Fly Express</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:8px;">المس يمين أو شمال واجمع 5 طلبات 📦</p>
+      <canvas id="racerCanvas" width="280" height="240" style="background:#070b12; border-radius:14px; border:1.5px solid rgba(255,255,255,0.1);"></canvas>
+      <div style="display:flex; justify-content:space-between; margin-top:8px;">
+        <button class="order-btn" style="flex:1; margin-left:4px;" onclick="moveRacer(-1)">◀ يسار</button>
+        <button class="order-btn" style="flex:1; margin-right:4px;" onclick="moveRacer(1)">يمين ▶</button>
       </div>
-
-      <button class="order-btn" id="spinBtn" onclick="spinWheel()">لف العجلة الآن 🎯</button>
-      <div id="wheelResult" style="margin-top:10px; font-size:12px; font-weight:800; min-height:20px; line-height:1.4;"></div>
-      
-      <button id="waClaimBtn" class="order-btn" style="display:none; background:#25d366; color:#000;" onclick="openClaimWhatsApp()">
-        <i class="fa-brands fa-whatsapp"></i> تفعيل وتثبيت الخصم عبر واتساب 📲
-      </button>
+      <button class="order-btn" style="background:#10b981;" id="startRacerBtn" onclick="startRacerGame()">ابدأ السباق 🏁</button>
+      <div id="racerResult" style="margin-top:8px; font-size:12px; font-weight:800; color:#34d399;"></div>
     </div>
   </div>
 
-  <!-- نافذة تأكيد الخروج (مع صورة متمشيش الكوميدية) -->
+  <!-- 2. نافذة لعبة تحدي السرعة -->
+  <div class="modal-backdrop" id="gameSpeedModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeGameModal('gameSpeedModal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:var(--accent);">⚡ تحدي سرعة الدليفري</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">اضغط 25 مرة أو أكتر خلال 5 ثواني واكسب خصمك!</p>
+      <div style="display:flex; justify-content:space-around; font-size:14px; font-weight:900; margin-bottom:12px;">
+        <span>الوقت: <strong id="speedTimerTxt" style="color:#ef4444;">5.0s</strong></span>
+        <span>الضغطات: <strong id="speedScoreTxt" style="color:var(--accent);">0</strong></span>
+      </div>
+      <button id="speedTapBtn" class="order-btn" style="height:70px; font-size:18px; border-radius:18px; background:linear-gradient(90deg, #00e5ff, #0077b6); color:#000;" onclick="handleSpeedTap()">اضغط هنا بسرعة! 🚀</button>
+      <div id="speedResult" style="margin-top:8px; font-size:12px; font-weight:800; color:#34d399;"></div>
+    </div>
+  </div>
+
+  <!-- 3. نافذة لعبة ذاكرة كروت Fly -->
+  <div class="modal-backdrop" id="gameMemoryModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeGameModal('gameMemoryModal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:var(--success);">🧩 ذاكرة كروت Fly</h3>
+      <p style="font-size:11px; color:var(--text-sub);">طابق كارتين متشابهين قبل انتهاء الوقت</p>
+      <div class="memory-grid" id="memoryGrid"></div>
+      <div id="memoryResult" style="margin-top:6px; font-size:12px; font-weight:800; color:#34d399;"></div>
+    </div>
+  </div>
+
+  <!-- 4. نافذة لعبة توصيل في الجون -->
+  <div class="modal-backdrop" id="gameDropModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeGameModal('gameDropModal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:#c084fc;">🎯 توصيل في الجون</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:8px;">اضغط في اللحظة المناسبة لإسقاط الطرد فوق البيت 🏠</p>
+      <canvas id="dropCanvas" width="280" height="200" style="background:#0b111e; border-radius:14px; border:1.5px solid rgba(255,255,255,0.1);"></canvas>
+      <button class="order-btn" style="margin-top:10px; background:#c084fc; color:#000;" onclick="triggerDrop()">نزل الطرد الآن! 📦</button>
+      <div id="dropResult" style="margin-top:8px; font-size:12px; font-weight:800; color:#34d399;"></div>
+    </div>
+  </div>
+
+  <!-- 5. نافذة فوازير نجع حمادي -->
+  <div class="modal-backdrop" id="gameQuizModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeGameModal('gameQuizModal')">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:#ffd166;">🧠 فوازير وتحديات نجع حمادي</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;" id="quizQuestionTxt">تحميل السؤال...</p>
+      <div id="quizAnswersBox" style="display:flex; flex-direction:column; gap:8px;"></div>
+      <div id="quizResult" style="margin-top:10px; font-size:12px; font-weight:800; color:#34d399;"></div>
+    </div>
+  </div>
+
+  <!-- نافذة تأكيد الخروج (مع صورة متمشيش) -->
   <div class="modal-backdrop" id="logoutConfirmModal">
     <div class="modal-card" style="max-width: 320px; text-align: center; padding: 18px;">
-      
       <div style="width: 100%; max-width: 220px; margin: 0 auto 12px; border-radius: 18px; overflow: hidden; border: 2px solid var(--primary); box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);">
-        <img src="stay.png" alt="متمشيش" style="width: 100%; height: auto; display: block; object-fit: cover;">
+        <img src="stay.png.png" alt="متمشيش" onerror="this.src='stay.png'" style="width: 100%; height: auto; display: block; object-fit: cover;">
       </div>
-
       <h3 style="font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 6px;">رايح فين؟ 🥺</h3>
       <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">هل أنت متأكد من تسجيل الخروج من Fly Express؟</p>
-      
       <div style="display: flex; gap: 10px;">
         <button class="order-btn" style="background: rgba(255,255,255,0.12); color: #fff; margin-top: 0; flex: 1;" onclick="closeLogoutModal()">
           قاعد معاكم ❤️
@@ -959,16 +1063,13 @@ function showAuthInlineError(msg) {
   }, 5000);
 }
 
-// -------------------------------------------------------------
-// معالجة التحميل والتوجيه الخارجي لـ MediaFire
-// -------------------------------------------------------------
 function forceDownloadRedirect(e, targetUrl) {
   if (e) e.preventDefault();
   window.open(targetUrl, '_blank');
 }
 
 // -------------------------------------------------------------
-// محرك الصوت الداخلي (Web Audio API) + كليك الويندوز وموسيقى Saw التلقائية
+// محرك الصوت الداخلي + كليك الويندوز وموسيقى Saw
 // -------------------------------------------------------------
 let globalAudioCtx = null;
 
@@ -985,7 +1086,6 @@ function getAudioContext() {
   return globalAudioCtx;
 }
 
-// توليد صوت كليك الويندوز السريع
 function playWindowsClick() {
   try {
     const ctx = getAudioContext();
@@ -1011,7 +1111,6 @@ function playWindowsClick() {
   } catch (e) {}
 }
 
-// مشغل الموسيقى المدمج (تلقائي بدون أزرار)
 let backgroundAudio = null;
 let isMusicPlaying = false;
 
@@ -1046,7 +1145,6 @@ function stopMusicPlayback() {
   }
 }
 
-// تشغيل الصوت تلقائياً مع أول لمسة فوراً على الشاشة
 function autoStartOnFirstTouch() {
   getAudioContext();
   startMusicPlayback();
@@ -1078,6 +1176,273 @@ let currentGeneratedOtp = null;
 let activeAuthTargetUser = null;
 let currentOtpFlow = "";
 
+function hashString(str) {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) hash = ((hash << 5) + hash) + str.charCodeAt(i);
+  return Math.abs(hash).toString(36).toUpperCase();
+}
+
+function awardCoupon(gameName, prizeTxt, prizeKey) {
+  const phone = (document.getElementById('orderPhone')?.value || "01000000000").trim();
+  const epochMins = Math.floor(Date.now() / (1000 * 60));
+  const phoneHash = hashString(phone + FLY_SECRET_SALT).substring(0, 4);
+  const sig = hashString(`${phone}_${prizeKey}_${epochMins}_${FLY_SECRET_SALT}`).substring(0, 4);
+  const code = `FLY-${prizeKey}-${phoneHash}-${sig}`;
+
+  localStorage.setItem('fly_discount_code', code);
+  localStorage.setItem('fly_locked_phone', phone);
+
+  const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+  const msg = `مرحباً Fly Express 🚀\nفزت في لعبة (${gameName}):\n🎁 الجائزة: ${prizeTxt}\n🏷️ كود الخصم: ${code}\n⏰ الوقت: ${nowStr}\n(يرجى تأكيد وتثبيت الخصم لمشواري)`;
+  
+  setTimeout(() => { openWhatsAppDirectly(msg); }, 1400);
+  return code;
+}
+
+function closeGameModal(id) {
+  playWindowsClick();
+  document.getElementById(id).classList.remove('show');
+}
+
+// -------------------------------------------------------------
+// الألعاب الـ 5 المبتكرة
+// -------------------------------------------------------------
+
+// 1. طيار Fly Express
+let racerRunning = false, racerScore = 0, racerX = 120, racerItems = [];
+function openRacerGame() {
+  playWindowsClick();
+  document.getElementById('racerResult').textContent = "";
+  document.getElementById('gameRacerModal').classList.add('show');
+  drawRacerInitial();
+}
+function drawRacerInitial() {
+  const cvs = document.getElementById('racerCanvas');
+  const c = cvs.getContext('2d');
+  c.clearRect(0,0,280,240);
+  c.fillStyle = "#ff6b00";
+  c.font = "24px Cairo";
+  c.fillText("🛵", racerX, 210);
+}
+function moveRacer(dir) {
+  playWindowsClick();
+  racerX = Math.max(20, Math.min(240, racerX + dir * 35));
+  if (!racerRunning) drawRacerInitial();
+}
+function startRacerGame() {
+  playWindowsClick();
+  racerRunning = true;
+  racerScore = 0;
+  racerItems = [];
+  document.getElementById('startRacerBtn').style.display = 'none';
+  const cvs = document.getElementById('racerCanvas');
+  const c = cvs.getContext('2d');
+
+  const loop = setInterval(() => {
+    if (!racerRunning) { clearInterval(loop); return; }
+    if (Math.random() < 0.25) racerItems.push({ x: 30 + Math.random() * 220, y: 0 });
+    c.clearRect(0,0,280,240);
+
+    // رسم الموتوسيكل
+    c.font = "24px Cairo";
+    c.fillText("🛵", racerX, 210);
+
+    // تحديث الطلبات
+    for (let i = 0; i < racerItems.length; i++) {
+      let it = racerItems[i];
+      it.y += 6;
+      c.fillText("📦", it.x, it.y);
+
+      // التقاط
+      if (Math.abs(it.x - racerX) < 26 && Math.abs(it.y - 210) < 24) {
+        playWindowsClick();
+        racerScore++;
+        racerItems.splice(i, 1);
+        i--;
+        if (racerScore >= 5) {
+          racerRunning = false;
+          clearInterval(loop);
+          document.getElementById('startRacerBtn').style.display = 'block';
+          const code = awardCoupon("طيار Fly Express", "خصم 10 جنيه", "10EGP");
+          document.getElementById('racerResult').innerHTML = `🎉 مبروك جمعت 5 طلبات!<br>كودك الموثق: <strong>${code}</strong>`;
+        }
+      }
+    }
+  }, 50);
+}
+
+// 2. تحدي السرعة
+let speedScore = 0, speedTimer = 5.0, speedInterval = null, speedActive = false;
+function openTapSpeedGame() {
+  playWindowsClick();
+  speedScore = 0;
+  speedTimer = 5.0;
+  speedActive = false;
+  clearInterval(speedInterval);
+  document.getElementById('speedScoreTxt').textContent = "0";
+  document.getElementById('speedTimerTxt').textContent = "5.0s";
+  document.getElementById('speedResult').textContent = "";
+  document.getElementById('gameSpeedModal').classList.add('show');
+}
+function handleSpeedTap() {
+  playWindowsClick();
+  if (!speedActive && speedTimer === 5.0) {
+    speedActive = true;
+    speedInterval = setInterval(() => {
+      speedTimer -= 0.1;
+      document.getElementById('speedTimerTxt').textContent = Math.max(0, speedTimer).toFixed(1) + "s";
+      if (speedTimer <= 0) {
+        clearInterval(speedInterval);
+        speedActive = false;
+        if (speedScore >= 25) {
+          const code = awardCoupon("تحدي السرعة", "خصم 10 جنيه", "10EGP");
+          document.getElementById('speedResult').innerHTML = `🔥 وحش سرعة! أنجزت ${speedScore} ضغطة.<br>كودك: <strong>${code}</strong>`;
+        } else {
+          document.getElementById('speedResult').innerHTML = `أنجزت ${speedScore} ضغطة! جرب تاني وحقق 25.`;
+        }
+      }
+    }, 100);
+  }
+  if (speedActive) {
+    speedScore++;
+    document.getElementById('speedScoreTxt').textContent = speedScore;
+  }
+}
+
+// 3. ذاكرة كروت Fly
+const memIcons = ["🛵", "📦", "💊", "🛵", "📦", "💊"];
+let flipped = [], matched = 0;
+function openMemoryGame() {
+  playWindowsClick();
+  matched = 0;
+  flipped = [];
+  document.getElementById('memoryResult').textContent = "";
+  const grid = document.getElementById('memoryGrid');
+  grid.innerHTML = "";
+  const shuffled = [...memIcons].sort(() => Math.random() - 0.5);
+
+  shuffled.forEach((ic, i) => {
+    const b = document.createElement('button');
+    b.className = 'memory-card-btn';
+    b.dataset.icon = ic;
+    b.dataset.index = i;
+    b.textContent = "❓";
+    b.onclick = () => onMemoryFlip(b);
+    grid.appendChild(b);
+  });
+  document.getElementById('gameMemoryModal').classList.add('show');
+}
+function onMemoryFlip(b) {
+  playWindowsClick();
+  if (b.classList.contains('flipped') || flipped.length === 2) return;
+  b.classList.add('flipped');
+  b.textContent = b.dataset.icon;
+  flipped.push(b);
+
+  if (flipped.length === 2) {
+    if (flipped[0].dataset.icon === flipped[1].dataset.icon) {
+      matched += 2;
+      flipped = [];
+      if (matched === 6) {
+        const code = awardCoupon("ذاكرة كروت Fly", "خصم 5 جنيه", "5EGP");
+        document.getElementById('memoryResult').innerHTML = `🎉 عبقري! طابقت كل الكروت.<br>كودك: <strong>${code}</strong>`;
+      }
+    } else {
+      setTimeout(() => {
+        flipped[0].classList.remove('flipped');
+        flipped[0].textContent = "❓";
+        flipped[1].classList.remove('flipped');
+        flipped[1].textContent = "❓";
+        flipped = [];
+      }, 700);
+    }
+  }
+}
+
+// 4. توصيل في الجون
+let dropX = 20, dropDir = 3, dropInterval = null, isDropping = false, dropPkgY = 40;
+function openDropGame() {
+  playWindowsClick();
+  dropX = 20;
+  isDropping = false;
+  dropPkgY = 40;
+  document.getElementById('dropResult').textContent = "";
+  document.getElementById('gameDropModal').classList.add('show');
+  clearInterval(dropInterval);
+
+  const cvs = document.getElementById('dropCanvas');
+  const c = cvs.getContext('2d');
+
+  dropInterval = setInterval(() => {
+    if (!isDropping) {
+      dropX += dropDir * 2.5;
+      if (dropX > 240 || dropX < 20) dropDir *= -1;
+    } else {
+      dropPkgY += 6;
+    }
+
+    c.clearRect(0,0,280,200);
+    // الطرد
+    c.font = "20px Cairo";
+    c.fillText("📦", dropX, dropPkgY);
+
+    // البيت الهدف
+    c.font = "30px Cairo";
+    c.fillText("🏠", 125, 185);
+
+    // التحقق
+    if (isDropping && dropPkgY >= 165) {
+      clearInterval(dropInterval);
+      if (Math.abs(dropX - 125) < 30) {
+        const code = awardCoupon("توصيل في الجون", "توصيلة مجانية 🛵", "FREE");
+        document.getElementById('dropResult').innerHTML = `🎯 هدف! نزلت في السنتر بالظبط.<br>كودك: <strong>${code}</strong>`;
+      } else {
+        document.getElementById('dropResult').innerHTML = `قريبة! جرب تاني ونزلها في السنتر.`;
+      }
+    }
+  }, 40);
+}
+function triggerDrop() {
+  playWindowsClick();
+  if (!isDropping) isDropping = true;
+}
+
+// 5. فوازير نجع حمادي
+const quizQuestions = [
+  { q: "ما هو أسرع وأأمن تطبيق دليفري في نجع حمادي؟", ans: ["Fly Express", "تطبيقات القاهرة", "انتظار التكاتك"], r: 0 },
+  { q: "قرية بركة تبعد كام تقريباً عن الألمنيوم بالدراجة النارية؟", ans: ["10 دقائق بسلاسة", "ساعة كاملة", "يوم كامل"], r: 0 },
+  { q: "خدمة رادار الأمان في Fly Express مخصصة لمتابعة إيه؟", ans: ["رحلة المدرسة اليومية للأبناء", "أسعار الذهب", "مباريات الكورة"], r: 0 }
+];
+function openQuizGame() {
+  playWindowsClick();
+  const q = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+  document.getElementById('quizQuestionTxt').textContent = q.q;
+  document.getElementById('quizResult').textContent = "";
+  const box = document.getElementById('quizAnswersBox');
+  box.innerHTML = "";
+
+  q.ans.forEach((a, idx) => {
+    const btn = document.createElement('button');
+    btn.className = "order-btn";
+    btn.style.background = "#1e293b";
+    btn.textContent = a;
+    btn.onclick = () => {
+      playWindowsClick();
+      if (idx === q.r) {
+        const code = awardCoupon("فوازير نجع حمادي", "خصم 5 جنيه", "5EGP");
+        document.getElementById('quizResult').innerHTML = `👏 إجابة صحيحة يا ابن البلد!<br>كودك: <strong>${code}</strong>`;
+      } else {
+        document.getElementById('quizResult').innerHTML = `❌ إجابة خاطئة! فكّر وجرّب تانية.`;
+      }
+    };
+    box.appendChild(btn);
+  });
+  document.getElementById('gameQuizModal').classList.add('show');
+}
+
+// -------------------------------------------------------------
+// الحسابات والخروج والتنقل
+// -------------------------------------------------------------
 async function fetchCloudUsers() {
   try {
     const res = await fetch(USERS_API_URL);
@@ -1088,9 +1453,6 @@ async function fetchCloudUsers() {
   }
 }
 
-// -------------------------------------------------------------
-// بوابات وشاشات الدخول
-// -------------------------------------------------------------
 function switchAuthMode(mode) {
   playWindowsClick();
   const isLogin = mode === 'login';
@@ -1116,10 +1478,6 @@ function switchToForgotView() {
 function backToAuthHome() {
   playWindowsClick();
   switchAuthMode('login');
-  const b1 = document.getElementById('signupOtpBtn');
-  const b2 = document.getElementById('forgotOtpBtn');
-  if (b1) { b1.disabled = false; b1.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩'; }
-  if (b2) { b2.disabled = false; b2.innerHTML = 'إرسال كود الاستعادة 📩'; }
 }
 
 function checkAppAccess() {
@@ -1137,11 +1495,10 @@ function checkAppAccess() {
     ['orderName', 'marketName', 'pmName', 'pharmName'].forEach(id => {
       const el = document.getElementById(id); if (el) el.value = user.name;
     });
-    ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone', 'pharmPhone', 'wheelPhone'].forEach(id => {
+    ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone', 'pharmPhone'].forEach(id => {
       const el = document.getElementById(id); if (el) el.value = user.phone;
     });
 
-    // تشغيل الموسيقى تلقائياً للمستخدم المسجل
     startMusicPlayback();
   } else {
     gateScreen.style.display = "flex";
@@ -1155,7 +1512,7 @@ async function directPasswordLogin() {
   const password = document.getElementById('loginPassword').value.trim();
 
   if (!identifier || !password) {
-    showAuthInlineError("⚠️ من فضلك اكتب البريد الإلكتروني أو الهاتف وكلمة المرور.");
+    showAuthInlineError("⚠️ اكتب البريد الإلكتروني أو الهاتف وكلمة المرور.");
     return;
   }
 
@@ -1176,16 +1533,14 @@ async function directPasswordLogin() {
         email: user.email,
         time: Date.now()
       }));
-      // بدء الموسيقى فور تسجيل الدخول
       startMusicPlayback();
       checkAppAccess();
-      showAppAlert(`أهلاً بعودتك يا ${user.name}! تم الدخول بنجاح 🚀`, "تم تسجيل الدخول", "fa-solid fa-circle-check", "#10b981");
+      showAppAlert(`أهلاً بك يا ${user.name}! تم الدخول بنجاح 🚀`, "تسجيل دخول ناجح", "fa-solid fa-circle-check", "#10b981");
     } else {
-      showAuthInlineError("❌ البريد أو كلمة المرور غير صحيحة! تأكد من الحساب أو اضغط (نسيت كلمة السر).");
-      showAppAlert("البريد الإلكتروني أو كلمة المرور غير صحيحة! يرجى التأكد من الحساب.", "خطأ في تسجيل الدخول", "fa-solid fa-circle-xmark", "#ef4444");
+      showAuthInlineError("❌ البيانات غير صحيحة!");
     }
   } catch(err) {
-    showAuthInlineError("⚠️ حدث خطأ في الاتصال بالإنترنت، يرجى المحاولة ثانية.");
+    showAuthInlineError("⚠️ تعذر الاتصال بالإنترنت.");
   } finally {
     if (spinner) spinner.classList.remove('active');
   }
@@ -1200,12 +1555,12 @@ async function requestSignupOtp() {
   const btn = document.getElementById('signupOtpBtn');
 
   if (!name || !/^01[0125][0-9]{8}$/.test(phone) || !email || !email.includes('@') || password.length < 4) {
-    showAuthInlineError("⚠️ يرجى إكمال جميع الخانات بشكل صحيح (موبايل مصري صحيح وكلمة مرور 4 خانات فأكثر).");
+    showAuthInlineError("⚠️ أكمل جميع الحقول بالشكل الصحيح.");
     return;
   }
 
   btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> التحقق...';
 
   try {
     const users = await fetchCloudUsers();
@@ -1213,18 +1568,15 @@ async function requestSignupOtp() {
 
     if (exists) {
       btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
-      showAuthInlineError("ℹ️ هذا الحساب مسجل لدينا بالفعل! يمكنك تسجيل الدخول مباشرة.");
+      btn.innerHTML = 'إرسال كود التفعيل';
+      showAuthInlineError("الحساب مسجل لدينا بالفعل!");
       switchAuthMode('login');
-      document.getElementById('loginIdentifier').value = email;
       return;
     }
 
     currentOtpFlow = 'signup';
     activeAuthTargetUser = { name, phone, email, password };
     currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الكود...';
 
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
       to_name: name,
@@ -1236,60 +1588,10 @@ async function requestSignupOtp() {
     document.getElementById('formSignupView').style.display = 'none';
     document.getElementById('gateStepOtp').style.display = 'block';
     document.getElementById('newPasswordSection').style.display = 'none';
-    document.getElementById('otpNoticeTxt').textContent = `أدخل كود التفعيل المرسل إلى بريدك (${email}):`;
-    showAppAlert("تم إرسال كود التفعيل إلى بريدك في Gmail بنجاح ✉️", "تم الإرسال", "fa-solid fa-envelope-circle-check", "#10b981");
+    document.getElementById('otpNoticeTxt').textContent = `أدخل كود التفعيل المرسل إلى (${email}):`;
   } catch (e) {
     btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال كود التفعيل للبريد 📩';
-    showAuthInlineError("❌ تعذر إرسال الإيميل، تأكد من صحة البريد والاتصال بالإنترنت.");
-  }
-}
-
-async function requestForgotOtp() {
-  playWindowsClick();
-  const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
-  const btn = document.getElementById('forgotOtpBtn');
-
-  if (!email || !email.includes('@')) {
-    showAuthInlineError("⚠️ أدخل بريد إلكتروني صحيح.");
-    return;
-  }
-
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري البحث عن الحساب...';
-
-  try {
-    const users = await fetchCloudUsers();
-    const user = users.find(u => u.email && u.email.toLowerCase() === email);
-
-    if (!user) {
-      btn.disabled = false;
-      btn.textContent = "إرسال كود الاستعادة 📩";
-      showAuthInlineError("❌ هذا البريد غير مسجل لدينا! تأكد من كتابة البريد المسجل به.");
-      return;
-    }
-
-    currentOtpFlow = 'forgot';
-    activeAuthTargetUser = user;
-    currentGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الكود...';
-
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_name: user.name,
-      to_email: email,
-      otp_code: currentGeneratedOtp
-    });
-
-    document.getElementById('formForgotView').style.display = 'none';
-    document.getElementById('gateStepOtp').style.display = 'block';
-    document.getElementById('newPasswordSection').style.display = 'block';
-    document.getElementById('otpNoticeTxt').textContent = `أدخل الكود المرسل إلى (${email}) واكتب كلمة المرور الجديدة:`;
-    showAppAlert("تم إرسال كود استعادة كلمة المرور إلى بريدك ✉️", "كود الاستعادة", "fa-solid fa-envelope-circle-check", "#10b981");
-  } catch(e) {
-    btn.disabled = false;
-    btn.textContent = "إرسال كود الاستعادة 📩";
-    showAuthInlineError("❌ تعذر إرسال الكود، يرجى المحاولة لاحقاً.");
+    showAuthInlineError("تعذر إرسال الإيميل.");
   }
 }
 
@@ -1298,7 +1600,7 @@ async function verifyAndFinishOtp() {
   const code = document.getElementById('gateOtpInput').value.trim();
 
   if (code !== currentGeneratedOtp || !currentGeneratedOtp) {
-    showAppAlert("كود التحقق غير صحيح!", "كود خاطئ", "fa-solid fa-circle-xmark", "#ef4444");
+    showAppAlert("كود التحقق غير صحيح!", "خطأ");
     return;
   }
 
@@ -1322,36 +1624,7 @@ async function verifyAndFinishOtp() {
 
       startMusicPlayback();
       checkAppAccess();
-      showAppAlert(`تم تأكيد حسابك وحفظه سحابياً بنجاح! مرحباً بك يا ${activeAuthTargetUser.name} 🚀`, "حساب موثق", "fa-solid fa-circle-check", "#10b981");
-    } else if (currentOtpFlow === 'forgot') {
-      const newPass = document.getElementById('gateNewPassword').value.trim();
-      if (newPass.length < 4) {
-        if (spinner) spinner.classList.remove('active');
-        showAppAlert("يرجى كتابة كلمة مرور جديدة لا تقل عن 4 خانات.", "تنبيه", "fa-solid fa-triangle-exclamation", "#f59e0b");
-        return;
-      }
-
-      if (activeAuthTargetUser.id) {
-        await fetch(`${USERS_API_URL}/${activeAuthTargetUser.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password: newPass })
-        });
-      }
-
-      localStorage.setItem('fly_verified_user', JSON.stringify({
-        name: activeAuthTargetUser.name,
-        phone: activeAuthTargetUser.phone,
-        email: activeAuthTargetUser.email,
-        time: Date.now()
-      }));
-
-      startMusicPlayback();
-      checkAppAccess();
-      showAppAlert("تم تحديث كلمة المرور في السيرفر بنجاح وتسجيل الدخول! 🎉", "تم التعديل", "fa-solid fa-circle-check", "#10b981");
     }
-  } catch (err) {
-    showAppAlert("حدث خطأ أثناء حفظ البيانات سحابياً، تحقق من اتصالك بالإنترنت.", "خطأ", "fa-solid fa-triangle-exclamation", "#ef4444");
   } finally {
     if (spinner) spinner.classList.remove('active');
   }
@@ -1361,12 +1634,10 @@ function logoutUser() {
   playWindowsClick();
   document.getElementById('logoutConfirmModal').classList.add('show');
 }
-
 function closeLogoutModal() {
   playWindowsClick();
   document.getElementById('logoutConfirmModal').classList.remove('show');
 }
-
 function confirmLogoutAction() {
   playWindowsClick();
   closeLogoutModal();
@@ -1376,27 +1647,14 @@ function confirmLogoutAction() {
   backToAuthHome();
 }
 
-// -------------------------------------------------------------
-// الصيدلية
-// -------------------------------------------------------------
 function openPharmacyModal() {
   playWindowsClick();
-  const verifiedUser = localStorage.getItem('fly_verified_user');
-  if (verifiedUser) {
-    const u = JSON.parse(verifiedUser);
-    const pName = document.getElementById('pharmName');
-    const pPhone = document.getElementById('pharmPhone');
-    if (pName) pName.value = u.name || '';
-    if (pPhone) pPhone.value = u.phone || '';
-  }
   document.getElementById('pharmacyModal').classList.add('show');
 }
-
 function closePharmacyModal() {
   playWindowsClick();
   document.getElementById('pharmacyModal').classList.remove('show');
 }
-
 function sendPharmacyOrder() {
   playWindowsClick();
   const name = document.getElementById('pharmName').value.trim();
@@ -1406,93 +1664,17 @@ function sendPharmacyOrder() {
   const address = document.getElementById('pharmAddress').value.trim();
 
   if (!name || !phone || !meds || !address) {
-    showAppAlert("من فضلك اكتب اسمك، والعلاج المطلوب، وعنوان التوصيل.", "بيانات ناقصة", "fa-solid fa-notes-medical", "#34d399");
+    showAppAlert("اكتب اسمك والعلاج وعنوان التوصيل.", "ناقص");
     return;
   }
-
-  addLoyaltyRide();
-  const msg = `طلب صيدلية وعلاج طارئ 💊\nالاسم: ${name}\nالموبايل: ${phone}\nالصيدلية المطلوبة: ${pharmacy}\nالعلاج المطلوب:\n${meds}\nالعنوان: ${address}\n— أُرسل عبر تطبيق Fly Express`;
+  const msg = `طلب صيدلية 💊\nالاسم: ${name}\nالموبايل: ${phone}\nالصيدلية: ${pharmacy}\nالعلاج:\n${meds}\nالعنوان: ${address}`;
   closePharmacyModal();
   waSend(msg);
-}
-
-// -------------------------------------------------------------
-// المزامنة الحية
-// -------------------------------------------------------------
-async function listenToCloudState() {
-  try {
-    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
-    const text = await res.text();
-    if (text) {
-      const lines = text.trim().split('\n');
-      const latest = JSON.parse(lines[lines.length - 1]);
-      const data = JSON.parse(latest.message);
-      applyLiveState(data.radar, data.service);
-    }
-  } catch(e) {
-    const r = parseInt(localStorage.getItem('fly_radar_step') || '1', 10);
-    const s = localStorage.getItem('fly_service_status') || 'online';
-    applyLiveState(r, s);
-  }
-}
-
-function applyLiveState(step, status) {
-  const radarStep = parseInt(step || 1, 10);
-  for (let i = 1; i <= 3; i++) {
-    const node = document.getElementById(`clientStep${i}`);
-    if (node) node.classList.toggle('active', i <= radarStep);
-  }
-
-  const badge = document.getElementById('serviceBadge');
-  const dot = document.getElementById('serviceDot');
-  const txt = document.getElementById('serviceTxt');
-
-  if (status === 'busy') {
-    txt.textContent = "مشغول";
-    dot.style.background = "#f59e0b";
-    badge.style.color = "#fbbf24";
-  } else if (status === 'offline') {
-    txt.textContent = "مغلق";
-    dot.style.background = "#ef4444";
-    badge.style.color = "#f87171";
-  } else {
-    txt.textContent = "متاح";
-    dot.style.background = "#10b981";
-    badge.style.color = "#34d399";
-  }
-}
-
-setInterval(listenToCloudState, 45000);
-listenToCloudState();
-
-function getLoyaltyRides() { return parseInt(localStorage.getItem('fly_loyalty_rides') || '0', 10); }
-function updateLoyalty() {
-  const rides = getLoyaltyRides() % 5;
-  const pct = (rides / 5) * 100;
-  document.getElementById('loyaltyCountTxt').textContent = `${rides} / 5 مشاوير`;
-  document.getElementById('loyaltyFill').style.width = `${pct}%`;
-  document.getElementById('loyaltyPercent').textContent = `${pct}%`;
-}
-updateLoyalty();
-
-function addLoyaltyRide() {
-  localStorage.setItem('fly_loyalty_rides', getLoyaltyRides() + 1);
-  updateLoyalty();
-}
-
-function getActiveDiscount() {
-  const code = localStorage.getItem('fly_discount_code');
-  const phone = localStorage.getItem('fly_locked_phone');
-  if (code && phone) {
-    return `\n🎁 كود الخصم الموثق: ${code}\n📱 الرقم المصرح له: ${phone}\n⏳ صالح لساعتين من وقت اللف`;
-  }
-  return '';
 }
 
 function openWhatsAppDirectly(messageText) {
   const fullText = enc(messageText);
   const targetUrl = `https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${fullText}`;
-  
   const link = document.createElement('a');
   link.href = targetUrl;
   link.target = '_blank';
@@ -1502,14 +1684,44 @@ function openWhatsAppDirectly(messageText) {
   document.body.removeChild(link);
 }
 
+function getActiveDiscount() {
+  const code = localStorage.getItem('fly_discount_code');
+  const phone = localStorage.getItem('fly_locked_phone');
+  if (code && phone) return `\n🎁 كود الخصم الموثق: ${code}`;
+  return '';
+}
+
 const waSend = txt => {
-  const finalTxt = txt + getActiveDiscount();
-  openWhatsAppDirectly(finalTxt);
+  openWhatsAppDirectly(txt + getActiveDiscount());
 };
 
 function openDirectWhatsApp(customTxt = '') {
   playWindowsClick();
   openWhatsAppDirectly(customTxt);
+}
+
+function sendOrder() {
+  playWindowsClick();
+  if (!orderName.value || !orderPhone.value || !orderFrom.value || !orderTo.value) return;
+  waSend(`طلب ${orderKind.value} ${orderAction.value} 📦\nالاسم: ${orderName.value} — ${orderPhone.value}\nمن: ${orderFrom.value}\nإلى: ${orderTo.value}`);
+}
+
+function sendMarket() {
+  playWindowsClick();
+  if (!marketName.value || !marketPhone.value || !marketList.value || !marketTo.value) return;
+  waSend(`طلبات سوق 🛒\nالاسم: ${marketName.value} — ${marketPhone.value}\nالطلبات:\n${marketList.value}\nإلى: ${marketTo.value}`);
+}
+
+function sendSchool() {
+  playWindowsClick();
+  if (!schoolChild.value || !schoolPhone.value || !schoolFrom.value || !schoolTo.value) return;
+  waSend(`طلب توصيل مدرسة 🏫\nالطالب: ${schoolChild.value}\nولي الأمر: ${schoolPhone.value}\nمن: ${schoolFrom.value}\nإلى: ${schoolTo.value}`);
+}
+
+function sendMonthlyOrder() {
+  playWindowsClick();
+  if (!pmName.value || !pmPhone.value) return;
+  waSend(`اشتراك شهري 📘\nولي الأمر: ${pmName.value} — ${pmPhone.value}`);
 }
 
 function calcMonthlyEstimate() {
@@ -1522,180 +1734,7 @@ function calcMonthlyEstimate() {
   let disc = count === 2 ? 0.10 : (count === 3 ? 0.15 : (count >= 4 ? 0.20 : 0));
   let total = Math.round(trips * base * count * (1 - disc));
   document.getElementById('monthlyEstimateTxt').textContent = `${total} ج / شهرياً`;
-  const badge = document.getElementById('discountBadge');
-  if (disc > 0) {
-    badge.style.display = 'inline-block';
-    badge.textContent = `خصم إخوة ${disc * 100}% مطبق`;
-  } else {
-    badge.style.display = 'none';
-  }
 }
-calcMonthlyEstimate();
-
-function sendOrder() {
-  playWindowsClick();
-  if (!orderName.value || !orderPhone.value || !orderFrom.value || !orderTo.value) { 
-    showAppAlert("يرجى إكمال جميع بيانات الأوردر والعناوين أولاً.", "بيانات ناقصة"); 
-    return; 
-  }
-  addLoyaltyRide();
-  const text = `طلب ${orderKind.value} ${orderAction.value} 📦\nالاسم: ${orderName.value} — ${orderPhone.value}\nمن: ${orderFrom.value}\nإلى: ${orderTo.value}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
-}
-
-function sendMarket() {
-  playWindowsClick();
-  if (!marketName.value || !marketPhone.value || !marketList.value || !marketTo.value) { 
-    showAppAlert("يرجى كتابة قائمة الطلبات وعنوان التوصيل.", "بيانات ناقصة"); 
-    return; 
-  }
-  addLoyaltyRide();
-  const text = `طلبات سوق 🛒\nالاسم: ${marketName.value} — ${marketPhone.value}\nالطلبات:\n${marketList.value}\nإلى: ${marketTo.value}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
-}
-
-function sendSchool() {
-  playWindowsClick();
-  if (!schoolChild.value || !schoolPhone.value || !schoolFrom.value || !schoolTo.value) { 
-    showAppAlert("يرجى إدخال اسم الطالب ورقم ولي الأمر والمدرسة.", "بيانات ناقصة"); 
-    return; 
-  }
-  addLoyaltyRide();
-  const text = `طلب توصيل مدرسة 🏫\nالطالب: ${schoolChild.value}\nولي الأمر: ${schoolPhone.value}\nمن: ${schoolFrom.value}\nإلى: ${schoolTo.value}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
-}
-
-function sendMonthlyOrder() {
-  playWindowsClick();
-  if (!pmName.value || !pmPhone.value) { 
-    showAppAlert("يرجى كتابة اسم ولي الأمر ورقم الموبايل لحجز الاشتراك.", "بيانات ناقصة"); 
-    return; 
-  }
-  addLoyaltyRide();
-  const text = `حجز اشتراك شهري (مدارس/دروس) 📘\nولي الأمر: ${pmName.value} — ${pmPhone.value}\nالعدد: ${pmChildrenCount.options[pmChildrenCount.selectedIndex].text}\nالتكلفة التقديرية: ${monthlyEstimateTxt.textContent}\n— أُرسل عبر تطبيق Fly Express`;
-  waSend(text);
-}
-
-const slices = [
-  { text: "خصم 5 ج", key: "5EGP", color: "#ff6b00" },
-  { text: "حظ أوفر", key: null, color: "#1e293b" },
-  { text: "خصم 10 ج", key: "10EGP", color: "#00d27a" },
-  { text: "توصيل مجاني", key: "FREE", color: "#8b5cf6" },
-  { text: "خصم 5%", key: "5PER", color: "#00a8ff" },
-  { text: "كوبون VIP", key: "VIP", color: "#f59e0b" }
-];
-
-const canvas = document.getElementById('wheelCanvas');
-const ctx = canvas.getContext('2d');
-const numSlices = slices.length;
-const arc = (2 * Math.PI) / numSlices;
-
-function drawWheel() {
-  const cx = canvas.width / 2, cy = canvas.height / 2, r = cx - 4;
-  for (let i = 0; i < numSlices; i++) {
-    const angle = i * arc;
-    ctx.beginPath();
-    ctx.fillStyle = slices[i].color;
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, angle, angle + arc);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.save();
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 12px Cairo";
-    ctx.translate(cx, cy);
-    ctx.rotate(angle + arc / 2);
-    ctx.textAlign = "right";
-    ctx.fillText(slices[i].text, r - 15, 4);
-    ctx.restore();
-  }
-}
-drawWheel();
-
-let currentRotation = 0, isSpinning = false;
-function openWheel() { 
-  playWindowsClick();
-  document.getElementById('wheelModal').classList.add('show'); 
-}
-function closeWheel() { 
-  playWindowsClick();
-  document.getElementById('wheelModal').classList.remove('show'); 
-}
-
-function hashString(str) {
-  let hash = 5381;
-  for (let i = 0; i < str.length; i++) hash = ((hash << 5) + hash) + str.charCodeAt(i);
-  return Math.abs(hash).toString(36).toUpperCase();
-}
-
-function spinWheel() {
-  playWindowsClick();
-  if (isSpinning) return;
-  const phone = (document.getElementById('wheelPhone').value || "").trim();
-  const res = document.getElementById('wheelResult');
-  const spinBtn = document.getElementById('spinBtn');
-  const waClaimBtn = document.getElementById('waClaimBtn');
-
-  if (!phone) {
-    showAppAlert("رقم الهاتف غير مسجل لدينا.", "تنبيه");
-    return;
-  }
-
-  isSpinning = true;
-  spinBtn.disabled = true;
-  res.style.color = "#34d399";
-  res.textContent = "جاري تدوير العجلة...";
-
-  const winIdx = [0, 2, 4][Math.floor(Math.random() * 3)];
-  const extraRounds = 5 * 360;
-  const sliceDeg = 360 / numSlices;
-  const targetDeg = extraRounds + (360 - (winIdx * sliceDeg + sliceDeg / 2) - 90);
-
-  currentRotation += targetDeg;
-  canvas.style.transform = `rotate(${currentRotation}deg)`;
-
-  setTimeout(() => {
-    isSpinning = false;
-    const winner = slices[winIdx];
-    if (winner.key) {
-      const epochMins = Math.floor(Date.now() / (1000 * 60));
-      const phoneHash = hashString(phone + FLY_SECRET_SALT).substring(0, 4);
-      const sig = hashString(`${phone}_${winner.key}_${epochMins}_${FLY_SECRET_SALT}`).substring(0, 4);
-      const code = `FLY-${winner.key}-${phoneHash}-${epochMins.toString(36).toUpperCase()}-${sig}`;
-
-      localStorage.setItem('fly_discount_code', code);
-      localStorage.setItem('fly_locked_phone', phone);
-
-      res.innerHTML = `🎉 مبروك! ربحت ${winner.text}<br><strong style="color:#fff;">كودك: ${code}</strong>`;
-      document.getElementById('couponStatusTxt').textContent = `كوبونك: ${code}`;
-      
-      const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-      pendingClaimMsg = `مرحباً Fly Express 🚀\nلقد قمت بلف عجلة الحظ وربحت:\n🎁 الجائزة: ${winner.text}\n🏷️ كود الخصم الموثق: ${code}\n⏰ وقت اللف: ${nowStr}\n(يرجى تأكيد وتثبيت الخصم لمشواري القادم - صالح لساعتين)`;
-      
-      waClaimBtn.style.display = 'block';
-
-      setTimeout(() => { openWhatsAppDirectly(pendingClaimMsg); }, 1800);
-    }
-  }, 4200);
-}
-
-function openClaimWhatsApp() {
-  playWindowsClick();
-  if (pendingClaimMsg) openWhatsAppDirectly(pendingClaimMsg);
-}
-
-let logoClicks = 0, logoTimer = null;
-document.getElementById('logoTrigger').addEventListener('click', () => {
-  playWindowsClick();
-  logoClicks++;
-  clearTimeout(logoTimer);
-  logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
-  if (logoClicks >= 5) {
-    logoClicks = 0;
-    location.href = 'admin.html';
-  }
-});
 
 function switchTab(tabId, navBtn) {
   playWindowsClick();
@@ -1704,35 +1743,17 @@ function switchTab(tabId, navBtn) {
     const el = document.getElementById(tabs[i]);
     if (el) el.style.display = (tabs[i] === tabId) ? 'block' : 'none';
   }
-
   const btns = document.querySelectorAll('.nav-item');
   btns.forEach(b => b.classList.remove('active'));
-
-  if (navBtn) {
-    navBtn.classList.add('active');
-  } else {
-    if (tabId === 'tab-orders' && btns[1]) btns[1].classList.add('active');
-    if (tabId === 'tab-home' && btns[0]) btns[0].classList.add('active');
-  }
-
+  if (navBtn) navBtn.classList.add('active');
   window.scrollTo(0, 0);
 }
 
 function openServiceInstantly(formId) {
   playWindowsClick();
-  const spinner = document.getElementById('fastSpinner');
-  if (spinner) spinner.classList.add('active');
-
-  setTimeout(() => {
-    switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
-
-    const target = document.getElementById(formId);
-    if (target) {
-      target.scrollIntoView({ behavior: 'auto', block: 'start' });
-    }
-
-    if (spinner) spinner.classList.remove('active');
-  }, 120);
+  switchTab('tab-orders', document.querySelectorAll('.nav-item')[1]);
+  const target = document.getElementById(formId);
+  if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
 }
 
 checkAppAccess();
