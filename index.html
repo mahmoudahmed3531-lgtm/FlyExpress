@@ -190,37 +190,6 @@ body {
   z-index: 1;
 }
 
-/* زر الموسيقى العائم */
-.music-fab-btn {
-  position: fixed;
-  bottom: 80px;
-  left: 16px;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(12px);
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
-  cursor: pointer;
-  z-index: 150;
-  transition: transform 0.15s ease, background-color 0.2s ease;
-}
-
-.music-fab-btn:active {
-  transform: scale(0.9);
-}
-
-.music-fab-btn.playing {
-  border-color: #10b981;
-  color: #10b981;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
-}
-
 /* شاشة القفل وبوابة الدخول */
 .auth-gate-screen {
   position: fixed;
@@ -562,11 +531,6 @@ body {
     <span>جاري المعالجة...</span>
   </div>
 </div>
-
-<!-- زر الموسيقى العائم -->
-<button class="music-fab-btn" id="musicToggleBtn" onclick="toggleBackgroundMusic()" title="تشغيل / إيقاف الموسيقى">
-  <i class="fa-solid fa-music" id="musicIcon"></i>
-</button>
 
 <!-- شاشة القفل وبوابة الدخول -->
 <div class="auth-gate-screen" id="authGateScreen">
@@ -998,7 +962,7 @@ function forceDownloadRedirect(e, targetUrl) {
 }
 
 // -------------------------------------------------------------
-// محرك الصوت الداخلي (Web Audio API) + كليك الويندوز وموسيقى Saw المحلية
+// محرك الصوت الداخلي (Web Audio API) + كليك الويندوز وموسيقى Saw التلقائية
 // -------------------------------------------------------------
 let globalAudioCtx = null;
 
@@ -1015,7 +979,7 @@ function getAudioContext() {
   return globalAudioCtx;
 }
 
-// توليد صوت نقرة أزرار نظام ويندوز برمجياً (Windows Click Sound)
+// توليد صوت كليك الويندوز السريع
 function playWindowsClick() {
   try {
     const ctx = getAudioContext();
@@ -1027,7 +991,6 @@ function playWindowsClick() {
     osc.type = 'sine';
     const now = ctx.currentTime;
     
-    // تردد كليك الويندوز السريع
     osc.frequency.setValueAtTime(1050, now);
     osc.frequency.exponentialRampToValueAtTime(320, now + 0.035);
 
@@ -1042,7 +1005,7 @@ function playWindowsClick() {
   } catch (e) {}
 }
 
-// مشغل الموسيقى المدمج (قراءة الملف المحلي bgmusic.mp3 مباشرة)
+// مشغل الموسيقى المدمج (تلقائي بدون أزرار)
 let backgroundAudio = null;
 let isMusicPlaying = false;
 
@@ -1051,7 +1014,6 @@ function initMusicElement() {
     backgroundAudio = new Audio();
     backgroundAudio.loop = true;
     backgroundAudio.preload = "auto";
-    // قراءة الملف المرفوع في نفس المستودع
     backgroundAudio.src = "bgmusic.mp3";
     backgroundAudio.volume = 0.45;
   }
@@ -1059,6 +1021,7 @@ function initMusicElement() {
 }
 
 function startMusicPlayback() {
+  if (isMusicPlaying) return;
   const audio = initMusicElement();
   getAudioContext();
 
@@ -1066,13 +1029,7 @@ function startMusicPlayback() {
   if (playPromise !== undefined) {
     playPromise.then(() => {
       isMusicPlaying = true;
-      const btn = document.getElementById('musicToggleBtn');
-      const icon = document.getElementById('musicIcon');
-      if (btn) btn.classList.add('playing');
-      if (icon) icon.className = "fa-solid fa-volume-high";
-    }).catch(err => {
-      console.log("Waiting for user touch to unlock sound");
-    });
+    }).catch(() => {});
   }
 }
 
@@ -1080,36 +1037,20 @@ function stopMusicPlayback() {
   if (backgroundAudio) {
     backgroundAudio.pause();
     isMusicPlaying = false;
-    const btn = document.getElementById('musicToggleBtn');
-    const icon = document.getElementById('musicIcon');
-    if (btn) btn.classList.remove('playing');
-    if (icon) icon.className = "fa-solid fa-music";
   }
 }
 
-function toggleBackgroundMusic() {
-  playWindowsClick();
-  if (isMusicPlaying) {
-    stopMusicPlayback();
-  } else {
-    startMusicPlayback();
-  }
-}
-
-// تشغيل الصوت فور أول لمسة للمستخدم في أي مكان (لتخطي حظر WebView ومتصفح Brave)
-function unlockAudioEngine() {
+// تشغيل الصوت تلقائياً مع أول لمسة فوراً على الشاشة
+function autoStartOnFirstTouch() {
   getAudioContext();
-  playWindowsClick();
-  if (!isMusicPlaying) {
-    startMusicPlayback();
-  }
-  ['touchstart', 'touchend', 'click'].forEach(evt => 
-    document.removeEventListener(evt, unlockAudioEngine)
+  startMusicPlayback();
+  ['touchstart', 'touchend', 'click', 'pointerdown'].forEach(evt => 
+    document.removeEventListener(evt, autoStartOnFirstTouch)
   );
 }
 
-['touchstart', 'touchend', 'click'].forEach(evt => 
-  document.addEventListener(evt, unlockAudioEngine, { once: true, passive: true })
+['touchstart', 'touchend', 'click', 'pointerdown'].forEach(evt => 
+  document.addEventListener(evt, autoStartOnFirstTouch, { once: true, passive: true })
 );
 
 // -------------------------------------------------------------
@@ -1193,6 +1134,9 @@ function checkAppAccess() {
     ['orderPhone', 'marketPhone', 'schoolPhone', 'pmPhone', 'pharmPhone', 'wheelPhone'].forEach(id => {
       const el = document.getElementById(id); if (el) el.value = user.phone;
     });
+
+    // تشغيل الموسيقى فوراً إذا كان المستخدم مسجل دخول
+    startMusicPlayback();
   } else {
     gateScreen.style.display = "flex";
     mainApp.style.display = "none";
@@ -1226,6 +1170,8 @@ async function directPasswordLogin() {
         email: user.email,
         time: Date.now()
       }));
+      // بدء الموسيقى فور الضغط على تسجيل الدخول
+      startMusicPlayback();
       checkAppAccess();
       showAppAlert(`أهلاً بعودتك يا ${user.name}! تم الدخول بنجاح 🚀`, "تم تسجيل الدخول", "fa-solid fa-circle-check", "#10b981");
     } else {
@@ -1368,6 +1314,7 @@ async function verifyAndFinishOtp() {
         time: Date.now()
       }));
 
+      startMusicPlayback();
       checkAppAccess();
       showAppAlert(`تم تأكيد حسابك وحفظه سحابياً بنجاح! مرحباً بك يا ${activeAuthTargetUser.name} 🚀`, "حساب موثق", "fa-solid fa-circle-check", "#10b981");
     } else if (currentOtpFlow === 'forgot') {
@@ -1393,6 +1340,7 @@ async function verifyAndFinishOtp() {
         time: Date.now()
       }));
 
+      startMusicPlayback();
       checkAppAccess();
       showAppAlert("تم تحديث كلمة المرور في السيرفر بنجاح وتسجيل الدخول! 🎉", "تم التعديل", "fa-solid fa-circle-check", "#10b981");
     }
@@ -1416,6 +1364,7 @@ function closeLogoutModal() {
 function confirmLogoutAction() {
   playWindowsClick();
   closeLogoutModal();
+  stopMusicPlayback();
   localStorage.removeItem('fly_verified_user');
   checkAppAccess();
   backToAuthHome();
