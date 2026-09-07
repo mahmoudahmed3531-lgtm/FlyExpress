@@ -72,7 +72,7 @@ body {
   touch-action: pan-y !important;
 }
 
-/* شريط تحميل التطبيق العائم */
+/* شريط تحميل التطبيق العائم المربوط بميديا فاير */
 .app-download-banner {
   position: fixed;
   top: 12px;
@@ -998,7 +998,7 @@ function forceDownloadRedirect(e, targetUrl) {
 }
 
 // -------------------------------------------------------------
-// محرك الصوت الداخلي (Web Audio API) + كليك الويندوز والموسيقى
+// محرك الصوت الداخلي (Web Audio API) + كليك الويندوز وموسيقى Saw المحلية
 // -------------------------------------------------------------
 let globalAudioCtx = null;
 
@@ -1042,7 +1042,7 @@ function playWindowsClick() {
   } catch (e) {}
 }
 
-// مشغل الموسيقى المدمج (Audio Element برابط مباشر فائق الموثوقية)
+// مشغل الموسيقى المدمج (قراءة الملف المحلي bgmusic.mp3 مباشرة)
 let backgroundAudio = null;
 let isMusicPlaying = false;
 
@@ -1050,11 +1050,10 @@ function initMusicElement() {
   if (!backgroundAudio) {
     backgroundAudio = new Audio();
     backgroundAudio.loop = true;
-    backgroundAudio.crossOrigin = "anonymous";
     backgroundAudio.preload = "auto";
-    // رابط موسيقى جيتار هادئة متوافقة مع كافة الهواتف وWebView
-    backgroundAudio.src = "https://ia801503.us.archive.org/15/items/mon-amour-guitar/MonAmour.mp3";
-    backgroundAudio.volume = 0.4;
+    // قراءة الملف المرفوع في نفس المستودع
+    backgroundAudio.src = "bgmusic.mp3";
+    backgroundAudio.volume = 0.45;
   }
   return backgroundAudio;
 }
@@ -1072,15 +1071,7 @@ function startMusicPlayback() {
       if (btn) btn.classList.add('playing');
       if (icon) icon.className = "fa-solid fa-volume-high";
     }).catch(err => {
-      // محاولة بديلة إذا كان السيرفر الأول مقطوعاً
-      audio.src = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=guitar.mp3";
-      audio.play().then(() => {
-        isMusicPlaying = true;
-        const btn = document.getElementById('musicToggleBtn');
-        const icon = document.getElementById('musicIcon');
-        if (btn) btn.classList.add('playing');
-        if (icon) icon.className = "fa-solid fa-volume-high";
-      }).catch(() => {});
+      console.log("Waiting for user touch to unlock sound");
     });
   }
 }
@@ -1105,7 +1096,7 @@ function toggleBackgroundMusic() {
   }
 }
 
-// تشغيل الصوت فور أول لمسة للمستخدم في أي مكان (لحل حظر Android WebView وBrave)
+// تشغيل الصوت فور أول لمسة للمستخدم في أي مكان (لتخطي حظر WebView ومتصفح Brave)
 function unlockAudioEngine() {
   getAudioContext();
   playWindowsClick();
