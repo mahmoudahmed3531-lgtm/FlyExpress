@@ -316,7 +316,6 @@ body {
 .ic-orange { background: rgba(255, 107, 0, 0.15); color: #ff8c00; }
 .ic-blue { background: rgba(0, 168, 255, 0.15); color: #00a8ff; }
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-.ic-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
 
 .games-hub-banner {
   background: linear-gradient(135deg, #ff6b00, #a855f7);
@@ -459,7 +458,7 @@ body {
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* شبكة لعبة اختيار الصور */
+/* شبكة لعبة الصور */
 .photo-matrix-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -494,10 +493,13 @@ body {
 .nav-item.active { color: var(--primary); }
 
 .order-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-.order-input {
+.order-row.single { grid-template-columns: 1fr; }
+.order-input, .order-select, .order-textarea {
   width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(8, 12, 20, 0.9);
   color: #fff; font-family: inherit; font-size: 13px; outline: none;
 }
+.order-input:focus, .order-select:focus, .order-textarea:focus { border-color: var(--primary); }
+
 .order-btn {
   width: 100%; border: 0; cursor: pointer; padding: 12px 14px; border-radius: 12px; font-weight: 800; font-size: 13px; color: #fff;
   background: linear-gradient(90deg, #ff6b00, #ff8c00); margin-top: 6px; font-family: inherit;
@@ -611,19 +613,20 @@ body {
     <div class="services-grid">
       <div class="service-card" onclick="switchTab('tab-market', document.querySelectorAll('.nav-item')[1])">
         <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
-        <div><h4>السوق المتكامل 🛒</h4><span>خضار، بقالة، عطارة</span></div>
+        <div><h4>طلبات السوق 🛒</h4><span>خضار، بقالة، طلبات بيت</span></div>
       </div>
       <div class="service-card" onclick="openServiceInstantly('sec-order')">
         <div class="service-icon ic-orange"><i class="fa-solid fa-box"></i></div>
         <div><h4>طلب أوردر / طرد</h4><span>توصيل واستلام فوري</span></div>
       </div>
-      <div class="service-card" onclick="openServiceInstantly('sec-school')">
-        <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
-        <div><h4>مشاوير المدرسة</h4><span>ذهاب وعودة بأمان تام</span></div>
-      </div>
-      <div class="service-card" onclick="openServiceInstantly('sec-monthly')">
-        <div class="service-icon ic-purple"><i class="fa-solid fa-calculator"></i></div>
-        <div><h4>حاسبة اشتراك الدروس</h4><span>احسب اشتراكك بخصم الإخوة</span></div>
+      <div class="service-card" onclick="openServiceInstantly('sec-school')" style="grid-column: span 2;">
+        <div style="display:flex; align-items:center; gap:12px; width:100%;">
+          <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div style="text-align:right;">
+            <h4>مشاوير المدرسة 🏫</h4>
+            <span style="font-size:11px; color:var(--text-sub);">هنجيبه ونروحه (من شارع لشارع) بأمان تام</span>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -642,10 +645,12 @@ body {
     <div class="market-products-grid" id="marketProductsGrid"></div>
   </section>
 
-  <!-- 3. الطلبات العادية -->
+  <!-- 3. الطلبات (أوردر فوري + مشاوير المدرسة الكاملة) -->
   <section id="tab-orders" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشوار الخاص</div>
-    <div class="form-card" id="sec-order">
+    <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشاوير والطلبات</div>
+
+    <!-- فورم أوردر / طرد فوري -->
+    <div class="form-card" id="sec-order" style="margin-bottom:16px;">
       <h3 style="font-size:15px; margin-bottom:10px; color:#ff8c00;">📦 أوردر / طرد فوري</h3>
       <div class="order-row">
         <input class="order-input" id="orderFrom" placeholder="العنوان: من" required>
@@ -657,9 +662,53 @@ body {
       </div>
       <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> إرسال عبر واتساب</button>
     </div>
+
+    <!-- فورم مشاوير المدرسة التفصيلي الكامل -->
+    <div class="form-card" id="sec-school" style="border-color: rgba(16, 185, 129, 0.35);">
+      <h3 style="font-size:15px; margin-bottom:8px; color:#10b981;">🏫 مشاوير المدرسة (توصيل آمن للطلاب)</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">ذهاب، عودة، أو ذهاب وعودة من وإلى باب البيت والمدرسة.</p>
+
+      <div class="order-row">
+        <select class="order-select" id="schoolTripType">
+          <option value="هنجيبه وهنروّحه (ذهاب وعودة)">هنجيبه وهنروّحه (ذهاب وعودة)</option>
+          <option value="هنجيبه بس (ذهاب للمدرسة)">هنجيبه بس (ذهاب للمدرسة)</option>
+          <option value="هنروّحه بس (عودة للبيت)">هنروّحه بس (عودة للبيت)</option>
+        </select>
+        <input class="order-input" id="schoolChildName" placeholder="اسم الطالب / الطالبة" required>
+      </div>
+
+      <div class="order-row">
+        <input class="order-input" id="schoolStreetFrom" placeholder="من شارع كام / المنطقة؟" required>
+        <input class="order-input" id="schoolStreetTo" placeholder="لشارع كام / اسم المدرسة؟" required>
+      </div>
+
+      <div class="order-row">
+        <input class="order-input" id="schoolParentName" placeholder="اسم ولي الأمر" required>
+        <input class="order-input" id="schoolParentPhone" placeholder="رقم هاتف ولي الأمر" inputmode="tel" required>
+      </div>
+
+      <div class="order-row single">
+        <input class="order-input" id="schoolTripNotes" placeholder="ملاحظات المشوار (مواعيد الحصص أو الخروج...)">
+      </div>
+
+      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="sendSchoolOrder()">
+        <i class="fa-brands fa-whatsapp"></i> تأكيد حجز مشوار المدرسة عبر واتساب 🛵
+      </button>
+    </div>
   </section>
 
-  <!-- 4. تبويب ركن الألعاب -->
+  <!-- 4. تبويب الأسعار المحدث والشامل -->
+  <section id="tab-prices" class="tab-view">
+    <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار التقديرية</div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">30 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;">20 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى المساكن</span><span style="color:#ff8c00; font-weight:900;">25 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى الألمنيوم</span><span style="color:#ff8c00; font-weight:900;">35 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى هو</span><span style="color:#ff8c00; font-weight:900;">50 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
+  </section>
+
+  <!-- 5. تبويب ركن الألعاب -->
   <section id="tab-games" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-gamepad"></i> ركن التحديات: العب واكسب 🏆</div>
     <p style="font-size:11px; color:var(--text-sub); margin-bottom:16px;">ألعاب صعبة تتطلب تركيزاً ورد فعل خاطف.. الفوز يمنحك كود خصم موثق فوراً!</p>
@@ -683,7 +732,7 @@ body {
     </div>
   </section>
 
-  <!-- 5. التواصل -->
+  <!-- 6. التواصل -->
   <section id="tab-contact" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-headset"></i> تواصل معنا مباشرة</div>
     <button class="order-btn" style="background:#25d366; color:#000;" onclick="openDirectWhatsApp('مرحباً Fly Express، أريد الاستفسار')"><i class="fa-brands fa-whatsapp"></i> واتساب المباشر</button>
@@ -702,7 +751,8 @@ body {
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
     <button class="nav-item" onclick="switchTab('tab-market', this)"><i class="fa-solid fa-store"></i><span>السوق</span></button>
-    <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-motorcycle"></i><span>أوردر فوري</span></button>
+    <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-motorcycle"></i><span>الطلبات</span></button>
+    <button class="nav-item" onclick="switchTab('tab-prices', this)"><i class="fa-solid fa-tag"></i><span>الأسعار</span></button>
     <button class="nav-item" style="color:#ffd166;" onclick="switchTab('tab-games', this)"><i class="fa-solid fa-gamepad" style="font-size:18px;"></i><span>العب واكسب</span></button>
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
   </nav>
@@ -713,11 +763,8 @@ body {
       <button class="modal-close" onclick="closeCartModal()">&times;</button>
       <h3 style="font-size:16px; font-weight:900; color:#10b981;"><i class="fa-solid fa-cart-shopping"></i> سلة طلبات السوق</h3>
       <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">راجع طلباتك قبل الإرسال للمندوب</p>
-
       <div id="cartItemsList" style="max-height:220px; overflow-y:auto; text-align:right; margin-bottom:12px; display:flex; flex-direction:column; gap:6px;"></div>
-
       <input type="text" id="marketDeliveryAddress" class="order-input" placeholder="عنوان التوصيل في نجع حمادي بالتفصيل..." style="margin-bottom:8px;" required>
-
       <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="sendMarketCartToWhatsApp()">
         <i class="fa-brands fa-whatsapp"></i> إرسال الطلبات للمندوب عبر واتساب 🛵
       </button>
@@ -872,7 +919,7 @@ function pauseMainMusicForGame() {
 function resumeMainMusicAfterGame() {
   isGameActive = false;
   const activeTab = document.querySelector('.tab-view.active');
-  if (activeTab && (activeTab.id === 'tab-home' || activeTab.id === 'tab-market' || activeTab.id === 'tab-orders')) {
+  if (activeTab && (activeTab.id === 'tab-home' || activeTab.id === 'tab-market' || activeTab.id === 'tab-orders' || activeTab.id === 'tab-prices')) {
     if (backgroundAudio) {
       backgroundAudio.play().catch(() => {});
     }
@@ -1214,7 +1261,7 @@ const questionBank = [
   { q: "القرية التاريخية بنجع حمادي التي تحتوي على معبد وثروة أثرية عريقة هي؟", a: ["قرية هو", "بهجورة", "أولاد نجم", "القصر"], r: 0 },
   { q: "عند طلب مشوار صيدلية طارئة في التطبيق، متى يتم التحرك فوراً؟", a: ["فوراً وبأولوية طارئة", "في اليوم التالي", "بعد أسبوع", "وقت الفراغ"], r: 0 },
   { q: "كوبري وقناطر نجع حمادي القديمة الشهيرة على النيل شُيدت في عهد من؟", a: ["الخديوي عباس حلمي الثاني", "محمد علي باشا", "الملك فاروق", "جمال عبد الناصر"], r: 0 },
-  { q: "ما الخدمة التي يقدمها التطبيق لأولياء الأمور لتوفير تكلفة مشاوير الأبناء والإخوة؟", a: ["خصم الإخوة بحاسبة المدارس", "منع التوصيل", "مضاعفة السعر", "رسوم إضافية"], r: 0 },
+  { q: "ما الخدمة التي يقدمها التطبيق لأولياء الأمور لتوفير تكلفة مشاوير الأبناء والإخوة؟", a: ["خصم الإخوة بالمشاوير", "منع التوصيل", "مضاعفة السعر", "رسوم إضافية"], r: 0 },
   { q: "ما الميزة الأمنية في كوبونات الخصم التي تصدرها ألعاب Fly Express؟", a: ["كود مشفر وصالح لساعتين ومرتبط برقمك", "كود عام مكرر", "بدون كود", "رقم غير موثق"], r: 0 }
 ];
 
@@ -1438,7 +1485,7 @@ setInterval(listenToCloudState, 25000);
 listenToCloudState();
 
 // -------------------------------------------------------------
-// الحسابات والتنقل
+// الحسابات والتنقل والطلبات
 // -------------------------------------------------------------
 function switchAuthMode(mode) {
   playWindowsClick();
@@ -1461,8 +1508,12 @@ function checkAppAccess() {
     gateScreen.style.display = "none";
     mainApp.style.display = "block";
     document.getElementById('welcomeUserName').textContent = user.name;
-    const phoneInput = document.getElementById('orderPhone');
-    if (phoneInput) phoneInput.value = user.phone;
+    
+    if (document.getElementById('orderPhone')) document.getElementById('orderPhone').value = user.phone;
+    if (document.getElementById('orderName')) document.getElementById('orderName').value = user.name;
+    if (document.getElementById('schoolParentName')) document.getElementById('schoolParentName').value = user.name;
+    if (document.getElementById('schoolParentPhone')) document.getElementById('schoolParentPhone').value = user.phone;
+
     startMusicPlayback();
     renderMarketProducts('veg');
   } else {
@@ -1509,7 +1560,7 @@ function confirmLogoutAction() {
 
 function switchTab(tabId, navBtn) {
   playWindowsClick();
-  const tabs = ['tab-home', 'tab-market', 'tab-orders', 'tab-games', 'tab-contact'];
+  const tabs = ['tab-home', 'tab-market', 'tab-orders', 'tab-prices', 'tab-games', 'tab-contact'];
   tabs.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = (id === tabId) ? 'block' : 'none';
@@ -1542,6 +1593,26 @@ function sendOrder() {
   const phone = document.getElementById('orderPhone').value;
   const code = localStorage.getItem('fly_discount_code') || '';
   const text = `طلب أوردر جديد 📦\nالاسم: ${name} (${phone})\nمن: ${from} إلى: ${to}${code ? '\nكود الخصم: ' + code : ''}`;
+  openWhatsAppDirectly(text);
+}
+
+function sendSchoolOrder() {
+  playWindowsClick();
+  const tripType = document.getElementById('schoolTripType').value;
+  const child = document.getElementById('schoolChildName').value.trim();
+  const fromStreet = document.getElementById('schoolStreetFrom').value.trim();
+  const toStreet = document.getElementById('schoolStreetTo').value.trim();
+  const parentName = document.getElementById('schoolParentName').value.trim();
+  const parentPhone = document.getElementById('schoolParentPhone').value.trim();
+  const notes = document.getElementById('schoolTripNotes').value.trim();
+  const code = localStorage.getItem('fly_discount_code') || '';
+
+  if (!child || !fromStreet || !toStreet || !parentName || !parentPhone) {
+    alert("من فضلك أكمل بيانات الطالب والشوارع ورقم ولي الأمر أولاً.");
+    return;
+  }
+
+  const text = `طلب مشوار مدرسة آمن 🏫🛵\nنوع المشوار: ${tripType}\nاسم الطالب: ${child}\nمن: ${fromStreet}\nإلى: ${toStreet}\nولي الأمر: ${parentName} (${parentPhone})\nملاحظات: ${notes || 'لا يوجد'}${code ? '\nكود الخصم الموثق: ' + code : ''}\n— أُرسل عبر تطبيق Fly Express`;
   openWhatsAppDirectly(text);
 }
 
