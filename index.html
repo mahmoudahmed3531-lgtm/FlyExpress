@@ -20,6 +20,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <style>
 :root {
   --bg-dark: #070b12;
@@ -37,63 +39,32 @@
 }
 
 * { 
-  box-sizing: border-box; 
-  margin: 0; 
-  padding: 0; 
-  user-select: none; 
-  -webkit-user-select: none;
-  touch-action: pan-y pinch-zoom;
-  -webkit-touch-callout: none;
+  box-sizing: border-box; margin: 0; padding: 0; 
+  user-select: none; -webkit-user-select: none;
+  touch-action: pan-y pinch-zoom; -webkit-touch-callout: none;
 }
 
-input, textarea, select { 
-  user-select: auto; 
-  -webkit-user-select: auto;
-  touch-action: auto;
-}
+input, textarea, select { user-select: auto; -webkit-user-select: auto; touch-action: auto; }
 
-html {
-  overflow-x: hidden;
-  overflow-y: auto !important;
-  height: 100%;
-}
+html { overflow-x: hidden; overflow-y: auto !important; height: 100%; }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-main);
-  min-height: 100%;
-  padding-bottom: 95px;
-  overflow-x: hidden;
-  overflow-y: auto !important;
-  position: relative;
-  background: #070b12;
-  -webkit-overflow-scrolling: touch !important;
-  touch-action: pan-y !important;
+  background-color: var(--bg-dark); color: var(--text-main);
+  min-height: 100%; padding-bottom: 95px; overflow-x: hidden;
+  overflow-y: auto !important; position: relative; background: #070b12;
+  -webkit-overflow-scrolling: touch !important; touch-action: pan-y !important;
 }
 
 .app-download-banner {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(15, 23, 42, 0.95);
-  border: 1.5px solid var(--primary);
-  padding: 8px 14px;
-  border-radius: 999px;
-  box-shadow: 0 0 20px var(--primary-glow);
-  text-decoration: none;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
+  position: fixed; top: 12px; left: 12px; z-index: 9999;
+  display: flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.95);
+  border: 1.5px solid var(--primary); padding: 8px 14px; border-radius: 999px;
+  box-shadow: 0 0 20px var(--primary-glow); text-decoration: none; color: #fff;
+  font-size: 12px; font-weight: 800; cursor: pointer;
 }
 
 .download-arrow {
-  color: var(--primary);
-  font-size: 14px;
+  color: var(--primary); font-size: 14px;
   animation: bounceArrow 1.2s infinite alternate ease-in-out;
 }
 
@@ -103,203 +74,87 @@ body {
 }
 
 #appPreloader {
-  position: fixed;
-  inset: 0;
-  background: #070b12;
-  z-index: 99999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  position: fixed; inset: 0; background: #070b12; z-index: 99999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-
-#appPreloader.fade-out {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
+#appPreloader.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
 
 .loader-logo-img {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  border: 2px solid var(--primary);
-  box-shadow: 0 0 20px var(--primary-glow);
-  margin-bottom: 14px;
+  width: 80px; height: 80px; border-radius: 20px; border: 2px solid var(--primary);
+  box-shadow: 0 0 20px var(--primary-glow); margin-bottom: 14px;
 }
-
 .loader-spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spinLoader 0.7s linear infinite;
-  margin-top: 14px;
+  width: 28px; height: 28px; border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--primary); border-radius: 50%;
+  animation: spinLoader 0.7s linear infinite; margin-top: 14px;
 }
+@keyframes spinLoader { to { transform: rotate(360deg); } }
 
-@keyframes spinLoader {
-  to { transform: rotate(360deg); }
-}
+.app-container { max-width: 480px; margin: 0 auto; min-height: 100%; position: relative; z-index: 1; }
 
-.app-container {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-/* شاشة القفل */
 .auth-gate-screen {
-  position: fixed;
-  inset: 0;
-  background: var(--bg-dark);
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  text-align: center;
-  overflow-y: auto;
+  position: fixed; inset: 0; background: var(--bg-dark); z-index: 999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px; text-align: center; overflow-y: auto;
 }
-
 .gate-card {
-  background: #0d1527;
-  border: 1.5px solid var(--primary);
-  border-radius: 24px;
-  padding: 22px 18px;
-  width: 100%;
-  max-width: 360px;
-  box-shadow: 0 10px 40px var(--primary-glow);
+  background: #0d1527; border: 1.5px solid var(--primary); border-radius: 24px;
+  padding: 22px 18px; width: 100%; max-width: 360px; box-shadow: 0 10px 40px var(--primary-glow);
 }
-
 .gate-logo {
-  width: 72px;
-  height: 72px;
-  border-radius: 20px;
-  border: 2px solid var(--primary);
-  box-shadow: 0 0 20px var(--primary-glow);
-  margin-bottom: 10px;
+  width: 72px; height: 72px; border-radius: 20px; border: 2px solid var(--primary);
+  box-shadow: 0 0 20px var(--primary-glow); margin-bottom: 10px;
 }
-
 .auth-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 4px;
-  border-radius: 12px;
+  display: flex; gap: 8px; margin-bottom: 16px; background: rgba(255, 255, 255, 0.05);
+  padding: 4px; border-radius: 12px;
 }
 .auth-tab-btn {
-  flex: 1;
-  padding: 8px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--text-sub);
-  font-family: inherit;
-  font-weight: 800;
-  font-size: 12px;
-  cursor: pointer;
+  flex: 1; padding: 8px; border: 0; border-radius: 8px; background: transparent;
+  color: var(--text-sub); font-family: inherit; font-weight: 800; font-size: 12px; cursor: pointer;
 }
-.auth-tab-btn.active {
-  background: var(--primary);
-  color: #fff;
-}
+.auth-tab-btn.active { background: var(--primary); color: #fff; }
 
 .auth-error-msg {
-  display: none;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #f87171;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 8px 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  text-align: right;
+  display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171; font-size: 11px; font-weight: 700; padding: 8px 10px; border-radius: 10px;
+  margin-bottom: 10px; text-align: right;
 }
 
 #maintenanceNoticeBox {
-  display: none;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1.5px solid var(--danger);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 14px;
-  text-align: center;
+  display: none; background: rgba(239, 68, 68, 0.15); border: 1.5px solid var(--danger);
+  border-radius: 16px; padding: 16px; margin-bottom: 14px; text-align: center;
 }
 
-/* الهيدر */
 .app-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(7, 11, 18, 0.96);
-  backdrop-filter: blur(12px);
-  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50; background: rgba(7, 11, 18, 0.96);
+  backdrop-filter: blur(12px); padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+  display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border);
 }
-
-.profile-section {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-}
-
+.profile-section { display: flex; align-items: center; gap: 12px; cursor: pointer; }
 .profile-img {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  object-fit: cover;
-  border: 2px solid var(--primary);
-  box-shadow: 0 0 14px var(--primary-glow);
+  width: 46px; height: 46px; border-radius: 14px; object-fit: cover;
+  border: 2px solid var(--primary); box-shadow: 0 0 14px var(--primary-glow);
 }
-
 .profile-info h1 { font-size: 16px; font-weight: 900; line-height: 1.2; }
 .profile-info p { font-size: 11px; color: #ffb703; font-weight: 700; }
 
 .status-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 5px 10px;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 700;
-  color: #34d399;
+  display: flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35); padding: 5px 10px; border-radius: 999px;
+  font-size: 10px; font-weight: 700; color: #34d399;
 }
 .status-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
 
-.tab-view {
-  display: none;
-  padding: 16px;
-  animation: fadeInTab 0.2s ease-out;
-}
-@keyframes fadeInTab {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.tab-view { display: none; padding: 16px; animation: fadeInTab 0.2s ease-out; }
+@keyframes fadeInTab { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 .tab-view.active { display: block; }
 
 .user-welcome-card {
   background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(0, 229, 255, 0.08));
-  border: 1px solid rgba(255, 107, 0, 0.3);
-  border-radius: 16px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  border: 1px solid rgba(255, 107, 0, 0.3); border-radius: 16px; padding: 10px 14px;
+  margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;
 }
 
 .section-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
@@ -318,202 +173,80 @@ body {
 .ic-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
 
 .games-hub-banner {
-  background: linear-gradient(135deg, #ff6b00, #a855f7);
-  border-radius: 20px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-  cursor: pointer;
-  box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35);
-  animation: pulseCard 2.5s infinite ease-in-out;
+  background: linear-gradient(135deg, #ff6b00, #a855f7); border-radius: 20px; padding: 16px;
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;
+  cursor: pointer; box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35); animation: pulseCard 2.5s infinite ease-in-out;
 }
-@keyframes pulseCard {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-}
+@keyframes pulseCard { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
 
-.hard-game-card {
-  background: #0f172a;
-  border: 1.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 16px;
-  margin-bottom: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.hard-game-badge {
-  font-size: 10px;
-  font-weight: 900;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.4);
-}
-
-/* قسم السوق وسلة المشتريات */
-.market-nav-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
+/* ستايل المنتجات والسوق */
+.market-nav-tabs { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
 .market-cat-btn {
-  flex: 1;
-  min-width: 90px;
-  background: #0f172a;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: var(--text-sub);
-  padding: 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 800;
-  font-family: inherit;
-  cursor: pointer;
-  text-align: center;
-  white-space: nowrap;
+  flex: 1; min-width: 90px; background: #0f172a; border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-sub); padding: 8px; border-radius: 12px; font-size: 11px; font-weight: 800;
+  font-family: inherit; cursor: pointer; text-align: center; white-space: nowrap;
 }
-.market-cat-btn.active {
-  background: var(--primary);
-  color: #fff;
-  border-color: var(--primary);
-}
+.market-cat-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-.market-products-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
-}
+.market-products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
 .product-card {
-  background: #0f172a;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 6px;
+  background: #0f172a; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;
+  padding: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
 }
-.product-thumb-icon {
-  font-size: 34px;
-  margin-bottom: 2px;
-}
+.product-thumb-icon { font-size: 34px; margin-bottom: 2px; }
 .product-unit-select {
-  width: 100%;
-  padding: 6px;
-  border-radius: 8px;
-  background: #070b12;
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #fff;
-  font-family: inherit;
-  font-size: 11px;
-  outline: none;
-  margin-top: 4px;
+  width: 100%; padding: 6px; border-radius: 8px; background: #070b12;
+  border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 11px; outline: none; margin-top: 4px;
 }
 .product-add-btn {
-  width: 100%;
-  border: 0;
-  cursor: pointer;
-  padding: 7px;
-  border-radius: 8px;
-  background: rgba(16, 185, 129, 0.2);
-  color: #34d399;
-  border: 1px solid #10b981;
-  font-weight: 800;
-  font-size: 11px;
-  font-family: inherit;
-  margin-top: 4px;
+  width: 100%; border: 0; cursor: pointer; padding: 7px; border-radius: 8px;
+  background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981;
+  font-weight: 800; font-size: 11px; font-family: inherit; margin-top: 4px;
 }
 .product-add-btn:active { transform: scale(0.95); }
 
-/* زر السلة العائم */
 .floating-cart-bar {
-  position: fixed;
-  bottom: 84px;
-  left: 16px;
-  right: 16px;
-  max-width: 448px;
-  margin: 0 auto;
-  background: linear-gradient(90deg, #10b981, #059669);
-  border-radius: 16px;
-  padding: 12px 18px;
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  color: #fff;
-  font-weight: 800;
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-  cursor: pointer;
-  z-index: 120;
-  animation: slideUpCart 0.25s ease-out;
-}
-@keyframes slideUpCart {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  position: fixed; bottom: 84px; left: 16px; right: 16px; max-width: 448px; margin: 0 auto;
+  background: linear-gradient(90deg, #10b981, #059669); border-radius: 16px; padding: 12px 18px;
+  display: none; align-items: center; justify-content: space-between; color: #fff; font-weight: 800;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); cursor: pointer; z-index: 120;
 }
 
-/* شبكة لعبة الصور */
-.photo-matrix-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 14px 0;
-}
-.photo-matrix-item {
-  height: 75px;
-  background: #1e293b;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  cursor: pointer;
-  transition: transform 0.1s ease;
-}
-.photo-matrix-item:active { transform: scale(0.92); }
-
-/* شريط التنقل السفلي */
 .bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 72px; background: rgba(7, 11, 18, 0.98);
-  backdrop-filter: blur(14px);
-  border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100;
-  padding-bottom: env(safe-area-inset-bottom);
+  position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 72px;
+  background: rgba(7, 11, 18, 0.98); backdrop-filter: blur(14px); border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: env(safe-area-inset-bottom);
 }
 .nav-item {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--text-sub); background: transparent;
-  border: 0; font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer; flex: 1; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  color: var(--text-sub); background: transparent; border: 0; font-family: inherit; font-size: 11px;
+  font-weight: 700; cursor: pointer; flex: 1; height: 100%;
 }
 .nav-item.active { color: var(--primary); }
 
 .order-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
 .order-row.single { grid-template-columns: 1fr; }
-.order-input, .order-select, .order-textarea {
-  width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(8, 12, 20, 0.9);
-  color: #fff; font-family: inherit; font-size: 13px; outline: none;
+.order-input, .order-select {
+  width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 12, 20, 0.9); color: #fff; font-family: inherit; font-size: 13px; outline: none;
 }
-.order-input:focus, .order-select:focus, .order-textarea:focus { border-color: var(--primary); }
-
+.order-input:focus, .order-select:focus { border-color: var(--primary); }
 .order-btn {
-  width: 100%; border: 0; cursor: pointer; padding: 12px 14px; border-radius: 12px; font-weight: 800; font-size: 13px; color: #fff;
-  background: linear-gradient(90deg, #ff6b00, #ff8c00); margin-top: 6px; font-family: inherit;
+  width: 100%; border: 0; cursor: pointer; padding: 12px 14px; border-radius: 12px;
+  font-weight: 800; font-size: 13px; color: #fff; background: linear-gradient(90deg, #ff6b00, #ff8c00);
+  margin-top: 6px; font-family: inherit;
 }
 .order-btn:active { transform: scale(0.96); }
 
 .modal-backdrop {
-  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px); z-index: 2500; display: none;
-  align-items: center; justify-content: center; padding: 16px;
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px);
+  z-index: 2500; display: none; align-items: center; justify-content: center; padding: 16px;
 }
 .modal-backdrop.show { display: flex; }
 .modal-card {
-  background: #0d1527; border: 1.5px solid var(--primary); border-radius: 24px; padding: 18px 14px; width: 100%; max-width: 360px;
-  text-align: center; position: relative; max-height: 90vh; overflow-y: auto;
+  background: #0d1527; border: 1.5px solid var(--primary); border-radius: 24px;
+  padding: 18px 14px; width: 100%; max-width: 360px; text-align: center; position: relative;
+  max-height: 90vh; overflow-y: auto;
 }
 .modal-close { position: absolute; top: 10px; left: 14px; background: transparent; border: 0; color: var(--text-sub); font-size: 24px; cursor: pointer; }
 </style>
@@ -598,7 +331,7 @@ body {
       <button onclick="logoutUser()" style="background:transparent; border:0; color:#ef4444; font-size:11px; font-weight:800; cursor:pointer;">خروج 🚪</button>
     </div>
 
-    <div class="games-hub-banner" onclick="switchTab('tab-games', document.querySelectorAll('.nav-item')[3])">
+    <div class="games-hub-banner" onclick="switchTab('tab-games', document.querySelectorAll('.nav-item')[4])">
       <div style="display:flex; align-items:center; gap:12px;">
         <div style="font-size:32px;">🎮</div>
         <div>
@@ -611,15 +344,20 @@ body {
 
     <div class="section-title"><i class="fa-solid fa-shapes"></i> خدمات التوصيل السريع</div>
     <div class="services-grid">
+      <!-- كارت 1: طلب أوردر أو طرد فوري مستقل -->
+      <div class="service-card" onclick="openFastParcelTab()">
+        <div class="service-icon ic-orange"><i class="fa-solid fa-box-open"></i></div>
+        <div><h4>طلب أوردر / طرد 📦</h4><span>توصيل واستلام فوري</span></div>
+      </div>
+
+      <!-- كارت 2: طلبات السوق -->
       <div class="service-card" onclick="switchTab('tab-market', document.querySelectorAll('.nav-item')[1])">
         <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
         <div><h4>طلبات السوق 🛒</h4><span>خضار، بقالة، طلبات بيت</span></div>
       </div>
-      <div class="service-card" onclick="openServiceInstantly('sec-order')">
-        <div class="service-icon ic-orange"><i class="fa-solid fa-box"></i></div>
-        <div><h4>طلب أوردر / طرد</h4><span>توصيل واستلام فوري</span></div>
-      </div>
-      <div class="service-card" onclick="openServiceInstantly('sec-school')" style="grid-column: span 2;">
+
+      <!-- كارت 3: مشاوير المدرسة المنفصلة -->
+      <div class="service-card" onclick="openSchoolTripModal()" style="grid-column: span 2;">
         <div style="display:flex; align-items:center; gap:12px; width:100%;">
           <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
           <div style="text-align:right;">
@@ -645,55 +383,36 @@ body {
     <div class="market-products-grid" id="marketProductsGrid"></div>
   </section>
 
-  <!-- 3. الطلبات (أوردر فوري + مشاوير المدرسة الكاملة) -->
+  <!-- 3. تبويب الطلبات (طرد سريع مستقل تماماً بدون مشاوير المدرسة) -->
   <section id="tab-orders" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-pen-to-square"></i> تسجيل المشاوير والطلبات</div>
+    <div class="section-title"><i class="fa-solid fa-box-open"></i> طلب أوردر / طرد فوري سريع 📦</div>
+    <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">توصيل واستلام الطرود والأغراض والمشتريات فوراً من وإلى أي مكان داخل نجع حمادي وقراها.</p>
 
-    <!-- فورم أوردر / طرد فوري -->
-    <div class="form-card" id="sec-order" style="margin-bottom:16px;">
-      <h3 style="font-size:15px; margin-bottom:10px; color:#ff8c00;">📦 أوردر / طرد فوري</h3>
+    <div class="form-card" id="sec-order" style="border-color: rgba(255, 107, 0, 0.35);">
       <div class="order-row">
-        <input class="order-input" id="orderFrom" placeholder="العنوان: من" required>
-        <input class="order-input" id="orderTo" placeholder="العنوان: إلى" required>
-      </div>
-      <div class="order-row">
-        <input class="order-input" id="orderName" placeholder="اسمك" required>
-        <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
-      </div>
-      <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> إرسال عبر واتساب</button>
-    </div>
-
-    <!-- فورم مشاوير المدرسة التفصيلي الكامل -->
-    <div class="form-card" id="sec-school" style="border-color: rgba(16, 185, 129, 0.35);">
-      <h3 style="font-size:15px; margin-bottom:8px; color:#10b981;">🏫 مشاوير المدرسة (توصيل آمن للطلاب)</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">ذهاب، عودة، أو ذهاب وعودة من وإلى باب البيت والمدرسة.</p>
-
-      <div class="order-row">
-        <select class="order-select" id="schoolTripType">
-          <option value="هنجيبه وهنروّحه (ذهاب وعودة)">هنجيبه وهنروّحه (ذهاب وعودة)</option>
-          <option value="هنجيبه بس (ذهاب للمدرسة)">هنجيبه بس (ذهاب للمدرسة)</option>
-          <option value="هنروّحه بس (عودة للبيت)">هنروّحه بس (عودة للبيت)</option>
+        <select class="order-select" id="parcelType">
+          <option value="طرد / شحنة عادية">📦 طرد / شحنة</option>
+          <option value="أوردر شراء واستلام">🛍️ شراء واستلام أوردر</option>
+          <option value="أوراق ومستندات هامة">📄 أوراق ومستندات</option>
         </select>
-        <input class="order-input" id="schoolChildName" placeholder="اسم الطالب / الطالبة" required>
+        <input class="order-input" id="orderItemDetails" placeholder="محتوى الطرد / الأوردر المطلوب" required>
       </div>
 
       <div class="order-row">
-        <input class="order-input" id="schoolStreetFrom" placeholder="من شارع كام / المنطقة؟" required>
-        <input class="order-input" id="schoolStreetTo" placeholder="لشارع كام / اسم المدرسة؟" required>
+        <input class="order-input" id="orderFrom" placeholder="العنوان بالتفصيل: من شارع / مكان..." required>
+        <input class="order-input" id="orderTo" placeholder="العنوان بالتفصيل: إلى شارع / مكان..." required>
       </div>
 
       <div class="order-row">
-        <input class="order-input" id="schoolParentName" placeholder="اسم ولي الأمر" required>
-        <input class="order-input" id="schoolParentPhone" placeholder="رقم هاتف ولي الأمر" inputmode="tel" required>
+        <input class="order-input" id="orderName" placeholder="اسمك الكريم" required>
+        <input class="order-input" id="orderPhone" placeholder="رقم الموبايل للتواصل" inputmode="tel" required>
       </div>
 
       <div class="order-row single">
-        <input class="order-input" id="schoolTripNotes" placeholder="ملاحظات المشوار (مواعيد الحصص أو الخروج...)">
+        <input class="order-input" id="orderNotes" placeholder="أي تفاصيل أو ملاحظات إضافية للكابتن...">
       </div>
 
-      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="sendSchoolOrder()">
-        <i class="fa-brands fa-whatsapp"></i> تأكيد حجز مشوار المدرسة عبر واتساب 🛵
-      </button>
+      <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال الطرد عبر واتساب 🛵</button>
     </div>
   </section>
 
@@ -738,6 +457,42 @@ body {
     <button class="order-btn" style="background:#25d366; color:#000;" onclick="openDirectWhatsApp('مرحباً Fly Express، أريد الاستفسار')"><i class="fa-brands fa-whatsapp"></i> واتساب المباشر</button>
   </section>
 
+  <!-- نافذة مخصصة لمشاوير المدرسة المستقلة -->
+  <div class="modal-backdrop" id="schoolTripModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeSchoolTripModal()">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; color:#10b981;">🏫 مشاوير المدرسة (توصيل آمن للطلاب)</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;">هنجيبه ونروّحه من وإلى باب البيت والمدرسة بأعلى أمان والتزام.</p>
+
+      <div class="order-row">
+        <select class="order-select" id="schoolTripType">
+          <option value="هنجيبه وهنروّحه (ذهاب وعودة)">هنجيبه وهنروّحه (ذهاب وعودة)</option>
+          <option value="هنجيبه بس (ذهاب للمدرسة)">هنجيبه بس (ذهاب للمدرسة)</option>
+          <option value="هنروّحه بس (عودة للبيت)">هنروّحه بس (عودة للبيت)</option>
+        </select>
+        <input class="order-input" id="schoolChildName" placeholder="اسم الطالب / الطالبة" required>
+      </div>
+
+      <div class="order-row">
+        <input class="order-input" id="schoolStreetFrom" placeholder="من شارع كام / المنطقة؟" required>
+        <input class="order-input" id="schoolStreetTo" placeholder="لشارع كام / اسم المدرسة؟" required>
+      </div>
+
+      <div class="order-row">
+        <input class="order-input" id="schoolParentName" placeholder="اسم ولي الأمر" required>
+        <input class="order-input" id="schoolParentPhone" placeholder="رقم هاتف ولي الأمر" inputmode="tel" required>
+      </div>
+
+      <div class="order-row single">
+        <input class="order-input" id="schoolTripNotes" placeholder="ملاحظات المشوار (مواعيد الحصص أو الخروج...)">
+      </div>
+
+      <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="sendSchoolOrder()">
+        <i class="fa-brands fa-whatsapp"></i> تأكيد حجز مشوار المدرسة عبر واتساب 🛵
+      </button>
+    </div>
+  </div>
+
   <!-- شريط السلة العائم -->
   <div class="floating-cart-bar" id="floatingCartBar" onclick="openCartModal()">
     <div style="display:flex; align-items:center; gap:8px;">
@@ -751,7 +506,7 @@ body {
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
     <button class="nav-item" onclick="switchTab('tab-market', this)"><i class="fa-solid fa-store"></i><span>السوق</span></button>
-    <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-motorcycle"></i><span>الطلبات</span></button>
+    <button class="nav-item" onclick="switchTab('tab-orders', this)"><i class="fa-solid fa-box-open"></i><span>طرد سريع</span></button>
     <button class="nav-item" onclick="switchTab('tab-prices', this)"><i class="fa-solid fa-tag"></i><span>الأسعار</span></button>
     <button class="nav-item" style="color:#ffd166;" onclick="switchTab('tab-games', this)"><i class="fa-solid fa-gamepad" style="font-size:18px;"></i><span>العب واكسب</span></button>
     <button class="nav-item" onclick="switchTab('tab-contact', this)"><i class="fa-solid fa-comments"></i><span>تواصل</span></button>
@@ -831,6 +586,11 @@ window.addEventListener('load', () => {
     p.classList.add('fade-out');
     setTimeout(() => p.remove(), 300);
   }
+
+  // احتساب زيارة حقيقية سحابياً للأدمن
+  try {
+    fetch("https://api.counterapi.dev/v1/flyexpress_nagahammadi_2026/visits/up");
+  } catch (e) {}
 });
 
 function forceDownloadRedirect(e, url) {
@@ -910,9 +670,7 @@ function startMusicPlayback() {
 }
 
 function pauseMainMusicForGame() {
-  if (backgroundAudio && isMusicPlaying) {
-    backgroundAudio.pause();
-  }
+  if (backgroundAudio && isMusicPlaying) backgroundAudio.pause();
   isGameActive = true;
 }
 
@@ -920,9 +678,7 @@ function resumeMainMusicAfterGame() {
   isGameActive = false;
   const activeTab = document.querySelector('.tab-view.active');
   if (activeTab && (activeTab.id === 'tab-home' || activeTab.id === 'tab-market' || activeTab.id === 'tab-orders' || activeTab.id === 'tab-prices')) {
-    if (backgroundAudio) {
-      backgroundAudio.play().catch(() => {});
-    }
+    if (backgroundAudio) backgroundAudio.play().catch(() => {});
   }
 }
 
@@ -934,7 +690,7 @@ function autoStartOnFirstTouch() {
 ['touchstart', 'touchend', 'click'].forEach(evt => document.addEventListener(evt, autoStartOnFirstTouch, { once: true, passive: true }));
 
 // -------------------------------------------------------------
-// قاعدة بيانات منتجات سوق Fly Express الشاملة (أكثر من 125 صنف)
+// قاعدة بيانات السوق الشاملة
 // -------------------------------------------------------------
 const marketData = {
   veg: [
@@ -960,7 +716,7 @@ const marketData = {
     { id: "v20", name: "كرنب بلدي للمحشي", icon: "🥬", units: ["1 حبة كبيرة", "1 حبة متوسطة"] },
     { id: "v21", name: "قرنبيط طازج", icon: "🥦", units: ["1 قرص كبير", "1 قرص وسط"] },
     { id: "v22", name: "كابوتشا / خس بلدي", icon: "🥬", units: ["1 حبة كابوتشا", "3 ربطات خس"] },
-    { id: "v23", name: "خضرة محشي (شبت وبقدونس وكزبرة)", icon: "🌿", units: ["3 حزم مشكل", "6 حزم مشكل"] },
+    { id: "v23", name: "خضرة محشي مشكلة", icon: "🌿", units: ["3 حزم مشكل", "6 حزم مشكل"] },
     { id: "v24", name: "جرجير وفجل طازة", icon: "🌱", units: ["3 حزم جرجير", "5 حزم جرجير"] },
     { id: "v25", name: "موز بلدي سكري", icon: "🍌", units: ["1 كيلو", "2 كيلو", "3 كيلو"] },
     { id: "v26", name: "تفاح أحمر سكري", icon: "🍎", units: ["1 كيلو", "2 كيلو"] },
@@ -987,86 +743,47 @@ const marketData = {
     { id: "g9", name: "مكرونة الملكة / حواء (أنواع)", icon: "🍝", units: ["1 كيس (400 جم)", "2 كيس", "3 أكياس", "كيس 1 كيلو"] },
     { id: "g10", name: "شعرية ولسان عصفور", icon: "🍜", units: ["1 كيس شعرية", "1 كيس لسان عصفور", "2 كيس مشكل"] },
     { id: "g11", name: "دقيق فاخر لجميع الأغراض", icon: "🌾", units: ["1 كيس (1 ك)", "2 كيس", "شيكارة 5 ك"] },
-    { id: "g12", name: "صلصة طماطم معجون هاينز/وادي فود", icon: "🥫", units: ["برطمان زجاج كبير", "علبة صفيح", "علبة 3 أكياس"] },
-    { id: "g13", name: "تونة قطع سهلة الفتح (صن شاين/دولفين)", icon: "🐟", units: ["1 علبة تونة قطع", "2 علبة", "علبة دايت مياه وملح"] },
+    { id: "g12", name: "صلصة طماطم معجون هاينز", icon: "🥫", units: ["برطمان زجاج كبير", "علبة صفيح", "علبة 3 أكياس"] },
+    { id: "g13", name: "تونة قطع سهلة الفتح", icon: "🐟", units: ["1 علبة تونة قطع", "2 علبة"] },
     { id: "g14", name: "تونة مفتتة حارة وعادية", icon: "🐟", units: ["1 علبة", "2 علبة"] },
     { id: "g15", name: "شاي العروسة أسود أصلي", icon: "☕", units: ["باكو صغير (40 جم)", "باكو ربع كيلو (250 جم)", "باكو نصف كيلو"] },
     { id: "g16", name: "شاي ليبتون ناعم / خرز", icon: "☕", units: ["باكو 100 فتلة", "باكو 25 فتلة", "ربع كيلو بودرة"] },
     { id: "g17", name: "شاي أخضر بالنعناع", icon: "🍵", units: ["علبة 25 فتلة", "علبة 50 فتلة"] },
-    { id: "g18", name: "بن عبد المعبود / النجار (سادة ومحوج)", icon: "☕", units: ["ثمن كيلو سادة", "ثمن كيلو محوج", "ربع كيلو محوج"] },
-    { id: "g19", name: "نسكافيه جولد / كلاسيك / 3*1", icon: "☕", units: ["برطمان صغير", "علبة 12 ظرف 3*1", "ظرف كبير"] },
-    { id: "g20", name: "حليب طازج معبأ (جهينة / المراعي / لمار)", icon: "🥛", units: ["1 لتر كامل الدسم", "2 لتر", "1 لتر خالي الدسم"] },
-    { id: "g21", name: "لبن بودرة نيدو", icon: "🥛", units: ["كيس صغير", "كيس وسط", "برطمان 400 جم"] },
-    { id: "g22", name: "جبنة بيضاء فيتا / إسطنبولي / براميلي", icon: "🧀", units: ["علبة نصف كيلو", "علبة 1 كيلو", "ربع كيلو سايب"] },
-    { id: "g23", name: "جبنة رومي قديمة مبشورة وشرائح", icon: "🧀", units: ["ثمن كيلو شرائح", "ربع كيلو شرائح", "ثمن كيلو مبشور"] },
-    { id: "g24", name: "جبنة شيدر وموتزاريلا مبشورة", icon: "🧀", units: ["كيس موتزاريلا 350 جم", "كيس نصف كيلو"] },
-    { id: "g25", name: "جبنة مثلثات (طعمة / لافاش كيري)", icon: "🧀", units: ["علبة 8 قطع", "علبة 16 قطعة", "علبة 24 قطعة"] },
-    { id: "g26", name: "كرتونة وطبق بيض أحمر وأبيض", icon: "🥚", units: ["طبق 30 بيضة أحمر", "طبق 30 بيضة أبيض", "نصف طبق (15 بيضة)"] },
-    { id: "g27", name: "بيض بلدي صعيدي طازج", icon: "🥚", units: ["10 بيضات بلدي", "طبق 30 بيضة بلدي"] },
-    { id: "g28", name: "زبادي طبيعي بلدي ومعلب", icon: "🥣", units: ["4 علب صغيرة", "6 علب", "علبة عائلي كبيرة"] },
-    { id: "g29", name: "لانشون بقر ودجاج سادة وبالزيتون", icon: "🥪", units: ["ربع كيلو شرائح", "ثمن كيلو", "قالب صغير"] },
-    { id: "g30", name: "حلاوة طحينية سادة وبالمكسرات", icon: "🍯", units: ["علبة نصف كيلو", "علبة 1 كيلو", "قالب ربع كيلو"] },
-    { id: "g31", name: "طحينة بيضاء سمسم صافي", icon: "🫙", units: ["برطمان نصف كيلو", "برطمان 1 كيلو", "ربع كيلو"] },
-    { id: "g32", name: "عسل أسود صعيدي أصلي من القصب", icon: "🍯", units: ["زجاجة 1 كيلو", "زجاجة 2 كيلو"] },
-    { id: "g33", name: "عسل نحل جبلي طبيعي", icon: "🍯", units: ["برطمان نصف كيلو", "برطمان 1 كيلو"] },
-    { id: "g34", name: "مربى مشمش / فراولة / تين", icon: "🍓", units: ["برطمان كبير", "برطمان صغير"] },
-    { id: "g35", name: "فول مدمس معلب سادة وبالصلصة", icon: "🥫", units: ["1 علبة", "2 علبة", "3 علب مشكل"] },
-    { id: "g36", name: "فول حصى بلدي للتدميس", icon: "🫘", units: ["نصف كيلو", "1 كيلو"] },
-    { id: "g37", name: "عدس أصفر بلدي للشوربة", icon: "🥣", units: ["نصف كيلو", "1 كيلو"] },
-    { id: "g38", name: "عدس بجبة أسمر للكشري", icon: "🫘", units: ["نصف كيلو", "1 كيلو"] },
-    { id: "g39", name: "حمص ولوبيا وفاصوليا جافة", icon: "🫘", units: ["نصف كيلو لوبيا", "نصف كيلو فاصوليا بيضاء", "نصف كيلو حمص"] },
-    { id: "g40", name: "خل قصب أبيض نقي", icon: "🍶", units: ["1 زجاجة لتر", "2 زجاجة لتر"] },
-    { id: "g41", name: "كاتشب ومايونيز ومستردة", icon: "🍟", units: ["زجاجة كاتشب هاينز", "برطمان مايونيز", "باكو أكياس"] },
-    { id: "g42", name: "مياه معدنية طبيعية معبأة", icon: "💧", units: ["كرتونة 12 زجاجة لتر ونصف", "كرتونة 20 زجاجة صغيرة", "زجاجة واحدة 1.5 لتر"] },
-    { id: "g43", name: "مياه غازية كانز ولترات مشكلة", icon: "🥤", units: ["3 كانز مشكل", "زجاجة 1 لتر", "زجاجة 2.5 لتر"] },
-    { id: "g44", name: "عصائر جهينة وبيتي وتانج بودرة", icon: "🧃", units: ["لتر مانجو", "لتر جوافة", "كيس تانج برتقال كبير"] },
-    { id: "g45", name: "بسكويت وشيبسي وكيك للأطفال", icon: "🍪", units: ["تشكيلة 5 أكياس", "تشكيلة 10 أكياس"] },
-    { id: "g46", name: "مسحوق غسيل أوتوماتيك (إريال / أوكسي)", icon: "🧺", units: ["كيس 2.5 كيلو", "شيكارة 4 كيلو", "شيكارة 6 كيلو"] },
-    { id: "g47", name: "مسحوق غسيل عادي يدوي", icon: "🫧", units: ["كيس 1 كيلو", "كيس 2 كيلو"] },
-    { id: "g48", name: "سائل غسيل الأطباق (بريل / فيري)", icon: "🧼", units: ["زجاجة لتر", "جركن 2.5 لتر", "جركن 4 لتر"] },
-    { id: "g49", name: "صابون يد واستحمام دوف / لوكس", icon: "🧼", units: ["قطعة واحدة", "باكيت 4 قطع"] },
-    { id: "g50", name: "كلور أبيض ومطهر فينيك وكلوركس ألوان", icon: "🧴", units: ["زجاجة كلوركس أبيض", "زجاجة كلوركس ألوان", "زجاجة ديتول مطهر"] },
-    { id: "g51", name: "سلك مواعين ناعم وإسفنج", icon: "🧽", units: ["ثمن كيلو سلك", "باكت إسفنج مواعين (3 قطع)"] },
-    { id: "g52", name: "مناديل سحب وتواليت ومطبخ رول", icon: "🧻", units: ["باكت 3 علب سحب", "رول مطبخ كبير", "باكت تواليت 4 رول"] },
-    { id: "g53", name: "أكياس قمامة سوداء ومفارش سفرة", icon: "🗑️", units: ["رول أكياس 70 لتر", "رول مفارش سفرة رول"] }
+    { id: "g18", name: "بن عبد المعبود / النجار", icon: "☕", units: ["ثمن كيلو سادة", "ثمن كيلو محوج", "ربع كيلو محوج"] },
+    { id: "g19", name: "نسكافيه جولد / كلاسيك / 3*1", icon: "☕", units: ["برطمان صغير", "علبة 12 ظرف 3*1"] },
+    { id: "g20", name: "حليب طازج معبأ (جهينة / المراعي)", icon: "🥛", units: ["1 لتر كامل الدسم", "2 لتر"] },
+    { id: "g21", name: "جبنة بيضاء فيتا / إسطنبولي", icon: "🧀", units: ["علبة نصف كيلو", "علبة 1 كيلو"] },
+    { id: "g22", name: "جبنة رومي قديمة شرائح", icon: "🧀", units: ["ثمن كيلو شرائح", "ربع كيلو شرائح"] },
+    { id: "g23", name: "جبنة مثلثات", icon: "🧀", units: ["علبة 8 قطع", "علبة 16 قطعة"] },
+    { id: "g24", name: "طبق بيض أحمر وأبيض", icon: "🥚", units: ["طبق 30 بيضة أحمر", "طبق 30 بيضة أبيض", "نصف طبق (15 بيضة)"] },
+    { id: "g25", name: "بيض بلدي صعيدي طازج", icon: "🥚", units: ["10 بيضات بلدي", "طبق 30 بيضة بلدي"] },
+    { id: "g26", name: "زبادي طبيعي بلدي ومعلب", icon: "🥣", units: ["4 علب صغيرة", "6 علب"] },
+    { id: "g27", name: "حلاوة طحينية وطحينة بيضاء", icon: "🍯", units: ["علبة نصف كيلو حلاوة", "برطمان طحينة نصف كيلو"] },
+    { id: "g28", name: "عسل أسود صعيدي أصلي من القصب", icon: "🍯", units: ["زجاجة 1 كيلو", "زجاجة 2 كيلو"] },
+    { id: "g29", name: "عسل نحل جبلي طبيعي", icon: "🍯", units: ["برطمان نصف كيلو", "برطمان 1 كيلو"] },
+    { id: "g30", name: "فول وعدس ولوبيا وفاصوليا", icon: "🫘", units: ["نصف كيلو فول", "نصف كيلو عدس أصفر", "نصف كيلو لوبيا"] },
+    { id: "g31", name: "خل قصب أبيض نقي", icon: "🍶", units: ["1 زجاجة لتر", "2 زجاجة لتر"] },
+    { id: "g32", name: "مياه معدنية طبيعية معبأة", icon: "💧", units: ["كرتونة 12 زجاجة لتر ونصف", "كرتونة 20 زجاجة صغيرة"] },
+    { id: "g33", name: "مساحيق غسيل أوتوماتيك وعادي", icon: "🧺", units: ["كيس 2.5 كيلو", "شيكارة 4 كيلو"] },
+    { id: "g34", name: "سائل غسيل الأطباق بريل / فيري", icon: "🧼", units: ["زجاجة لتر", "جركن 2.5 لتر"] },
+    { id: "g35", name: "مناديل سحب وتواليت ومطبخ", icon: "🧻", units: ["باكت 3 علب سحب", "رول مطبخ كبير"] }
   ],
   spices: [
-    { id: "s1", name: "كمون بلدي صعيدي حصى ومطحون", icon: "🌿", units: ["ثمن كيلو (125 جم)", "ربع كيلو", "نصف كيلو", "حصى ثمن كيلو"] },
-    { id: "s2", name: "فلفل أسود برازيلي حب ومطحون", icon: "🌶️", units: ["ثمن كيلو مطحون", "ربع كيلو مطحون", "ثمن كيلو حصى"] },
-    { id: "s3", name: "كزبرة جافة بلدي ناعمة وحصى", icon: "🌱", units: ["ثمن كيلو", "ربع كيلو", "نصف كيلو", "حب حصى"] },
-    { id: "s4", name: "شطة حمراء صعيدي حامية طحن خشن", icon: "🌶️", units: ["ثمن كيلو", "ربع كيلو", "نصف كيلو"] },
-    { id: "s5", name: "بهارات لحمة مشكلة متبلة", icon: "🥩", units: ["ثمن كيلو", "ربع كيلو", "برطمان توابل جاهز"] },
-    { id: "s6", name: "بهارات فراخ وتتبيلة شوي جاهزة", icon: "🍗", units: ["ثمن كيلو", "ربع كيلو"] },
-    { id: "s7", name: "السبع بهارات المصرية الأصلية", icon: "🧂", units: ["ثمن كيلو", "ربع كيلو"] },
-    { id: "s8", name: "كاري هندي وكركم بلدي أصفر", icon: "🍛", units: ["ثمن كيلو كاري", "ثمن كيلو كركم", "ربع كيلو كركم"] },
-    { id: "s9", name: "بابريكا مدخنة وحلوة", icon: "🌶️", units: ["ثمن كيلو", "ربع كيلو"] },
-    { id: "s10", name: "ثوم بودرة وبصل بودرة ناعم", icon: "🧄", units: ["ثمن كيلو ثوم بودرة", "ثمن كيلو بصل بودرة", "ميكس معاً"] },
-    { id: "s11", name: "زنجبيل مطحون وزنجبيل فريش", icon: "🫚", units: ["ثمن كيلو مطحون", "ربع كيلو مطحون", "قطعة فريش"] },
-    { id: "s12", name: "قرفة عيدان خشب وقرفة ناعمة", icon: "🪵", units: ["ثمن كيلو ناعمة", "ثمن كيلو عيدان خشب"] },
-    { id: "s13", name: "حبهان أخضر ممتاز (هيل)", icon: "🌿", units: ["50 جرام", "ثمن كيلو (125 جم)"] },
-    { id: "s14", name: "ورق لورا (ورق غار مجفف)", icon: "🍃", units: ["ثمن كيلو", "كيس ربع كيلو"] },
-    { id: "s15", name: "قرنفل مسمار هندي", icon: "🌱", units: ["50 جرام", "ثمن كيلو"] },
-    { id: "s16", name: "مستكة يوناني فصوص أصلية", icon: "💎", units: ["برطمان صغير", "باكيت فصوص"] },
-    { id: "s17", name: "جوزة الطيب سليم ومطحون", icon: "🌰", units: ["2 حبة سليمة", "ثمن كيلو مطحون"] },
-    { id: "s18", name: "سمسم أبيض سمسم محمص بلدي", icon: "🌾", units: ["ربع كيلو أبيض", "ربع كيلو محمص", "نصف كيلو"] },
-    { id: "s19", name: "حبة البركة سودانية بلدي", icon: "✨", units: ["ثمن كيلو", "ربع كيلو"] },
-    { id: "s20", name: "كركديه صعيدي فاخر زهرة لوز", icon: "🌺", units: ["ربع كيلو", "نصف كيلو", "1 كيلو سوبر"] },
-    { id: "s21", name: "يانسون بلدي نقي منخول", icon: "🌾", units: ["ثمن كيلو", "ربع كيلو", "نصف كيلو"] },
-    { id: "s22", name: "نعناع صعيدي ناشف مجفف في الظل", icon: "🌿", units: ["كيس كبير", "ربع كيلو"] },
-    { id: "s23", name: "حلبة حصى صفراء بلدي", icon: "🫘", units: ["نصف كيلو", "1 كيلو"] },
-    { id: "s24", name: "شمر بلدي منقى", icon: "🌾", units: ["ثمن كيلو", "ربع كيلو"] },
-    { id: "s25", name: "دوم مجروش وخروب قرون وقبرصي", icon: "🥥", units: ["نصف كيلو دوم", "نصف كيلو خروب مجروش", "1 كيلو"] },
-    { id: "s26", name: "عرقسوس صعيدي درجة أولى", icon: "🪵", units: ["ربع كيلو", "نصف كيلو", "1 كيلو"] },
-    { id: "s27", name: "تمر هندي أسواني قوالب كلاسيك", icon: "🟫", units: ["1 قالب (400 جم)", "2 قالب"] },
-    { id: "s28", name: "كاكاو خام إسباني غير محلى", icon: "🍫", units: ["ثمن كيلو", "ربع كيلو", "نصف كيلو"] },
-    { id: "s29", name: "نشا ذرة أبيض ناعم للحلويات", icon: "🥣", units: ["ربع كيلو", "نصف كيلو", "1 كيلو"] },
-    { id: "s30", name: "ذرة فشار بلدي وأمريكي فصوص", icon: "🍿", units: ["نصف كيلو", "1 كيلو"] },
-    { id: "s31", name: "بيكنج بودر وفانيليا دريم", icon: "🧁", units: ["5 باكت بيكنج بودر", "5 باكت فانيليا", "ميكس 10 أكياس"] },
-    { id: "s32", name: "خميرة بيرة فورية وقطع", icon: "🍞", units: ["3 أكياس فورية", "قالب خميرة بيرة"] },
-    { id: "s33", name: "كربونات صوديوم (بيكربونات)", icon: "🧂", units: ["ثمن كيلو", "ربع كيلو"] },
-    { id: "s34", name: "ملح طعام ناعم باليود", icon: "🧂", units: ["3 أكياس ملح", "شيكارة ملح صغيرة (10 أكياس)"] },
-    { id: "s35", name: "ماء ورد وماء زهر أصلي مركز", icon: "🌸", units: ["زجاجة ماء ورد", "زجاجة ماء زهر"] },
-    { id: "s36", name: "خلطة كفتة وبرجر وحواوشي ماجي/كنور", icon: "🥩", units: ["2 كيس خلطة كفتة", "2 كيس حواوشي", "2 كيس شاورما"] }
+    { id: "s1", name: "كمون بلدي صعيدي حصى ومطحون", icon: "🌿", units: ["ثمن كيلو (125 جم)", "ربع كيلو", "نصف كيلو"] },
+    { id: "s2", name: "فلفل أسود برازيلي حب ومطحون", icon: "🌶️", units: ["ثمن كيلو مطحون", "ربع كيلو مطحون"] },
+    { id: "s3", name: "كزبرة جافة بلدي ناعمة وحصى", icon: "🌱", units: ["ثمن كيلو", "ربع كيلو", "نصف كيلو"] },
+    { id: "s4", name: "شطة حمراء صعيدي حامية", icon: "🌶️", units: ["ثمن كيلو", "ربع كيلو"] },
+    { id: "s5", name: "بهارات لحمة وفراخ مشكلة", icon: "🥩", units: ["ثمن كيلو لحمة", "ثمن كيلو فراخ"] },
+    { id: "s6", name: "السبع بهارات المصرية الأصلية", icon: "🧂", units: ["ثمن كيلو", "ربع كيلو"] },
+    { id: "s7", name: "كاري هندي وكركم بلدي أصفر", icon: "🍛", units: ["ثمن كيلو كاري", "ثمن كيلو كركم"] },
+    { id: "s8", name: "بابريكا مدخنة وثوم وبصل بودرة", icon: "🌶️", units: ["ثمن كيلو بابريكا", "ثمن كيلو ميكس ثوم وبصل"] },
+    { id: "s9", name: "حبهان أخضر وورق لورا ومستكة", icon: "🌿", units: ["50 جرام حبهان", "ثمن كيلو ورق لورا"] },
+    { id: "s10", name: "قرفة عيدان خشب وقرفة ناعمة", icon: "🪵", units: ["ثمن كيلو ناعمة", "ثمن كيلو عيدان"] },
+    { id: "s11", name: "سمسم وحبة البركة بلدي", icon: "🌾", units: ["ربع كيلو سمسم محمص", "ثمن كيلو حبة البركة"] },
+    { id: "s12", name: "كركديه صعيدي فاخر زهرة لوز", icon: "🌺", units: ["ربع كيلو", "نصف كيلو", "1 كيلو سوبر"] },
+    { id: "s13", name: "يانسون ونعناع وحلبة وشمر", icon: "🌾", units: ["ثمن كيلو يانسون", "كيس نعناع ناشف", "نصف كيلو حلبة"] },
+    { id: "s14", name: "دوم وخروب وعرقسوس وتمر هندي", icon: "🥥", units: ["نصف كيلو دوم", "ربع كيلو عرقسوس", "قالب تمر هندي"] },
+    { id: "s15", name: "كاكاو ونشا وبيكنج بودر وفانيليا", icon: "🍫", units: ["ثمن كيلو كاكاو خام", "ميكس 10 أكياس فانيليا وبيكنج"] }
   ]
 };
 
@@ -1081,15 +798,12 @@ function renderMarketProducts(catKey) {
   items.forEach(prod => {
     const card = document.createElement('div');
     card.className = "product-card";
-    
     let optionsHtml = prod.units.map(u => `<option value="${u}">${u}</option>`).join('');
 
     card.innerHTML = `
       <div class="product-thumb-icon">${prod.icon}</div>
       <strong style="font-size:12px; color:#fff; line-height:1.2;">${prod.name}</strong>
-      <select class="product-unit-select" id="unit_${prod.id}">
-        ${optionsHtml}
-      </select>
+      <select class="product-unit-select" id="unit_${prod.id}">${optionsHtml}</select>
       <button class="product-add-btn" onclick="addToCart('${prod.id}', '${prod.name}', '${prod.icon}')">
         <i class="fa-solid fa-cart-plus"></i> إضافة إلى السلة
       </button>
@@ -1110,13 +824,7 @@ function addToCart(prodId, prodName, prodIcon) {
   const selectEl = document.getElementById(`unit_${prodId}`);
   const chosenUnit = selectEl ? selectEl.value : "1 كيلو";
 
-  userCart.push({
-    id: prodId,
-    name: prodName,
-    icon: prodIcon,
-    unit: chosenUnit
-  });
-
+  userCart.push({ id: prodId, name: prodName, icon: prodIcon, unit: chosenUnit });
   updateCartBar();
 }
 
@@ -1124,12 +832,7 @@ function updateCartBar() {
   const bar = document.getElementById('floatingCartBar');
   const countTxt = document.getElementById('cartCountTxt');
   if (countTxt) countTxt.textContent = userCart.length;
-
-  if (userCart.length > 0) {
-    if (bar) bar.style.display = "flex";
-  } else {
-    if (bar) bar.style.display = "none";
-  }
+  if (bar) bar.style.display = (userCart.length > 0) ? "flex" : "none";
 }
 
 function openCartModal() {
@@ -1257,12 +960,9 @@ const questionBank = [
   { q: "قرية بنجع حمادي تقع قرب مصنع الألمنيوم ويربطها خط توصيل مباشر في التطبيق؟", a: ["قرية بركة", "هو", "الرئيسية", "الحلفاية"], r: 0 },
   { q: "أكبر مجمع ومصنع لصناعة الألمنيوم في الشرق الأوسط يقع في؟", a: ["نجع حمادي", "سفاجا", "قوص", "كوم أمبو"], r: 0 },
   { q: "كم دقيقة يستغرق دليفري Fly Express في المتوسط للمشاوير الداخلية العاجلة؟", a: ["10 إلى 15 دقيقة", "ساعتين", "يوم كامل", "60 دقيقة"], r: 0 },
-  { q: "خدمة رادار الأمان في تطبيق Fly Express مخصصة لمتابعة أي رحلة؟", a: ["رحلة المدرسة اليومية للطلاب", "رحلات الطيران الدولي", "أسعار العملات", "مباريات الدوري"], r: 0 },
   { q: "القرية التاريخية بنجع حمادي التي تحتوي على معبد وثروة أثرية عريقة هي؟", a: ["قرية هو", "بهجورة", "أولاد نجم", "القصر"], r: 0 },
   { q: "عند طلب مشوار صيدلية طارئة في التطبيق، متى يتم التحرك فوراً؟", a: ["فوراً وبأولوية طارئة", "في اليوم التالي", "بعد أسبوع", "وقت الفراغ"], r: 0 },
-  { q: "كوبري وقناطر نجع حمادي القديمة الشهيرة على النيل شُيدت في عهد من؟", a: ["الخديوي عباس حلمي الثاني", "محمد علي باشا", "الملك فاروق", "جمال عبد الناصر"], r: 0 },
-  { q: "ما الخدمة التي يقدمها التطبيق لأولياء الأمور لتوفير تكلفة مشاوير الأبناء والإخوة؟", a: ["خصم الإخوة بالمشاوير", "منع التوصيل", "مضاعفة السعر", "رسوم إضافية"], r: 0 },
-  { q: "ما الميزة الأمنية في كوبونات الخصم التي تصدرها ألعاب Fly Express؟", a: ["كود مشفر وصالح لساعتين ومرتبط برقمك", "كود عام مكرر", "بدون كود", "رقم غير موثق"], r: 0 }
+  { q: "كوبري وقناطر نجع حمادي القديمة الشهيرة على النيل شُيدت في عهد من؟", a: ["الخديوي عباس حلمي الثاني", "محمد علي باشا", "الملك فاروق", "جمال عبد الناصر"], r: 0 }
 ];
 
 let quizStreak = 0, quizTimer = 10, quizTimerInterval = null;
@@ -1421,9 +1121,7 @@ function onPhotoItemClick(isTarget) {
   }
 }
 
-// -------------------------------------------------------------
-// الاستماع السحابي وتطبيق الصيانة
-// -------------------------------------------------------------
+// الاستماع السحابي
 async function listenToCloudState() {
   try {
     const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
@@ -1445,17 +1143,11 @@ function applyServiceState(status) {
   if (!badge || !dot || !txt) return;
 
   if (status === 'busy') {
-    txt.textContent = "مشغول";
-    dot.style.background = "#f59e0b";
-    badge.style.color = "#fbbf24";
+    txt.textContent = "مشغول"; dot.style.background = "#f59e0b"; badge.style.color = "#fbbf24";
   } else if (status === 'offline') {
-    txt.textContent = "مغلق";
-    dot.style.background = "#ef4444";
-    badge.style.color = "#f87171";
+    txt.textContent = "مغلق"; dot.style.background = "#ef4444"; badge.style.color = "#f87171";
   } else {
-    txt.textContent = "متاح";
-    dot.style.background = "#10b981";
-    badge.style.color = "#34d399";
+    txt.textContent = "متاح"; dot.style.background = "#10b981"; badge.style.color = "#34d399";
   }
 }
 
@@ -1484,9 +1176,7 @@ function applyMaintenanceLock(maint) {
 setInterval(listenToCloudState, 25000);
 listenToCloudState();
 
-// -------------------------------------------------------------
 // الحسابات والتنقل والطلبات
-// -------------------------------------------------------------
 function switchAuthMode(mode) {
   playWindowsClick();
   const isLogin = mode === 'login';
@@ -1578,24 +1268,44 @@ function switchTab(tabId, navBtn) {
   window.scrollTo(0, 0);
 }
 
-function openServiceInstantly(formId) {
+function openFastParcelTab() {
   playWindowsClick();
   switchTab('tab-orders', document.querySelectorAll('.nav-item')[2]);
-  const target = document.getElementById(formId);
+  const target = document.getElementById('sec-order');
   if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
 }
 
+function openSchoolTripModal() {
+  playWindowsClick();
+  document.getElementById('schoolTripModal').classList.add('show');
+}
+function closeSchoolTripModal() {
+  playWindowsClick();
+  document.getElementById('schoolTripModal').classList.remove('show');
+}
+
+// إرسال طرد فوري سريع مستقل
 function sendOrder() {
   playWindowsClick();
-  const from = document.getElementById('orderFrom').value;
-  const to = document.getElementById('orderTo').value;
-  const name = document.getElementById('orderName').value;
-  const phone = document.getElementById('orderPhone').value;
+  const type = document.getElementById('parcelType').value;
+  const details = document.getElementById('orderItemDetails').value.trim();
+  const from = document.getElementById('orderFrom').value.trim();
+  const to = document.getElementById('orderTo').value.trim();
+  const name = document.getElementById('orderName').value.trim();
+  const phone = document.getElementById('orderPhone').value.trim();
+  const notes = document.getElementById('orderNotes').value.trim();
   const code = localStorage.getItem('fly_discount_code') || '';
-  const text = `طلب أوردر جديد 📦\nالاسم: ${name} (${phone})\nمن: ${from} إلى: ${to}${code ? '\nكود الخصم: ' + code : ''}`;
+
+  if (!from || !to || !name || !phone) {
+    alert("من فضلك اكتب العناوين واسمك ورقم الموبايل أولاً.");
+    return;
+  }
+
+  const text = `طلب طرد / أوردر سريع 📦🛵\nالنوع: ${type}\nمحتوى الشحنة: ${details || 'غير محدد'}\nمن شارع/مكان: ${from}\nإلى شارع/مكان: ${to}\nالاسم: ${name} (${phone})\nملاحظات: ${notes || 'لا يوجد'}${code ? '\nكود الخصم: ' + code : ''}\n— أُرسل عبر تطبيق Fly Express`;
   openWhatsAppDirectly(text);
 }
 
+// إرسال مشوار مدرسة آمن
 function sendSchoolOrder() {
   playWindowsClick();
   const tripType = document.getElementById('schoolTripType').value;
@@ -1613,6 +1323,7 @@ function sendSchoolOrder() {
   }
 
   const text = `طلب مشوار مدرسة آمن 🏫🛵\nنوع المشوار: ${tripType}\nاسم الطالب: ${child}\nمن: ${fromStreet}\nإلى: ${toStreet}\nولي الأمر: ${parentName} (${parentPhone})\nملاحظات: ${notes || 'لا يوجد'}${code ? '\nكود الخصم الموثق: ' + code : ''}\n— أُرسل عبر تطبيق Fly Express`;
+  closeSchoolTripModal();
   openWhatsAppDirectly(text);
 }
 
