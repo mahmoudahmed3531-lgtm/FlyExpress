@@ -38,89 +38,60 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-* { 
-  box-sizing: border-box; margin: 0; padding: 0; 
-  user-select: none; -webkit-user-select: none;
-  touch-action: pan-y pinch-zoom; -webkit-touch-callout: none;
-}
-
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; touch-action: pan-y pinch-zoom; }
 input, textarea, select { user-select: auto; -webkit-user-select: auto; touch-action: auto; }
 
 html { overflow-x: hidden; overflow-y: auto !important; height: 100%; }
-
 body {
-  background-color: var(--bg-dark); color: var(--text-main);
-  min-height: 100%; padding-bottom: 95px; overflow-x: hidden;
-  overflow-y: auto !important; position: relative; background: #070b12;
-  -webkit-overflow-scrolling: touch !important; touch-action: pan-y !important;
+  background-color: var(--bg-dark); color: var(--text-main); min-height: 100%;
+  padding-bottom: 95px; overflow-x: hidden; overflow-y: auto !important; position: relative;
+  background: #070b12; -webkit-overflow-scrolling: touch !important; touch-action: pan-y !important;
 }
 
 .app-download-banner {
-  position: fixed; top: 12px; left: 12px; z-index: 9999;
-  display: flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.95);
-  border: 1.5px solid var(--primary); padding: 8px 14px; border-radius: 999px;
-  box-shadow: 0 0 20px var(--primary-glow); text-decoration: none; color: #fff;
+  position: fixed; top: 12px; left: 12px; z-index: 9999; display: flex; align-items: center;
+  gap: 8px; background: rgba(15, 23, 42, 0.95); border: 1.5px solid var(--primary); padding: 8px 14px;
+  border-radius: 999px; box-shadow: 0 0 20px var(--primary-glow); text-decoration: none; color: #fff;
   font-size: 12px; font-weight: 800; cursor: pointer;
 }
 
-.download-arrow {
-  color: var(--primary); font-size: 14px;
-  animation: bounceArrow 1.2s infinite alternate ease-in-out;
-}
-
-@keyframes bounceArrow {
-  0% { transform: translateY(-2px); }
-  100% { transform: translateY(3px); }
-}
-
 #appPreloader {
-  position: fixed; inset: 0; background: #070b12; z-index: 99999;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: fixed; inset: 0; background: #070b12; z-index: 99999; display: flex;
+  flex-direction: column; align-items: center; justify-content: center;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 #appPreloader.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
 
-.loader-logo-img {
-  width: 80px; height: 80px; border-radius: 20px; border: 2px solid var(--primary);
-  box-shadow: 0 0 20px var(--primary-glow); margin-bottom: 14px;
-}
+.loader-logo-img { width: 80px; height: 80px; border-radius: 20px; border: 2px solid var(--primary); margin-bottom: 14px; }
 .loader-spinner {
   width: 28px; height: 28px; border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--primary); border-radius: 50%;
-  animation: spinLoader 0.7s linear infinite; margin-top: 14px;
+  border-top-color: var(--primary); border-radius: 50%; animation: spinLoader 0.7s linear infinite;
 }
 @keyframes spinLoader { to { transform: rotate(360deg); } }
 
 .app-container { max-width: 480px; margin: 0 auto; min-height: 100%; position: relative; z-index: 1; }
 
+/* شريط الإعلانات اللحظي من الأدمن */
+.live-broadcast-announcement {
+  display: none; background: linear-gradient(90deg, #a855f7, #ff6b00);
+  padding: 8px 14px; color: #fff; font-size: 12px; font-weight: 800;
+  text-align: center; border-radius: 12px; margin-bottom: 12px;
+  animation: pulseAnnounce 2s infinite ease-in-out;
+}
+@keyframes pulseAnnounce { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
+
 .auth-gate-screen {
-  position: fixed; inset: 0; background: var(--bg-dark); z-index: 999;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 24px; text-align: center; overflow-y: auto;
+  position: fixed; inset: 0; background: var(--bg-dark); z-index: 999; display: flex;
+  flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center;
 }
 .gate-card {
   background: #0d1527; border: 1.5px solid var(--primary); border-radius: 24px;
   padding: 22px 18px; width: 100%; max-width: 360px; box-shadow: 0 10px 40px var(--primary-glow);
 }
-.gate-logo {
-  width: 72px; height: 72px; border-radius: 20px; border: 2px solid var(--primary);
-  box-shadow: 0 0 20px var(--primary-glow); margin-bottom: 10px;
-}
-.auth-tabs {
-  display: flex; gap: 8px; margin-bottom: 16px; background: rgba(255, 255, 255, 0.05);
-  padding: 4px; border-radius: 12px;
-}
-.auth-tab-btn {
-  flex: 1; padding: 8px; border: 0; border-radius: 8px; background: transparent;
-  color: var(--text-sub); font-family: inherit; font-weight: 800; font-size: 12px; cursor: pointer;
-}
+.gate-logo { width: 72px; height: 72px; border-radius: 20px; border: 2px solid var(--primary); margin-bottom: 10px; }
+.auth-tabs { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(255, 255, 255, 0.05); padding: 4px; border-radius: 12px; }
+.auth-tab-btn { flex: 1; padding: 8px; border: 0; border-radius: 8px; background: transparent; color: var(--text-sub); font-family: inherit; font-weight: 800; font-size: 12px; cursor: pointer; }
 .auth-tab-btn.active { background: var(--primary); color: #fff; }
-
-.auth-error-msg {
-  display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #f87171; font-size: 11px; font-weight: 700; padding: 8px 10px; border-radius: 10px;
-  margin-bottom: 10px; text-align: right;
-}
 
 #maintenanceNoticeBox {
   display: none; background: rgba(239, 68, 68, 0.15); border: 1.5px solid var(--danger);
@@ -133,11 +104,8 @@ body {
   display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border);
 }
 .profile-section { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-.profile-img {
-  width: 46px; height: 46px; border-radius: 14px; object-fit: cover;
-  border: 2px solid var(--primary); box-shadow: 0 0 14px var(--primary-glow);
-}
-.profile-info h1 { font-size: 16px; font-weight: 900; line-height: 1.2; }
+.profile-img { width: 46px; height: 46px; border-radius: 14px; border: 2px solid var(--primary); }
+.profile-info h1 { font-size: 16px; font-weight: 900; }
 .profile-info p { font-size: 11px; color: #ffb703; font-weight: 700; }
 
 .status-badge {
@@ -145,7 +113,7 @@ body {
   border: 1px solid rgba(16, 185, 129, 0.35); padding: 5px 10px; border-radius: 999px;
   font-size: 10px; font-weight: 700; color: #34d399;
 }
-.status-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+.status-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; }
 
 .tab-view { display: none; padding: 16px; animation: fadeInTab 0.2s ease-out; }
 @keyframes fadeInTab { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
@@ -175,11 +143,10 @@ body {
 .games-hub-banner {
   background: linear-gradient(135deg, #ff6b00, #a855f7); border-radius: 20px; padding: 16px;
   display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;
-  cursor: pointer; box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35); animation: pulseCard 2.5s infinite ease-in-out;
+  cursor: pointer; box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35);
 }
-@keyframes pulseCard { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
 
-/* ستايل المنتجات والسوق */
+/* السوق */
 .market-nav-tabs { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
 .market-cat-btn {
   flex: 1; min-width: 90px; background: #0f172a; border: 1px solid rgba(255,255,255,0.1);
@@ -193,7 +160,6 @@ body {
   background: #0f172a; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;
   padding: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
 }
-.product-thumb-icon { font-size: 34px; margin-bottom: 2px; }
 .product-unit-select {
   width: 100%; padding: 6px; border-radius: 8px; background: #070b12;
   border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 11px; outline: none; margin-top: 4px;
@@ -203,7 +169,6 @@ body {
   background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981;
   font-weight: 800; font-size: 11px; font-family: inherit; margin-top: 4px;
 }
-.product-add-btn:active { transform: scale(0.95); }
 
 .floating-cart-bar {
   position: fixed; bottom: 84px; left: 16px; right: 16px; max-width: 448px; margin: 0 auto;
@@ -236,7 +201,6 @@ body {
   font-weight: 800; font-size: 13px; color: #fff; background: linear-gradient(90deg, #ff6b00, #ff8c00);
   margin-top: 6px; font-family: inherit;
 }
-.order-btn:active { transform: scale(0.96); }
 
 .modal-backdrop {
   position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px);
@@ -272,13 +236,11 @@ body {
     <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="gate-logo">
     <h2 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">تطبيق Fly Express</h2>
     <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">أسرع وأأمن توصيل في نجع حمادي 🚀</p>
-    
-    <div class="auth-error-msg" id="authErrorDisplay"></div>
 
     <div id="maintenanceNoticeBox">
       <div style="font-size:36px; color:#ef4444; margin-bottom:6px;"><i class="fa-solid fa-screwdriver-wrench"></i></div>
       <h3 style="font-size:15px; font-weight:900; color:#fff; margin-bottom:6px;">تحديث جديد قيد التنفيذ 🛠️</h3>
-      <p style="font-size:12px; color:#cbd5e1; line-height:1.5;" id="maintenanceDisplayMsg">جاري عمل تحديثات وتحسينات للتطبيق حالياً.. يرجى الانتظار وسنعود قريباً.</p>
+      <p style="font-size:12px; color:#cbd5e1; line-height:1.5;" id="maintenanceDisplayMsg">جاري عمل تحسينات للتطبيق حالياً.. يرجى الانتظار وسنعود قريباً.</p>
     </div>
 
     <div class="auth-tabs" id="authTabsContainer">
@@ -289,7 +251,7 @@ body {
     <div id="formLoginView">
       <input type="text" id="loginIdentifier" class="order-input" placeholder="البريد الإلكتروني أو رقم الهاتف" style="margin-bottom:8px;">
       <input type="password" id="loginPassword" class="order-input" placeholder="كلمة المرور" style="margin-bottom:10px;">
-      <button class="order-btn" onclick="directPasswordLogin()"><i class="fa-solid fa-arrow-right-to-bracket"></i> تسجيل الدخول 🚀</button>
+      <button class="order-btn" onclick="directPasswordLogin()">تسجيل الدخول 🚀</button>
     </div>
 
     <div id="formSignupView" style="display:none;">
@@ -323,6 +285,11 @@ body {
 
   <!-- 1. الرئيسية -->
   <main id="tab-home" class="tab-view active">
+    <!-- شريط الإعلانات التفاعلي من الأدمن -->
+    <div class="live-broadcast-announcement" id="appLiveBanner">
+      <i class="fa-solid fa-bullhorn"></i> <span id="appLiveBannerTxt">أهلاً بكم في تطبيق Fly Express!</span>
+    </div>
+
     <div class="user-welcome-card">
       <div>
         <div style="font-size:11px; color:var(--text-sub);">أهلاً بك معنا 🌟</div>
@@ -344,19 +311,16 @@ body {
 
     <div class="section-title"><i class="fa-solid fa-shapes"></i> خدمات التوصيل السريع</div>
     <div class="services-grid">
-      <!-- كارت 1: طلب أوردر أو طرد فوري مستقل -->
       <div class="service-card" onclick="openFastParcelTab()">
         <div class="service-icon ic-orange"><i class="fa-solid fa-box-open"></i></div>
         <div><h4>طلب أوردر / طرد 📦</h4><span>توصيل واستلام فوري</span></div>
       </div>
 
-      <!-- كارت 2: طلبات السوق -->
       <div class="service-card" onclick="switchTab('tab-market', document.querySelectorAll('.nav-item')[1])">
         <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
         <div><h4>طلبات السوق 🛒</h4><span>خضار، بقالة، طلبات بيت</span></div>
       </div>
 
-      <!-- كارت 3: مشاوير المدرسة المنفصلة -->
       <div class="service-card" onclick="openSchoolTripModal()" style="grid-column: span 2;">
         <div style="display:flex; align-items:center; gap:12px; width:100%;">
           <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
@@ -369,84 +333,115 @@ body {
     </div>
   </main>
 
-  <!-- 2. تبويب السوق المتكامل -->
+  <!-- 2. السوق -->
   <section id="tab-market" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-store"></i> سوق Fly Express في بيتك 🛒</div>
-    <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;">اختر الخضار والبقالة والعطارة وسيصلك المندوب بأفضل جودة وسعر في نجع حمادي.</p>
-
     <div class="market-nav-tabs">
       <button class="market-cat-btn active" onclick="switchMarketCategory('veg', this)">🥬 الخضار والفاكهة</button>
       <button class="market-cat-btn" onclick="switchMarketCategory('gro', this)">🛒 البقالة والماركت</button>
       <button class="market-cat-btn" onclick="switchMarketCategory('spices', this)">🌿 العطارة والبهارات</button>
     </div>
-
     <div class="market-products-grid" id="marketProductsGrid"></div>
   </section>
 
-  <!-- 3. تبويب الطلبات (طرد سريع مستقل تماماً بدون مشاوير المدرسة) -->
+  <!-- 3. الطلبات (طرد سريع مستقل مع الأفكار الجديدة: جدولة + حاسبة تسعير + روشتة + VIP) -->
   <section id="tab-orders" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-box-open"></i> طلب أوردر / طرد فوري سريع 📦</div>
-    <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">توصيل واستلام الطرود والأغراض والمشتريات فوراً من وإلى أي مكان داخل نجع حمادي وقراها.</p>
+    <div class="section-title"><i class="fa-solid fa-box-open"></i> طلب أوردر / طرد سريع 📦</div>
+
+    <!-- حاسبة الأجرة التفاعلية المباشرة -->
+    <div style="background:#131d33; border:1px solid var(--accent); border-radius:14px; padding:12px; margin-bottom:14px;">
+      <span style="font-size:11px; color:var(--accent); font-weight:800;"><i class="fa-solid fa-calculator"></i> حاسبة تسعير المشوار المباشرة:</span>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+        <select id="pricingRouteSelect" class="order-select" style="flex:1; margin-left:8px; padding:8px;" onchange="updateEstimatedFare()">
+          <option value="inside">داخل نجع حمادي</option>
+          <option value="berka">داخل قرية بركة</option>
+          <option value="masaken">من بركة للمساكن</option>
+          <option value="alum">من بركة للألمنيوم</option>
+          <option value="haw">من بركة إلى هو</option>
+          <option value="naga">من بركة لنجع حمادي</option>
+        </select>
+        <span style="font-size:16px; font-weight:900; color:#34d399;" id="estimatedFareTxt">30 ج</span>
+      </div>
+    </div>
 
     <div class="form-card" id="sec-order" style="border-color: rgba(255, 107, 0, 0.35);">
       <div class="order-row">
         <select class="order-select" id="parcelType">
           <option value="طرد / شحنة عادية">📦 طرد / شحنة</option>
           <option value="أوردر شراء واستلام">🛍️ شراء واستلام أوردر</option>
-          <option value="أوراق ومستندات هامة">📄 أوراق ومستندات</option>
+          <option value="أوراق ومستندات">📄 أوراق ومستندات</option>
         </select>
         <input class="order-input" id="orderItemDetails" placeholder="محتوى الطرد / الأوردر المطلوب" required>
       </div>
 
+      <!-- ميزة حجز مشوار مجدول أو فوري -->
       <div class="order-row">
-        <input class="order-input" id="orderFrom" placeholder="العنوان بالتفصيل: من شارع / مكان..." required>
-        <input class="order-input" id="orderTo" placeholder="العنوان بالتفصيل: إلى شارع / مكان..." required>
+        <select class="order-select" id="orderTimingType" onchange="toggleScheduledInput()">
+          <option value="فوري الآن">⚡ طلب فوري الآن</option>
+          <option value="مجدول بميعاد مسبق">⏰ حجز مشوار بميعاد مسبق</option>
+        </select>
+        <input type="time" id="orderScheduledTime" class="order-input" style="display:none;">
+      </div>
+
+      <div class="order-row">
+        <input class="order-input" id="orderFrom" placeholder="من شارع / مكان..." required>
+        <input class="order-input" id="orderTo" placeholder="إلى شارع / مكان..." required>
       </div>
 
       <div class="order-row">
         <input class="order-input" id="orderName" placeholder="اسمك الكريم" required>
-        <input class="order-input" id="orderPhone" placeholder="رقم الموبايل للتواصل" inputmode="tel" required>
+        <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
       </div>
 
-      <div class="order-row single">
-        <input class="order-input" id="orderNotes" placeholder="أي تفاصيل أو ملاحظات إضافية للكابتن...">
+      <!-- تصوير ورقة طلبات / روشتة + طلب VIP مستعجل -->
+      <div style="background:#070b12; border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:10px; margin-bottom:8px;">
+        <label style="font-size:11px; color:#cbd5e1; display:flex; align-items:center; gap:6px; cursor:pointer;">
+          <i class="fa-solid fa-camera" style="color:var(--accent);"></i> تصوير روشتة أو ورقة طلبات (اختياري):
+          <input type="file" id="orderPhotoFile" accept="image/*" capture="environment" style="display:none;" onchange="onOrderPhotoSelected(this)">
+        </label>
+        <div id="orderPhotoAttachedTxt" style="font-size:10px; color:#10b981; margin-top:4px; display:none;">تم اختيار الصورة بنجاح 📷</div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <input type="checkbox" id="isVipOrder" style="width:16px; height:16px;">
+        <label for="isVipOrder" style="font-size:11px; font-weight:800; color:#ffd166; cursor:pointer;">
+          ⚡ أوردر مستعجل VIP (أولوية انطلاق قصوى للمندوب)
+        </label>
       </div>
 
       <button class="order-btn" onclick="sendOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد وإرسال الطرد عبر واتساب 🛵</button>
     </div>
   </section>
 
-  <!-- 4. تبويب الأسعار المحدث والشامل -->
+  <!-- 4. الأسعار المباشرة المتزامنة مع الأدمن -->
   <section id="tab-prices" class="tab-view">
-    <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار التقديرية</div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">30 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;">20 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى المساكن</span><span style="color:#ff8c00; font-weight:900;">25 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى الألمنيوم</span><span style="color:#ff8c00; font-weight:900;">35 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى هو</span><span style="color:#ff8c00; font-weight:900;">50 ج</span></div>
-    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;">100 ج</span></div>
+    <div class="section-title"><i class="fa-solid fa-receipt"></i> قائمة الأسعار الحية</div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل نجع حمادي</span><span style="color:#ff8c00; font-weight:900;" id="p_disp_inside">30 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">داخل قرية بركة</span><span style="color:#ff8c00; font-weight:900;" id="p_disp_berka">20 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى المساكن</span><span style="color:#ff8c00; font-weight:900;" id="p_disp_masaken">25 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى الألمنيوم</span><span style="color:#ff8c00; font-weight:900;" id="p_disp_alum">35 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى هو</span><span style="color:#ff8c00; font-weight:900;" id="p_disp_haw">50 ج</span></div>
+    <div class="price-box" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:800;">من بركة إلى نجع حمادي</span><span style="color:#ff8c00; font-weight:900;" id="p_disp_naga">100 ج</span></div>
   </section>
 
-  <!-- 5. تبويب ركن الألعاب -->
+  <!-- 5. الألعاب -->
   <section id="tab-games" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-gamepad"></i> ركن التحديات: العب واكسب 🏆</div>
-    <p style="font-size:11px; color:var(--text-sub); margin-bottom:16px;">ألعاب صعبة تتطلب تركيزاً ورد فعل خاطف.. الفوز يمنحك كود خصم موثق فوراً!</p>
-
     <div class="hard-game-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h4 style="font-size:14px; font-weight:900; color:#ffd166;"><i class="fa-solid fa-brain"></i> 1. تحدي الـ 500 سؤال</h4>
-        <span class="hard-game-badge">وقت ضيق 🔥</span>
+        <span style="font-size:10px; background:rgba(239,68,68,0.2); color:#ef4444; padding:2px 6px; border-radius:6px;">10 ثوانٍ 🔥</span>
       </div>
-      <p style="font-size:11px; color:#cbd5e1;">معك 10 ثوانٍ فقط لكل سؤال! مطلوب 10 إجابات صحيحة متتالية بدون أي خطأ لنيل الجائزة.</p>
+      <p style="font-size:11px; color:#cbd5e1;">معك 10 ثوانٍ فقط لكل سؤال! مطلوب 10 إجابات صحيحة متتالية بدون خطأ.</p>
       <button class="order-btn" style="background:linear-gradient(90deg, #ffd166, #ff8c00); color:#000;" onclick="openQuizGame()">دخول تحدي الأسئلة 🧠</button>
     </div>
 
     <div class="hard-game-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h4 style="font-size:14px; font-weight:900; color:var(--accent);"><i class="fa-solid fa-eye"></i> 2. تحدي اختيار الصورة الصحيحة</h4>
-        <span class="hard-game-badge">سرعة وملاحظة ⚡</span>
+        <span style="font-size:10px; background:rgba(0,229,255,0.2); color:var(--accent); padding:2px 6px; border-radius:6px;">3.5 ثانية ⚡</span>
       </div>
-      <p style="font-size:11px; color:#cbd5e1;">يطلب منك عنصر محدد، وعليك رصده والضغط عليه وسط خيارات مضللة خلال 3 ثوانٍ فقط لـ 10 جولات متتالية!</p>
+      <p style="font-size:11px; color:#cbd5e1;">ارصد العنصر المطلوب واضغط عليه وسط خيارات مضللة بسرعة فائقة!</p>
       <button class="order-btn" style="background:linear-gradient(90deg, #00e5ff, #0077b6); color:#000;" onclick="openPhotoChallengeGame()">دخول تحدي الصور 🎯</button>
     </div>
   </section>
@@ -457,12 +452,12 @@ body {
     <button class="order-btn" style="background:#25d366; color:#000;" onclick="openDirectWhatsApp('مرحباً Fly Express، أريد الاستفسار')"><i class="fa-brands fa-whatsapp"></i> واتساب المباشر</button>
   </section>
 
-  <!-- نافذة مخصصة لمشاوير المدرسة المستقلة -->
+  <!-- نافذة مشاوير المدرسة المستقلة -->
   <div class="modal-backdrop" id="schoolTripModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeSchoolTripModal()">&times;</button>
       <h3 style="font-size:16px; font-weight:900; color:#10b981;">🏫 مشاوير المدرسة (توصيل آمن للطلاب)</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;">هنجيبه ونروّحه من وإلى باب البيت والمدرسة بأعلى أمان والتزام.</p>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;">هنجيبه ونروّحه من وإلى باب البيت والمدرسة بأعلى التزام.</p>
 
       <div class="order-row">
         <select class="order-select" id="schoolTripType">
@@ -496,8 +491,7 @@ body {
   <!-- شريط السلة العائم -->
   <div class="floating-cart-bar" id="floatingCartBar" onclick="openCartModal()">
     <div style="display:flex; align-items:center; gap:8px;">
-      <i class="fa-solid fa-basket-shopping" style="font-size:18px;"></i>
-      <span>سلة السوق (<span id="cartCountTxt">0</span> أصناف)</span>
+      <i class="fa-solid fa-basket-shopping"></i> <span>سلة السوق (<span id="cartCountTxt">0</span> أصناف)</span>
     </div>
     <span style="font-size:12px; background:rgba(0,0,0,0.2); padding:4px 10px; border-radius:10px;">عرض السلة 🛍️</span>
   </div>
@@ -517,9 +511,8 @@ body {
     <div class="modal-card">
       <button class="modal-close" onclick="closeCartModal()">&times;</button>
       <h3 style="font-size:16px; font-weight:900; color:#10b981;"><i class="fa-solid fa-cart-shopping"></i> سلة طلبات السوق</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">راجع طلباتك قبل الإرسال للمندوب</p>
-      <div id="cartItemsList" style="max-height:220px; overflow-y:auto; text-align:right; margin-bottom:12px; display:flex; flex-direction:column; gap:6px;"></div>
-      <input type="text" id="marketDeliveryAddress" class="order-input" placeholder="عنوان التوصيل في نجع حمادي بالتفصيل..." style="margin-bottom:8px;" required>
+      <div id="cartItemsList" style="max-height:220px; overflow-y:auto; text-align:right; margin:10px 0; display:flex; flex-direction:column; gap:6px;"></div>
+      <input type="text" id="marketDeliveryAddress" class="order-input" placeholder="عنوان التوصيل بالتفصيل..." style="margin-bottom:8px;" required>
       <button class="order-btn" style="background:linear-gradient(90deg, #10b981, #059669);" onclick="sendMarketCartToWhatsApp()">
         <i class="fa-brands fa-whatsapp"></i> إرسال الطلبات للمندوب عبر واتساب 🛵
       </button>
@@ -535,9 +528,6 @@ body {
         <span>المرحلة: <strong id="quizProgTxt" style="color:var(--primary);">1 / 10</strong></span>
         <span>الوقت المتبقي: <strong id="quizTimerTxt" style="color:#ef4444;">10s</strong></span>
       </div>
-      <div style="width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:10px; margin-bottom:12px; overflow:hidden;">
-        <div id="quizTimerBar" style="width:100%; height:100%; background:#ef4444; transition:width 1s linear;"></div>
-      </div>
       <p id="quizQuestionBox" style="font-size:13px; font-weight:800; margin:10px 0; min-height:44px; color:#fff;"></p>
       <div id="quizAnswersGrid" style="display:flex; flex-direction:column; gap:8px;"></div>
       <div id="quizStatusTxt" style="font-size:12px; font-weight:800; margin-top:8px;"></div>
@@ -548,16 +538,13 @@ body {
   <div class="modal-backdrop" id="photoGameModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeGameAndResumeMusic('photoGameModal')">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:var(--accent);">🎯 تحدي الصور السريع الخاطف</h3>
+      <h3 style="font-size:16px; font-weight:900; color:var(--accent);">🎯 تحدي الصور الخاطف</h3>
       <div style="display:flex; justify-content:space-between; font-size:12px; margin:8px 0; font-weight:800;">
         <span>الجولة: <strong id="photoRoundTxt" style="color:#10b981;">1 / 10</strong></span>
         <span>المؤقت: <strong id="photoTimerTxt" style="color:#ef4444;">3.5s</strong></span>
       </div>
-      <div style="background:rgba(0, 229, 255, 0.1); border:1.5px dashed var(--accent); border-radius:12px; padding:8px; margin-bottom:8px;">
-        <span style="font-size:11px; color:var(--text-sub);">المطلوب اختياره بسرعة:</span>
-        <div id="photoTargetName" style="font-size:14px; font-weight:900; color:#fff; margin-top:2px;">جاري التحديد...</div>
-      </div>
-      <div class="photo-matrix-grid" id="photoMatrixContainer"></div>
+      <div id="photoTargetName" style="font-size:14px; font-weight:900; color:#fff; margin:6px 0;">جاري التحديد...</div>
+      <div class="photo-matrix-grid" id="photoMatrixContainer" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;"></div>
       <div id="photoStatusTxt" style="font-size:12px; font-weight:800; margin-top:6px;"></div>
     </div>
   </div>
@@ -565,11 +552,11 @@ body {
   <!-- نافذة تأكيد الخروج -->
   <div class="modal-backdrop" id="logoutConfirmModal">
     <div class="modal-card" style="max-width: 320px; text-align: center; padding: 18px;">
-      <div style="width: 100%; max-width: 220px; margin: 0 auto 12px; border-radius: 18px; overflow: hidden; border: 2px solid var(--primary); box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);">
-        <img src="stay.png.png" alt="متمشيش" onerror="this.src='stay.png'" style="width: 100%; height: auto; display: block; object-fit: cover;">
+      <div style="width: 100%; max-width: 220px; margin: 0 auto 12px; border-radius: 18px; overflow: hidden; border: 2px solid var(--primary);">
+        <img src="stay.png.png" alt="متمشيش" onerror="this.src='stay.png'" style="width: 100%; height: auto; display: block;">
       </div>
       <h3 style="font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 6px;">رايح فين؟ 🥺</h3>
-      <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">هل أنت متأكد من تسجيل الخروج من Fly Express؟</p>
+      <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">هل ترغب في تسجيل الخروج من حسابك؟</p>
       <div style="display: flex; gap: 10px;">
         <button class="order-btn" style="background: rgba(255,255,255,0.12); color: #fff; margin-top: 0; flex: 1;" onclick="closeLogoutModal()">قاعد معاكم ❤️</button>
         <button class="order-btn" style="background: #ef4444; margin-top: 0; flex: 1;" onclick="confirmLogoutAction()">خروج 🚪</button>
@@ -586,11 +573,7 @@ window.addEventListener('load', () => {
     p.classList.add('fade-out');
     setTimeout(() => p.remove(), 300);
   }
-
-  // احتساب زيارة حقيقية سحابياً للأدمن
-  try {
-    fetch("https://api.counterapi.dev/v1/flyexpress_nagahammadi_2026/visits/up");
-  } catch (e) {}
+  try { fetch("https://api.counterapi.dev/v1/flyexpress_nagahammadi_2026/visits/up"); } catch (e) {}
 });
 
 function forceDownloadRedirect(e, url) {
@@ -598,9 +581,7 @@ function forceDownloadRedirect(e, url) {
   window.open(url, '_blank');
 }
 
-// -------------------------------------------------------------
-// إدارة الصوت والموسيقى
-// -------------------------------------------------------------
+// الصوت
 let globalAudioCtx = null;
 function getAudioContext() {
   if (!globalAudioCtx) {
@@ -689,101 +670,38 @@ function autoStartOnFirstTouch() {
 }
 ['touchstart', 'touchend', 'click'].forEach(evt => document.addEventListener(evt, autoStartOnFirstTouch, { once: true, passive: true }));
 
-// -------------------------------------------------------------
-// قاعدة بيانات السوق الشاملة
-// -------------------------------------------------------------
+// منتجات السوق
 const marketData = {
   veg: [
-    { id: "v1", name: "طماطم بلدي طازجة", icon: "🍅", units: ["1 كيلو", "2 كيلو", "3 كيلو", "5 كيلو", "نصف كيلو"] },
+    { id: "v1", name: "طماطم بلدي طازجة", icon: "🍅", units: ["1 كيلو", "2 كيلو", "3 كيلو", "نصف كيلو"] },
     { id: "v2", name: "بطاطس تحمير وطبيخ", icon: "🥔", units: ["1 كيلو", "2 كيلو", "3 كيلو", "5 كيلو"] },
-    { id: "v3", name: "بصل أحمر بلدي", icon: "🧅", units: ["1 كيلو", "2 كيلو", "3 كيلو", "5 كيلو"] },
-    { id: "v4", name: "بصل أبيض للخزين", icon: "🧅", units: ["1 كيلو", "2 كيلو", "3 كيلو"] },
-    { id: "v5", name: "ثوم بلدي رأس", icon: "🧄", units: ["نصف كيلو", "1 كيلو", "ربع كيلو"] },
-    { id: "v6", name: "خيار بلدي طازة", icon: "🥒", units: ["1 كيلو", "2 كيلو", "نصف كيلو"] },
-    { id: "v7", name: "ليمون أصفر بلدي", icon: "🍋", units: ["نصف كيلو", "1 كيلو", "ربع كيلو"] },
-    { id: "v8", name: "فلفل رومي أخضر", icon: "🫑", units: ["نصف كيلو", "1 كيلو", "ربع كيلو"] },
-    { id: "v9", name: "فلفل حار وشطة خضراء", icon: "🌶️", units: ["ربع كيلو", "نصف كيلو", "1 كيلو"] },
-    { id: "v10", name: "فلفل ألوان أحمر وأصفر", icon: "🫑", units: ["نصف كيلو", "1 كيلو"] },
-    { id: "v11", name: "باذنجان رومي كلاسيك", icon: "🍆", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v12", name: "باذنجان عروس أسود وأبيض", icon: "🍆", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v13", name: "كوسة للحشو والطبيخ", icon: "🥒", units: ["1 كيلو", "2 كيلو", "نصف كيلو"] },
-    { id: "v14", name: "جزر سكري بلدي", icon: "🥕", units: ["1 كيلو", "2 كيلو", "نصف كيلو"] },
-    { id: "v15", name: "ملوخية خضراء فريش", icon: "🥬", units: ["1 حزمة", "2 حزمة", "1 كيلو مقطوفة"] },
-    { id: "v16", name: "بامية بلدي نمرة 1", icon: "🌱", units: ["نصف كيلو", "1 كيلو", "ربع كيلو"] },
-    { id: "v17", name: "قلقاس بلدي مع السلق", icon: "🥔", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v18", name: "فاصوليا خضراء فريش", icon: "🫛", units: ["نصف كيلو", "1 كيلو"] },
-    { id: "v19", name: "بسلة بلدي طازة", icon: "🫛", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v20", name: "كرنب بلدي للمحشي", icon: "🥬", units: ["1 حبة كبيرة", "1 حبة متوسطة"] },
-    { id: "v21", name: "قرنبيط طازج", icon: "🥦", units: ["1 قرص كبير", "1 قرص وسط"] },
-    { id: "v22", name: "كابوتشا / خس بلدي", icon: "🥬", units: ["1 حبة كابوتشا", "3 ربطات خس"] },
-    { id: "v23", name: "خضرة محشي مشكلة", icon: "🌿", units: ["3 حزم مشكل", "6 حزم مشكل"] },
-    { id: "v24", name: "جرجير وفجل طازة", icon: "🌱", units: ["3 حزم جرجير", "5 حزم جرجير"] },
-    { id: "v25", name: "موز بلدي سكري", icon: "🍌", units: ["1 كيلو", "2 كيلو", "3 كيلو"] },
-    { id: "v26", name: "تفاح أحمر سكري", icon: "🍎", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v27", name: "تفاح أصفر إيطالي", icon: "🍏", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v28", name: "برتقال بسرة / صيفي", icon: "🍊", units: ["1 كيلو", "2 كيلو", "3 كيلو"] },
-    { id: "v29", name: "يوسفي بلدي حلو", icon: "🍊", units: ["1 كيلو", "2 كيلو", "3 كيلو"] },
-    { id: "v30", name: "جوافة بناتي فاخرة", icon: "🍐", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v31", name: "مانجو زبدية / عويس", icon: "🥭", units: ["1 كيلو", "2 كيلو", "كرتونة"] },
-    { id: "v32", name: "عنب بناتي أحمر وأبيض", icon: "🍇", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v33", name: "رمان صعيدي منفلوطي", icon: "🍷", units: ["1 كيلو", "2 كيلو", "3 كيلو"] },
-    { id: "v34", name: "فراولة طازجة مسكرة", icon: "🍓", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v35", name: "كانتلوب / أناناس", icon: "🍈", units: ["1 كيلو", "2 كيلو"] },
-    { id: "v36", name: "بطيخ جيزة أحمر مرمل", icon: "🍉", units: ["1 حبة كبيرة (6-8ك)", "1 حبة وسط"] }
+    { id: "v3", name: "بصل أحمر بلدي", icon: "🧅", units: ["1 كيلو", "2 كيلو", "3 كيلو"] },
+    { id: "v4", name: "خيار بلدي طازة", icon: "🥒", units: ["1 كيلو", "2 كيلو", "نصف كيلو"] },
+    { id: "v5", name: "ليمون أصفر بلدي", icon: "🍋", units: ["نصف كيلو", "1 كيلو", "ربع كيلو"] },
+    { id: "v6", name: "فلفل رومي وحار", icon: "🫑", units: ["نصف كيلو", "1 كيلو", "ربع كيلو"] },
+    { id: "v7", name: "باذنجان رومي وعروس", icon: "🍆", units: ["1 كيلو", "2 كيلو"] },
+    { id: "v8", name: "كوسة وجزر", icon: "🥕", units: ["1 كيلو كوسة", "1 كيلو جزر"] },
+    { id: "v9", name: "ملوخية وبامية خضراء", icon: "🥬", units: ["1 كيلو ملوخية", "نصف كيلو بامية"] },
+    { id: "v10", name: "موز وتفاح أحمر", icon: "🍌", units: ["1 كيلو موز", "1 كيلو تفاح"] }
   ],
   gro: [
-    { id: "g1", name: "أرز مصري أبيض فاخر معبأ", icon: "🍚", units: ["1 كيس (1 ك)", "2 كيس", "3 كيس", "شيكارة 5 كيلو", "شيكارة 10 كيلو"] },
-    { id: "g2", name: "أرز بسمتي هندي درجة أولى", icon: "🍚", units: ["1 كيلو", "2 كيلو"] },
-    { id: "g3", name: "سكر أبيض ناصع معبأ", icon: "🧂", units: ["1 كيس (1 ك)", "2 كيس", "3 كيس", "5 كيس"] },
-    { id: "g4", name: "زيت ذرة كريستال / عافية", icon: "🫗", units: ["1 زجاجة (800 مل)", "1 زجاجة (1.6 لتر)", "زجاجة (2.2 لتر)"] },
-    { id: "g5", name: "زيت عباد الشمس نقي", icon: "🌻", units: ["1 زجاجة لتر", "2 زجاجة لتر"] },
-    { id: "g6", name: "زيت خليط قلية ممتاز", icon: "🫗", units: ["1 زجاجة 700 مل", "1 زجاجة 1 لتر"] },
-    { id: "g7", name: "سمنة بلدي بقري وجاموسي", icon: "🧈", units: ["برطمان 1 كيلو", "برطمان 2 كيلو"] },
-    { id: "g8", name: "سمنة نباتي (روابي / كريستال / جنة)", icon: "🧈", units: ["علبة 700 جم", "علبة 1.5 ك", "علبة 2.5 ك"] },
-    { id: "g9", name: "مكرونة الملكة / حواء (أنواع)", icon: "🍝", units: ["1 كيس (400 جم)", "2 كيس", "3 أكياس", "كيس 1 كيلو"] },
-    { id: "g10", name: "شعرية ولسان عصفور", icon: "🍜", units: ["1 كيس شعرية", "1 كيس لسان عصفور", "2 كيس مشكل"] },
-    { id: "g11", name: "دقيق فاخر لجميع الأغراض", icon: "🌾", units: ["1 كيس (1 ك)", "2 كيس", "شيكارة 5 ك"] },
-    { id: "g12", name: "صلصة طماطم معجون هاينز", icon: "🥫", units: ["برطمان زجاج كبير", "علبة صفيح", "علبة 3 أكياس"] },
-    { id: "g13", name: "تونة قطع سهلة الفتح", icon: "🐟", units: ["1 علبة تونة قطع", "2 علبة"] },
-    { id: "g14", name: "تونة مفتتة حارة وعادية", icon: "🐟", units: ["1 علبة", "2 علبة"] },
-    { id: "g15", name: "شاي العروسة أسود أصلي", icon: "☕", units: ["باكو صغير (40 جم)", "باكو ربع كيلو (250 جم)", "باكو نصف كيلو"] },
-    { id: "g16", name: "شاي ليبتون ناعم / خرز", icon: "☕", units: ["باكو 100 فتلة", "باكو 25 فتلة", "ربع كيلو بودرة"] },
-    { id: "g17", name: "شاي أخضر بالنعناع", icon: "🍵", units: ["علبة 25 فتلة", "علبة 50 فتلة"] },
-    { id: "g18", name: "بن عبد المعبود / النجار", icon: "☕", units: ["ثمن كيلو سادة", "ثمن كيلو محوج", "ربع كيلو محوج"] },
-    { id: "g19", name: "نسكافيه جولد / كلاسيك / 3*1", icon: "☕", units: ["برطمان صغير", "علبة 12 ظرف 3*1"] },
-    { id: "g20", name: "حليب طازج معبأ (جهينة / المراعي)", icon: "🥛", units: ["1 لتر كامل الدسم", "2 لتر"] },
-    { id: "g21", name: "جبنة بيضاء فيتا / إسطنبولي", icon: "🧀", units: ["علبة نصف كيلو", "علبة 1 كيلو"] },
-    { id: "g22", name: "جبنة رومي قديمة شرائح", icon: "🧀", units: ["ثمن كيلو شرائح", "ربع كيلو شرائح"] },
-    { id: "g23", name: "جبنة مثلثات", icon: "🧀", units: ["علبة 8 قطع", "علبة 16 قطعة"] },
-    { id: "g24", name: "طبق بيض أحمر وأبيض", icon: "🥚", units: ["طبق 30 بيضة أحمر", "طبق 30 بيضة أبيض", "نصف طبق (15 بيضة)"] },
-    { id: "g25", name: "بيض بلدي صعيدي طازج", icon: "🥚", units: ["10 بيضات بلدي", "طبق 30 بيضة بلدي"] },
-    { id: "g26", name: "زبادي طبيعي بلدي ومعلب", icon: "🥣", units: ["4 علب صغيرة", "6 علب"] },
-    { id: "g27", name: "حلاوة طحينية وطحينة بيضاء", icon: "🍯", units: ["علبة نصف كيلو حلاوة", "برطمان طحينة نصف كيلو"] },
-    { id: "g28", name: "عسل أسود صعيدي أصلي من القصب", icon: "🍯", units: ["زجاجة 1 كيلو", "زجاجة 2 كيلو"] },
-    { id: "g29", name: "عسل نحل جبلي طبيعي", icon: "🍯", units: ["برطمان نصف كيلو", "برطمان 1 كيلو"] },
-    { id: "g30", name: "فول وعدس ولوبيا وفاصوليا", icon: "🫘", units: ["نصف كيلو فول", "نصف كيلو عدس أصفر", "نصف كيلو لوبيا"] },
-    { id: "g31", name: "خل قصب أبيض نقي", icon: "🍶", units: ["1 زجاجة لتر", "2 زجاجة لتر"] },
-    { id: "g32", name: "مياه معدنية طبيعية معبأة", icon: "💧", units: ["كرتونة 12 زجاجة لتر ونصف", "كرتونة 20 زجاجة صغيرة"] },
-    { id: "g33", name: "مساحيق غسيل أوتوماتيك وعادي", icon: "🧺", units: ["كيس 2.5 كيلو", "شيكارة 4 كيلو"] },
-    { id: "g34", name: "سائل غسيل الأطباق بريل / فيري", icon: "🧼", units: ["زجاجة لتر", "جركن 2.5 لتر"] },
-    { id: "g35", name: "مناديل سحب وتواليت ومطبخ", icon: "🧻", units: ["باكت 3 علب سحب", "رول مطبخ كبير"] }
+    { id: "g1", name: "أرز مصري أبيض فاخر معبأ", icon: "🍚", units: ["1 كيس (1 ك)", "2 كيس", "شيكارة 5 كيلو"] },
+    { id: "g2", name: "سكر أبيض ناصع معبأ", icon: "🧂", units: ["1 كيس (1 ك)", "2 كيس", "3 كيس"] },
+    { id: "g3", name: "زيت ذرة / عباد نقي", icon: "🫗", units: ["1 زجاجة لتر", "1 زجاجة كبيرة (1.6 لتر)"] },
+    { id: "g4", name: "سمنة بلدي ونباتي", icon: "🧈", units: ["برطمان 1 كيلو بلدي", "علبة سمنة نباتي"] },
+    { id: "g5", name: "مكرونة وشعرية مشكلة", icon: "🍝", units: ["2 كيس مكرونة", "1 كيس شعرية"] },
+    { id: "g6", name: "شاي العروسة / ليبتون", icon: "☕", units: ["باكو ربع كيلو", "باكو صغير", "100 فتلة"] },
+    { id: "g7", name: "حليب طازج معبأ", icon: "🥛", units: ["1 لتر كامل الدسم", "2 لتر"] },
+    { id: "g8", name: "جبنة بيضاء ورومي ومثلثات", icon: "🧀", units: ["علبة نصف كيلو فيتا", "ربع رومي"] },
+    { id: "g9", name: "كرتونة وطبق بيض أحمر وأبيض", icon: "🥚", units: ["طبق 30 بيضة", "نصف طبق (15)"] },
+    { id: "g10", name: "مساحيق غسيل ومنظفات", icon: "🧺", units: ["مسحوق 2.5 كيلو", "زجاجة بريل"] }
   ],
   spices: [
-    { id: "s1", name: "كمون بلدي صعيدي حصى ومطحون", icon: "🌿", units: ["ثمن كيلو (125 جم)", "ربع كيلو", "نصف كيلو"] },
-    { id: "s2", name: "فلفل أسود برازيلي حب ومطحون", icon: "🌶️", units: ["ثمن كيلو مطحون", "ربع كيلو مطحون"] },
-    { id: "s3", name: "كزبرة جافة بلدي ناعمة وحصى", icon: "🌱", units: ["ثمن كيلو", "ربع كيلو", "نصف كيلو"] },
-    { id: "s4", name: "شطة حمراء صعيدي حامية", icon: "🌶️", units: ["ثمن كيلو", "ربع كيلو"] },
-    { id: "s5", name: "بهارات لحمة وفراخ مشكلة", icon: "🥩", units: ["ثمن كيلو لحمة", "ثمن كيلو فراخ"] },
-    { id: "s6", name: "السبع بهارات المصرية الأصلية", icon: "🧂", units: ["ثمن كيلو", "ربع كيلو"] },
-    { id: "s7", name: "كاري هندي وكركم بلدي أصفر", icon: "🍛", units: ["ثمن كيلو كاري", "ثمن كيلو كركم"] },
-    { id: "s8", name: "بابريكا مدخنة وثوم وبصل بودرة", icon: "🌶️", units: ["ثمن كيلو بابريكا", "ثمن كيلو ميكس ثوم وبصل"] },
-    { id: "s9", name: "حبهان أخضر وورق لورا ومستكة", icon: "🌿", units: ["50 جرام حبهان", "ثمن كيلو ورق لورا"] },
-    { id: "s10", name: "قرفة عيدان خشب وقرفة ناعمة", icon: "🪵", units: ["ثمن كيلو ناعمة", "ثمن كيلو عيدان"] },
-    { id: "s11", name: "سمسم وحبة البركة بلدي", icon: "🌾", units: ["ربع كيلو سمسم محمص", "ثمن كيلو حبة البركة"] },
-    { id: "s12", name: "كركديه صعيدي فاخر زهرة لوز", icon: "🌺", units: ["ربع كيلو", "نصف كيلو", "1 كيلو سوبر"] },
-    { id: "s13", name: "يانسون ونعناع وحلبة وشمر", icon: "🌾", units: ["ثمن كيلو يانسون", "كيس نعناع ناشف", "نصف كيلو حلبة"] },
-    { id: "s14", name: "دوم وخروب وعرقسوس وتمر هندي", icon: "🥥", units: ["نصف كيلو دوم", "ربع كيلو عرقسوس", "قالب تمر هندي"] },
-    { id: "s15", name: "كاكاو ونشا وبيكنج بودر وفانيليا", icon: "🍫", units: ["ثمن كيلو كاكاو خام", "ميكس 10 أكياس فانيليا وبيكنج"] }
+    { id: "s1", name: "كمون وفلفل أسود بلدي", icon: "🌿", units: ["ثمن كيلو كمون", "ثمن كيلو فلفل أسود"] },
+    { id: "s2", name: "كزبرة وشطة حمراء حامية", icon: "🌶️", units: ["ثمن كيلو كزبرة", "ثمن كيلو شطة"] },
+    { id: "s3", name: "السبع بهارات وتتبيلة لحوم", icon: "🧂", units: ["ثمن كيلو بهارات لحمة", "ثمن بهارات فراخ"] },
+    { id: "s4", name: "كركديه صعيدي ويانسون ونعناع", icon: "🌺", units: ["ربع كيلو كركديه", "ثمن كيلو يانسون"] },
+    { id: "s5", name: "قرفة وحبهان وورق لورا", icon: "🪵", units: ["برطمان مشكل", "50 جم حبهان"] }
   ]
 };
 
@@ -793,15 +711,13 @@ function renderMarketProducts(catKey) {
   const container = document.getElementById('marketProductsGrid');
   if (!container) return;
   container.innerHTML = "";
-
   const items = marketData[catKey] || [];
   items.forEach(prod => {
     const card = document.createElement('div');
     card.className = "product-card";
     let optionsHtml = prod.units.map(u => `<option value="${u}">${u}</option>`).join('');
-
     card.innerHTML = `
-      <div class="product-thumb-icon">${prod.icon}</div>
+      <div style="font-size:32px;">${prod.icon}</div>
       <strong style="font-size:12px; color:#fff; line-height:1.2;">${prod.name}</strong>
       <select class="product-unit-select" id="unit_${prod.id}">${optionsHtml}</select>
       <button class="product-add-btn" onclick="addToCart('${prod.id}', '${prod.name}', '${prod.icon}')">
@@ -823,7 +739,6 @@ function addToCart(prodId, prodName, prodIcon) {
   playWindowsClick();
   const selectEl = document.getElementById(`unit_${prodId}`);
   const chosenUnit = selectEl ? selectEl.value : "1 كيلو";
-
   userCart.push({ id: prodId, name: prodName, icon: prodIcon, unit: chosenUnit });
   updateCartBar();
 }
@@ -840,30 +755,20 @@ function openCartModal() {
   const list = document.getElementById('cartItemsList');
   if (!list) return;
   list.innerHTML = "";
-
   if (userCart.length === 0) {
     list.innerHTML = `<div style="text-align:center; color:var(--text-sub); font-size:12px; padding:12px;">السلة فارغة حالياً 🛒</div>`;
   } else {
     userCart.forEach((item, index) => {
       const itemRow = document.createElement('div');
-      itemRow.style.display = "flex";
-      itemRow.style.justifyContent = "space-between";
-      itemRow.style.alignItems = "center";
-      itemRow.style.background = "#1e293b";
-      itemRow.style.padding = "8px 10px";
-      itemRow.style.borderRadius = "10px";
+      itemRow.style.display = "flex"; itemRow.style.justifyContent = "space-between";
+      itemRow.style.background = "#1e293b"; itemRow.style.padding = "8px 10px"; itemRow.style.borderRadius = "10px";
       itemRow.innerHTML = `
-        <div style="font-size:12px; color:#fff;">
-          <span>${item.icon}</span> <strong>${item.name}</strong> (${item.unit})
-        </div>
-        <button onclick="removeFromCart(${index})" style="background:transparent; border:0; color:#ef4444; font-size:14px; cursor:pointer;">
-          <i class="fa-solid fa-trash-can"></i>
-        </button>
+        <div style="font-size:12px; color:#fff;"><span>${item.icon}</span> <strong>${item.name}</strong> (${item.unit})</div>
+        <button onclick="removeFromCart(${index})" style="background:transparent; border:0; color:#ef4444; font-size:14px; cursor:pointer;"><i class="fa-solid fa-trash-can"></i></button>
       `;
       list.appendChild(itemRow);
     });
   }
-
   document.getElementById('cartModal').classList.add('show');
 }
 
@@ -873,44 +778,47 @@ function removeFromCart(index) {
   updateCartBar();
   openCartModal();
 }
-
-function closeCartModal() {
-  playWindowsClick();
-  document.getElementById('cartModal').classList.remove('show');
-}
+function closeCartModal() { playWindowsClick(); document.getElementById('cartModal').classList.remove('show'); }
 
 function sendMarketCartToWhatsApp() {
   playWindowsClick();
-  if (userCart.length === 0) {
-    alert("السلة فارغة! اختر بعض المنتجات أولاً.");
-    return;
-  }
+  if (userCart.length === 0) return alert("السلة فارغة!");
   const address = document.getElementById('marketDeliveryAddress').value.trim();
-  if (!address) {
-    alert("من فضلك اكتب عنوان التوصيل بالتفصيل.");
-    return;
-  }
+  if (!address) return alert("اكتب عنوان التوصيل بالتفصيل.");
 
   const verifiedUser = JSON.parse(localStorage.getItem('fly_verified_user') || '{}');
-  const clientName = verifiedUser.name || "عميل Fly Express";
-  const clientPhone = verifiedUser.phone || "";
-
   let itemsText = "";
-  userCart.forEach((it, i) => {
-    itemsText += `${i + 1}. ${it.name} — (${it.unit})\n`;
-  });
+  userCart.forEach((it, i) => { itemsText += `${i + 1}. ${it.name} — (${it.unit})\n`; });
 
-  const finalMsg = `طلب شراء من سوق Fly Express 🛒🛵\nالعميل: ${clientName} (${clientPhone})\nالعنوان: ${address}\n\nقائمة المشتريات المطلوبة:\n${itemsText}\n— أُرسل عبر تطبيق Fly Express بنجاح`;
-
+  const finalMsg = `طلب شراء من سوق Fly Express 🛒🛵\nالعميل: ${verifiedUser.name || 'عميل'} (${verifiedUser.phone || ''})\nالعنوان: ${address}\n\nقائمة المشتريات المطلوبة:\n${itemsText}`;
   closeCartModal();
   userCart = [];
   updateCartBar();
   openWhatsAppDirectly(finalMsg);
 }
 
-// -------------------------------------------------------------
-// الألعاب والربط السحابي
-// -------------------------------------------------------------
+// تسعير المشوار المباشر من الأدمن
+let currentLivePrices = { inside: 30, berka: 20, masaken: 25, alum: 35, haw: 50, naga: 100 };
+
+function updateEstimatedFare() {
+  const route = document.getElementById('pricingRouteSelect').value;
+  const fare = currentLivePrices[route] || 30;
+  document.getElementById('estimatedFareTxt').textContent = `${fare} ج`;
+}
+
+function toggleScheduledInput() {
+  const timing = document.getElementById('orderTimingType').value;
+  const timeInput = document.getElementById('orderScheduledTime');
+  timeInput.style.display = (timing === 'مجدول بميعاد مسبق') ? 'block' : 'none';
+}
+
+function onOrderPhotoSelected(input) {
+  if (input.files && input.files[0]) {
+    document.getElementById('orderPhotoAttachedTxt').style.display = 'block';
+  }
+}
+
+// السحابة والأدمن
 const ADMIN_PHONE = "201017908076";
 const enc = s => encodeURIComponent(s || "");
 const FLY_SECRET_SALT = "FLY_EXP_SEC_2026_NAGA_PRO";
@@ -930,14 +838,11 @@ function awardCoupon(gameName, prizeTxt, prizeKey) {
   const code = `FLY-${prizeKey}-${phoneHash}-${sig}`;
 
   localStorage.setItem('fly_discount_code', code);
-  localStorage.setItem('fly_locked_phone', phone);
-
   playRetroTone(880, 'triangle', 0.5, 0.3);
   setTimeout(() => playRetroTone(1174, 'triangle', 0.6, 0.3), 150);
 
   const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-  const msg = `مرحباً Fly Express 🚀\nفزت في التحدي الصعب (${gameName}):\n🎁 الجائزة: ${prizeTxt}\n🏷️ كود الخصم: ${code}\n⏰ الوقت: ${nowStr}\n(يرجى تأكيد وتثبيت الجائزة لمشواري)`;
-  
+  const msg = `مرحباً Fly Express 🚀\nفزت في (${gameName}):\n🎁 الجائزة: ${prizeTxt}\n🏷️ كود الخصم: ${code}\n⏰ الوقت: ${nowStr}`;
   setTimeout(() => { openWhatsAppDirectly(msg); }, 1800);
   return code;
 }
@@ -954,42 +859,32 @@ function closeGameAndResumeMusic(modalId) {
   resumeMainMusicAfterGame();
 }
 
-// لعبة الأسئلة
+// الألعاب
 const questionBank = [
   { q: "ما هي المدينة الملقبة بمدينة السكر في قنا وتشتهر بقناطرها التاريخية؟", a: ["نجع حمادي", "دشنا", "فرشوط", "أبو تشت"], r: 0 },
   { q: "قرية بنجع حمادي تقع قرب مصنع الألمنيوم ويربطها خط توصيل مباشر في التطبيق؟", a: ["قرية بركة", "هو", "الرئيسية", "الحلفاية"], r: 0 },
   { q: "أكبر مجمع ومصنع لصناعة الألمنيوم في الشرق الأوسط يقع في؟", a: ["نجع حمادي", "سفاجا", "قوص", "كوم أمبو"], r: 0 },
-  { q: "كم دقيقة يستغرق دليفري Fly Express في المتوسط للمشاوير الداخلية العاجلة؟", a: ["10 إلى 15 دقيقة", "ساعتين", "يوم كامل", "60 دقيقة"], r: 0 },
-  { q: "القرية التاريخية بنجع حمادي التي تحتوي على معبد وثروة أثرية عريقة هي؟", a: ["قرية هو", "بهجورة", "أولاد نجم", "القصر"], r: 0 },
-  { q: "عند طلب مشوار صيدلية طارئة في التطبيق، متى يتم التحرك فوراً؟", a: ["فوراً وبأولوية طارئة", "في اليوم التالي", "بعد أسبوع", "وقت الفراغ"], r: 0 },
-  { q: "كوبري وقناطر نجع حمادي القديمة الشهيرة على النيل شُيدت في عهد من؟", a: ["الخديوي عباس حلمي الثاني", "محمد علي باشا", "الملك فاروق", "جمال عبد الناصر"], r: 0 }
+  { q: "خدمة رادار الأمان في تطبيق Fly Express مخصصة لمتابعة أي رحلة؟", a: ["رحلة المدرسة اليومية للطلاب", "رحلات الطيران", "أسعار العملات"], r: 0 }
 ];
-
 let quizStreak = 0, quizTimer = 10, quizTimerInterval = null;
 
 function openQuizGame() {
-  playWindowsClick();
-  pauseMainMusicForGame();
-  quizStreak = 0;
+  playWindowsClick(); pauseMainMusicForGame(); quizStreak = 0;
   document.getElementById('quizStatusTxt').textContent = "";
   document.getElementById('quizModal').classList.add('show');
   nextQuizQuestion();
 }
-
 function nextQuizQuestion() {
   clearInterval(quizTimerInterval);
   if (quizStreak >= 10) {
     const code = awardCoupon("تحدي الـ 500 سؤال", "توصيلة مجانية 🎁", "FREE");
-    document.getElementById('quizStatusTxt').innerHTML = `<span style="color:#10b981;">🔥 أسطورة! أتممت 10 إجابات صحيحة متتالية بنجاح.<br>كودك الموثق: <strong>${code}</strong></span>`;
+    document.getElementById('quizStatusTxt').innerHTML = `<span style="color:#10b981;">🔥 أسطورة! 10 إجابات صحيحة متتالية.<br>كودك: <strong>${code}</strong></span>`;
     document.getElementById('quizAnswersGrid').innerHTML = "";
-    document.getElementById('quizTimerBar').style.width = "0%";
     return;
   }
-
   quizTimer = 10;
   document.getElementById('quizProgTxt').textContent = `${quizStreak + 1} / 10`;
   document.getElementById('quizTimerTxt').textContent = `${quizTimer}s`;
-  document.getElementById('quizTimerBar').style.width = "100%";
 
   const qObj = questionBank[Math.floor(Math.random() * questionBank.length)];
   document.getElementById('quizQuestionBox').textContent = qObj.q;
@@ -999,45 +894,34 @@ function nextQuizQuestion() {
 
   const box = document.getElementById('quizAnswersGrid');
   box.innerHTML = "";
-
   combined.forEach(opt => {
     const btn = document.createElement('button');
-    btn.className = "order-btn";
-    btn.style.background = "#1e293b";
-    btn.style.border = "1px solid rgba(255,255,255,0.1)";
+    btn.className = "order-btn"; btn.style.background = "#1e293b";
     btn.textContent = opt.txt;
-    btn.onclick = () => onQuizSelect(opt.isCorrect);
+    btn.onclick = () => {
+      if (opt.isCorrect) {
+        playRetroTone(750, 'sine', 0.15, 0.2);
+        quizStreak++;
+        setTimeout(nextQuizQuestion, 500);
+      } else {
+        playRetroTone(130, 'sawtooth', 0.35, 0.25);
+        quizStreak = 0;
+        document.getElementById('quizStatusTxt').innerHTML = "<span style='color:#ef4444;'>خطأ! تم تصفير الرصيد.</span>";
+        setTimeout(nextQuizQuestion, 1200);
+      }
+    };
     box.appendChild(btn);
   });
 
   quizTimerInterval = setInterval(() => {
     quizTimer--;
     document.getElementById('quizTimerTxt').textContent = `${quizTimer}s`;
-    document.getElementById('quizTimerBar').style.width = `${(quizTimer / 10) * 100}%`;
-
     if (quizTimer <= 0) {
       clearInterval(quizTimerInterval);
-      playRetroTone(130, 'sawtooth', 0.35, 0.25);
       quizStreak = 0;
-      document.getElementById('quizStatusTxt').innerHTML = "<span style='color:#ef4444;'>انتهى الوقت! تم تصفير الرصيد.. التركيز والسرعة مطلوبان.</span>";
       setTimeout(nextQuizQuestion, 1200);
     }
   }, 1000);
-}
-
-function onQuizSelect(isCorrect) {
-  clearInterval(quizTimerInterval);
-  if (isCorrect) {
-    playRetroTone(750, 'sine', 0.15, 0.2);
-    quizStreak++;
-    document.getElementById('quizStatusTxt').innerHTML = "<span style='color:#10b981;'>إجابة صحيحة! التالي...</span>";
-    setTimeout(nextQuizQuestion, 600);
-  } else {
-    playRetroTone(130, 'sawtooth', 0.35, 0.25);
-    quizStreak = 0;
-    document.getElementById('quizStatusTxt').innerHTML = "<span style='color:#ef4444;'>إجابة خاطئة! التحدي يتطلب 10 متتالية صحيحة. حاول مجدداً.</span>";
-    setTimeout(nextQuizQuestion, 1200);
-  }
 }
 
 // لعبة الصور
@@ -1045,51 +929,56 @@ const photoItemsCatalog = [
   { name: "موتوسيكل دليفري Fly", icon: "🛵" },
   { name: "طرد وأوردر فوري", icon: "📦" },
   { name: "علاج وصيدلية طارئة", icon: "💊" },
-  { name: "توصيل طالب مدرسة", icon: "🎒" },
-  { name: "بقالة وطلبات السوق", icon: "🛒" },
-  { name: "كوبون خصم موثق", icon: "🏷️" }
+  { name: "توصيل طالب مدرسة", icon: "🎒" }
 ];
-const distractorIcons = ["🚗", "🚲", "⚡", "🍔", "☕", "⚽", "🎮", "📱", "🏠", "🍕", "⏰", "⛔", "🔑", "🎈"];
+const distractorIcons = ["🚗", "🚲", "⚡", "🍔", "☕", "⚽", "🎮", "📱", "🏠", "🍕"];
 let photoRound = 1, photoTimer = 3.5, photoTimerInterval = null, currentTargetIcon = "";
 
 function openPhotoChallengeGame() {
-  playWindowsClick();
-  pauseMainMusicForGame();
-  photoRound = 1;
+  playWindowsClick(); pauseMainMusicForGame(); photoRound = 1;
   document.getElementById('photoStatusTxt').textContent = "";
   document.getElementById('photoGameModal').classList.add('show');
   startPhotoRound();
 }
-
 function startPhotoRound() {
   clearInterval(photoTimerInterval);
   if (photoRound > 10) {
     const code = awardCoupon("تحدي الصور الخاطف", "خصم 10 جنيه", "10EGP");
-    document.getElementById('photoStatusTxt').innerHTML = `<span style="color:#10b981;">⚡ خارق الملاحظة! أتممت 10 جولات بنجاح.<br>كودك الموثق: <strong>${code}</strong></span>`;
+    document.getElementById('photoStatusTxt').innerHTML = `<span style="color:#10b981;">⚡ رائع! أتممت 10 جولات.<br>كودك: <strong>${code}</strong></span>`;
     document.getElementById('photoMatrixContainer').innerHTML = "";
     return;
   }
-
   photoTimer = Math.max(1.8, 3.5 - (photoRound * 0.15));
   document.getElementById('photoRoundTxt').textContent = `${photoRound} / 10`;
   document.getElementById('photoTimerTxt').textContent = `${photoTimer.toFixed(1)}s`;
 
   const target = photoItemsCatalog[Math.floor(Math.random() * photoItemsCatalog.length)];
   currentTargetIcon = target.icon;
-  document.getElementById('photoTargetName').textContent = `${target.name} (${target.icon})`;
+  document.getElementById('photoTargetName').textContent = target.name;
 
   let pool = [currentTargetIcon];
-  let shuffledDistractors = [...distractorIcons].sort(() => Math.random() - 0.5);
-  for (let i = 0; i < 8; i++) pool.push(shuffledDistractors[i]);
+  let shuffled = [...distractorIcons].sort(() => Math.random() - 0.5);
+  for (let i = 0; i < 8; i++) pool.push(shuffled[i]);
   pool.sort(() => Math.random() - 0.5);
 
   const container = document.getElementById('photoMatrixContainer');
   container.innerHTML = "";
   pool.forEach(ic => {
     const div = document.createElement('div');
-    div.className = "photo-matrix-item";
+    div.style.cssText = "height:70px; background:#1e293b; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:32px; cursor:pointer;";
     div.textContent = ic;
-    div.onclick = () => onPhotoItemClick(ic === currentTargetIcon);
+    div.onclick = () => {
+      clearInterval(photoTimerInterval);
+      if (ic === currentTargetIcon) {
+        playRetroTone(650, 'sine', 0.12, 0.2);
+        photoRound++;
+        setTimeout(startPhotoRound, 400);
+      } else {
+        playRetroTone(110, 'sawtooth', 0.3, 0.25);
+        photoRound = 1;
+        setTimeout(startPhotoRound, 1200);
+      }
+    };
     container.appendChild(div);
   });
 
@@ -1098,30 +987,13 @@ function startPhotoRound() {
     document.getElementById('photoTimerTxt').textContent = `${Math.max(0, photoTimer).toFixed(1)}s`;
     if (photoTimer <= 0) {
       clearInterval(photoTimerInterval);
-      playRetroTone(110, 'sawtooth', 0.3, 0.25);
       photoRound = 1;
-      document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#ef4444;'>فات الوقت! تم تصفير الجولات.</span>";
       setTimeout(startPhotoRound, 1200);
     }
   }, 100);
 }
 
-function onPhotoItemClick(isTarget) {
-  clearInterval(photoTimerInterval);
-  if (isTarget) {
-    playRetroTone(650, 'sine', 0.12, 0.2);
-    photoRound++;
-    document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#10b981;'>رائع! إجابة صحيحة.</span>";
-    setTimeout(startPhotoRound, 400);
-  } else {
-    playRetroTone(110, 'sawtooth', 0.3, 0.25);
-    photoRound = 1;
-    document.getElementById('photoStatusTxt').innerHTML = "<span style='color:#ef4444;'>صورة خاطئة! تم تصفير الجولات.</span>";
-    setTimeout(startPhotoRound, 1200);
-  }
-}
-
-// الاستماع السحابي
+// الاستماع السحابي لتحديث الأسعار والإعلانات والقفل
 async function listenToCloudState() {
   try {
     const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
@@ -1130,85 +1002,77 @@ async function listenToCloudState() {
       const lines = text.trim().split('\n');
       const latest = JSON.parse(lines[lines.length - 1]);
       const data = JSON.parse(latest.message);
-      applyServiceState(data.service);
-      applyMaintenanceLock(data.maintenance);
+
+      // 1. تحديث الإعلان اللحظي
+      const bannerEl = document.getElementById('appLiveBanner');
+      const bannerTxt = document.getElementById('appLiveBannerTxt');
+      if (data.banner && data.banner.active && data.banner.text) {
+        bannerEl.style.display = 'block';
+        bannerTxt.textContent = data.banner.text;
+      } else {
+        bannerEl.style.display = 'none';
+      }
+
+      // 2. تحديث الأسعار اللحظية
+      if (data.prices) {
+        currentLivePrices = data.prices;
+        if(data.prices.inside) document.getElementById('p_disp_inside').textContent = `${data.prices.inside} ج`;
+        if(data.prices.berka) document.getElementById('p_disp_berka').textContent = `${data.prices.berka} ج`;
+        if(data.prices.masaken) document.getElementById('p_disp_masaken').textContent = `${data.prices.masaken} ج`;
+        if(data.prices.alum) document.getElementById('p_disp_alum').textContent = `${data.prices.alum} ج`;
+        if(data.prices.haw) document.getElementById('p_disp_haw').textContent = `${data.prices.haw} ج`;
+        if(data.prices.naga) document.getElementById('p_disp_naga').textContent = `${data.prices.naga} ج`;
+        updateEstimatedFare();
+      }
+
+      // 3. تحديث القفل
+      const noticeBox = document.getElementById('maintenanceNoticeBox');
+      const displayMsg = document.getElementById('maintenanceDisplayMsg');
+      const authTabs = document.getElementById('authTabsContainer');
+      const formLogin = document.getElementById('formLoginView');
+      const formSignup = document.getElementById('formSignupView');
+
+      if (data.maintenance && data.maintenance.isLocked) {
+        noticeBox.style.display = 'block';
+        if (data.maintenance.message) displayMsg.textContent = data.maintenance.message;
+        authTabs.style.display = 'none';
+        formLogin.style.display = 'none';
+        formSignup.style.display = 'none';
+      } else {
+        noticeBox.style.display = 'none';
+        authTabs.style.display = 'flex';
+        formLogin.style.display = 'block';
+      }
     }
   } catch(e) {}
 }
-
-function applyServiceState(status) {
-  const badge = document.getElementById('serviceBadge');
-  const dot = document.getElementById('serviceDot');
-  const txt = document.getElementById('serviceTxt');
-  if (!badge || !dot || !txt) return;
-
-  if (status === 'busy') {
-    txt.textContent = "مشغول"; dot.style.background = "#f59e0b"; badge.style.color = "#fbbf24";
-  } else if (status === 'offline') {
-    txt.textContent = "مغلق"; dot.style.background = "#ef4444"; badge.style.color = "#f87171";
-  } else {
-    txt.textContent = "متاح"; dot.style.background = "#10b981"; badge.style.color = "#34d399";
-  }
-}
-
-function applyMaintenanceLock(maint) {
-  const noticeBox = document.getElementById('maintenanceNoticeBox');
-  const displayMsg = document.getElementById('maintenanceDisplayMsg');
-  const authTabs = document.getElementById('authTabsContainer');
-  const formLogin = document.getElementById('formLoginView');
-  const formSignup = document.getElementById('formSignupView');
-
-  if (maint && maint.isLocked) {
-    if (noticeBox) {
-      noticeBox.style.display = 'block';
-      if (maint.message && displayMsg) displayMsg.textContent = maint.message;
-    }
-    if (authTabs) authTabs.style.display = 'none';
-    if (formLogin) formLogin.style.display = 'none';
-    if (formSignup) formSignup.style.display = 'none';
-  } else {
-    if (noticeBox) noticeBox.style.display = 'none';
-    if (authTabs) authTabs.style.display = 'flex';
-    if (formLogin) formLogin.style.display = 'block';
-  }
-}
-
 setInterval(listenToCloudState, 25000);
 listenToCloudState();
 
-// الحسابات والتنقل والطلبات
+// الدخول والتنقل
 function switchAuthMode(mode) {
   playWindowsClick();
   const isLogin = mode === 'login';
-  document.getElementById('authErrorDisplay').style.display = 'none';
   document.getElementById('tabBtnLogin').classList.toggle('active', isLogin);
   document.getElementById('tabBtnSignup').classList.toggle('active', !isLogin);
   document.getElementById('formLoginView').style.display = isLogin ? 'block' : 'none';
   document.getElementById('formSignupView').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('gateStepOtp').style.display = 'none';
 }
 
 function checkAppAccess() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
-  const gateScreen = document.getElementById('authGateScreen');
-  const mainApp = document.getElementById('mainAppContent');
-
   if (verifiedUser) {
     const user = JSON.parse(verifiedUser);
-    gateScreen.style.display = "none";
-    mainApp.style.display = "block";
+    document.getElementById('authGateScreen').style.display = "none";
+    document.getElementById('mainAppContent').style.display = "block";
     document.getElementById('welcomeUserName').textContent = user.name;
-    
     if (document.getElementById('orderPhone')) document.getElementById('orderPhone').value = user.phone;
     if (document.getElementById('orderName')) document.getElementById('orderName').value = user.name;
-    if (document.getElementById('schoolParentName')) document.getElementById('schoolParentName').value = user.name;
-    if (document.getElementById('schoolParentPhone')) document.getElementById('schoolParentPhone').value = user.phone;
-
     startMusicPlayback();
     renderMarketProducts('veg');
   } else {
-    gateScreen.style.display = "flex";
-    mainApp.style.display = "none";
+    document.getElementById('authGateScreen').style.display = "flex";
+    document.getElementById('mainAppContent').style.display = "none";
   }
 }
 
@@ -1217,7 +1081,6 @@ function directPasswordLogin() {
   const id = document.getElementById('loginIdentifier').value.trim();
   const pass = document.getElementById('loginPassword').value.trim();
   if (!id || !pass) return;
-
   localStorage.setItem('fly_verified_user', JSON.stringify({ name: id, phone: "01017908076" }));
   checkAppAccess();
 }
@@ -1227,22 +1090,14 @@ function requestSignupOtp() {
   const name = document.getElementById('signupName').value.trim();
   const phone = document.getElementById('signupPhone').value.trim();
   if (!name || !phone) return;
-
   localStorage.setItem('fly_verified_user', JSON.stringify({ name, phone }));
   checkAppAccess();
 }
 
-function logoutUser() {
-  playWindowsClick();
-  document.getElementById('logoutConfirmModal').classList.add('show');
-}
-function closeLogoutModal() {
-  playWindowsClick();
-  document.getElementById('logoutConfirmModal').classList.remove('show');
-}
+function logoutUser() { playWindowsClick(); document.getElementById('logoutConfirmModal').classList.add('show'); }
+function closeLogoutModal() { playWindowsClick(); document.getElementById('logoutConfirmModal').classList.remove('show'); }
 function confirmLogoutAction() {
-  playWindowsClick();
-  closeLogoutModal();
+  playWindowsClick(); closeLogoutModal();
   if (backgroundAudio) backgroundAudio.pause();
   localStorage.removeItem('fly_verified_user');
   checkAppAccess();
@@ -1255,57 +1110,50 @@ function switchTab(tabId, navBtn) {
     const el = document.getElementById(id);
     if (el) el.style.display = (id === tabId) ? 'block' : 'none';
   });
-
   const btns = document.querySelectorAll('.nav-item');
   btns.forEach(b => b.classList.remove('active'));
   if (navBtn) navBtn.classList.add('active');
 
-  if (tabId !== 'tab-games') {
-    resumeMainMusicAfterGame();
-  } else {
-    pauseMainMusicForGame();
-  }
+  if (tabId !== 'tab-games') resumeMainMusicAfterGame();
+  else pauseMainMusicForGame();
   window.scrollTo(0, 0);
 }
 
 function openFastParcelTab() {
   playWindowsClick();
   switchTab('tab-orders', document.querySelectorAll('.nav-item')[2]);
-  const target = document.getElementById('sec-order');
-  if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
 }
 
-function openSchoolTripModal() {
-  playWindowsClick();
-  document.getElementById('schoolTripModal').classList.add('show');
-}
-function closeSchoolTripModal() {
-  playWindowsClick();
-  document.getElementById('schoolTripModal').classList.remove('show');
-}
+function openSchoolTripModal() { playWindowsClick(); document.getElementById('schoolTripModal').classList.add('show'); }
+function closeSchoolTripModal() { playWindowsClick(); document.getElementById('schoolTripModal').classList.remove('show'); }
 
-// إرسال طرد فوري سريع مستقل
+// إرسال طرد فوري سريع
 function sendOrder() {
   playWindowsClick();
   const type = document.getElementById('parcelType').value;
   const details = document.getElementById('orderItemDetails').value.trim();
+  const timing = document.getElementById('orderTimingType').value;
+  const schedTime = document.getElementById('orderScheduledTime').value;
   const from = document.getElementById('orderFrom').value.trim();
   const to = document.getElementById('orderTo').value.trim();
   const name = document.getElementById('orderName').value.trim();
   const phone = document.getElementById('orderPhone').value.trim();
-  const notes = document.getElementById('orderNotes').value.trim();
+  const isVip = document.getElementById('isVipOrder').checked;
+  const hasPhoto = document.getElementById('orderPhotoAttachedTxt').style.display === 'block';
+  const fare = document.getElementById('estimatedFareTxt').textContent;
   const code = localStorage.getItem('fly_discount_code') || '';
 
-  if (!from || !to || !name || !phone) {
-    alert("من فضلك اكتب العناوين واسمك ورقم الموبايل أولاً.");
-    return;
-  }
+  if (!from || !to || !name || !phone) return alert("يرجى إكمال العناوين واسمك ورقم هاتفك أولاً.");
 
-  const text = `طلب طرد / أوردر سريع 📦🛵\nالنوع: ${type}\nمحتوى الشحنة: ${details || 'غير محدد'}\nمن شارع/مكان: ${from}\nإلى شارع/مكان: ${to}\nالاسم: ${name} (${phone})\nملاحظات: ${notes || 'لا يوجد'}${code ? '\nكود الخصم: ' + code : ''}\n— أُرسل عبر تطبيق Fly Express`;
+  const timingTxt = (timing === 'مجدول بميعاد مسبق' && schedTime) ? `⏰ ميعاد المشوار المطلوب: ${schedTime}` : `⚡ التوقيت: فوري الآن`;
+  const vipTxt = isVip ? `🔥 أولوية قصوى: مشوار مستعجل VIP` : `أولوية عادية`;
+  const photoTxt = hasPhoto ? `📷 تم التقاط صورة للروشتة / الطلب وسأرسلها لك في المحادثة الآن` : ``;
+
+  const text = `طلب أوردر / طرد سريع 📦🛵\nالنوع: ${type}\nالمحتوى: ${details || 'غير محدد'}\n${timingTxt}\n${vipTxt}\nمن: ${from}\nإلى: ${to}\nالاسم: ${name} (${phone})\nالتكلفة التقديرية: ${fare}\n${photoTxt}${code ? '\nكود الخصم: ' + code : ''}\n— أُرسل عبر تطبيق Fly Express`;
   openWhatsAppDirectly(text);
 }
 
-// إرسال مشوار مدرسة آمن
+// إرسال مشوار المدرسة
 function sendSchoolOrder() {
   playWindowsClick();
   const tripType = document.getElementById('schoolTripType').value;
@@ -1315,27 +1163,20 @@ function sendSchoolOrder() {
   const parentName = document.getElementById('schoolParentName').value.trim();
   const parentPhone = document.getElementById('schoolParentPhone').value.trim();
   const notes = document.getElementById('schoolTripNotes').value.trim();
-  const code = localStorage.getItem('fly_discount_code') || '';
 
-  if (!child || !fromStreet || !toStreet || !parentName || !parentPhone) {
-    alert("من فضلك أكمل بيانات الطالب والشوارع ورقم ولي الأمر أولاً.");
-    return;
-  }
+  if (!child || !fromStreet || !toStreet || !parentName || !parentPhone) return alert("أكمل بيانات الطالب وولي الأمر.");
 
-  const text = `طلب مشوار مدرسة آمن 🏫🛵\nنوع المشوار: ${tripType}\nاسم الطالب: ${child}\nمن: ${fromStreet}\nإلى: ${toStreet}\nولي الأمر: ${parentName} (${parentPhone})\nملاحظات: ${notes || 'لا يوجد'}${code ? '\nكود الخصم الموثق: ' + code : ''}\n— أُرسل عبر تطبيق Fly Express`;
+  const text = `حجز مشوار مدرسة آمن 🏫🛵\nنوع المشوار: ${tripType}\nاسم الطالب: ${child}\nمن شارع: ${fromStreet}\nلشارع / مدرسة: ${toStreet}\nولي الأمر: ${parentName} (${parentPhone})\nملاحظات: ${notes || 'لا يوجد'}\n— أُرسل عبر تطبيق Fly Express`;
   closeSchoolTripModal();
   openWhatsAppDirectly(text);
 }
 
+// ضغط الشعار للدخول للأدمن
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
-  logoClicks++;
-  clearTimeout(logoTimer);
+  logoClicks++; clearTimeout(logoTimer);
   logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
-  if (logoClicks >= 5) {
-    logoClicks = 0;
-    location.href = 'admin.html';
-  }
+  if (logoClicks >= 5) { logoClicks = 0; location.href = 'admin.html'; }
 });
 
 checkAppAccess();
