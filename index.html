@@ -80,6 +80,12 @@ body {
   display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
 }
 
+.user-top-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+  border-radius: 14px; padding: 8px 12px; margin-bottom: 12px;
+}
+
 .auth-gate-screen {
   position: fixed; inset: 0; background: var(--bg-dark); z-index: 999; display: flex;
   flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center;
@@ -252,6 +258,17 @@ body {
       <i class="fa-solid fa-bolt"></i> نلفت انتباهكم لوجود ضغط طلبات حالياً
     </div>
 
+    <!-- بار المستخدم مع زر تسجيل الخروج الواضح -->
+    <div class="user-top-bar">
+      <div>
+        <span style="font-size:11px; color:var(--text-sub);">مرحباً بك: </span>
+        <strong style="font-size:13px; color:#fff;" id="welcomeUserName">عميلنا العزيز</strong>
+      </div>
+      <button onclick="logoutUser()" style="background:rgba(239, 68, 68, 0.15); border:1px solid #ef4444; color:#ef4444; padding:5px 12px; border-radius:10px; font-size:11px; font-weight:800; cursor:pointer; display:flex; align-items:center; gap:6px;">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج 🚪
+      </button>
+    </div>
+
     <!-- محفظة كاش باك -->
     <div class="wallet-box">
       <div>
@@ -366,13 +383,13 @@ body {
         <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
       </div>
 
-      <!-- ميزة الكاميرا المباشرة والوسائط -->
-      <div style="background:#070b12; border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:10px; margin-bottom:8px;">
-        <label style="font-size:11px; color:#cbd5e1; display:flex; align-items:center; gap:6px; cursor:pointer;">
-          <i class="fa-solid fa-camera" style="color:var(--accent);"></i> تصوير ورقة طلبات أو روشتة:
-          <input type="file" id="orderPhotoFile" accept="image/*" style="display:none;" onchange="onPhotoAttached(this, 'attachedText1')">
-        </label>
-        <div id="attachedText1" style="font-size:10px; color:#10b981; margin-top:4px; display:none;">تم إرفاق الصورة 📷</div>
+      <!-- تصوير ورقة طلبات بالكاميرا -->
+      <div style="background:#070b12; border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:12px; margin-bottom:8px; text-align:center;">
+        <button type="button" onclick="triggerCameraInput('orderPhotoFile')" style="background:#1e293b; color:#fff; border:1px solid rgba(255,255,255,0.2); padding:8px 14px; border-radius:10px; font-size:12px; font-weight:800; cursor:pointer; width:100%;">
+          <i class="fa-solid fa-camera" style="color:var(--accent);"></i> فتح الكاميرا وتصوير الورقة 📷
+        </button>
+        <input type="file" id="orderPhotoFile" accept="image/*" capture="environment" style="display:none;" onchange="onPhotoAttached(this, 'attachedText1')">
+        <div id="attachedText1" style="font-size:11px; color:#10b981; font-weight:800; margin-top:6px; display:none;">✅ تم تصوير الورقة وإرفاقها بنجاح</div>
       </div>
 
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
@@ -428,18 +445,19 @@ body {
   <div class="modal-backdrop" id="pharmacyModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closePharmacyModal()">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:#ef4444;"><i class="fa-solid fa-kit-medical"></i> صيدلية وطوارئ طبية عاجلة 24 ساعة</h3>
+      <h3 style="font-size:16px; font-weight:900; color:#ef4444;"><i class="fa-solid fa-kit-medical"></i> صيدلية وطوارئ طبية 24 ساعة</h3>
       <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">تحرك فوري لأقرب صيدلية مفتوحة بنجع حمادي.</p>
       <textarea id="pharmacyMedicineTxt" class="order-input" rows="3" placeholder="اكتب اسم العلاج أو المستلزمات المطلوبة..."></textarea>
       
-      <!-- كاميرا الصيدلية -->
-      <div style="background:#070b12; border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:10px; margin-bottom:8px;">
-        <label style="font-size:11px; color:#cbd5e1; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
-          <i class="fa-solid fa-camera" style="color:#ef4444;"></i> فتح الكاميرا وتصوير الروشتة:
-          <input type="file" id="pharmacyPhotoFile" accept="image/*" style="display:none;" onchange="onPhotoAttached(this, 'attachedText2')">
-        </label>
-        <div id="attachedText2" style="font-size:10px; color:#10b981; margin-top:4px; display:none;">تم التقاط وإرفاق الروشتة بنجاح 📷</div>
+      <!-- زر تشغيل الكاميرا المباشر -->
+      <div style="background:#070b12; border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:12px; margin-bottom:8px; text-align:center;">
+        <button type="button" onclick="triggerCameraInput('pharmacyPhotoFile')" style="background:#1e293b; color:#fff; border:1px solid #ef4444; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:800; cursor:pointer; width:100%;">
+          <i class="fa-solid fa-camera" style="color:#ef4444;"></i> فتح الكاميرا وتصوير الروشتة 📷
+        </button>
+        <input type="file" id="pharmacyPhotoFile" accept="image/*" capture="environment" style="display:none;" onchange="onPhotoAttached(this, 'attachedText2')">
+        <div id="attachedText2" style="font-size:11px; color:#10b981; font-weight:800; margin-top:6px; display:none;">✅ تم تصوير الروشتة وإرفاقها بنجاح</div>
       </div>
+
       <input type="text" id="pharmacyAddress" class="order-input" placeholder="عنوان التوصيل بالتفصيل..." style="margin-bottom:8px;">
       <button class="order-btn" style="background:#ef4444;" onclick="sendPharmacyOrder()"><i class="fa-brands fa-whatsapp"></i> طلب الصيدلية فوراً 🚑</button>
     </div>
@@ -475,7 +493,7 @@ body {
     </div>
   </div>
 
-  <!-- نافذة 4: عجلة الحظ اليومية (لفة واحدة يومياً فقط) -->
+  <!-- نافذة 4: عجلة الحظ اليومية -->
   <div class="modal-backdrop" id="spinWheelModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeSpinWheelModal()">&times;</button>
@@ -596,6 +614,14 @@ window.addEventListener('load', () => {
   checkWheelDailyStatus();
 });
 
+// فتح الكاميرا بشكل صريح وتخطي قيود WebView
+function triggerCameraInput(inputId) {
+  const inputEl = document.getElementById(inputId);
+  if (inputEl) {
+    inputEl.click();
+  }
+}
+
 // المحفظة
 function initWallet() {
   let bal = localStorage.getItem('fly_wallet_balance');
@@ -646,19 +672,17 @@ function spinTheWheelAction() {
     document.getElementById('wheelGraphicBox').textContent = "🎉";
     document.getElementById('wheelRewardTxt').textContent = `مبروك! كسبت: ${prize}`;
     
-    // إضافة كاش باك للمحفظة
     let curBal = parseFloat(localStorage.getItem('fly_wallet_balance') || "15");
     localStorage.setItem('fly_wallet_balance', (curBal + 5).toFixed(2));
     initWallet();
 
-    // حفظ تاريخ اليوم لمنع التكرار
     localStorage.setItem('fly_last_spin_date', today);
     btn.textContent = "عُد غداً للف من جديد ⏳";
     btn.style.opacity = "0.5";
   }, 1200);
 }
 
-// فتح وإغلاق النوافذ المصلحة
+// فتح وإغلاق النوافذ
 function openPharmacyModal() { document.getElementById('pharmacyModal').classList.add('show'); }
 function closePharmacyModal() { document.getElementById('pharmacyModal').classList.remove('show'); }
 
@@ -744,9 +768,11 @@ function openWhatsAppDirectly(text) { window.open(`https://api.whatsapp.com/send
 function sendPharmacyOrder() {
   const med = document.getElementById('pharmacyMedicineTxt').value.trim();
   const addr = document.getElementById('pharmacyAddress').value.trim();
-  if (!med || !addr) return alert("اكتب اسم العلاج والعنوان أولاً.");
+  const hasPhoto = document.getElementById('attachedText2').style.display === 'block';
+  if (!med && !hasPhoto) return alert("اكتب اسم العلاج أو صوّر الروشتة أولاً.");
+  if (!addr) return alert("اكتب عنوان التوصيل.");
   closePharmacyModal();
-  openWhatsAppDirectly(`طلب صيدلية وطوارئ طبية عاجلة 🚑💊\nالعلاج المطلوب: ${med}\nعنوان التسليم: ${addr}\n(تحرك فوري من أقرب صيدلية مفتوحة بنجع حمادي)`);
+  openWhatsAppDirectly(`طلب صيدلية وطوارئ طبية عاجلة 🚑💊\nالعلاج: ${med || 'مرفق بالروشتة'}\nالعنوان: ${addr}\n${hasPhoto ? '📷 قمت بتصوير الروشتة وسأرسلها لك الآن بالمحادثة' : ''}`);
 }
 
 function sendTrainOrder() {
@@ -789,9 +815,11 @@ function sendFastOrder() {
   const phone = document.getElementById('orderPhone').value.trim();
   const isVip = document.getElementById('isVipOrder').checked;
   const fare = document.getElementById('estimatedFareTxt').textContent;
+  const hasPhoto = document.getElementById('attachedText1').style.display === 'block';
+
   if (!from || !to || !name || !phone) return alert("أكمل بيانات العناوين واسمك ورقم الموبايل.");
   const timingTxt = (timing === 'مجدول بميعاد مسبق' && sched) ? `ميعاد مطلوب: ${sched}` : `فوري الآن`;
-  openWhatsAppDirectly(`طلب طرد / أوردر سريع 📦🛵\nالمحتوى: ${details || 'غير محدد'}\nالتوقيت: ${timingTxt}\nالأولوية: ${isVip ? 'VIP مستعجل ⚡' : 'عادية'}\nمن: ${from} إلى: ${to}\nالاسم: ${name} (${phone})\nالتكلفة التقديرية: ${fare}`);
+  openWhatsAppDirectly(`طلب طرد / أوردر سريع 📦🛵\nالمحتوى: ${details || 'غير محدد'}\nالتوقيت: ${timingTxt}\nالأولوية: ${isVip ? 'VIP مستعجل ⚡' : 'عادية'}\nمن: ${from} إلى: ${to}\nالاسم: ${name} (${phone})\nالتكلفة التقديرية: ${fare}${hasPhoto ? '\n📷 قمت بتصوير ورقة الطلبات وسأرسلها لك الآن' : ''}`);
 }
 
 // حاسبة الأجرة
@@ -861,6 +889,7 @@ function checkAppAccess() {
     const user = JSON.parse(verifiedUser);
     document.getElementById('authGateScreen').style.display = "none";
     document.getElementById('mainAppContent').style.display = "block";
+    document.getElementById('welcomeUserName').textContent = user.name || "عميلنا العزيز";
     if (document.getElementById('orderPhone')) document.getElementById('orderPhone').value = user.phone;
     if (document.getElementById('orderName')) document.getElementById('orderName').value = user.name;
     startMusicPlayback();
@@ -993,7 +1022,7 @@ function sendMarketCartToWhatsApp() {
   openWhatsAppDirectly(`طلب مشتريات من سوق Fly Express 🛒🛵\nالعنوان: ${addr}\nالطلبات:\n${txt}`);
 }
 
-// دخول الأدمن بالضغط 5 مرات
+// دخول الأدمن بـ 5 ضغطات
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
   logoClicks++; clearTimeout(logoTimer);
