@@ -57,17 +57,18 @@ jobs:
           </widget>
           EOF
 
-          # بناء نسخة Release غير موقعة
-          cordova build android --release --no-telemetry
+          # فرض إنشاء صيغة APK صراحة
+          cordova build android --release --no-telemetry -- --packageType=apk
 
-          # إنشاء توقيع رقمي آمن (Keystore)
+          # إنشاء التوقيع الرقمي الرسمي
           keytool -genkey -v -keystore flyexpress-release.keystore -alias flyexpress -keyalg RSA -keysize 2048 -validity 10000 -storepass fly123456 -keypass fly123456 -dname "CN=FlyExpress, OU=Delivery, O=Fly, L=NagaHammadi, ST=Qena, C=EG"
 
-          # توقيع الـ APK رسمياً لحذف تحذير الحماية
-          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore flyexpress-release.keystore -storepass fly123456 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk flyexpress
+          # البحث التلقائي عن ملف الـ APK وتوقيعه
+          APK_PATH=$(find platforms/android -name "*release-unsigned.apk" | head -n 1)
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore flyexpress-release.keystore -storepass fly123456 "$APK_PATH" flyexpress
 
           # محاذاة الملف النهائي
-          ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk FlyExpress-Official.apk
+          ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -v 4 "$APK_PATH" FlyExpress-Official.apk
 
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
