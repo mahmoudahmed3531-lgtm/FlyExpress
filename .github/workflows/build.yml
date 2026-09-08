@@ -41,7 +41,7 @@ jobs:
 
           cat << 'EOF' > config.xml
           <?xml version='1.0' encoding='utf-8'?>
-          <widget id="com.flyexpress.app" version="1.0.5" xmlns="http://www.w3.org/ns/widgets">
+          <widget id="com.flyexpress.app" version="1.0.6" xmlns="http://www.w3.org/ns/widgets">
               <name>Fly Express</name>
               <description>Fly Express Delivery Naga Hammadi</description>
               <content src="https://mahmoudahmed3531-lgtm.github.io/FlyExpress/index.html" />
@@ -57,18 +57,21 @@ jobs:
           </widget>
           EOF
 
-          # فرض إنشاء صيغة APK صراحة
+          # 1. بناء الـ APK
           cordova build android --release --no-telemetry -- --packageType=apk
 
-          # إنشاء التوقيع الرقمي الرسمي
-          keytool -genkey -v -keystore flyexpress-release.keystore -alias flyexpress -keyalg RSA -keysize 2048 -validity 10000 -storepass fly123456 -keypass fly123456 -dname "CN=FlyExpress, OU=Delivery, O=Fly, L=NagaHammadi, ST=Qena, C=EG"
+          # 2. إنشاء مفتاح رسمي جديد
+          keytool -genkey -v -keystore flyexpress.jks -alias flyexpress -keyalg RSA -keysize 2048 -validity 10000 -storepass fly123456 -keypass fly123456 -dname "CN=FlyExpress, OU=Delivery, O=Fly, L=NagaHammadi, ST=Qena, C=EG"
 
-          # البحث التلقائي عن ملف الـ APK وتوقيعه
-          APK_PATH=$(find platforms/android -name "*release-unsigned.apk" | head -n 1)
-          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore flyexpress-release.keystore -storepass fly123456 "$APK_PATH" flyexpress
+          # 3. محاذاة الملف قبل التوقيع (Zipalign)
+          UNSIGNED_APK=$(find platforms/android -name "*release-unsigned.apk" | head -n 1)
+          ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -v -p 4 "$UNSIGNED_APK" aligned.apk
 
-          # محاذاة الملف النهائي
-          ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -v 4 "$APK_PATH" FlyExpress-Official.apk
+          # 4. التوقيع باستخدام apksigner الرسمي (يدعم v2 و v3)
+          ${ANDROID_SDK_ROOT}/build-tools/34.0.0/apksigner sign --ks flyexpress.jks --ks-pass pass:fly123456 --key-pass pass:fly123456 --out FlyExpress-Official.apk aligned.apk
+
+          # 5. التحقق من صحة التوقيع
+          ${ANDROID_SDK_ROOT}/build-tools/34.0.0/apksigner verify FlyExpress-Official.apk
 
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
