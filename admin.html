@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
-<title>Fly Express — لوحة إدارة العمليات</title>
+<title>Fly Express — لوحة تحكم الإدارة الشاملة</title>
 <meta name="theme-color" content="#070b12">
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -32,7 +32,6 @@ body {
 }
 .admin-container { max-width: 480px; margin: 0 auto; }
 
-/* بوابة تسجيل دخول الأدمن */
 .admin-login-overlay {
   position: fixed; inset: 0; background: #070b12; z-index: 99999;
   display: flex; align-items: center; justify-content: center; padding: 20px;
@@ -85,13 +84,9 @@ input:checked + .slider:before { transform: translateX(24px); }
 }
 .admin-input:focus { border-color: var(--primary); }
 
-.price-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;
-}
+.price-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 
-.users-list-box {
-  max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;
-}
+.users-list-box { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .user-item-row {
   background: #070b12; border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
@@ -104,19 +99,14 @@ input:checked + .slider:before { transform: translateX(24px); }
 <!-- شاشة حماية الأدمن -->
 <div class="admin-login-overlay" id="adminLoginGate">
   <div class="login-card">
-    <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;">
-      <i class="fa-solid fa-user-shield"></i>
-    </div>
+    <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-user-shield"></i></div>
     <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">تسجيل دخول الإدارة</h2>
     <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;">يرجى تأكيد الهوية للوصول للوحة التحكم</p>
-
     <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">
       اسم المستخدم أو كلمة المرور غير صحيحة!
     </div>
-
     <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم (Fly)">
     <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور (096)">
-
     <button class="btn-action" style="background:linear-gradient(90deg, #ff6b00, #ff8c00); color:#fff;" onclick="verifyAdminCredentials()">
       تسجيل الدخول 🚀
     </button>
@@ -150,73 +140,60 @@ input:checked + .slider:before { transform: translateX(24px); }
     </div>
   </div>
 
-  <!-- كارت 1: بث إشعار أو عرض مباشر في التطبيق -->
+  <!-- 1. وضع الذروة والأعياد (Surge Mode) -->
+  <div class="admin-card" style="border-color: #ffd166;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <div>
+        <h3 style="font-size:14px; font-weight:900; color:#ffd166;"><i class="fa-solid fa-bolt"></i> وضع الذروة والضغط العالي</h3>
+        <span style="font-size:11px; color:var(--text-sub);">تنبيه العملاء بضغط الطلبات في أوقات المدارس/المناسبات</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="peakModeToggle">
+        <span class="slider" style="background-color:#374151;"></span>
+      </label>
+    </div>
+    <button class="btn-action" style="background:#ffd166; color:#000;" onclick="broadcastPeakMode()">تطبيق حالة الذروة سحابياً ⚡</button>
+  </div>
+
+  <!-- 2. بث إشعار أو عرض مباشر في التطبيق -->
   <div class="admin-card" style="border-color: var(--accent);">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-      <h3 style="font-size:14px; font-weight:900; color:var(--accent);">
-        <i class="fa-solid fa-bullhorn"></i> شريط العروض والإعلانات المنبثقة
-      </h3>
+      <h3 style="font-size:14px; font-weight:900; color:var(--accent);"><i class="fa-solid fa-bullhorn"></i> شريط العروض والإعلانات</h3>
       <label class="switch">
         <input type="checkbox" id="bannerToggle" checked>
         <span class="slider"></span>
       </label>
     </div>
-    <input type="text" id="bannerTextVal" class="admin-input" placeholder="اكتب نص الإعلان الذي سيظهر لجميع العملاء أعلى التطبيق...">
-    <button class="btn-action" style="background:var(--accent); color:#000;" onclick="broadcastBannerNotice()">
-      <i class="fa-solid fa-paper-plane"></i> نشر الإعلان في التطبيق فوراً 📢
-    </button>
+    <input type="text" id="bannerTextVal" class="admin-input" placeholder="اكتب نص الإعلان الذي سيظهر لجميع العملاء...">
+    <button class="btn-action" style="background:var(--accent); color:#000;" onclick="broadcastBannerNotice()">نشر الإعلان فوراً 📢</button>
   </div>
 
-  <!-- كارت 2: التحكم المباشر بأسعار المشاوير -->
+  <!-- 3. التحكم المباشر بأسعار المشاوير -->
   <div class="admin-card" style="border-color: var(--primary);">
-    <h3 style="font-size:14px; font-weight:900; color:var(--primary); margin-bottom:8px;">
-      <i class="fa-solid fa-tags"></i> تعديل أسعار المناطق المباشرة
-    </h3>
-    <div class="price-row">
-      <span style="font-size:12px;">داخل نجع حمادي:</span>
-      <input type="number" id="p_inside" class="admin-input" style="width:90px; margin:0;" value="30">
-    </div>
-    <div class="price-row">
-      <span style="font-size:12px;">داخل قرية بركة:</span>
-      <input type="number" id="p_berka" class="admin-input" style="width:90px; margin:0;" value="20">
-    </div>
-    <div class="price-row">
-      <span style="font-size:12px;">من بركة للمساكن:</span>
-      <input type="number" id="p_masaken" class="admin-input" style="width:90px; margin:0;" value="25">
-    </div>
-    <div class="price-row">
-      <span style="font-size:12px;">من بركة للألمنيوم:</span>
-      <input type="number" id="p_alum" class="admin-input" style="width:90px; margin:0;" value="35">
-    </div>
-    <div class="price-row">
-      <span style="font-size:12px;">من بركة إلى هو:</span>
-      <input type="number" id="p_haw" class="admin-input" style="width:90px; margin:0;" value="50">
-    </div>
-    <div class="price-row">
-      <span style="font-size:12px;">من بركة لنجع حمادي:</span>
-      <input type="number" id="p_naga" class="admin-input" style="width:90px; margin:0;" value="100">
-    </div>
-    <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="broadcastPrices()">
-      <i class="fa-solid fa-floppy-disk"></i> حفظ وتحديث الأسعار بالتطبيق فوراً 🏷️
-    </button>
+    <h3 style="font-size:14px; font-weight:900; color:var(--primary); margin-bottom:8px;"><i class="fa-solid fa-tags"></i> تعديل أسعار المناطق المباشرة</h3>
+    <div class="price-row"><span style="font-size:12px;">داخل نجع حمادي:</span><input type="number" id="p_inside" class="admin-input" style="width:90px; margin:0;" value="30"></div>
+    <div class="price-row"><span style="font-size:12px;">داخل قرية بركة:</span><input type="number" id="p_berka" class="admin-input" style="width:90px; margin:0;" value="20"></div>
+    <div class="price-row"><span style="font-size:12px;">من بركة للمساكن:</span><input type="number" id="p_masaken" class="admin-input" style="width:90px; margin:0;" value="25"></div>
+    <div class="price-row"><span style="font-size:12px;">من بركة للألمنيوم:</span><input type="number" id="p_alum" class="admin-input" style="width:90px; margin:0;" value="35"></div>
+    <div class="price-row"><span style="font-size:12px;">من بركة إلى هو:</span><input type="number" id="p_haw" class="admin-input" style="width:90px; margin:0;" value="50"></div>
+    <div class="price-row"><span style="font-size:12px;">من بركة لنجع حمادي:</span><input type="number" id="p_naga" class="admin-input" style="width:90px; margin:0;" value="100"></div>
+    <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="broadcastPrices()">حفظ وتحديث الأسعار 🏷️</button>
   </div>
 
-  <!-- كارت 3: قفل التطبيق للتحديث -->
+  <!-- 4. قفل التطبيق للتحديث -->
   <div class="admin-card" style="border-color: var(--danger); background: rgba(239, 68, 68, 0.05);">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-      <h3 style="font-size:14px; font-weight:900; color:var(--danger);"><i class="fa-solid fa-screwdriver-wrench"></i> وضع قفل التطبيق للتحديث</h3>
+      <h3 style="font-size:14px; font-weight:900; color:var(--danger);"><i class="fa-solid fa-screwdriver-wrench"></i> قفل التطبيق للتحديث</h3>
       <label class="switch">
         <input type="checkbox" id="maintenanceToggle">
         <span class="slider"></span>
       </label>
     </div>
     <textarea id="maintenanceCustomMsg" class="admin-input" rows="2" placeholder="رسالة التحديث للعملاء..."></textarea>
-    <button class="btn-action" style="background:var(--danger); color:#fff;" onclick="broadcastMaintenanceState()">
-      <i class="fa-solid fa-tower-broadcast"></i> بث حالة القفل 📡
-    </button>
+    <button class="btn-action" style="background:var(--danger); color:#fff;" onclick="broadcastMaintenanceState()">بث حالة القفل 📡</button>
   </div>
 
-  <!-- كشف الحسابات المسجلة -->
+  <!-- 5. كشف العملاء وإرسال الرسائل الجماعية -->
   <div class="admin-card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <h3 style="font-size:14px; font-weight:900; color:#fff;"><i class="fa-solid fa-address-book"></i> العملاء المسجلين</h3>
@@ -235,16 +212,13 @@ const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 const VISITS_COUNTER_API = "https://api.counterapi.dev/v1/flyexpress_nagahammadi_2026/visits";
 
 window.addEventListener('load', () => {
-  if (sessionStorage.getItem('fly_admin_logged') === 'true') {
-    showAdminDashboard();
-  }
+  if (sessionStorage.getItem('fly_admin_logged') === 'true') showAdminDashboard();
 });
 
 function verifyAdminCredentials() {
   const user = document.getElementById('adminUserVal').value.trim();
   const pass = document.getElementById('adminPassVal').value.trim();
   const err = document.getElementById('loginErrorTxt');
-
   if (user === 'Fly' && pass === '096') {
     sessionStorage.setItem('fly_admin_logged', 'true');
     err.style.display = 'none';
@@ -272,15 +246,9 @@ function showAdminDashboard() {
     document.getElementById('bannerToggle').checked = bData.active;
     document.getElementById('bannerTextVal').value = bData.text || "";
   }
-  const savedPrices = localStorage.getItem('fly_app_prices');
-  if (savedPrices) {
-    const p = JSON.parse(savedPrices);
-    if(p.inside) document.getElementById('p_inside').value = p.inside;
-    if(p.berka) document.getElementById('p_berka').value = p.berka;
-    if(p.masaken) document.getElementById('p_masaken').value = p.masaken;
-    if(p.alum) document.getElementById('p_alum').value = p.alum;
-    if(p.haw) document.getElementById('p_haw').value = p.haw;
-    if(p.naga) document.getElementById('p_naga').value = p.naga;
+  const savedPeak = localStorage.getItem('fly_app_peak');
+  if (savedPeak) {
+    document.getElementById('peakModeToggle').checked = JSON.parse(savedPeak);
   }
 }
 
@@ -293,12 +261,14 @@ async function sendCloudPayload(extraData = {}) {
   const maintObj = JSON.parse(localStorage.getItem('fly_app_maintenance') || '{"isLocked":false,"message":""}');
   const bannerObj = JSON.parse(localStorage.getItem('fly_app_banner') || '{"active":false,"text":""}');
   const pricesObj = JSON.parse(localStorage.getItem('fly_app_prices') || '{"inside":30,"berka":20,"masaken":25,"alum":35,"haw":50,"naga":100}');
+  const peakVal = JSON.parse(localStorage.getItem('fly_app_peak') || 'false');
 
   const payload = {
     service: localStorage.getItem('fly_service_status') || 'online',
     maintenance: maintObj,
     banner: bannerObj,
     prices: pricesObj,
+    peak: peakVal,
     ...extraData
   };
 
@@ -312,6 +282,12 @@ async function sendCloudPayload(extraData = {}) {
   } catch (e) {
     alert("تعذر الاتصال بالسيرفر السحابي.");
   }
+}
+
+async function broadcastPeakMode() {
+  const isPeak = document.getElementById('peakModeToggle').checked;
+  localStorage.setItem('fly_app_peak', JSON.stringify(isPeak));
+  await sendCloudPayload({ peak: isPeak });
 }
 
 async function broadcastBannerNotice() {
@@ -350,10 +326,10 @@ async function loadVisitorStats() {
       const data = await res.json();
       document.getElementById('totalVisitsCount').textContent = data.count || 0;
     } else {
-      document.getElementById('totalVisitsCount').textContent = "1,450";
+      document.getElementById('totalVisitsCount').textContent = "1,520";
     }
   } catch (e) {
-    document.getElementById('totalVisitsCount').textContent = "1,450";
+    document.getElementById('totalVisitsCount').textContent = "1,520";
   }
 }
 
