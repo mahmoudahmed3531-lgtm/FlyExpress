@@ -46,13 +46,6 @@ body {
   background: #070b12; -webkit-overflow-scrolling: touch !important; touch-action: pan-y !important;
 }
 
-.app-download-banner {
-  position: fixed; top: 12px; left: 12px; z-index: 9999; display: flex; align-items: center;
-  gap: 8px; background: rgba(15, 23, 42, 0.95); border: 1.5px solid var(--primary); padding: 8px 14px;
-  border-radius: 999px; box-shadow: 0 0 20px var(--primary-glow); text-decoration: none; color: #fff;
-  font-size: 12px; font-weight: 800; cursor: pointer;
-}
-
 #appPreloader {
   position: fixed; inset: 0; background: #070b12; z-index: 99999; display: flex;
   flex-direction: column; align-items: center; justify-content: center;
@@ -193,11 +186,6 @@ body {
 
 <body>
 
-<a href="https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file" target="_blank" rel="noopener noreferrer" class="app-download-banner" id="downloadAppBanner" onclick="forceDownloadRedirect(event, this.href)">
-  <i class="fa-solid fa-cloud-arrow-down download-arrow"></i>
-  <span>حمّل التطبيق الآن</span>
-</a>
-
 <div id="appPreloader">
   <img src="https://i.ibb.co/B5MQWCWF/fly-express.jpg" alt="Fly Express" class="loader-logo-img">
   <div style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">Fly Express</div>
@@ -253,20 +241,18 @@ body {
     <div class="status-badge" id="serviceBadge"><span class="status-dot" id="serviceDot"></span><span id="serviceTxt">متاح</span></div>
   </header>
 
-  <!-- 1. الرئيسية الشاملة بكافة الخدمات المبتكرة -->
+  <!-- 1. الرئيسية -->
   <main id="tab-home" class="tab-view active">
     
-    <!-- شريط الإعلان المباشر من الأدمن -->
     <div class="live-broadcast-announcement" id="appLiveBanner">
       <i class="fa-solid fa-bullhorn"></i> <span id="appLiveBannerTxt">أهلاً بكم في تطبيق Fly Express!</span>
     </div>
 
-    <!-- تنبيه وقت الذروة والضغط العالي -->
     <div class="peak-alert-badge" id="appPeakBadge">
-      <i class="fa-solid fa-bolt"></i> نلفت انتباهكم لوجود ضغط طلبات حالياً (أولوية التحرك للأوردرات المستعجلة)
+      <i class="fa-solid fa-bolt"></i> نلفت انتباهكم لوجود ضغط طلبات حالياً
     </div>
 
-    <!-- محفظة كاش باك العميل Fly Wallet -->
+    <!-- محفظة كاش باك -->
     <div class="wallet-box">
       <div>
         <div style="font-size:11px; color:#a7f3d0;"><i class="fa-solid fa-wallet"></i> محفظة Fly كاش باك</div>
@@ -280,48 +266,48 @@ body {
     <div class="section-title"><i class="fa-solid fa-shapes"></i> خدمات التوصيل والمشاوير الشاملة</div>
     <div class="services-grid">
       
-      <!-- 1. طرد وأوردر فوري -->
+      <!-- 1. طرد فوري -->
       <div class="service-card" onclick="openFastParcelTab()">
         <div class="service-icon ic-orange"><i class="fa-solid fa-box-open"></i></div>
         <div><h4>طرد فوري 📦</h4><span>توصيل واستلام سريع</span></div>
       </div>
 
-      <!-- 2. السوق المتكامل -->
+      <!-- 2. السوق -->
       <div class="service-card" onclick="switchTab('tab-market', document.querySelectorAll('.nav-item')[1])">
         <div class="service-icon ic-blue"><i class="fa-solid fa-basket-shopping"></i></div>
         <div><h4>طلبات السوق 🛒</h4><span>خضار، بقالة، عطارة</span></div>
       </div>
 
-      <!-- 3. الصيدلية والطوارئ 24 ساعة -->
+      <!-- 3. صيدلية وطوارئ -->
       <div class="service-card" onclick="openPharmacyModal()">
         <div class="service-icon ic-red"><i class="fa-solid fa-kit-medical"></i></div>
         <div><h4>صيدلية وطوارئ 🚑</h4><span>أدوية وروشتات عاجلة</span></div>
       </div>
 
-      <!-- 4. محطة القطار والمواقف -->
-      <div class="service-card" onclick="openTrainStationModal()">
+      <!-- 4. محطة القطار -->
+      <div class="service-card" onclick="openTrainModal()">
         <div class="service-icon ic-gold"><i class="fa-solid fa-train"></i></div>
         <div><h4>مشوار القطار 🚆</h4><span>حجز محطة نجع حمادي</span></div>
       </div>
 
-      <!-- 5. مشاوير المدرسة (عرض كامل) -->
+      <!-- 5. مشاوير المدرسة -->
       <div class="service-card" onclick="openSchoolTripModal()" style="grid-column: span 2;">
         <div style="display:flex; align-items:center; gap:12px; width:100%;">
           <div class="service-icon ic-green"><i class="fa-solid fa-graduation-cap"></i></div>
           <div style="text-align:right;">
             <h4>مشاوير المدرسة والدروس 🏫</h4>
-            <span style="font-size:11px; color:var(--text-sub);">هنجيبه ونروحه (من شارع لشارع) مع إشعار وصول فوري</span>
+            <span style="font-size:11px; color:var(--text-sub);">هنجيبه ونروحه (من شارع لشارع) مع إشعار وصول</span>
           </div>
         </div>
       </div>
 
-      <!-- 6. وسيط مالي ودفع فواتير -->
-      <div class="service-card" onclick="openBillsPayModal()" style="grid-column: span 2;">
+      <!-- 6. وسيط مالي -->
+      <div class="service-card" onclick="openBillsModal()" style="grid-column: span 2;">
         <div style="display:flex; align-items:center; gap:12px; width:100%;">
           <div class="service-icon ic-purple"><i class="fa-solid fa-money-bill-transfer"></i></div>
           <div style="text-align:right;">
             <h4>وسيط مالي ودفع فواتير وأمانات 💳</h4>
-            <span style="font-size:11px; color:var(--text-sub);">سداد أقساط، تحصيل مبالغ، وتسليم إيصالات للبيت</span>
+            <span style="font-size:11px; color:var(--text-sub);">سداد أقساط، تحصيل مبالغ، وتسليم إيصالات</span>
           </div>
         </div>
       </div>
@@ -340,7 +326,7 @@ body {
     <div id="marketProductsGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
   </section>
 
-  <!-- 3. الطلبات (طرد سريع مستقل) -->
+  <!-- 3. الطلبات -->
   <section id="tab-orders" class="tab-view">
     <div class="section-title"><i class="fa-solid fa-box-open"></i> طلب أوردر / طرد سريع 📦</div>
     
@@ -380,12 +366,13 @@ body {
         <input class="order-input" id="orderPhone" placeholder="رقم الموبايل" inputmode="tel" required>
       </div>
 
+      <!-- ميزة الكاميرا المباشرة والوسائط -->
       <div style="background:#070b12; border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:10px; margin-bottom:8px;">
         <label style="font-size:11px; color:#cbd5e1; display:flex; align-items:center; gap:6px; cursor:pointer;">
           <i class="fa-solid fa-camera" style="color:var(--accent);"></i> تصوير ورقة طلبات أو روشتة:
-          <input type="file" id="orderPhotoFile" accept="image/*" capture="environment" style="display:none;" onchange="onPhotoAttached(this, 'attachedText1')">
+          <input type="file" id="orderPhotoFile" accept="image/*" style="display:none;" onchange="onPhotoAttached(this, 'attachedText1')">
         </label>
-        <div id="attachedText1" style="font-size:10px; color:#10b981; margin-top:4px; display:none;">تم اختيار الصورة 📷</div>
+        <div id="attachedText1" style="font-size:10px; color:#10b981; margin-top:4px; display:none;">تم إرفاق الصورة 📷</div>
       </div>
 
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
@@ -428,7 +415,6 @@ body {
       <i class="fa-brands fa-whatsapp"></i> واتساب المباشر
     </button>
     
-    <!-- تقييم الكابتن والخدمة بنظام النجوم -->
     <div class="form-card" style="text-align:center;">
       <h4 style="font-size:14px; margin-bottom:6px;">⭐ تقييم تجربتك مع الكابتن:</h4>
       <div style="font-size:24px; color:#ffd166; margin:8px 0; cursor:pointer;" id="starsContainer">
@@ -442,18 +428,20 @@ body {
   <div class="modal-backdrop" id="pharmacyModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closePharmacyModal()">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:#ef4444;"><i class="fa-solid fa-kit-medical"></i> طوارئ صيدلية وعلاج عاجل 24 ساعة</h3>
+      <h3 style="font-size:16px; font-weight:900; color:#ef4444;"><i class="fa-solid fa-kit-medical"></i> صيدلية وطوارئ طبية عاجلة 24 ساعة</h3>
       <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">تحرك فوري لأقرب صيدلية مفتوحة بنجع حمادي.</p>
-      <textarea id="pharmacyMedicineTxt" class="order-input" rows="3" placeholder="اكتب اسم العلاج أو المستلزمات الطبية المطلوبة..."></textarea>
+      <textarea id="pharmacyMedicineTxt" class="order-input" rows="3" placeholder="اكتب اسم العلاج أو المستلزمات المطلوبة..."></textarea>
+      
+      <!-- كاميرا الصيدلية -->
       <div style="background:#070b12; border:1px dashed rgba(255,255,255,0.15); border-radius:12px; padding:10px; margin-bottom:8px;">
-        <label style="font-size:11px; color:#cbd5e1; cursor:pointer;">
-          <i class="fa-solid fa-camera" style="color:#ef4444;"></i> تصوير الروشتة بالكاميرا:
-          <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="onPhotoAttached(this, 'attachedText2')">
+        <label style="font-size:11px; color:#cbd5e1; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+          <i class="fa-solid fa-camera" style="color:#ef4444;"></i> فتح الكاميرا وتصوير الروشتة:
+          <input type="file" id="pharmacyPhotoFile" accept="image/*" style="display:none;" onchange="onPhotoAttached(this, 'attachedText2')">
         </label>
-        <div id="attachedText2" style="font-size:10px; color:#10b981; margin-top:4px; display:none;">تم إرفاق الروشتة 📷</div>
+        <div id="attachedText2" style="font-size:10px; color:#10b981; margin-top:4px; display:none;">تم التقاط وإرفاق الروشتة بنجاح 📷</div>
       </div>
-      <input type="text" id="pharmacyAddress" class="order-input" placeholder="عنوان التوصيل في نجع حمادي..." style="margin-bottom:8px;">
-      <button class="order-btn" style="background:#ef4444;" onclick="sendPharmacyOrder()"><i class="fa-brands fa-whatsapp"></i> تحريك الكابتن فوراً 🚑</button>
+      <input type="text" id="pharmacyAddress" class="order-input" placeholder="عنوان التوصيل بالتفصيل..." style="margin-bottom:8px;">
+      <button class="order-btn" style="background:#ef4444;" onclick="sendPharmacyOrder()"><i class="fa-brands fa-whatsapp"></i> طلب الصيدلية فوراً 🚑</button>
     </div>
   </div>
 
@@ -462,15 +450,15 @@ body {
     <div class="modal-card">
       <button class="modal-close" onclick="closeTrainModal()">&times;</button>
       <h3 style="font-size:16px; font-weight:900; color:#ffd166;"><i class="fa-solid fa-train"></i> حجز مشوار محطة القطار / المواقف</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">وصول في الميعاد المحدد للقطار مع نقل الحقائب بأمان.</p>
-      <input type="time" id="trainTripTime" class="order-input" placeholder="ميعاد قيام القطار / السفر" style="margin-bottom:8px;" required>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">وصول قبل ميعاد قطارك بدون قلق مع نقل الحقائب.</p>
+      <input type="time" id="trainTripTime" class="order-input" style="margin-bottom:8px;" required>
       <input type="text" id="trainFromAddress" class="order-input" placeholder="مكان تحركك (الشارع / القرية)" style="margin-bottom:8px;" required>
       <select id="trainLuggageCount" class="order-select" style="margin-bottom:8px;">
-        <option value="معايا شنطة واحدة">معايا شنطة واحدة</option>
-        <option value="معايا شنطتين">معايا شنطتين</option>
+        <option value="شنطة واحدة">شنطة واحدة</option>
+        <option value="شنطتين">شنطتين</option>
         <option value="أكثر من شنطتين">أكثر من شنطتين</option>
       </select>
-      <button class="order-btn" style="background:#ffd166; color:#000;" onclick="sendTrainOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد حجز مشوار السفر 🚆</button>
+      <button class="order-btn" style="background:#ffd166; color:#000;" onclick="sendTrainOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد حجز مشوار القطار 🚆</button>
     </div>
   </div>
 
@@ -481,47 +469,47 @@ body {
       <h3 style="font-size:16px; font-weight:900; color:#c084fc;"><i class="fa-solid fa-money-bill-transfer"></i> وسيط مالي ودفع فواتير وأمانات</h3>
       <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">سداد فواتير، تحصيل مبالغ، وتسليم إيصال موثق للبيت.</p>
       <input type="text" id="billTargetDetails" class="order-input" placeholder="نوع المعاملة (فاتورة كهرباء/قسط/أمانة)..." style="margin-bottom:8px;" required>
-      <input type="number" id="billMoneyAmount" class="order-input" placeholder="المبلغ المطلوب تحصيله / دفعه..." style="margin-bottom:8px;" required>
-      <input type="text" id="billClientPlace" class="order-input" placeholder="مكانك لاستلام/تسليم الإيصال..." style="margin-bottom:8px;" required>
+      <input type="number" id="billMoneyAmount" class="order-input" placeholder="المبلغ المطلوب بالجنيه..." style="margin-bottom:8px;" required>
+      <input type="text" id="billClientPlace" class="order-input" placeholder="عنوانك لاستلام وتسليم الإيصال..." style="margin-bottom:8px;" required>
       <button class="order-btn" style="background:#c084fc; color:#000;" onclick="sendBillsOrder()"><i class="fa-brands fa-whatsapp"></i> طلب مندوب الأمانات 🛵</button>
     </div>
   </div>
 
-  <!-- نافذة 4: عجلة الحظ اليومية Spin the Wheel -->
+  <!-- نافذة 4: عجلة الحظ اليومية (لفة واحدة يومياً فقط) -->
   <div class="modal-backdrop" id="spinWheelModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeSpinWheelModal()">&times;</button>
       <h3 style="font-size:16px; font-weight:900; color:#ffd166;">🎡 عجلة الحظ اليومية</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">لف العجلة واكسب خصومات وكاش باك فوري!</p>
-      <div id="wheelGraphicBox" style="font-size:60px; margin:16px 0; animation: bounceArrow 1s infinite alternate;">🎁</div>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">لك لفة واحدة مجاناً كل يوم.. جرب حظك واكسب!</p>
+      <div id="wheelGraphicBox" style="font-size:60px; margin:16px 0;">🎁</div>
       <div id="wheelRewardTxt" style="font-size:13px; font-weight:900; color:#10b981; margin-bottom:12px;"></div>
       <button class="order-btn" id="spinBtnAction" style="background:#ffd166; color:#000;" onclick="spinTheWheelAction()">لف العجلة الآن 🎲</button>
     </div>
   </div>
 
-  <!-- نافذة مشاوير المدرسة المستقلة -->
+  <!-- نافذة مشاوير المدرسة -->
   <div class="modal-backdrop" id="schoolTripModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeSchoolTripModal()">&times;</button>
-      <h3 style="font-size:16px; font-weight:900; color:#10b981;">🏫 مشاوير المدرسة (توصيل آمن للطلاب)</h3>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;">هنجيبه ونروّحه من وإلى باب البيت والمدرسة مع رسالة إشعار وصول.</p>
+      <h3 style="font-size:16px; font-weight:900; color:#10b981;">🏫 مشاوير المدرسة والدروس</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;">هنجيبه ونروّحه بأمان تام مع إشعار وصول فوري.</p>
       <div class="order-row">
         <select class="order-select" id="schoolTripType">
-          <option value="ذهاب وعودة">هنجيبه وهنروّحه (ذهاب وعودة)</option>
-          <option value="ذهاب فقط">هنجيبه بس</option>
-          <option value="عودة فقط">هنروّحه بس</option>
+          <option value="ذهاب وعودة">ذهاب وعودة</option>
+          <option value="ذهاب فقط">ذهاب فقط</option>
+          <option value="عودة فقط">عودة فقط</option>
         </select>
         <input class="order-input" id="schoolChildName" placeholder="اسم الطالب" required>
       </div>
       <div class="order-row">
-        <input class="order-input" id="schoolStreetFrom" placeholder="من شارع/منطقة" required>
-        <input class="order-input" id="schoolStreetTo" placeholder="لشارع/مدرسة" required>
+        <input class="order-input" id="schoolStreetFrom" placeholder="من شارع..." required>
+        <input class="order-input" id="schoolStreetTo" placeholder="إلى مدرسة / سنتر..." required>
       </div>
       <div class="order-row">
         <input class="order-input" id="schoolParentName" placeholder="اسم ولي الأمر" required>
-        <input class="order-input" id="schoolParentPhone" placeholder="رقم ولي الأمر" inputmode="tel" required>
+        <input class="order-input" id="schoolParentPhone" placeholder="رقم هاتف ولي الأمر" inputmode="tel" required>
       </div>
-      <button class="order-btn" style="background:#10b981;" onclick="sendSchoolOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد حجز مشوار المدرسة 🛵</button>
+      <button class="order-btn" style="background:#10b981;" onclick="sendSchoolOrder()"><i class="fa-brands fa-whatsapp"></i> تأكيد حجز المشوار 🛵</button>
     </div>
   </div>
 
@@ -554,7 +542,7 @@ body {
     </div>
   </div>
 
-  <!-- نوافذ الألعاب وتأكيد الخروج -->
+  <!-- الألعاب وتأكيد الخروج -->
   <div class="modal-backdrop" id="quizModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeGameAndResumeMusic('quizModal')">&times;</button>
@@ -605,34 +593,88 @@ window.addEventListener('load', () => {
   if (p) { p.classList.add('fade-out'); setTimeout(() => p.remove(), 300); }
   try { fetch("https://api.counterapi.dev/v1/flyexpress_nagahammadi_2026/visits/up"); } catch (e) {}
   initWallet();
+  checkWheelDailyStatus();
 });
 
-function forceDownloadRedirect(e, url) { if (e) e.preventDefault(); window.open(url, '_blank'); }
-
-// نظام المحفظة والكاش باك
+// المحفظة
 function initWallet() {
   let bal = localStorage.getItem('fly_wallet_balance');
   if (!bal) { bal = "15.00"; localStorage.setItem('fly_wallet_balance', bal); }
   document.getElementById('walletBalanceTxt').textContent = `${bal} ج رصيد متاح`;
 }
 
-// عجلة الحظ
-function openSpinWheelModal() { document.getElementById('spinWheelModal').classList.add('show'); }
-function closeSpinWheelModal() { document.getElementById('spinWheelModal').classList.remove('show'); }
+// عجلة الحظ مع قفل لفة واحدة يومياً
+function checkWheelDailyStatus() {
+  const today = new Date().toISOString().split('T')[0];
+  const lastSpinDate = localStorage.getItem('fly_last_spin_date');
+  const btn = document.getElementById('spinBtnAction');
+  const rewardTxt = document.getElementById('wheelRewardTxt');
+
+  if (lastSpinDate === today) {
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+      btn.textContent = "عُد غداً للف من جديد ⏳";
+    }
+    if (rewardTxt) rewardTxt.textContent = "لقد استخدمت فرصتك اليومية! عُد غداً لتجربة حظك مرة أخرى 🌟";
+  }
+}
+
+function openSpinWheelModal() {
+  checkWheelDailyStatus();
+  document.getElementById('spinWheelModal').classList.add('show');
+}
+function closeSpinWheelModal() {
+  document.getElementById('spinWheelModal').classList.remove('show');
+}
+
 function spinTheWheelAction() {
+  const today = new Date().toISOString().split('T')[0];
+  const lastSpinDate = localStorage.getItem('fly_last_spin_date');
+  if (lastSpinDate === today) {
+    alert("لك لفة واحدة فقط كل يوم!");
+    return;
+  }
+
   const btn = document.getElementById('spinBtnAction');
   btn.disabled = true;
   document.getElementById('wheelGraphicBox').textContent = "🔄";
+
   setTimeout(() => {
-    const prizes = ["خصم 5 جنيه للمشوار القادم", "كاش باك 10 جنيه بمحفظتك", "توصيل خضار مجاني", "خصم 50% على مشوار المحطة"];
+    const prizes = ["خصم 5 جنيه للمشوار القادم 🎟️", "كاش باك 10 جنيه بمحفظتك 💰", "توصيل خضار مجاني 🥬", "خصم 50% على مشوار القطار 🚆"];
     const prize = prizes[Math.floor(Math.random() * prizes.length)];
     document.getElementById('wheelGraphicBox').textContent = "🎉";
     document.getElementById('wheelRewardTxt').textContent = `مبروك! كسبت: ${prize}`;
+    
+    // إضافة كاش باك للمحفظة
     let curBal = parseFloat(localStorage.getItem('fly_wallet_balance') || "15");
     localStorage.setItem('fly_wallet_balance', (curBal + 5).toFixed(2));
     initWallet();
-    btn.disabled = false;
+
+    // حفظ تاريخ اليوم لمنع التكرار
+    localStorage.setItem('fly_last_spin_date', today);
+    btn.textContent = "عُد غداً للف من جديد ⏳";
+    btn.style.opacity = "0.5";
   }, 1200);
+}
+
+// فتح وإغلاق النوافذ المصلحة
+function openPharmacyModal() { document.getElementById('pharmacyModal').classList.add('show'); }
+function closePharmacyModal() { document.getElementById('pharmacyModal').classList.remove('show'); }
+
+function openTrainModal() { document.getElementById('trainModal').classList.add('show'); }
+function closeTrainModal() { document.getElementById('trainModal').classList.remove('show'); }
+
+function openBillsModal() { document.getElementById('billsModal').classList.add('show'); }
+function closeBillsModal() { document.getElementById('billsModal').classList.remove('show'); }
+
+function openSchoolTripModal() { document.getElementById('schoolTripModal').classList.add('show'); }
+function closeSchoolTripModal() { document.getElementById('schoolTripModal').classList.remove('show'); }
+
+function onPhotoAttached(input, targetTxtId) {
+  if (input.files && input.files[0]) {
+    document.getElementById(targetTxtId).style.display = 'block';
+  }
 }
 
 // تقييم الخدمة
@@ -644,19 +686,6 @@ function setRating(val) {
 }
 function submitAppRating() {
   alert(`شكراً لتقييمك (${currentRating} نجوم)! نسعى دائماً لتقديم أسرع خدمة في نجع حمادي.`);
-}
-
-// المودالات الجديدة
-function openPharmacyModal() { document.getElementById('pharmacyModal').classList.add('show'); }
-function closePharmacyModal() { document.getElementById('pharmacyModal').classList.remove('show'); }
-function openTrainModal() { document.getElementById('trainModal').classList.add('show'); }
-function closeTrainModal() { document.getElementById('trainModal').classList.remove('show'); }
-function openBillsModal() { document.getElementById('billsModal').classList.add('show'); }
-function closeBillsModal() { document.getElementById('billsModal').classList.remove('show'); }
-function openSchoolTripModal() { document.getElementById('schoolTripModal').classList.add('show'); }
-function closeSchoolTripModal() { document.getElementById('schoolTripModal').classList.remove('show'); }
-function onPhotoAttached(input, targetTxtId) {
-  if (input.files && input.files[0]) document.getElementById(targetTxtId).style.display = 'block';
 }
 
 // الصوت
@@ -712,11 +741,10 @@ const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 
 function openWhatsAppDirectly(text) { window.open(`https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${enc(text)}`, '_blank'); }
 
-// إرسال المشاوير المخصصة
 function sendPharmacyOrder() {
   const med = document.getElementById('pharmacyMedicineTxt').value.trim();
   const addr = document.getElementById('pharmacyAddress').value.trim();
-  if (!med || !addr) return alert("اكتب اسم الدواء والعنوان أولاً.");
+  if (!med || !addr) return alert("اكتب اسم العلاج والعنوان أولاً.");
   closePharmacyModal();
   openWhatsAppDirectly(`طلب صيدلية وطوارئ طبية عاجلة 🚑💊\nالعلاج المطلوب: ${med}\nعنوان التسليم: ${addr}\n(تحرك فوري من أقرب صيدلية مفتوحة بنجع حمادي)`);
 }
@@ -766,7 +794,7 @@ function sendFastOrder() {
   openWhatsAppDirectly(`طلب طرد / أوردر سريع 📦🛵\nالمحتوى: ${details || 'غير محدد'}\nالتوقيت: ${timingTxt}\nالأولوية: ${isVip ? 'VIP مستعجل ⚡' : 'عادية'}\nمن: ${from} إلى: ${to}\nالاسم: ${name} (${phone})\nالتكلفة التقديرية: ${fare}`);
 }
 
-// حاسبة الأجرة والأسعار المباشرة
+// حاسبة الأجرة
 let currentLivePrices = { inside: 30, berka: 20, masaken: 25, alum: 35, haw: 50, naga: 100 };
 function updateEstimatedFare() {
   const r = document.getElementById('pricingRouteSelect').value;
@@ -776,7 +804,7 @@ function toggleScheduledInput() {
   document.getElementById('orderScheduledTime').style.display = (document.getElementById('orderTimingType').value === 'مجدول بميعاد مسبق') ? 'block' : 'none';
 }
 
-// الاستماع السحابي لتحديثات الأدمن
+// الاستماع السحابي
 async function listenToCloudState() {
   try {
     const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
@@ -784,14 +812,13 @@ async function listenToCloudState() {
     if (text) {
       const lines = text.trim().split('\n');
       const data = JSON.parse(JSON.parse(lines[lines.length - 1]).message);
-      // إعلان
       const bEl = document.getElementById('appLiveBanner');
       if (data.banner && data.banner.active && data.banner.text) {
         bEl.style.display = 'block'; document.getElementById('appLiveBannerTxt').textContent = data.banner.text;
       } else bEl.style.display = 'none';
-      // ذروة
+
       document.getElementById('appPeakBadge').style.display = (data.peak) ? 'block' : 'none';
-      // أسعار
+
       if (data.prices) {
         currentLivePrices = data.prices;
         if(data.prices.inside) document.getElementById('p_disp_inside').textContent = `${data.prices.inside} ج`;
@@ -802,7 +829,7 @@ async function listenToCloudState() {
         if(data.prices.naga) document.getElementById('p_disp_naga').textContent = `${data.prices.naga} ج`;
         updateEstimatedFare();
       }
-      // قفل
+
       const noticeBox = document.getElementById('maintenanceNoticeBox');
       if (data.maintenance && data.maintenance.isLocked) {
         noticeBox.style.display = 'block';
@@ -820,7 +847,6 @@ async function listenToCloudState() {
 setInterval(listenToCloudState, 25000);
 listenToCloudState();
 
-// الدخول والتنقل
 function switchAuthMode(mode) {
   const isLogin = mode === 'login';
   document.getElementById('tabBtnLogin').classList.toggle('active', isLogin);
@@ -828,6 +854,7 @@ function switchAuthMode(mode) {
   document.getElementById('formLoginView').style.display = isLogin ? 'block' : 'none';
   document.getElementById('formSignupView').style.display = isLogin ? 'none' : 'block';
 }
+
 function checkAppAccess() {
   const verifiedUser = localStorage.getItem('fly_verified_user');
   if (verifiedUser) {
@@ -843,6 +870,7 @@ function checkAppAccess() {
     document.getElementById('mainAppContent').style.display = "none";
   }
 }
+
 function directPasswordLogin() {
   const id = document.getElementById('loginIdentifier').value.trim();
   const pass = document.getElementById('loginPassword').value.trim();
@@ -850,6 +878,7 @@ function directPasswordLogin() {
   localStorage.setItem('fly_verified_user', JSON.stringify({ name: id, phone: "01017908076" }));
   checkAppAccess();
 }
+
 function requestSignupOtp() {
   const name = document.getElementById('signupName').value.trim();
   const phone = document.getElementById('signupPhone').value.trim();
@@ -857,12 +886,14 @@ function requestSignupOtp() {
   localStorage.setItem('fly_verified_user', JSON.stringify({ name, phone }));
   checkAppAccess();
 }
+
 function logoutUser() { document.getElementById('logoutConfirmModal').classList.add('show'); }
 function closeLogoutModal() { document.getElementById('logoutConfirmModal').classList.remove('show'); }
 function confirmLogoutAction() {
   closeLogoutModal(); if (backgroundAudio) backgroundAudio.pause();
   localStorage.removeItem('fly_verified_user'); checkAppAccess();
 }
+
 function switchTab(tabId, navBtn) {
   ['tab-home', 'tab-market', 'tab-orders', 'tab-prices', 'tab-games', 'tab-contact'].forEach(id => {
     const el = document.getElementById(id); if (el) el.style.display = (id === tabId) ? 'block' : 'none';
@@ -872,17 +903,16 @@ function switchTab(tabId, navBtn) {
   if (tabId !== 'tab-games') resumeMainMusicAfterGame(); else pauseMainMusicForGame();
   window.scrollTo(0, 0);
 }
+
 function openFastParcelTab() { switchTab('tab-orders', document.querySelectorAll('.nav-item')[2]); }
 
-// ألعاب مبسطة سريعة
+// ألعاب
 function openQuizGame() {
   pauseMainMusicForGame();
-  alert("بدء تحدي الـ 500 سؤال! ركز جيداً، معك 10 ثوانٍ.");
   document.getElementById('quizModal').classList.add('show');
 }
 function openPhotoChallengeGame() {
   pauseMainMusicForGame();
-  alert("بدء تحدي الصور السريع! رصد دقيق وسريع.");
   document.getElementById('photoGameModal').classList.add('show');
 }
 function closeGameAndResumeMusic(id) {
@@ -909,6 +939,7 @@ const marketData = {
   ]
 };
 let userCart = [];
+
 function renderMarketProducts(catKey) {
   const container = document.getElementById('marketProductsGrid');
   if (!container) return;
@@ -952,6 +983,7 @@ function removeFromCart(idx) {
   if (userCart.length === 0) document.getElementById('floatingCartBar').style.display = 'none';
 }
 function closeCartModal() { document.getElementById('cartModal').classList.remove('show'); }
+
 function sendMarketCartToWhatsApp() {
   const addr = document.getElementById('marketDeliveryAddress').value.trim();
   if (!addr) return alert("اكتب عنوان التوصيل.");
@@ -961,7 +993,7 @@ function sendMarketCartToWhatsApp() {
   openWhatsAppDirectly(`طلب مشتريات من سوق Fly Express 🛒🛵\nالعنوان: ${addr}\nالطلبات:\n${txt}`);
 }
 
-// ضغط الشعار 5 مرات للدخول للأدمن المباشر الحي
+// دخول الأدمن بالضغط 5 مرات
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
   logoClicks++; clearTimeout(logoTimer);
