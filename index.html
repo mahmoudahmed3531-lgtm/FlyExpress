@@ -50,7 +50,7 @@ body {
   padding-bottom: 80px; overflow-x: hidden;
 }
 
-/* نافذة التحديث الإجباري التلقائية */
+/* نافذة التحديث الإجباري الذكية */
 .force-update-gate {
   position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
   background: #090d16; z-index: 999999; display: none; flex-direction: column;
@@ -60,6 +60,7 @@ body {
   width: 110px; height: 110px; border-radius: 28px;
   box-shadow: 0 0 35px rgba(225,29,72,0.6); margin-bottom: 18px;
   border: 2px solid var(--primary); object-fit: cover;
+  background-color: #0b0f19;
 }
 
 /* شاشة تسجيل الدخول وإنشاء الحساب */
@@ -293,7 +294,7 @@ body {
 
 <div class="mobile-frame">
 
-  <!-- بوابة التحديث الإجباري التي يتحكم بها الأدمن -->
+  <!-- بوابة التحديث الإجباري الذكية -->
   <div class="force-update-gate" id="forceUpdateModal">
     <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express" class="force-update-logo">
     <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
@@ -305,7 +306,7 @@ body {
     </button>
   </div>
 
-  <!-- شاشة الدخول وإنشاء الحساب بالشعار الجديد بدون أي روابط تالفة -->
+  <!-- شاشة الدخول وإنشاء الحساب بالشعار الجديد المعتمد -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express Logo" class="auth-main-logo">
@@ -616,15 +617,30 @@ body {
 </div>
 
 <script>
-// رقم إصدار هذا التطبيق الحالي المثبت في الهاتف
-const INSTALLED_VERSION = "1.0.0";
+// رقم النسخة المثبتة في هذا الـ APK الحالي
+const APP_LOCAL_VERSION = "1.0.8";
 
 const ADMIN_PHONE = "201017908076";
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 let currentDownloadUrl = "https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file";
 
-// الاستماع السحابي لأوامر التحديث من لوحة الأدمن فوراً
-async function listenToAdminCloudUpdates() {
+// دالة ذكية لمقارنة أرقام الإصدارات
+function isUpdateRequired(installedVer, requiredVer) {
+  if (!requiredVer) return false;
+  const installedParts = installedVer.split('.').map(Number);
+  const requiredParts = requiredVer.split('.').map(Number);
+  
+  for (let i = 0; i < Math.max(installedParts.length, requiredParts.length); i++) {
+    const inst = installedParts[i] || 0;
+    const req = requiredParts[i] || 0;
+    if (inst < req) return true;  // النسخة قديمة -> يجب التحديث إجبارياً
+    if (inst > req) return false; // النسخة أحدث أو متطابقة -> لا تفعل شيئاً
+  }
+  return false; // النسخة مطابقة تماماً
+}
+
+// الاستماع للوحة الأدمن وفحص التحديث بذكاء
+async function checkSmartUpdateFromAdmin() {
   try {
     const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
     const text = await res.text();
@@ -632,23 +648,29 @@ async function listenToAdminCloudUpdates() {
       const lines = text.trim().split('\n');
       const data = JSON.parse(JSON.parse(lines[lines.length - 1]).message);
       
-      // إذا قام الأدمن بتفعيل التحديث الإجباري
+      // إذا قام الأدمن بتفعيل التحديث
       if (data.update && data.update.enabled) {
-        if (data.update.version && data.update.version !== INSTALLED_VERSION) {
+        const requiredVersion = data.update.version;
+        
+        // المقارنة الذكية:
+        if (isUpdateRequired(APP_LOCAL_VERSION, requiredVersion)) {
+          // صاحب النسخة القديمة فقط: يظهر له القفل الإجباري
           if (data.update.downloadUrl) currentDownloadUrl = data.update.downloadUrl;
           if (data.update.notes) document.getElementById('forceUpdateMessageTxt').textContent = data.update.notes;
-          
-          // قفل التطبيق وإظهار شاشة التحديث الإجباري
           document.getElementById('forceUpdateModal').style.display = 'flex';
+        } else {
+          // صاحب النسخة الحديثة: يختفي القفل فوراً ويعمل التطبيق طبيعياً
+          document.getElementById('forceUpdateModal').style.display = 'none';
         }
       } else {
         document.getElementById('forceUpdateModal').style.display = 'none';
       }
     }
-  } catch(e) {}
+  } catch (e) {}
 }
-setInterval(listenToAdminCloudUpdates, 20000);
-listenToAdminCloudUpdates();
+
+setInterval(checkSmartUpdateFromAdmin, 20000);
+checkSmartUpdateFromAdmin();
 
 function downloadLatestAppVersion() {
   window.open(currentDownloadUrl, '_blank');
