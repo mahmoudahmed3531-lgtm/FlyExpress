@@ -306,7 +306,7 @@ body {
     </button>
   </div>
 
-  <!-- شاشة الدخول وإنشاء الحساب بالشعار الجديد المعتمد -->
+  <!-- شاشة الدخول الاحترافية بدون رسالة جوجل للملء التلقائي -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express Logo" class="auth-main-logo">
@@ -320,18 +320,34 @@ body {
         <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
       </div>
 
-      <div id="loginFormSection">
-        <input type="text" id="loginUsername" class="auth-input-field" placeholder="اسم المستخدم أو رقم الهاتف">
-        <input type="password" id="loginPassword" class="auth-input-field" placeholder="كلمة المرور">
-        <button class="auth-submit-btn" onclick="processLoginAction()">تسجيل الدخول 🚀</button>
-      </div>
+      <!-- تسجيل الدخول بدون Autofill جوجل المزعج -->
+      <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();" autocomplete="off">
+        <input type="text" id="loginUsername" class="auth-input-field" placeholder="اسم المستخدم أو رقم الهاتف" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other">
+        
+        <div style="position:relative; width:100%;">
+          <input type="password" id="loginPassword" class="auth-input-field" placeholder="كلمة المرور" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true">
+          <span onclick="togglePasswordVisibility('loginPassword', this)" style="position:absolute; left:14px; top:12px; color:var(--text-sub); cursor:pointer; font-size:14px;">
+            <i class="fa-regular fa-eye"></i>
+          </span>
+        </div>
 
-      <div id="signupFormSection" style="display:none;">
-        <input type="text" id="signupFullname" class="auth-input-field" placeholder="الاسم الكريم">
-        <input type="tel" id="signupPhoneNum" class="auth-input-field" placeholder="رقم الموبايل للتواصل">
-        <input type="password" id="signupPasscode" class="auth-input-field" placeholder="كلمة المرور الجديدة">
-        <button class="auth-submit-btn" onclick="processSignupAction()">تأكيد وإنشاء الحساب ✨</button>
-      </div>
+        <button type="submit" class="auth-submit-btn">تسجيل الدخول 🚀</button>
+      </form>
+
+      <!-- إنشاء حساب جديد بدون Autofill -->
+      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSignupAction();" autocomplete="off">
+        <input type="text" id="signupFullname" class="auth-input-field" placeholder="الاسم الكريم" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input type="tel" id="signupPhoneNum" class="auth-input-field" placeholder="رقم الموبايل للتواصل" autocomplete="off" autocorrect="off" inputmode="tel">
+        
+        <div style="position:relative; width:100%;">
+          <input type="password" id="signupPasscode" class="auth-input-field" placeholder="كلمة المرور الجديدة" autocomplete="new-password" autocorrect="off" data-lpignore="true">
+          <span onclick="togglePasswordVisibility('signupPasscode', this)" style="position:absolute; left:14px; top:12px; color:var(--text-sub); cursor:pointer; font-size:14px;">
+            <i class="fa-regular fa-eye"></i>
+          </span>
+        </div>
+
+        <button type="submit" class="auth-submit-btn">تأكيد وإنشاء الحساب ✨</button>
+      </form>
     </div>
   </div>
 
@@ -618,11 +634,24 @@ body {
 
 <script>
 // رقم النسخة المثبتة في هذا الـ APK الحالي
-const APP_LOCAL_VERSION = "1.0.8";
+const APP_LOCAL_VERSION = "1.0.0";
 
 const ADMIN_PHONE = "201017908076";
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 let currentDownloadUrl = "https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file";
+
+// إظهار أو إخفاء كلمة المرور بأمان
+function togglePasswordVisibility(inputId, iconEl) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  if (input.type === "password") {
+    input.type = "text";
+    iconEl.innerHTML = '<i class="fa-regular fa-eye-slash"></i>';
+  } else {
+    input.type = "password";
+    iconEl.innerHTML = '<i class="fa-regular fa-eye"></i>';
+  }
+}
 
 // دالة ذكية لمقارنة أرقام الإصدارات
 function isUpdateRequired(installedVer, requiredVer) {
@@ -636,7 +665,7 @@ function isUpdateRequired(installedVer, requiredVer) {
     if (inst < req) return true;  // النسخة قديمة -> يجب التحديث إجبارياً
     if (inst > req) return false; // النسخة أحدث أو متطابقة -> لا تفعل شيئاً
   }
-  return false; // النسخة مطابقة تماماً
+  return false;
 }
 
 // الاستماع للوحة الأدمن وفحص التحديث بذكاء
@@ -654,12 +683,10 @@ async function checkSmartUpdateFromAdmin() {
         
         // المقارنة الذكية:
         if (isUpdateRequired(APP_LOCAL_VERSION, requiredVersion)) {
-          // صاحب النسخة القديمة فقط: يظهر له القفل الإجباري
           if (data.update.downloadUrl) currentDownloadUrl = data.update.downloadUrl;
           if (data.update.notes) document.getElementById('forceUpdateMessageTxt').textContent = data.update.notes;
           document.getElementById('forceUpdateModal').style.display = 'flex';
         } else {
-          // صاحب النسخة الحديثة: يختفي القفل فوراً ويعمل التطبيق طبيعياً
           document.getElementById('forceUpdateModal').style.display = 'none';
         }
       } else {
