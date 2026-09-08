@@ -13,8 +13,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Fly Express">
 
-<link rel="icon" href="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png"/>
-<link rel="apple-touch-icon" href="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png"/>
+<link rel="icon" href="icon-512.png"/>
+<link rel="apple-touch-icon" href="icon-512.png"/>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -82,6 +82,7 @@ body {
   width: 120px; height: 120px; border-radius: 28px;
   box-shadow: 0 0 35px rgba(225, 29, 72, 0.6);
   margin-bottom: 12px; border: 2px solid var(--primary); object-fit: cover;
+  background-color: #0b0f19;
 }
 
 .auth-nav-tabs {
@@ -129,6 +130,7 @@ body {
 .brand-mini-logo {
   width: 36px; height: 36px; border-radius: 10px;
   border: 1.5px solid var(--primary); object-fit: cover;
+  background-color: #0b0f19;
 }
 
 /* شريط البحث */
@@ -156,6 +158,7 @@ body {
   position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
   width: 95px; height: 95px; border-radius: 20px; object-fit: cover;
   box-shadow: 0 0 20px rgba(225,29,72,0.5); border: 2px solid var(--primary);
+  background-color: #0b0f19;
 }
 .hero-tag {
   background: var(--primary); color: #fff; font-size: 10px; font-weight: 800;
@@ -292,7 +295,7 @@ body {
 
   <!-- بوابة التحديث الإجباري التي يتحكم بها الأدمن -->
   <div class="force-update-gate" id="forceUpdateModal">
-    <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly Express" class="force-update-logo">
+    <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express" class="force-update-logo">
     <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
     <p id="forceUpdateMessageTxt" style="font-size:13px; color:#cbd5e1; line-height:1.6; margin-bottom:24px; max-width:320px;">
       تم إطلاق تحديث جديد لتطبيق Fly Express بمظهر جديد وأيقونات محدثة وسرعة فائقة. يرجى التحديث لمواصلة الاستخدام.
@@ -302,10 +305,10 @@ body {
     </button>
   </div>
 
-  <!-- شاشة الدخول وإنشاء الحساب -->
+  <!-- شاشة الدخول وإنشاء الحساب بالشعار الجديد بدون أي روابط تالفة -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
-      <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly Express Logo" class="auth-main-logo">
+      <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express Logo" class="auth-main-logo">
       <h2 style="font-size:24px; font-weight:900; margin-bottom:4px; font-style:italic;">
         FLY <span style="color:var(--primary);">EXPRESS</span>
       </h2>
@@ -341,7 +344,7 @@ body {
       </div>
     </div>
     <div class="brand-header-badge" id="adminSecretTrigger" onclick="handleSecretAdminClicks()">
-      <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly" class="brand-mini-logo">
+      <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly" class="brand-mini-logo">
     </div>
   </header>
 
@@ -360,7 +363,7 @@ body {
         <div class="hero-tag">توصيل فوري وآمن</div>
         <h2 style="font-size:18px; font-weight:900; margin-bottom:4px;">كل طلباتك في مكان واحد</h2>
         <p style="font-size:11px; color:#cbd5e1;">مشاوير، طرود، أدوية، ومطاعم لحد بابك</p>
-        <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly Express" class="hero-card-img">
+        <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express" class="hero-card-img">
       </div>
     </div>
 
@@ -569,7 +572,7 @@ body {
     <div class="drawer-sheet">
       <div>
         <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:16px;">
-          <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" style="width:48px; height:48px; border-radius:14px; object-fit:cover; border:1.5px solid var(--primary);">
+          <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" style="width:48px; height:48px; border-radius:14px; object-fit:cover; border:1.5px solid var(--primary); background-color:#0b0f19;">
           <div>
             <h4 style="font-size:14px; font-weight:900;" id="drawerUserName">عميل Fly Express</h4>
             <span style="font-size:11px; color:#94a3b8;" id="drawerUserPhone">+20 1017908076</span>
