@@ -258,7 +258,7 @@ body {
       <i class="fa-solid fa-bolt"></i> نلفت انتباهكم لوجود ضغط طلبات حالياً
     </div>
 
-    <!-- بار المستخدم مع زر تسجيل الخروج الواضح -->
+    <!-- بار المستخدم مع زر تسجيل الخروج -->
     <div class="user-top-bar">
       <div>
         <span style="font-size:11px; color:var(--text-sub);">مرحباً بك: </span>
@@ -614,7 +614,7 @@ window.addEventListener('load', () => {
   checkWheelDailyStatus();
 });
 
-// فتح الكاميرا بشكل صريح وتخطي قيود WebView
+// فتح الكاميرا مباشرة
 function triggerCameraInput(inputId) {
   const inputEl = document.getElementById(inputId);
   if (inputEl) {
@@ -758,12 +758,21 @@ function autoStartOnFirstTouch() {
 }
 ['touchstart', 'touchend', 'click'].forEach(evt => document.addEventListener(evt, autoStartOnFirstTouch, { once: true, passive: true }));
 
-// الربط والواتساب
+// الربط وفتح تطبيق واتساب المباشر
 const ADMIN_PHONE = "201017908076";
-const enc = s => encodeURIComponent(s || "");
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 
-function openWhatsAppDirectly(text) { window.open(`https://api.whatsapp.com/send?phone=${ADMIN_PHONE}&text=${enc(text)}`, '_blank'); }
+function openWhatsAppDirectly(text) {
+  const cleanPhone = "201017908076";
+  const encodedMsg = encodeURIComponent(text);
+  // محاولة الفتح في تطبيق واتساب مباشرة
+  window.location.href = `whatsapp://send?phone=${cleanPhone}&text=${encodedMsg}`;
+  
+  // حل احتياطي سريع في حال تأخر الاستجابة
+  setTimeout(() => {
+    window.open(`https://wa.me/${cleanPhone}?text=${encodedMsg}`, '_blank');
+  }, 400);
+}
 
 function sendPharmacyOrder() {
   const med = document.getElementById('pharmacyMedicineTxt').value.trim();
@@ -1022,7 +1031,7 @@ function sendMarketCartToWhatsApp() {
   openWhatsAppDirectly(`طلب مشتريات من سوق Fly Express 🛒🛵\nالعنوان: ${addr}\nالطلبات:\n${txt}`);
 }
 
-// دخول الأدمن بـ 5 ضغطات
+// دخول الأدمن بـ 5 ضغطات على الشعار
 let logoClicks = 0, logoTimer = null;
 document.getElementById('logoTrigger').addEventListener('click', () => {
   logoClicks++; clearTimeout(logoTimer);
