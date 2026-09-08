@@ -1,4 +1,4 @@
-name: Build Client APK
+name: Build Signed Client APK
 
 on:
   workflow_dispatch:
@@ -23,17 +23,15 @@ jobs:
       - name: Install Cordova CLI
         run: npm install -g cordova
 
-      - name: Create Client App Project
+      - name: Create Signed Client Project
         run: |
           cordova create client_app com.flyexpress.app "Fly Express"
           cd client_app
           cordova platform add android
           
-          # تثبيت إضافات الكاميرا والموقع
           cordova plugin add cordova-plugin-camera
           cordova plugin add cordova-plugin-geolocation
           
-          # إنشاء مجلد res أولاً ثم نسخ الأيقونة داخله
           mkdir -p res
           if [ -f ../icon-512.png ]; then
             cp ../icon-512.png res/icon.png
@@ -41,10 +39,9 @@ jobs:
             cp ../icon-192.png res/icon.png
           fi
 
-          # إعداد ملف التهيئة والأذونات والأيقونة
           cat << 'EOF' > config.xml
           <?xml version='1.0' encoding='utf-8'?>
-          <widget id="com.flyexpress.app" version="1.0.4" xmlns="http://www.w3.org/ns/widgets">
+          <widget id="com.flyexpress.app" version="1.0.5" xmlns="http://www.w3.org/ns/widgets">
               <name>Fly Express</name>
               <description>Fly Express Delivery Naga Hammadi</description>
               <content src="https://mahmoudahmed3531-lgtm.github.io/FlyExpress/index.html" />
@@ -60,10 +57,20 @@ jobs:
           </widget>
           EOF
 
-          cordova build android --debug
+          # بناء نسخة Release غير موقعة
+          cordova build android --release --no-telemetry
 
-      - name: Upload Client APK
+          # إنشاء توقيع رقمي آمن (Keystore)
+          keytool -genkey -v -keystore flyexpress-release.keystore -alias flyexpress -keyalg RSA -keysize 2048 -validity 10000 -storepass fly123456 -keypass fly123456 -dname "CN=FlyExpress, OU=Delivery, O=Fly, L=NagaHammadi, ST=Qena, C=EG"
+
+          # توقيع الـ APK رسمياً لحذف تحذير الحماية
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore flyexpress-release.keystore -storepass fly123456 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk flyexpress
+
+          # محاذاة الملف النهائي
+          ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk FlyExpress-Official.apk
+
+      - name: Upload Signed APK
         uses: actions/upload-artifact@v4
         with:
-          name: FlyExpress-Client-Live-APK
-          path: client_app/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+          name: FlyExpress-Official-Signed-APK
+          path: client_app/FlyExpress-Official.apk
