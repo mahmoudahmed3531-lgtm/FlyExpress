@@ -622,6 +622,22 @@ function triggerCameraInput(inputId) {
   }
 }
 
+// دالة رفع الصورة واستخراج الرابط السحابي
+async function uploadImageToCloud(file) {
+  try {
+    const formData = new FormData();
+    formData.append('image', file);
+    const res = await fetch('https://api.imgbb.com/1/upload?key=6d207e02198a847aa5ad3ac2222c804f', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    return data.success ? data.data.url : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 // المحفظة
 function initWallet() {
   let bal = localStorage.getItem('fly_wallet_balance');
@@ -765,23 +781,32 @@ const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 function openWhatsAppDirectly(text) {
   const cleanPhone = "201017908076";
   const encodedMsg = encodeURIComponent(text);
-  // محاولة الفتح في تطبيق واتساب مباشرة
   window.location.href = `whatsapp://send?phone=${cleanPhone}&text=${encodedMsg}`;
   
-  // حل احتياطي سريع في حال تأخر الاستجابة
   setTimeout(() => {
     window.open(`https://wa.me/${cleanPhone}?text=${encodedMsg}`, '_blank');
   }, 400);
 }
 
-function sendPharmacyOrder() {
+async function sendPharmacyOrder() {
   const med = document.getElementById('pharmacyMedicineTxt').value.trim();
   const addr = document.getElementById('pharmacyAddress').value.trim();
-  const hasPhoto = document.getElementById('attachedText2').style.display === 'block';
-  if (!med && !hasPhoto) return alert("اكتب اسم العلاج أو صوّر الروشتة أولاً.");
+  const fileInput = document.getElementById('pharmacyPhotoFile');
+  
+  if (!med && (!fileInput.files || !fileInput.files[0])) {
+    return alert("اكتب اسم العلاج أو صوّر الروشتة أولاً.");
+  }
   if (!addr) return alert("اكتب عنوان التوصيل.");
+
+  let uploadedPhotoUrl = "";
+  if (fileInput.files && fileInput.files[0]) {
+    document.getElementById('attachedText2').textContent = "جاري رفع الصورة... ⏳";
+    uploadedPhotoUrl = await uploadImageToCloud(fileInput.files[0]);
+  }
+
   closePharmacyModal();
-  openWhatsAppDirectly(`طلب صيدلية وطوارئ طبية عاجلة 🚑💊\nالعلاج: ${med || 'مرفق بالروشتة'}\nالعنوان: ${addr}\n${hasPhoto ? '📷 قمت بتصوير الروشتة وسأرسلها لك الآن بالمحادثة' : ''}`);
+  const photoTxt = uploadedPhotoUrl ? `\n🔗 رابط صورة الروشتة:\n${uploadedPhotoUrl}` : '';
+  openWhatsAppDirectly(`طلب صيدلية وطوارئ طبية عاجلة 🚑💊\nالعلاج المطلوب: ${med || 'مرفق بالروشتة'}\nعنوان التسليم: ${addr}${photoTxt}`);
 }
 
 function sendTrainOrder() {
@@ -814,7 +839,7 @@ function sendSchoolOrder() {
   openWhatsAppDirectly(`حجز مشوار مدرسة آمن 🏫🛵\nالنوع: ${type}\nالطالب: ${child}\nمن: ${fromS}\nإلى: ${toS}\nولي الأمر: ${parent} (${phone})`);
 }
 
-function sendFastOrder() {
+async function sendFastOrder() {
   const details = document.getElementById('orderItemDetails').value.trim();
   const timing = document.getElementById('orderTimingType').value;
   const sched = document.getElementById('orderScheduledTime').value;
@@ -824,11 +849,20 @@ function sendFastOrder() {
   const phone = document.getElementById('orderPhone').value.trim();
   const isVip = document.getElementById('isVipOrder').checked;
   const fare = document.getElementById('estimatedFareTxt').textContent;
-  const hasPhoto = document.getElementById('attachedText1').style.display === 'block';
+  const fileInput = document.getElementById('orderPhotoFile');
 
   if (!from || !to || !name || !phone) return alert("أكمل بيانات العناوين واسمك ورقم الموبايل.");
+
+  let uploadedPhotoUrl = "";
+  if (fileInput.files && fileInput.files[0]) {
+    document.getElementById('attachedText1').textContent = "جاري رفع الصورة... ⏳";
+    uploadedPhotoUrl = await uploadImageToCloud(fileInput.files[0]);
+  }
+
   const timingTxt = (timing === 'مجدول بميعاد مسبق' && sched) ? `ميعاد مطلوب: ${sched}` : `فوري الآن`;
-  openWhatsAppDirectly(`طلب طرد / أوردر سريع 📦🛵\nالمحتوى: ${details || 'غير محدد'}\nالتوقيت: ${timingTxt}\nالأولوية: ${isVip ? 'VIP مستعجل ⚡' : 'عادية'}\nمن: ${from} إلى: ${to}\nالاسم: ${name} (${phone})\nالتكلفة التقديرية: ${fare}${hasPhoto ? '\n📷 قمت بتصوير ورقة الطلبات وسأرسلها لك الآن' : ''}`);
+  const photoTxt = uploadedPhotoUrl ? `\n🔗 رابط ورقة الطلبات:\n${uploadedPhotoUrl}` : '';
+
+  openWhatsAppDirectly(`طلب طرد / أوردر سريع 📦🛵\nالمحتوى: ${details || 'غير محدد'}\nالتوقيت: ${timingTxt}\nالأولوية: ${isVip ? 'VIP مستعجل ⚡' : 'عادية'}\nمن: ${from} إلى: ${to}\nالاسم: ${name} (${phone})\nالتكلفة التقديرية: ${fare}${photoTxt}`);
 }
 
 // حاسبة الأجرة
