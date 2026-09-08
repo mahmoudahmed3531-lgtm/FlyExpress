@@ -50,7 +50,19 @@ body {
   padding-bottom: 80px; overflow-x: hidden;
 }
 
-/* شاشة تسجيل الدخول وإنشاء الحساب المتطورة بشعار Fly Express الجديد */
+/* نافذة التحديث الإجباري التلقائية */
+.force-update-gate {
+  position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
+  background: #090d16; z-index: 999999; display: none; flex-direction: column;
+  align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff;
+}
+.force-update-logo {
+  width: 110px; height: 110px; border-radius: 28px;
+  box-shadow: 0 0 35px rgba(225,29,72,0.6); margin-bottom: 18px;
+  border: 2px solid var(--primary); object-fit: cover;
+}
+
+/* شاشة تسجيل الدخول وإنشاء الحساب */
 .auth-overlay {
   position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
   background: #090d16 url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1000') center/cover no-repeat;
@@ -69,8 +81,7 @@ body {
 .auth-main-logo {
   width: 120px; height: 120px; border-radius: 28px;
   box-shadow: 0 0 35px rgba(225, 29, 72, 0.6);
-  margin-bottom: 12px; border: 2px solid var(--primary);
-  object-fit: cover;
+  margin-bottom: 12px; border: 2px solid var(--primary); object-fit: cover;
 }
 
 .auth-nav-tabs {
@@ -151,7 +162,7 @@ body {
   padding: 4px 8px; border-radius: 6px; width: fit-content; margin-bottom: 6px;
 }
 
-/* شبكة الأيقونات والخدمات الثمانية */
+/* شبكة الخدمات 8 أقسام */
 .services-main-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 14px 10px; padding: 0 16px; margin-bottom: 22px;
@@ -191,7 +202,7 @@ body {
   display: flex; align-items: center; justify-content: space-between;
 }
 
-/* تتبع الطلب والخريطة */
+/* تتبع الطلب */
 .tracking-map-preview {
   height: 200px; width: 100%; border-radius: var(--radius-md);
   background: #e2e8f0 url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600') center/cover no-repeat;
@@ -279,7 +290,19 @@ body {
 
 <div class="mobile-frame">
 
-  <!-- شاشة الدخول وإنشاء الحساب بالشعار الجديد المضاء -->
+  <!-- بوابة التحديث الإجباري التي يتحكم بها الأدمن -->
+  <div class="force-update-gate" id="forceUpdateModal">
+    <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly Express" class="force-update-logo">
+    <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
+    <p id="forceUpdateMessageTxt" style="font-size:13px; color:#cbd5e1; line-height:1.6; margin-bottom:24px; max-width:320px;">
+      تم إطلاق تحديث جديد لتطبيق Fly Express بمظهر جديد وأيقونات محدثة وسرعة فائقة. يرجى التحديث لمواصلة الاستخدام.
+    </p>
+    <button onclick="downloadLatestAppVersion()" class="primary-action-btn" style="max-width:300px; padding:15px; font-size:15px;">
+      <i class="fa-solid fa-cloud-arrow-down"></i> تحميل وتثبيت التحديث الآن ⚡
+    </button>
+  </div>
+
+  <!-- شاشة الدخول وإنشاء الحساب -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly Express Logo" class="auth-main-logo">
@@ -288,20 +311,17 @@ body {
       </h2>
       <p style="font-size:12px; color:#cbd5e1; margin-bottom:18px;">أسرع وأأمن توصيل في نجع حمادي 🚀</p>
 
-      <!-- تبويبات التبديل بين تسجيل الدخول وإنشاء الحساب -->
       <div class="auth-nav-tabs">
         <button class="auth-tab-btn active" id="btnTabLogin" onclick="switchAuthMode('login')">تسجيل الدخول</button>
         <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
       </div>
 
-      <!-- نموذج تسجيل الدخول -->
       <div id="loginFormSection">
         <input type="text" id="loginUsername" class="auth-input-field" placeholder="اسم المستخدم أو رقم الهاتف">
         <input type="password" id="loginPassword" class="auth-input-field" placeholder="كلمة المرور">
         <button class="auth-submit-btn" onclick="processLoginAction()">تسجيل الدخول 🚀</button>
       </div>
 
-      <!-- نموذج إنشاء الحساب الجديد -->
       <div id="signupFormSection" style="display:none;">
         <input type="text" id="signupFullname" class="auth-input-field" placeholder="الاسم الكريم">
         <input type="tel" id="signupPhoneNum" class="auth-input-field" placeholder="رقم الموبايل للتواصل">
@@ -320,7 +340,7 @@ body {
         <div class="loc-title" id="currentLocationName">نجع حمادي وقراها ▾</div>
       </div>
     </div>
-    <div class="brand-header-badge" onclick="toggleDrawer(true)">
+    <div class="brand-header-badge" id="adminSecretTrigger" onclick="handleSecretAdminClicks()">
       <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly" class="brand-mini-logo">
     </div>
   </header>
@@ -328,7 +348,6 @@ body {
   <!-- 1. الشاشة الرئيسية -->
   <main id="view-home" class="sub-page-view active">
 
-    <!-- حقل البحث -->
     <div class="search-wrapper" style="padding:0 0 12px;">
       <div class="search-bar">
         <i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;"></i>
@@ -336,7 +355,6 @@ body {
       </div>
     </div>
 
-    <!-- البانر الكبير بالشعار الجديد -->
     <div class="hero-banner-slider" style="padding:0;">
       <div class="hero-card">
         <div class="hero-tag">توصيل فوري وآمن</div>
@@ -346,7 +364,7 @@ body {
       </div>
     </div>
 
-    <!-- شبكة الخدمات الرئيسية الثمانية -->
+    <!-- شبكة الخدمات الرئيسية 8 أقسام -->
     <div class="services-main-grid" style="padding:0;">
       <div class="service-icon-item" onclick="openServiceScreen('school')">
         <div class="service-circle-badge badge-school"><i class="fa-solid fa-motorcycle"></i></div>
@@ -459,7 +477,7 @@ body {
       <input type="file" id="pharma_cam_file" accept="image/*" capture="environment" style="display:none;" onchange="handleImageAttach(this, 'pharma_attached_badge')">
       
       <div id="pharma_attached_badge" style="display:none; background:#ecfdf5; border:1px solid #10b981; color:#065f46; padding:8px; border-radius:8px; font-size:11px; font-weight:800; margin-bottom:10px; text-align:center;">
-        ✅ تم التقاط صورة الروشتة وسيتم إرفاقها بالمحادثة
+        ✅ تم التقاط صورة الروشتة بنجاح
       </div>
 
       <input type="text" id="pharma_address" class="custom-field" placeholder="العنوان بالتفصيل في نجع حمادي">
@@ -595,7 +613,43 @@ body {
 </div>
 
 <script>
+// رقم إصدار هذا التطبيق الحالي المثبت في الهاتف
+const INSTALLED_VERSION = "1.0.0";
+
 const ADMIN_PHONE = "201017908076";
+const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
+let currentDownloadUrl = "https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file";
+
+// الاستماع السحابي لأوامر التحديث من لوحة الأدمن فوراً
+async function listenToAdminCloudUpdates() {
+  try {
+    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
+    const text = await res.text();
+    if (text) {
+      const lines = text.trim().split('\n');
+      const data = JSON.parse(JSON.parse(lines[lines.length - 1]).message);
+      
+      // إذا قام الأدمن بتفعيل التحديث الإجباري
+      if (data.update && data.update.enabled) {
+        if (data.update.version && data.update.version !== INSTALLED_VERSION) {
+          if (data.update.downloadUrl) currentDownloadUrl = data.update.downloadUrl;
+          if (data.update.notes) document.getElementById('forceUpdateMessageTxt').textContent = data.update.notes;
+          
+          // قفل التطبيق وإظهار شاشة التحديث الإجباري
+          document.getElementById('forceUpdateModal').style.display = 'flex';
+        }
+      } else {
+        document.getElementById('forceUpdateModal').style.display = 'none';
+      }
+    }
+  } catch(e) {}
+}
+setInterval(listenToAdminCloudUpdates, 20000);
+listenToAdminCloudUpdates();
+
+function downloadLatestAppVersion() {
+  window.open(currentDownloadUrl, '_blank');
+}
 
 // إرسال واتساب مباشر
 function sendDirectWhatsApp(text) {
@@ -705,6 +759,20 @@ function selectCityLocation() {
   }
 }
 
+// الدخول السري للأدمن بالضغط 5 مرات على الشعار الصغير
+let secretClicks = 0, secretTimer = null;
+function handleSecretAdminClicks() {
+  secretClicks++;
+  clearTimeout(secretTimer);
+  secretTimer = setTimeout(() => { secretClicks = 0; }, 2000);
+  if (secretClicks >= 5) {
+    secretClicks = 0;
+    location.href = 'https://mahmoudahmed3531-lgtm.github.io/FlyExpress/admin.html?t=' + Date.now();
+  } else {
+    toggleDrawer(true);
+  }
+}
+
 // إرسال الطلبات للواتساب
 function submitSchoolOrder() {
   const name = document.getElementById('sch_student_name').value.trim();
@@ -712,7 +780,7 @@ function submitSchoolOrder() {
   const to = document.getElementById('sch_to_school').value.trim();
   const phone = document.getElementById('sch_parent_phone').value.trim();
   if (!name || !from || !to) return alert("أكمل بيانات الطالب والعناوين أولاً.");
-  sendDirectWhatsApp(`طلب توصيل طالب للمدرسة 🏫🛵\nاسم الطالب: ${name}\nمن: ${from}\nإلى: ${to}\nولي الأمر: ${phone}`);
+  sendDirectWhatsApp(`طلب توصيل طالب للمدرسة 🏫🛵\nاسم الطالب: ${name}\nمن شارع: ${from}\nإلى: ${to}\nولي الأمر: ${phone}`);
 }
 
 function submitPharmacyOrder() {
@@ -749,7 +817,6 @@ function orderFoodItem(restaurant) {
   }
 }
 
-// التحقق من تسجيل الدخول عند البدء
 window.addEventListener('load', () => {
   const savedUser = localStorage.getItem('fly_user_name');
   if (savedUser) {
