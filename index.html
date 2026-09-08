@@ -4,9 +4,18 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
 <title>Fly Express — كل احتياجاتك في مكان واحد</title>
-<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Fly Express: توصيل طلاب المدارس والدليفري السريع وسوق الخضار والبقالة في نجع حمادي وقراها.">
+<meta name="theme-color" content="#e11d48">
 
-<link rel="icon" href="https://i.ibb.co/B5MQWCWF/fly-express.jpg"/>
+<link rel="manifest" href="/FlyExpress/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fly Express">
+
+<link rel="icon" href="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png"/>
+<link rel="apple-touch-icon" href="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png"/>
+
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -41,32 +50,59 @@ body {
   padding-bottom: 80px; overflow-x: hidden;
 }
 
-/* شاشة الترحيب والدخول الأولى */
+/* شاشة تسجيل الدخول وإنشاء الحساب المتطورة بشعار Fly Express الجديد */
 .auth-overlay {
   position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
   background: #090d16 url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1000') center/cover no-repeat;
-  z-index: 9999; display: flex; flex-direction: column; justify-content: space-between;
-  padding: 40px 24px; color: #fff;
+  z-index: 9999; display: flex; flex-direction: column; justify-content: center;
+  align-items: center; padding: 24px 20px; color: #fff; overflow-y: auto;
 }
 .auth-overlay::before {
   content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(9,13,22,0.7) 0%, rgba(9,13,22,0.95) 100%);
+  background: linear-gradient(180deg, rgba(9,13,22,0.85) 0%, rgba(9,13,22,0.98) 100%);
 }
-.auth-content { position: relative; z-index: 2; text-align: center; margin-top: auto; }
-.auth-logo { width: 140px; margin: 0 auto 18px; filter: drop-shadow(0 10px 20px rgba(225,29,72,0.4)); }
-.auth-btn-main {
-  width: 100%; padding: 14px; background: var(--primary); color: #fff;
-  border: 0; border-radius: var(--radius-md); font-size: 15px; font-weight: 800;
-  cursor: pointer; margin-bottom: 12px; font-family: inherit;
-  box-shadow: 0 8px 20px rgba(225,29,72,0.35);
-}
-.auth-btn-sub {
-  width: 100%; padding: 14px; background: rgba(255,255,255,0.08); color: #fff;
-  border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-md);
-  font-size: 14px; font-weight: 800; cursor: pointer; font-family: inherit;
+.auth-card-box {
+  position: relative; z-index: 2; width: 100%; max-width: 360px;
+  text-align: center; margin: auto 0;
 }
 
-/* الهيدر العلوي في الرئيسية */
+.auth-main-logo {
+  width: 120px; height: 120px; border-radius: 28px;
+  box-shadow: 0 0 35px rgba(225, 29, 72, 0.6);
+  margin-bottom: 12px; border: 2px solid var(--primary);
+  object-fit: cover;
+}
+
+.auth-nav-tabs {
+  display: flex; gap: 8px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md);
+  padding: 4px; margin-bottom: 16px;
+}
+.auth-tab-btn {
+  flex: 1; padding: 10px; border: 0; border-radius: 10px;
+  background: transparent; color: #cbd5e1; font-family: inherit;
+  font-size: 13px; font-weight: 800; cursor: pointer; transition: 0.2s;
+}
+.auth-tab-btn.active {
+  background: var(--primary); color: #fff;
+  box-shadow: 0 4px 14px rgba(225,29,72,0.4);
+}
+
+.auth-input-field {
+  width: 100%; padding: 13px 14px; border-radius: var(--radius-sm);
+  background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.15);
+  color: #fff; font-family: inherit; font-size: 13px; margin-bottom: 10px;
+}
+.auth-input-field:focus { border-color: var(--primary); background: #0f172a; }
+
+.auth-submit-btn {
+  width: 100%; padding: 14px; background: var(--primary); color: #fff;
+  border: 0; border-radius: var(--radius-md); font-size: 14px; font-weight: 900;
+  cursor: pointer; font-family: inherit; box-shadow: 0 8px 20px rgba(225,29,72,0.4);
+  margin-top: 4px;
+}
+
+/* الهيدر العلوي */
 .top-nav-bar {
   background: var(--surface); padding: 14px 16px;
   display: flex; align-items: center; justify-content: space-between;
@@ -76,13 +112,15 @@ body {
 .loc-icon { color: var(--primary); font-size: 18px; }
 .loc-text { font-size: 11px; color: var(--text-sub); }
 .loc-title { font-size: 13px; font-weight: 800; color: var(--text-main); }
-.user-avatar-btn {
-  width: 38px; height: 38px; border-radius: 50%; background: #fee2e2;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--primary); font-size: 16px; cursor: pointer; border: 1.5px solid var(--border);
+.brand-header-badge {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+}
+.brand-mini-logo {
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1.5px solid var(--primary); object-fit: cover;
 }
 
-/* حقل البحث العصري */
+/* شريط البحث */
 .search-wrapper { padding: 12px 16px; background: var(--surface); }
 .search-bar {
   background: #f1f5f9; border-radius: 12px; display: flex; align-items: center;
@@ -94,17 +132,19 @@ body {
   font-size: 13px; color: var(--text-main);
 }
 
-/* البانر الإعلاني الكبير */
+/* البانر الإعلاني */
 .hero-banner-slider { padding: 0 16px; margin: 12px 0 18px; }
 .hero-card {
   background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
   border-radius: var(--radius-lg); padding: 18px; position: relative;
   overflow: hidden; color: #fff; min-height: 130px; display: flex;
   flex-direction: column; justify-content: center;
+  border: 1px solid rgba(225,29,72,0.25);
 }
-.hero-card::after {
-  content: "🚀"; position: absolute; left: 14px; top: 50%;
-  transform: translateY(-50%); font-size: 70px; opacity: 0.85;
+.hero-card-img {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  width: 95px; height: 95px; border-radius: 20px; object-fit: cover;
+  box-shadow: 0 0 20px rgba(225,29,72,0.5); border: 2px solid var(--primary);
 }
 .hero-tag {
   background: var(--primary); color: #fff; font-size: 10px; font-weight: 800;
@@ -130,7 +170,6 @@ body {
 .service-item-label { font-size: 11px; font-weight: 800; color: var(--text-main); }
 .service-item-desc { font-size: 9px; color: var(--text-sub); }
 
-/* ألوان الأيقونات حسب التصميم بالضبط */
 .badge-school { background: #ef4444; }
 .badge-rides { background: #0284c7; }
 .badge-orders { background: #f59e0b; }
@@ -140,7 +179,7 @@ body {
 .badge-food { background: #ea580c; }
 .badge-more { background: #475569; }
 
-/* شريط الخصومات والعروض الحصرية */
+/* العروض والخصومات */
 .offers-section-box { padding: 0 16px; margin-bottom: 20px; }
 .section-header-title {
   display: flex; justify-content: space-between; align-items: center;
@@ -164,7 +203,7 @@ body {
   align-items: center; justify-content: space-between; margin-bottom: 12px;
 }
 
-/* القائمة الجانبية للحساب (Profile Drawer) */
+/* القائمة الجانبية للحساب */
 .drawer-menu {
   position: fixed; inset: 0; background: rgba(0,0,0,0.6);
   z-index: 10000; display: none; justify-content: flex-end;
@@ -210,7 +249,6 @@ body {
   justify-content: center; cursor: pointer; color: var(--text-main);
 }
 
-/* مدخلات وكروت الحجز */
 .ui-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius-md); padding: 16px; margin-bottom: 14px;
@@ -241,16 +279,35 @@ body {
 
 <div class="mobile-frame">
 
-  <!-- شاشة الدخول الأولى المطابقة للتصميم (Intro Splash) -->
-  <div class="auth-overlay" id="introAuthScreen" style="display:none;">
-    <div style="font-size:12px; letter-spacing:1px; color:#cbd5e1;">أسرع توصيل .. لحد باب بيتك</div>
-    <div class="auth-content">
-      <div style="font-size:38px; font-weight:900; color:#fff; font-style:italic;">
-        FLY <span style="color:var(--primary);">EXPRESS</span> 🛵
+  <!-- شاشة الدخول وإنشاء الحساب بالشعار الجديد المضاء -->
+  <div class="auth-overlay" id="authGateScreen">
+    <div class="auth-card-box">
+      <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly Express Logo" class="auth-main-logo">
+      <h2 style="font-size:24px; font-weight:900; margin-bottom:4px; font-style:italic;">
+        FLY <span style="color:var(--primary);">EXPRESS</span>
+      </h2>
+      <p style="font-size:12px; color:#cbd5e1; margin-bottom:18px;">أسرع وأأمن توصيل في نجع حمادي 🚀</p>
+
+      <!-- تبويبات التبديل بين تسجيل الدخول وإنشاء الحساب -->
+      <div class="auth-nav-tabs">
+        <button class="auth-tab-btn active" id="btnTabLogin" onclick="switchAuthMode('login')">تسجيل الدخول</button>
+        <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
       </div>
-      <p style="font-size:13px; color:#cbd5e1; margin:10px 0 24px;">كل احتياجاتك .. في مكان واحد<br>نوصلك بسرعة وأمان</p>
-      <button class="auth-btn-main" onclick="closeAuthScreen()">ابدأ الآن</button>
-      <button class="auth-btn-sub" onclick="openLoginPrompt()">تسجيل الدخول</button>
+
+      <!-- نموذج تسجيل الدخول -->
+      <div id="loginFormSection">
+        <input type="text" id="loginUsername" class="auth-input-field" placeholder="اسم المستخدم أو رقم الهاتف">
+        <input type="password" id="loginPassword" class="auth-input-field" placeholder="كلمة المرور">
+        <button class="auth-submit-btn" onclick="processLoginAction()">تسجيل الدخول 🚀</button>
+      </div>
+
+      <!-- نموذج إنشاء الحساب الجديد -->
+      <div id="signupFormSection" style="display:none;">
+        <input type="text" id="signupFullname" class="auth-input-field" placeholder="الاسم الكريم">
+        <input type="tel" id="signupPhoneNum" class="auth-input-field" placeholder="رقم الموبايل للتواصل">
+        <input type="password" id="signupPasscode" class="auth-input-field" placeholder="كلمة المرور الجديدة">
+        <button class="auth-submit-btn" onclick="processSignupAction()">تأكيد وإنشاء الحساب ✨</button>
+      </div>
     </div>
   </div>
 
@@ -263,12 +320,12 @@ body {
         <div class="loc-title" id="currentLocationName">نجع حمادي وقراها ▾</div>
       </div>
     </div>
-    <div class="user-avatar-btn" onclick="toggleDrawer(true)">
-      <i class="fa-regular fa-user"></i>
+    <div class="brand-header-badge" onclick="toggleDrawer(true)">
+      <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly" class="brand-mini-logo">
     </div>
   </header>
 
-  <!-- 1. الشاشة الرئيسية (Home View) -->
+  <!-- 1. الشاشة الرئيسية -->
   <main id="view-home" class="sub-page-view active">
 
     <!-- حقل البحث -->
@@ -279,16 +336,17 @@ body {
       </div>
     </div>
 
-    <!-- البانر الكبير -->
+    <!-- البانر الكبير بالشعار الجديد -->
     <div class="hero-banner-slider" style="padding:0;">
       <div class="hero-card">
-        <div class="hero-tag">توصيل سريع وآمن</div>
-        <h2 style="font-size:18px; font-weight:900; margin-bottom:4px;">لكل احتياجاتك اليومية</h2>
-        <p style="font-size:11px; color:#cbd5e1;">مشاوير، طرود، أدوية، ومطاعم فوراً</p>
+        <div class="hero-tag">توصيل فوري وآمن</div>
+        <h2 style="font-size:18px; font-weight:900; margin-bottom:4px;">كل طلباتك في مكان واحد</h2>
+        <p style="font-size:11px; color:#cbd5e1;">مشاوير، طرود، أدوية، ومطاعم لحد بابك</p>
+        <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" alt="Fly Express" class="hero-card-img">
       </div>
     </div>
 
-    <!-- شبكة الخدمات الرئيسية 8 أقسام مطابقة للصورة -->
+    <!-- شبكة الخدمات الرئيسية الثمانية -->
     <div class="services-main-grid" style="padding:0;">
       <div class="service-icon-item" onclick="openServiceScreen('school')">
         <div class="service-circle-badge badge-school"><i class="fa-solid fa-motorcycle"></i></div>
@@ -342,13 +400,13 @@ body {
     <!-- كارت عروض وخصومات حصرية -->
     <div class="offers-section-box" style="padding:0;">
       <div class="section-header-title">
-        <span>عروض وخصومات 🔥</span>
+        <span>عروض وخصومات حصرية 🔥</span>
         <span style="font-size:11px; color:var(--primary); cursor:pointer;">عرض الكل</span>
       </div>
       <div class="offer-banner-card">
         <div>
-          <h4 style="font-size:14px; font-weight:900;">خصومات حصرية اليوم</h4>
-          <p style="font-size:11px; opacity:0.9;">على جميع مشاوير المطاعم والبقالة</p>
+          <h4 style="font-size:14px; font-weight:900;">خصومات اليوم في نجع حمادي</h4>
+          <p style="font-size:11px; opacity:0.9;">وفر على جميع مشاوير المطاعم والطلبات</p>
         </div>
         <i class="fa-solid fa-pizza-slice" style="font-size:32px; opacity:0.9;"></i>
       </div>
@@ -356,22 +414,21 @@ body {
 
   </main>
 
-  <!-- 2. شاشة توصيل الطلاب للمدارس (كما في التصميم) -->
+  <!-- 2. شاشة توصيل الطلاب -->
   <section id="view-school" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
-      <h3 style="font-size:16px; font-weight:900;">توصيل الطلاب</h3>
+      <h3 style="font-size:16px; font-weight:900;">توصيل الطلاب للمدارس</h3>
     </div>
 
     <div class="ui-card" style="text-align:center;">
-      <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=500" style="width:100%; height:160px; object-fit:cover; border-radius:12px; margin-bottom:12px;">
-      <h3 style="font-size:16px; font-weight:900; margin-bottom:4px;">توصيل الطلاب للمدارس والدروس</h3>
-      <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">بأمان تام وفي الوقت المحدد مع إشعار وصول فوري لولي الأمر.</p>
+      <h3 style="font-size:16px; font-weight:900; margin-bottom:4px;">مشاوير المدارس والدروس الآمنة</h3>
+      <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">بأمان تام ومواعيد مضبوطة لباب البيت والمدرسة.</p>
 
       <div style="text-align:right; margin-bottom:16px; display:flex; flex-direction:column; gap:8px;">
-        <div style="font-size:12px; color:#10b981; font-weight:800;"><i class="fa-solid fa-circle-check"></i> سائقين موثوقين ومسجلين رسمياً</div>
-        <div style="font-size:12px; color:#10b981; font-weight:800;"><i class="fa-solid fa-circle-check"></i> متابعة لحظية لخط سير الرحلة</div>
-        <div style="font-size:12px; color:#10b981; font-weight:800;"><i class="fa-solid fa-circle-check"></i> أسعار مناسبة وباقات أسبوعية وشهرية</div>
+        <div style="font-size:12px; color:#10b981; font-weight:800;"><i class="fa-solid fa-circle-check"></i> كباتن موثوقين ومسجلين رسمياً</div>
+        <div style="font-size:12px; color:#10b981; font-weight:800;"><i class="fa-solid fa-circle-check"></i> متابعة لحظية وإشعار وصول فوري</div>
+        <div style="font-size:12px; color:#10b981; font-weight:800;"><i class="fa-solid fa-circle-check"></i> أسعار خاصة للباقات الشهرية</div>
       </div>
 
       <input type="text" id="sch_student_name" class="custom-field" placeholder="اسم الطالب / الطالبة">
@@ -379,30 +436,30 @@ body {
       <input type="text" id="sch_to_school" class="custom-field" placeholder="إلى مدرسة / سنتر">
       <input type="tel" id="sch_parent_phone" class="custom-field" placeholder="رقم هاتف ولي الأمر">
 
-      <button class="primary-action-btn" onclick="submitSchoolOrder()">اطلب الآن 🛵</button>
+      <button class="primary-action-btn" onclick="submitSchoolOrder()">اطلب مشوار الطالب الآن 🛵</button>
     </div>
   </section>
 
-  <!-- 3. شاشة الصيدلية وتصوير الروشتة (حل الكاميرا الشامل) -->
+  <!-- 3. شاشة الصيدلية وتصوير الروشتة -->
   <section id="view-pharmacy" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
-      <h3 style="font-size:16px; font-weight:900;">أدوية من الصيدلية 💊</h3>
+      <h3 style="font-size:16px; font-weight:900;">أدوية وصيدلية عاجلة 💊</h3>
     </div>
 
     <div class="ui-card">
-      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">أرسل الروشتة أو اكتب الأدوية وسيصلك المندوب من أقرب صيدلية مفتوحة بنجع حمادي.</p>
+      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">تحرك سريع لأقرب صيدلية مفتوحة بنجع حمادي وقراها.</p>
 
-      <textarea id="pharma_details" class="custom-field" rows="3" placeholder="اكتب أسماء الأدوية أو المستلزمات المطلوبة..."></textarea>
+      <textarea id="pharma_details" class="custom-field" rows="3" placeholder="اكتب اسم العلاج أو المستلزمات المطلوبة..."></textarea>
 
-      <!-- زر فتح الكاميرا وتصوير الروشتة المباشر -->
+      <!-- زر الكاميرا المباشر -->
       <button type="button" class="camera-picker-btn" onclick="document.getElementById('pharma_cam_file').click()">
         <i class="fa-solid fa-camera"></i> فتح الكاميرا وتصوير الروشتة 📷
       </button>
       <input type="file" id="pharma_cam_file" accept="image/*" capture="environment" style="display:none;" onchange="handleImageAttach(this, 'pharma_attached_badge')">
       
       <div id="pharma_attached_badge" style="display:none; background:#ecfdf5; border:1px solid #10b981; color:#065f46; padding:8px; border-radius:8px; font-size:11px; font-weight:800; margin-bottom:10px; text-align:center;">
-        ✅ تم التقاط صورة الروشتة بنجاح وسيتم إرسالها للمندوب
+        ✅ تم التقاط صورة الروشتة وسيتم إرفاقها بالمحادثة
       </div>
 
       <input type="text" id="pharma_address" class="custom-field" placeholder="العنوان بالتفصيل في نجع حمادي">
@@ -410,7 +467,7 @@ body {
     </div>
   </section>
 
-  <!-- 4. شاشة تتبع الطلب (كما في التصميم بالضبط) -->
+  <!-- 4. شاشة تتبع الطلب -->
   <section id="view-tracking" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
@@ -423,14 +480,14 @@ body {
       <div style="display:flex; align-items:center; gap:10px;">
         <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150" style="width:44px; height:44px; border-radius:50%; object-fit:cover;">
         <div>
-          <h4 style="font-size:13px; font-weight:900;">أحمد محمد (الكابتن)</h4>
-          <span style="font-size:11px; color:#f59e0b;"><i class="fa-solid fa-star"></i> 4.8</span>
-          <span style="font-size:10px; color:var(--text-sub);">• دراجة نارية 2563</span>
+          <h4 style="font-size:13px; font-weight:900;">أحمد محمد (كابتن Fly)</h4>
+          <span style="font-size:11px; color:#f59e0b;"><i class="fa-solid fa-star"></i> 4.9</span>
+          <span style="font-size:10px; color:var(--text-sub);">• سكوتر 2563</span>
         </div>
       </div>
       <div style="text-align:left;">
-        <div style="font-size:10px; color:var(--text-sub);">في الطريق إليك</div>
-        <strong style="font-size:12px; color:var(--primary);">يصل خلال 8 دقائق</strong>
+        <div style="font-size:10px; color:var(--text-sub);">الحالة الآن</div>
+        <strong style="font-size:12px; color:var(--primary);">في الطريق إليك</strong>
       </div>
     </div>
 
@@ -459,14 +516,14 @@ body {
     </div>
   </section>
 
-  <!-- 6. شاشة المطاعم والأكلات -->
+  <!-- 6. شاشة المطاعم -->
   <section id="view-food" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
-      <h3 style="font-size:16px; font-weight:900;">المطاعم 🍽️</h3>
+      <h3 style="font-size:16px; font-weight:900;">مطاعم نجع حمادي 🍽️</h3>
     </div>
     <div class="ui-card" style="display:flex; justify-content:space-between; align-items:center;">
-      <div><strong>مشويات وكباب نجع حمادي</strong><div style="font-size:11px; color:var(--text-sub);">توصيل ساخن خلال 25 دقيقة</div></div>
+      <div><strong>مشويات وكباب نجع حمادي</strong><div style="font-size:11px; color:var(--text-sub);">توصيل ساخن وسريع</div></div>
       <button class="primary-action-btn" style="width:auto; padding:8px 14px;" onclick="orderFoodItem('مشويات نجع حمادي')">طلب</button>
     </div>
     <div class="ui-card" style="display:flex; justify-content:space-between; align-items:center;">
@@ -482,23 +539,21 @@ body {
       <h3 style="font-size:16px; font-weight:900;">خضار وفواكه طازجة 🥬</h3>
     </div>
     <div class="ui-card">
-      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">اكتب كل طلبات الخضار والفاكهة بالكيلو وسنشتريها طازجة بأفضل أسعار السوق.</p>
+      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">اكتب طلباتك بالكيلو وسنشتريها طازجة بأفضل أسعار السوق.</p>
       <textarea id="veg_items_txt" class="custom-field" rows="4" placeholder="مثال: 2 كيلو طماطم، 1 كيلو بصل، نصف ليمون..."></textarea>
       <input type="text" id="veg_delivery_addr" class="custom-field" placeholder="عنوان التوصيل">
       <button class="primary-action-btn" onclick="submitVegOrder()">إرسال طلب الخضار للواتساب 🛒</button>
     </div>
   </section>
 
-  <!-- القائمة الجانبية للحساب (مطابقة للتصميم تماماً) -->
+  <!-- القائمة الجانبية للحساب -->
   <div class="drawer-menu" id="profileDrawer" onclick="if(event.target===this) toggleDrawer(false)">
     <div class="drawer-sheet">
       <div>
         <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:16px;">
-          <div style="width:48px; height:48px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900;">
-            F
-          </div>
+          <img src="https://i.ibb.co/Lhb4G27c/file-00000000e1c082468618c6c036d1ac45.png" style="width:48px; height:48px; border-radius:14px; object-fit:cover; border:1.5px solid var(--primary);">
           <div>
-            <h4 style="font-size:14px; font-weight:900;" id="drawerUserName">أحمد محمد</h4>
+            <h4 style="font-size:14px; font-weight:900;" id="drawerUserName">عميل Fly Express</h4>
             <span style="font-size:11px; color:#94a3b8;" id="drawerUserPhone">+20 1017908076</span>
           </div>
         </div>
@@ -507,7 +562,6 @@ body {
           <div class="drawer-item active" onclick="toggleDrawer(false); openServiceScreen('orders');"><i class="fa-solid fa-clock-rotate-left"></i> طلباتي</div>
           <div class="drawer-item" onclick="toggleDrawer(false); selectCityLocation();"><i class="fa-solid fa-location-dot"></i> العناوين المحفوظة</div>
           <div class="drawer-item" onclick="toggleDrawer(false); alert('رصيد المحفظة المتاح: 20 ج');"><i class="fa-solid fa-wallet"></i> المحفظة</div>
-          <div class="drawer-item" onclick="toggleDrawer(false); alert('لا توجد إشعارات جديدة');"><i class="fa-solid fa-bell"></i> الإشعارات</div>
           <div class="drawer-item" onclick="toggleDrawer(false); window.open('https://wa.me/201017908076','_blank');"><i class="fa-solid fa-headset"></i> الدعم والمساعدة</div>
         </div>
       </div>
@@ -518,7 +572,7 @@ body {
     </div>
   </div>
 
-  <!-- شريط التنقل السفلي الأنيق 4 عناصر -->
+  <!-- شريط التنقل السفلي -->
   <nav class="tab-bottom-nav">
     <button class="tab-btn active" onclick="switchNavTab('home', this)">
       <i class="fa-solid fa-house" style="font-size:18px;"></i>
@@ -543,16 +597,56 @@ body {
 <script>
 const ADMIN_PHONE = "201017908076";
 
-// إرسال واتساب مباشر بدون صفحات وسيطة
+// إرسال واتساب مباشر
 function sendDirectWhatsApp(text) {
   const encText = encodeURIComponent(text);
   window.location.href = `whatsapp://send?phone=${ADMIN_PHONE}&text=${encText}`;
   setTimeout(() => {
     window.open(`https://wa.me/${ADMIN_PHONE}?text=${encText}`, '_blank');
-  }, 500);
+  }, 400);
 }
 
-// معالجة وحل مشكلة الصورة محلياً وبشكل فوري
+// تبديل واجهة الدخول وإنشاء الحساب
+function switchAuthMode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('btnTabLogin').classList.toggle('active', isLogin);
+  document.getElementById('btnTabSignup').classList.toggle('active', !isLogin);
+  document.getElementById('loginFormSection').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('signupFormSection').style.display = isLogin ? 'none' : 'block';
+}
+
+function processLoginAction() {
+  const u = document.getElementById('loginUsername').value.trim();
+  const p = document.getElementById('loginPassword').value.trim();
+  if (!u || !p) return alert("من فضلك أدخل اسم المستخدم وكلمة المرور.");
+  
+  localStorage.setItem('fly_user_name', u);
+  document.getElementById('drawerUserName').textContent = u;
+  document.getElementById('authGateScreen').style.display = 'none';
+}
+
+function processSignupAction() {
+  const name = document.getElementById('signupFullname').value.trim();
+  const phone = document.getElementById('signupPhoneNum').value.trim();
+  const pass = document.getElementById('signupPasscode').value.trim();
+  if (!name || !phone || !pass) return alert("من فضلك أكمل جميع بيانات الحساب الجديد.");
+
+  localStorage.setItem('fly_user_name', name);
+  localStorage.setItem('fly_user_phone', phone);
+  document.getElementById('drawerUserName').textContent = name;
+  document.getElementById('drawerUserPhone').textContent = phone;
+  document.getElementById('authGateScreen').style.display = 'none';
+}
+
+function confirmAppLogout() {
+  if (confirm("هل تود تسجيل الخروج من التطبيق؟")) {
+    toggleDrawer(false);
+    localStorage.removeItem('fly_user_name');
+    document.getElementById('authGateScreen').style.display = 'flex';
+  }
+}
+
+// التقاط ومعالجة الصور
 let attachedImageData = null;
 function handleImageAttach(input, badgeId) {
   if (input.files && input.files[0]) {
@@ -598,50 +692,27 @@ function openServiceScreen(type) {
   else toggleDrawer(true);
 }
 
-// فتح وإغلاق القائمة الجانبية
 function toggleDrawer(open) {
   const d = document.getElementById('profileDrawer');
   if (open) d.classList.add('show');
   else d.classList.remove('show');
 }
 
-function closeAuthScreen() {
-  document.getElementById('introAuthScreen').style.display = 'none';
-  localStorage.setItem('fly_intro_seen', 'true');
-}
-
-function openLoginPrompt() {
-  const name = prompt("من فضلك اكتب اسمك الكريم:");
-  if (name) {
-    localStorage.setItem('fly_user_name', name);
-    document.getElementById('drawerUserName').textContent = name;
-    closeAuthScreen();
-  }
-}
-
-function confirmAppLogout() {
-  if (confirm("هل تود تسجيل الخروج والعودة لشاشة البداية؟")) {
-    toggleDrawer(false);
-    localStorage.removeItem('fly_intro_seen');
-    document.getElementById('introAuthScreen').style.display = 'flex';
-  }
-}
-
 function selectCityLocation() {
-  const area = prompt("حدد منطقتك الحالية في نجع حمادي (مثال: الشارع الرئيسي، بركة، المساكن، هو):", "نجع حمادي");
+  const area = prompt("حدد منطقتك في نجع حمادي (مثال: الشارع الرئيسي، بركة، المساكن، هو):", "نجع حمادي");
   if (area) {
     document.getElementById('currentLocationName').textContent = `${area} ▾`;
   }
 }
 
-// إرسال الطلبات
+// إرسال الطلبات للواتساب
 function submitSchoolOrder() {
   const name = document.getElementById('sch_student_name').value.trim();
   const from = document.getElementById('sch_from_street').value.trim();
   const to = document.getElementById('sch_to_school').value.trim();
   const phone = document.getElementById('sch_parent_phone').value.trim();
   if (!name || !from || !to) return alert("أكمل بيانات الطالب والعناوين أولاً.");
-  sendDirectWhatsApp(`طلب توصيل طالب للمدرسة 🏫🛵\nاسم الطالب: ${name}\nمن شارع: ${from}\nإلى: ${to}\nولي الأمر: ${phone}`);
+  sendDirectWhatsApp(`طلب توصيل طالب للمدرسة 🏫🛵\nاسم الطالب: ${name}\nمن: ${from}\nإلى: ${to}\nولي الأمر: ${phone}`);
 }
 
 function submitPharmacyOrder() {
@@ -678,15 +749,18 @@ function orderFoodItem(restaurant) {
   }
 }
 
-// التشغيل الأولي
+// التحقق من تسجيل الدخول عند البدء
 window.addEventListener('load', () => {
-  const seen = localStorage.getItem('fly_intro_seen');
-  if (!seen) {
-    document.getElementById('introAuthScreen').style.display = 'flex';
+  const savedUser = localStorage.getItem('fly_user_name');
+  if (savedUser) {
+    document.getElementById('authGateScreen').style.display = 'none';
+    document.getElementById('drawerUserName').textContent = savedUser;
+  } else {
+    document.getElementById('authGateScreen').style.display = 'flex';
   }
-  const savedName = localStorage.getItem('fly_user_name');
-  if (savedName) {
-    document.getElementById('drawerUserName').textContent = savedName;
+  const savedPhone = localStorage.getItem('fly_user_phone');
+  if (savedPhone) {
+    document.getElementById('drawerUserPhone').textContent = savedPhone;
   }
 });
 </script>
