@@ -29,14 +29,19 @@ jobs:
           cd client_app
           cordova platform add android
           
-          # إضافة إضافات الكاميرا والموقع
+          # تثبيت إضافات الكاميرا والموقع
           cordova plugin add cordova-plugin-camera
           cordova plugin add cordova-plugin-geolocation
           
-          # نسخ أيقونة التطبيق الرسمية
-          cp ../icon-512.png res/icon.png || true
+          # إنشاء مجلد res أولاً ثم نسخ الأيقونة داخله
+          mkdir -p res
+          if [ -f ../icon-512.png ]; then
+            cp ../icon-512.png res/icon.png
+          elif [ -f ../icon-192.png ]; then
+            cp ../icon-192.png res/icon.png
+          fi
 
-          # ضبط الصلاحيات، الأيقونة، والسماح لروابط الواتساب
+          # إعداد ملف التهيئة والأذونات والأيقونة
           cat << 'EOF' > config.xml
           <?xml version='1.0' encoding='utf-8'?>
           <widget id="com.flyexpress.app" version="1.0.4" xmlns="http://www.w3.org/ns/widgets">
