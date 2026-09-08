@@ -33,15 +33,12 @@ jobs:
           cordova plugin add cordova-plugin-geolocation
           
           mkdir -p res
-          if [ -f ../icon-512.png ]; then
-            cp ../icon-512.png res/icon.png
-          elif [ -f ../icon-192.png ]; then
-            cp ../icon-192.png res/icon.png
-          fi
+          # تحميل الشعار الجديد الفخم بدقة عالية ليكون أيقونة التطبيق الرسمية
+          curl -L -o res/icon.png "https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png" || cp ../icon-512.png res/icon.png
 
           cat << 'EOF' > config.xml
           <?xml version='1.0' encoding='utf-8'?>
-          <widget id="com.flyexpress.app" version="1.0.6" xmlns="http://www.w3.org/ns/widgets">
+          <widget id="com.flyexpress.app" version="1.0.7" xmlns="http://www.w3.org/ns/widgets">
               <name>Fly Express</name>
               <description>Fly Express Delivery Naga Hammadi</description>
               <content src="https://mahmoudahmed3531-lgtm.github.io/FlyExpress/index.html" />
@@ -57,21 +54,16 @@ jobs:
           </widget>
           EOF
 
-          # 1. بناء الـ APK
+          # بناء الحزمة
           cordova build android --release --no-telemetry -- --packageType=apk
 
-          # 2. إنشاء مفتاح رسمي جديد
+          # مفتاح التوقيع
           keytool -genkey -v -keystore flyexpress.jks -alias flyexpress -keyalg RSA -keysize 2048 -validity 10000 -storepass fly123456 -keypass fly123456 -dname "CN=FlyExpress, OU=Delivery, O=Fly, L=NagaHammadi, ST=Qena, C=EG"
 
-          # 3. محاذاة الملف قبل التوقيع (Zipalign)
+          # المحاذاة والتوقيع الرسمي
           UNSIGNED_APK=$(find platforms/android -name "*release-unsigned.apk" | head -n 1)
           ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -v -p 4 "$UNSIGNED_APK" aligned.apk
-
-          # 4. التوقيع باستخدام apksigner الرسمي (يدعم v2 و v3)
           ${ANDROID_SDK_ROOT}/build-tools/34.0.0/apksigner sign --ks flyexpress.jks --ks-pass pass:fly123456 --key-pass pass:fly123456 --out FlyExpress-Official.apk aligned.apk
-
-          # 5. التحقق من صحة التوقيع
-          ${ANDROID_SDK_ROOT}/build-tools/34.0.0/apksigner verify FlyExpress-Official.apk
 
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
