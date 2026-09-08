@@ -28,11 +28,33 @@ jobs:
           cordova create client_app com.flyexpress.app "Fly Express"
           cd client_app
           cordova platform add android
-          # إضافة إضافات صلاحيات الكاميرا والوسائط والموقع في الأندرويد
+          
+          # إضافة إضافات الكاميرا والموقع
           cordova plugin add cordova-plugin-camera
           cordova plugin add cordova-plugin-geolocation
-          # ضبط الرابط المباشر
-          echo '<widget id="com.flyexpress.app" version="1.0.3" xmlns="http://www.w3.org/ns/widgets"><name>Fly Express</name><description>Fly Express Delivery</description><content src="https://mahmoudahmed3531-lgtm.github.io/FlyExpress/index.html" /><access origin="*" /><allow-navigation href="*" /><preference name="CameraUsesGeolocation" value="false" /></widget>' > config.xml
+          
+          # نسخ أيقونة التطبيق الرسمية
+          cp ../icon-512.png res/icon.png || true
+
+          # ضبط الصلاحيات، الأيقونة، والسماح لروابط الواتساب
+          cat << 'EOF' > config.xml
+          <?xml version='1.0' encoding='utf-8'?>
+          <widget id="com.flyexpress.app" version="1.0.4" xmlns="http://www.w3.org/ns/widgets">
+              <name>Fly Express</name>
+              <description>Fly Express Delivery Naga Hammadi</description>
+              <content src="https://mahmoudahmed3531-lgtm.github.io/FlyExpress/index.html" />
+              <access origin="*" />
+              <allow-intent href="http://*/*" />
+              <allow-intent href="https://*/*" />
+              <allow-intent href="tel:*" />
+              <allow-intent href="sms:*" />
+              <allow-intent href="whatsapp:*" />
+              <allow-navigation href="*" />
+              <icon src="res/icon.png" />
+              <preference name="CameraUsesGeolocation" value="false" />
+          </widget>
+          EOF
+
           cordova build android --debug
 
       - name: Upload Client APK
