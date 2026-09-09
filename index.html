@@ -2,6 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
+<!-- منع التخزين المؤقت تماماً لضمان تحديث التطبيق تلقائياً دون مسح البيانات -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
 <title>Fly Express — كل احتياجاتك في مكان واحد</title>
 <meta name="description" content="Fly Express: توصيل طلاب المدارس والدليفري السريع وسوق الخضار والبقالة في نجع حمادي وقراها.">
@@ -324,7 +329,7 @@ body {
     </button>
   </div>
 
-  <!-- شاشة الدخول الاحترافية مع تسجيل جوجل وتحديث قاعدة البيانات المباشر -->
+  <!-- شاشة الدخول الاحترافية مع خيار Google وحفظ الحسابات في السحابة -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express Logo" class="auth-main-logo">
@@ -338,7 +343,7 @@ body {
         <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
       </div>
 
-      <!-- تسجيل الدخول -->
+      <!-- تسجيل الدخول بدون Autofill جوجل المزعج -->
       <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();" autocomplete="off">
         <input type="text" id="loginUsername" class="auth-input-field" placeholder="اسم المستخدم أو رقم الهاتف" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other">
         
@@ -352,7 +357,7 @@ body {
         <button type="submit" class="auth-submit-btn">تسجيل الدخول 🚀</button>
       </form>
 
-      <!-- إنشاء حساب جديد -->
+      <!-- إنشاء حساب جديد مع الحفظ المباشر في قاعدة بيانات الأدمن -->
       <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSignupAction();" autocomplete="off">
         <input type="text" id="signupFullname" class="auth-input-field" placeholder="الاسم الكريم" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         <input type="tel" id="signupPhoneNum" class="auth-input-field" placeholder="رقم الموبايل للتواصل" autocomplete="off" autocorrect="off" inputmode="tel">
@@ -666,9 +671,9 @@ const APP_LOCAL_VERSION = "1.0.0";
 const ADMIN_PHONE = "201017908076";
 const USERS_API_URL = "https://6a9de5152f89be7fb70d8140.mockapi.io/users";
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
-let currentDownloadUrl = "https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file";
+let currentDownloadUrl = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file";
 
-// إظهار أو إخفاء كلمة المرور بأمان
+// إظهار أو إخفاء كلمة المرور
 function togglePasswordVisibility(inputId, iconEl) {
   const input = document.getElementById(inputId);
   if (!input) return;
@@ -699,7 +704,7 @@ function isUpdateRequired(installedVer, requiredVer) {
 // الاستماع للوحة الأدمن وفحص التحديث بذكاء
 async function checkSmartUpdateFromAdmin() {
   try {
-    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest`);
+    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest&t=${Date.now()}`);
     const text = await res.text();
     if (text) {
       const lines = text.trim().split('\n');
@@ -720,7 +725,7 @@ async function checkSmartUpdateFromAdmin() {
     }
   } catch (e) {}
 }
-setInterval(checkSmartUpdateFromAdmin, 20000);
+setInterval(checkSmartUpdateFromAdmin, 15000);
 checkSmartUpdateFromAdmin();
 
 function downloadLatestAppVersion() {
@@ -768,7 +773,7 @@ async function saveUserToCloudDatabase(name, phone) {
       })
     });
   } catch (e) {
-    console.log("تعذر حفظ العميل في قاعدة البيانات السحابية");
+    console.log("تعذر حفظ العميل في السحابة");
   }
 }
 
@@ -785,7 +790,7 @@ async function processSignupAction() {
   // حفظ العميل في قاعدة البيانات السحابية للأدمن
   await saveUserToCloudDatabase(name, phone);
 
-  // حفظ في الهاتف
+  // حفظ محلياً في الهاتف
   localStorage.setItem('fly_user_name', name);
   localStorage.setItem('fly_user_phone', phone);
   document.getElementById('drawerUserName').textContent = name;
@@ -806,7 +811,6 @@ async function handleGoogleSignIn() {
   const finalName = derivedName || "عميل Google";
   const finalPhone = phonePrompt || "01000000000";
 
-  // حفظه في قاعدة البيانات السحابية للأدمن فوراً
   await saveUserToCloudDatabase(finalName, finalPhone);
 
   localStorage.setItem('fly_user_name', finalName);
@@ -939,6 +943,13 @@ function orderFoodItem(restaurant) {
   if (order) {
     sendDirectWhatsApp(`طلب طعام من مطاعم Fly Express 🍽️🔥\nالمطعم: ${restaurant}\nالوجبة المطلوبة: ${order}`);
   }
+}
+
+// مسح أي ServiceWorker مخزن لمنع الكاش تماماً
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    for (let registration of registrations) { registration.unregister(); }
+  });
 }
 
 window.addEventListener('load', () => {
