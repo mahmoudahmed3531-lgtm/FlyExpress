@@ -190,7 +190,7 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
 .badge-pharmacy { background: #8b5cf6; }
 .badge-orders { background: #f59e0b; }
 
-/* عجلة الحظ الاحترافية بالكانفاس */
+/* عجلة الحظ الكانفاس */
 .wheel-stage-container {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 16px 0; position: relative;
@@ -494,7 +494,7 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- 4. شاشة عجلة الحظ الاحترافية -->
+  <!-- 4. شاشة عجلة الحظ الاحترافية بالـ Canvas -->
   <section id="view-wheel" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
@@ -682,8 +682,8 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
 <script>
 const APP_LOCAL_VERSION = "1.0.0";
 const ADMIN_PHONE = "201017908076";
-const CLOUD_CONFIG_URL = "https://fly-express-naga-default-rtdb.firebaseio.com/config.json";
-const CLOUD_USERS_URL = "https://fly-express-naga-default-rtdb.firebaseio.com/users.json";
+const BROADCAST_ENDPOINT = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
+const USERS_ENDPOINT = "https://ntfy.sh/flyexpress_users_registration_2026";
 let currentDownloadUrl = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file";
 
 function showAppModal(title, msg, iconClass = "fa-circle-info") {
@@ -893,7 +893,7 @@ function submitPharmacyOrder() {
   if (!details || !addr) return showAppModal("بيانات ناقصة", "اكتب اسم العلاج وعنوان التوصيل.");
 
   recordOrderRewards(25, "أدوية وصيدلية");
-  sendDirectWhatsApp(`طلب أدوية وصيدلية 🚑💊\nالطلبات: ${details}\nالعنوان: ${addr}`);
+  sendDirectWhatsApp(`طلب أدوية وصيدلية عاجل 🚑💊\nالطلبات: ${details}\nالعنوان: ${addr}`);
 }
 
 function submitParcelOrder() {
@@ -932,18 +932,12 @@ function processLoginAction() {
   document.getElementById('authGateScreen').style.display = 'none';
 }
 
-// حفظ العميل سحابياً في سيرفر Firebase
-async function saveUserToCloud(name, phone, email = "") {
+// حفظ العميل في القناة السحابية ليظهر في لوحة الأدمن
+async function registerUserToAdminStream(name, phone, email = "") {
   try {
-    await fetch(CLOUD_USERS_URL, {
+    await fetch(USERS_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name,
-        phone: phone,
-        email: email,
-        timestamp: Date.now()
-      })
+      body: JSON.stringify({ name, phone, email, time: Date.now() })
     });
   } catch(e) {}
 }
@@ -954,7 +948,7 @@ async function processSignupAction() {
   const phone = document.getElementById('signupPhoneNum').value.trim();
   if (!name || !phone) return showAppModal("تنبيه", "أكمل كافة البيانات المطلوبة.");
 
-  await saveUserToCloud(name, phone, email);
+  await registerUserToAdminStream(name, phone, email);
 
   localStorage.setItem('fly_user_name', name);
   localStorage.setItem('fly_user_phone', phone);
@@ -971,7 +965,7 @@ async function handleGoogleSignInDirect() {
   const name = email.split('@')[0];
   const phone = prompt("أدخل رقم هاتفك للتواصل مع الكابتن:", "010");
 
-  await saveUserToCloud(name, phone || "01000000000", email);
+  await registerUserToAdminStream(name, phone || "01000000000", email);
 
   localStorage.setItem('fly_user_name', name);
   localStorage.setItem('fly_user_phone', phone || "01000000000");
@@ -1027,13 +1021,15 @@ function toggleDrawer(open) {
   else d.classList.remove('show');
 }
 
-// الاستماع المباشر الحي للسيرفر السحابي كل 5 ثوانٍ
+// الاستماع المباشر والحي لقناة البث السحابية
 async function listenToAdminUpdates() {
   try {
-    const res = await fetch(CLOUD_CONFIG_URL + '?t=' + Date.now());
-    if (res.ok) {
-      const data = await res.json();
-      if (!data) return;
+    const res = await fetch(`${BROADCAST_ENDPOINT}/json?poll=1&since=latest&t=${Date.now()}`);
+    const text = await res.text();
+    if (text) {
+      const lines = text.trim().split('\n');
+      const item = JSON.parse(lines[lines.length - 1]);
+      const data = JSON.parse(item.message);
 
       // 1. الإعلان اليومي
       if (data.notice) {
@@ -1042,7 +1038,7 @@ async function listenToAdminUpdates() {
 
       // 2. حالة تشغيل التطبيق (مفتوح / صيانة)
       if (data.service === 'closed') {
-        showAppModal("تنبيه الصيانة ⚠️", "تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير وسيعود قريباً 🛵", "fa-triangle-exclamation");
+        showAppModal("تنبيه الصيانة ⚠️", "تطبيق Fly Express مغلق مؤقتاً للصيانة وسيعود قريباً 🛵", "fa-triangle-exclamation");
       }
 
       // 3. تحديث أسعار المشاوير الحية
