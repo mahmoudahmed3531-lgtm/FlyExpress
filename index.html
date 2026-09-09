@@ -41,14 +41,12 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
   padding-bottom: 80px; overflow-x: hidden;
 }
 
-/* شريط الإشعار العلوي الحي المربوط بالأدمن */
 .admin-promo-ticker {
   background: linear-gradient(90deg, #991b1b, #ef4444); color: #fff;
   padding: 8px 14px; font-size: 11px; font-weight: 800; display: flex;
   align-items: center; justify-content: space-between; gap: 8px;
 }
 
-/* نافذة المودال الاحترافية المدمجة */
 .app-custom-modal-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.75);
   z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px;
@@ -61,7 +59,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
 }
 @keyframes popUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* نافذة التحديث الإجباري */
 .force-update-gate {
   position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
   background: #090d16; z-index: 999999; display: none; flex-direction: column;
@@ -73,7 +70,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
   border: 2px solid var(--primary); object-fit: cover;
 }
 
-/* شاشة تسجيل الدخول */
 .auth-overlay {
   position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
   background: #090d16 url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1000') center/cover no-repeat;
@@ -129,7 +125,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
   content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.15);
 }
 
-/* الهيدر العلوي */
 .top-nav-bar {
   background: var(--surface); padding: 12px 16px;
   display: flex; align-items: center; justify-content: space-between;
@@ -145,7 +140,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
   object-fit: cover; background: #0f172a;
 }
 
-/* البانر السلايدر الرئيسي */
 .carousel-viewport-wrapper { position: relative; padding: 0 16px; margin: 12px 0; }
 .banners-slider-track {
   display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
@@ -168,7 +162,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
   border: 1.5px solid rgba(255,255,255,0.25);
 }
 
-/* شبكة الخدمات 8 أقسام */
 .services-main-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 14px 10px; padding: 0 16px; margin-bottom: 18px;
@@ -190,7 +183,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
 .badge-pharmacy { background: #8b5cf6; }
 .badge-orders { background: #f59e0b; }
 
-/* عجلة الحظ الكانفاس */
 .wheel-stage-container {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 16px 0; position: relative;
@@ -214,7 +206,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
   color: #fff; font-size: 16px; pointer-events: none;
 }
 
-/* بطاقات الأسعار الحية */
 .price-tag-card {
   background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
   padding: 12px 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
@@ -224,7 +215,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
   padding: 4px 12px; border-radius: 20px; font-weight: 900; font-size: 13px;
 }
 
-/* الشاشات والتنقل */
 .sub-page-view { display: none; padding: 16px; }
 .sub-page-view.active { display: block; }
 .page-top-back { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
@@ -260,7 +250,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
   font-family: inherit; cursor: pointer; box-shadow: 0 6px 18px rgba(225,29,72,0.3);
 }
 
-/* القائمة الجانبية */
 .drawer-menu {
   position: fixed; inset: 0; background: rgba(0,0,0,0.6);
   z-index: 10000; display: none; justify-content: flex-end;
@@ -305,7 +294,7 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
     </div>
   </div>
 
-  <!-- شاشة الدخول والتسجيل مع زر Google -->
+  <!-- شاشة الدخول والتسجيل -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" class="auth-main-logo">
@@ -364,7 +353,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
   <!-- 1. الشاشة الرئيسية -->
   <main id="view-home" class="sub-page-view active">
 
-    <!-- البانر السلايدر الرئيسي -->
     <div class="carousel-viewport-wrapper" style="padding:0;">
       <div class="banners-slider-track">
         <div class="pro-banner-card" style="background: linear-gradient(135deg, #090d16, #e11d48);" onclick="openServiceScreen('school')">
@@ -383,7 +371,6 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
       </div>
     </div>
 
-    <!-- شبكة الخدمات 8 عناصر كاملة ومضبوطة المسارات -->
     <div class="services-main-grid" style="padding:0;">
       <div class="service-icon-item" onclick="openServiceScreen('school')">
         <div class="service-circle-badge badge-school"><i class="fa-solid fa-motorcycle"></i></div>
@@ -458,17 +445,9 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
       </div>
       <button class="primary-action-btn" style="width:auto; padding:8px 16px;" onclick="orderFoodWhatsApp('بيتزا وفطائر السلطان')">طلب الآن</button>
     </div>
-
-    <div class="ui-card" style="display:flex; justify-content:space-between; align-items:center;">
-      <div>
-        <strong style="font-size:14px;">شاورما وبرجر سيتي</strong>
-        <div style="font-size:11px; color:#10b981;">+5 ج كاش باك فوراً</div>
-      </div>
-      <button class="primary-action-btn" style="width:auto; padding:8px 16px;" onclick="orderFoodWhatsApp('شاورما وبرجر سيتي')">طلب الآن</button>
-    </div>
   </section>
 
-  <!-- 3. شاشة إدارة الملف الشخصي والصورة -->
+  <!-- 3. شاشة تعديل الحساب -->
   <section id="view-profile" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
@@ -494,7 +473,7 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- 4. شاشة عجلة الحظ الاحترافية بالـ Canvas -->
+  <!-- 4. شاشة عجلة الحظ -->
   <section id="view-wheel" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
@@ -519,7 +498,7 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- 5. شاشة المحفظة والنقاط -->
+  <!-- 5. شاشة المحفظة -->
   <section id="view-wallet" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
@@ -549,7 +528,7 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- 6. شاشة قائمة الأسعار الحية المحدثة من الأدمن -->
+  <!-- 6. شاشة قائمة الأسعار الحية -->
   <section id="view-prices" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
@@ -682,11 +661,8 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
 <script>
 const APP_LOCAL_VERSION = "1.0.0";
 const ADMIN_PHONE = "201017908076";
-
-// روابط البث والتحكم المباشر
-const CONTROL_URL = "https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/live_control.json";
-const BROADCAST_ENDPOINT = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
-const USERS_ENDPOINT = "https://ntfy.sh/flyexpress_users_registration_2026";
+const BROADCAST_URL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
+const USERS_URL = "https://ntfy.sh/flyexpress_users_registration_2026";
 let currentDownloadUrl = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file";
 
 function showAppModal(title, msg, iconClass = "fa-circle-info") {
@@ -697,7 +673,6 @@ function showAppModal(title, msg, iconClass = "fa-circle-info") {
 }
 function closeAppModal() { document.getElementById('appCustomModal').classList.remove('show'); }
 
-// إدارة الصورة الشخصية
 function handleUserAvatarUpload(input) {
   if (input.files && input.files[0]) {
     const reader = new FileReader();
@@ -724,15 +699,11 @@ function updateAvatarVisuals(imgSrc) {
 function saveUpdatedProfileData() {
   const newName = document.getElementById('editProfileNameInput').value.trim();
   const newPhone = document.getElementById('editProfilePhoneInput').value.trim();
-
   if (!newName) return showAppModal("تنبيه", "من فضلك اكتب اسمك أولاً.");
-
   localStorage.setItem('fly_user_name', newName);
   if (newPhone) localStorage.setItem('fly_user_phone', newPhone);
-
   document.getElementById('drawerUserName').textContent = newName;
   if (newPhone) document.getElementById('drawerUserPhone').textContent = newPhone;
-
   showAppModal("تم الحفظ بنجاح! ✅", "تم تحديث بياناتك الشخصية بنجاح.");
 }
 
@@ -741,7 +712,6 @@ function orderFoodWhatsApp(restaurantName) {
   sendDirectWhatsApp(`طلب طعام من مطاعم نجع حمادي 🍽️🛵\nالمطعم: ${restaurantName}\nمن فضلك أرسل لي قائمة الوجبات المتاحة للطلب.`);
 }
 
-// رسم عجلة الحظ الاحترافية بالكانفاس
 const wheelCanvas = document.getElementById('luckyWheelCanvas');
 const ctx = wheelCanvas ? wheelCanvas.getContext('2d') : null;
 const wheelSlices = [
@@ -758,7 +728,6 @@ function drawProfessionalWheel() {
   const numSlices = wheelSlices.length;
   const arc = (2 * Math.PI) / numSlices;
   const radius = 140;
-
   ctx.clearRect(0, 0, 280, 280);
 
   for (let i = 0; i < numSlices; i++) {
@@ -829,7 +798,6 @@ function spinProfessionalWheel() {
   }, 4600);
 }
 
-// احتساب الكاش باك والنقاط
 function recordOrderRewards(amount, locationName) {
   const cashbackEarned = Math.round(amount * 0.1);
   const pointsEarned = amount;
@@ -863,19 +831,15 @@ function recordOrderRewards(amount, locationName) {
 
 function convertPointsToCashback() {
   let curPts = parseInt(localStorage.getItem('fly_wallet_pts') || '0');
-  if (curPts < 50) return showAppModal("النقاط غير كافية", "الحد الأدنى لتحويل النقاط هو 50 نقطة (كل 50 نقطة = 5 جنيه كاش باك).");
-
+  if (curPts < 50) return showAppModal("النقاط غير كافية", "الحد الأدنى لتحويل النقاط هو 50 نقطة.");
   const cashGained = Math.floor(curPts / 10);
   let curCash = parseInt(localStorage.getItem('fly_wallet_cash') || '0');
   curCash += cashGained;
   curPts = curPts % 10;
-
   localStorage.setItem('fly_wallet_cash', curCash.toString());
   localStorage.setItem('fly_wallet_pts', curPts.toString());
-
   document.getElementById('walletCashbackAmount').textContent = curCash;
   document.getElementById('walletPointsAmount').textContent = curPts;
-
   showAppModal("تم التحويل بنجاح! 🔄", `تم تحويل نقاطك إلى ${cashGained} جنيه كاش باك تمت إضافتها للمحفظة!`, "fa-circle-check");
 }
 
@@ -885,7 +849,6 @@ function submitSchoolOrder() {
   const to = document.getElementById('sch_to_school').value.trim();
   const phone = document.getElementById('sch_parent_phone').value.trim();
   if (!name || !from || !to) return showAppModal("بيانات ناقصة", "أكمل بيانات الطالب والعناوين أولاً.");
-
   recordOrderRewards(5, "توصيل طالب (عرض 5 ج)");
   sendDirectWhatsApp(`طلب توصيل طالب 🏫🛵\nاسم الطالب: ${name}\nمن: ${from}\nإلى: ${to}\nولي الأمر: ${phone}`);
 }
@@ -894,7 +857,6 @@ function submitPharmacyOrder() {
   const details = document.getElementById('pharma_details').value.trim();
   const addr = document.getElementById('pharma_address').value.trim();
   if (!details || !addr) return showAppModal("بيانات ناقصة", "اكتب اسم العلاج وعنوان التوصيل.");
-
   recordOrderRewards(25, "أدوية وصيدلية");
   sendDirectWhatsApp(`طلب أدوية وصيدلية عاجل 🚑💊\nالطلبات: ${details}\nالعنوان: ${addr}`);
 }
@@ -906,9 +868,7 @@ function submitParcelOrder() {
   const routeSelect = document.getElementById('ord_route_select');
   const price = parseInt(routeSelect.options[routeSelect.selectedIndex].getAttribute('data-price') || '30');
   const routeName = routeSelect.options[routeSelect.selectedIndex].text;
-
   if (!from || !to) return showAppModal("بيانات ناقصة", "أكمل تفاصيل أماكن الاستلام والتسليم.");
-
   recordOrderRewards(price, routeName);
   sendDirectWhatsApp(`طلب نقل طرد 📦🛵\nالخط: ${routeName}\nالمحتوى: ${det}\nمن: ${from}\nإلى: ${to}`);
 }
@@ -935,10 +895,9 @@ function processLoginAction() {
   document.getElementById('authGateScreen').style.display = 'none';
 }
 
-// تسجيل الحساب وإرساله لقناة الأدمن
 async function registerUserToAdminStream(name, phone, email = "") {
   try {
-    await fetch(USERS_ENDPOINT, {
+    await fetch(USERS_URL, {
       method: "POST",
       body: JSON.stringify({ name, phone, email, time: Date.now() })
     });
@@ -964,7 +923,6 @@ async function processSignupAction() {
 async function handleGoogleSignInDirect() {
   const email = prompt("أدخل بريدك الإلكتروني (Gmail):");
   if (!email || !email.includes("@")) return showAppModal("تنبيه", "يرجى كتابة بريد إلكتروني صحيح.");
-
   const name = email.split('@')[0];
   const phone = prompt("أدخل رقم هاتفك للتواصل مع الكابتن:", "010");
 
@@ -983,7 +941,6 @@ function confirmAppLogout() {
   document.getElementById('authGateScreen').style.display = 'flex';
 }
 
-// التنقل
 function showView(viewId) {
   document.querySelectorAll('.sub-page-view').forEach(v => v.classList.remove('active'));
   const target = document.getElementById(viewId);
@@ -1024,71 +981,48 @@ function toggleDrawer(open) {
   else d.classList.remove('show');
 }
 
-// ========================================================
-// الاستماع المزدوج الذكي (الملف المباشر + قناة البث الفوري)
-// ========================================================
+// الاستماع اللحظي للبث
 async function listenToAdminUpdates() {
-  // 1. القراءة من قناة البث السحابي
   try {
-    const res = await fetch(`${BROADCAST_ENDPOINT}/json?poll=1&since=latest&t=${Date.now()}`);
+    const res = await fetch(`${BROADCAST_URL}/json?poll=1&since=latest&t=${Date.now()}`);
     const text = await res.text();
     if (text) {
       const lines = text.trim().split('\n');
       const item = JSON.parse(lines[lines.length - 1]);
       const data = JSON.parse(item.message);
-      applyAdminConfig(data);
-      return;
-    }
-  } catch(e) {}
 
-  // 2. القراءة الاحتياطية من ملف live_control.json في حال تعثر الشبكة
-  try {
-    const res2 = await fetch(`${CONTROL_URL}?nocache=${Date.now()}`, { cache: "no-store" });
-    if (res2.ok) {
-      const data2 = await res2.json();
-      applyAdminConfig(data2);
+      if (data.notice) {
+        document.getElementById('dailyPromoTickerTxt').textContent = data.notice;
+      }
+
+      if (data.service === 'closed') {
+        showAppModal("تنبيه الصيانة ⚠️", "تطبيق Fly Express مغلق مؤقتاً للصيانة والتطوير وسيعود قريباً 🛵", "fa-triangle-exclamation");
+      }
+
+      if (data.prices) {
+        if (data.prices.inside) document.getElementById('lbl_p_inside').textContent = data.prices.inside + ' ج';
+        if (data.prices.berka) document.getElementById('lbl_p_berka').textContent = data.prices.berka + ' ج';
+        if (data.prices.masaken) document.getElementById('lbl_p_masaken').textContent = data.prices.masaken + ' ج';
+        if (data.prices.alum) document.getElementById('lbl_p_alum').textContent = data.prices.alum + ' ج';
+        if (data.prices.haw) document.getElementById('lbl_p_haw').textContent = data.prices.haw + ' ج';
+        if (data.prices.naga) document.getElementById('lbl_p_naga').textContent = data.prices.naga + ' ج';
+      }
+
+      if (data.update && data.update.enabled) {
+        if (data.update.version !== APP_LOCAL_VERSION) {
+          if (data.update.downloadUrl) currentDownloadUrl = data.update.downloadUrl;
+          document.getElementById('forceUpdateModal').style.display = 'flex';
+        } else {
+          document.getElementById('forceUpdateModal').style.display = 'none';
+        }
+      } else {
+        document.getElementById('forceUpdateModal').style.display = 'none';
+      }
     }
   } catch(e) {}
 }
 
-function applyAdminConfig(data) {
-  if (!data) return;
-
-  // 1. الإعلان اليومي
-  if (data.notice) {
-    document.getElementById('dailyPromoTickerTxt').textContent = data.notice;
-  }
-
-  // 2. حالة تشغيل التطبيق (صيانة / مفتوح)
-  if (data.service === 'closed') {
-    showAppModal("تنبيه الصيانة ⚠️", "تطبيق Fly Express مغلق مؤقتاً للصيانة والتطوير وسيعود قريباً 🛵", "fa-triangle-exclamation");
-  }
-
-  // 3. أسعار المشاوير الحية
-  if (data.prices) {
-    if (data.prices.inside && document.getElementById('lbl_p_inside')) document.getElementById('lbl_p_inside').textContent = data.prices.inside + ' ج';
-    if (data.prices.berka && document.getElementById('lbl_p_berka')) document.getElementById('lbl_p_berka').textContent = data.prices.berka + ' ج';
-    if (data.prices.masaken && document.getElementById('lbl_p_masaken')) document.getElementById('lbl_p_masaken').textContent = data.prices.masaken + ' ج';
-    if (data.prices.alum && document.getElementById('lbl_p_alum')) document.getElementById('lbl_p_alum').textContent = data.prices.alum + ' ج';
-    if (data.prices.haw && document.getElementById('lbl_p_haw')) document.getElementById('lbl_p_haw').textContent = data.prices.haw + ' ج';
-    if (data.prices.naga && document.getElementById('lbl_p_naga')) document.getElementById('lbl_p_naga').textContent = data.prices.naga + ' ج';
-  }
-
-  // 4. قفل وتحديث التطبيق الإجباري
-  if (data.update && data.update.enabled) {
-    if (data.update.version !== APP_LOCAL_VERSION) {
-      if (data.update.downloadUrl) currentDownloadUrl = data.update.downloadUrl;
-      document.getElementById('forceUpdateModal').style.display = 'flex';
-    } else {
-      document.getElementById('forceUpdateModal').style.display = 'none';
-    }
-  } else {
-    document.getElementById('forceUpdateModal').style.display = 'none';
-  }
-}
-
-// فحص كل ثانيتين للاستجابة اللحظية
-setInterval(listenToAdminUpdates, 2000);
+setInterval(listenToAdminUpdates, 3000);
 listenToAdminUpdates();
 
 function downloadLatestAppVersion() { window.open(currentDownloadUrl, '_blank'); }
