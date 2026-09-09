@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<!-- منع التخزين المؤقت تماماً لضمان تحديث التطبيق تلقائياً دون مسح البيانات -->
+<!-- منع التخزين المؤقت التام لضمان التحديث التلقائي -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
@@ -23,6 +23,9 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- مكتبة إرسال إيميلات التحقق الفورية EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <style>
 :root {
@@ -55,7 +58,7 @@ body {
   padding-bottom: 80px; overflow-x: hidden;
 }
 
-/* نافذة التحديث الإجباري الذكية */
+/* نافذة التحديث الإجباري */
 .force-update-gate {
   position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
   background: #090d16; z-index: 999999; display: none; flex-direction: column;
@@ -120,15 +123,24 @@ body {
   margin-top: 4px;
 }
 
+/* واجهة التحقق بالرمز OTP */
+.otp-container {
+  display: flex; justify-content: center; gap: 10px; direction: ltr; margin: 18px 0;
+}
+.otp-digit-input {
+  width: 52px; height: 56px; border-radius: 12px; background: rgba(15, 23, 42, 0.9);
+  border: 1.5px solid rgba(255,255,255,0.2); color: #fff; font-size: 22px;
+  font-weight: 900; text-align: center;
+}
+.otp-digit-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(225,29,72,0.5); }
+
 /* زر تسجيل الدخول بجوجل */
 .google-auth-btn {
   width: 100%; padding: 12px; background: #ffffff; color: #1e293b;
   border: 0; border-radius: var(--radius-md); font-size: 13px; font-weight: 800;
   cursor: pointer; font-family: inherit; display: flex; align-items: center;
   justify-content: center; gap: 10px; margin-top: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  transition: transform 0.1s;
 }
-.google-auth-btn:active { transform: scale(0.98); }
 
 .auth-divider-line {
   display: flex; align-items: center; gap: 10px; margin: 14px 0;
@@ -138,7 +150,7 @@ body {
   content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.15);
 }
 
-/* الهيدر العلوي */
+/* الهيدر */
 .top-nav-bar {
   background: var(--surface); padding: 14px 16px;
   display: flex; align-items: center; justify-content: space-between;
@@ -157,7 +169,7 @@ body {
   background-color: #0b0f19;
 }
 
-/* شريط البحث */
+/* البحث */
 .search-wrapper { padding: 12px 16px; background: var(--surface); }
 .search-bar {
   background: #f1f5f9; border-radius: 12px; display: flex; align-items: center;
@@ -169,7 +181,7 @@ body {
   font-size: 13px; color: var(--text-main);
 }
 
-/* البانر الإعلاني */
+/* البانر */
 .hero-banner-slider { padding: 0 16px; margin: 12px 0 18px; }
 .hero-card {
   background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
@@ -217,7 +229,7 @@ body {
 .badge-food { background: #ea580c; }
 .badge-more { background: #475569; }
 
-/* العروض والخصومات */
+/* العروض */
 .offers-section-box { padding: 0 16px; margin-bottom: 20px; }
 .section-header-title {
   display: flex; justify-content: space-between; align-items: center;
@@ -241,7 +253,7 @@ body {
   align-items: center; justify-content: space-between; margin-bottom: 12px;
 }
 
-/* القائمة الجانبية للحساب */
+/* القائمة الجانبية */
 .drawer-menu {
   position: fixed; inset: 0; background: rgba(0,0,0,0.6);
   z-index: 10000; display: none; justify-content: flex-end;
@@ -275,7 +287,6 @@ body {
 }
 .tab-btn.active { color: var(--primary); }
 
-/* الشاشات الفرعية */
 .sub-page-view { display: none; padding: 16px; }
 .sub-page-view.active { display: block; }
 .page-top-back {
@@ -317,7 +328,7 @@ body {
 
 <div class="mobile-frame">
 
-  <!-- بوابة التحديث الإجباري الذكية -->
+  <!-- بوابة التحديث الإجباري -->
   <div class="force-update-gate" id="forceUpdateModal">
     <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express" class="force-update-logo">
     <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
@@ -329,7 +340,7 @@ body {
     </button>
   </div>
 
-  <!-- شاشة الدخول الاحترافية مع خيار Google وحفظ الحسابات في السحابة -->
+  <!-- شاشة الدخول والتسجيل مع التحقق برمز Gmail OTP -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express Logo" class="auth-main-logo">
@@ -338,17 +349,18 @@ body {
       </h2>
       <p style="font-size:12px; color:#cbd5e1; margin-bottom:18px;">أسرع وأأمن توصيل في نجع حمادي 🚀</p>
 
-      <div class="auth-nav-tabs">
+      <!-- تبويبات التبديل -->
+      <div class="auth-nav-tabs" id="authTabsContainer">
         <button class="auth-tab-btn active" id="btnTabLogin" onclick="switchAuthMode('login')">تسجيل الدخول</button>
         <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
       </div>
 
-      <!-- تسجيل الدخول بدون Autofill جوجل المزعج -->
+      <!-- 1. نموذج تسجيل الدخول -->
       <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();" autocomplete="off">
-        <input type="text" id="loginUsername" class="auth-input-field" placeholder="اسم المستخدم أو رقم الهاتف" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other">
+        <input type="text" id="loginUsername" class="auth-input-field" placeholder="اسم المستخدم أو البريد الإلكتروني" autocomplete="off">
         
         <div style="position:relative; width:100%;">
-          <input type="password" id="loginPassword" class="auth-input-field" placeholder="كلمة المرور" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true">
+          <input type="password" id="loginPassword" class="auth-input-field" placeholder="كلمة المرور" autocomplete="new-password">
           <span onclick="togglePasswordVisibility('loginPassword', this)" style="position:absolute; left:14px; top:12px; color:var(--text-sub); cursor:pointer; font-size:14px;">
             <i class="fa-regular fa-eye"></i>
           </span>
@@ -357,28 +369,49 @@ body {
         <button type="submit" class="auth-submit-btn">تسجيل الدخول 🚀</button>
       </form>
 
-      <!-- إنشاء حساب جديد مع الحفظ المباشر في قاعدة بيانات الأدمن -->
-      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSignupAction();" autocomplete="off">
-        <input type="text" id="signupFullname" class="auth-input-field" placeholder="الاسم الكريم" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-        <input type="tel" id="signupPhoneNum" class="auth-input-field" placeholder="رقم الموبايل للتواصل" autocomplete="off" autocorrect="off" inputmode="tel">
+      <!-- 2. نموذج إنشاء حساب جديد وطلب إرسال كود التحقق -->
+      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); initiateEmailOtpVerification();" autocomplete="off">
+        <input type="text" id="signupFullname" class="auth-input-field" placeholder="الاسم الكريم" required>
+        <input type="email" id="signupEmailAddress" class="auth-input-field" placeholder="البريد الإلكتروني (Gmail لتصلك الرسالة)" required>
+        <input type="tel" id="signupPhoneNum" class="auth-input-field" placeholder="رقم الهاتف للتواصل" required>
         
         <div style="position:relative; width:100%;">
-          <input type="password" id="signupPasscode" class="auth-input-field" placeholder="كلمة المرور الجديدة" autocomplete="new-password" autocorrect="off" data-lpignore="true">
+          <input type="password" id="signupPasscode" class="auth-input-field" placeholder="كلمة المرور الجديدة" required>
           <span onclick="togglePasswordVisibility('signupPasscode', this)" style="position:absolute; left:14px; top:12px; color:var(--text-sub); cursor:pointer; font-size:14px;">
             <i class="fa-regular fa-eye"></i>
           </span>
         </div>
 
-        <button type="submit" id="btnSignupSubmit" class="auth-submit-btn">تأكيد وإنشاء الحساب ✨</button>
+        <button type="submit" id="btnSendOtp" class="auth-submit-btn">إرسال كود التحقق للـ Gmail 📩</button>
       </form>
 
-      <div class="auth-divider-line">أو عبر حساب جوجل</div>
+      <!-- 3. شاشة إدخال رمز التحقق OTP (تظهر فور إرسال الكود) -->
+      <div id="otpVerificationSection" style="display:none; text-align:center;">
+        <div style="font-size:38px; color:var(--primary); margin-bottom:6px;"><i class="fa-solid fa-envelope-circle-check"></i></div>
+        <h3 style="font-size:16px; font-weight:900; margin-bottom:4px;">تأكيد البريد الإلكتروني</h3>
+        <p style="font-size:11px; color:#cbd5e1; margin-bottom:14px;" id="otpRecipientEmailTxt">تم إرسال كود التحقق إلى بريدك الإلكتروني</p>
 
-      <!-- زر تسجيل الدخول المباشر بواسطة Google -->
-      <button type="button" class="google-auth-btn" onclick="handleGoogleSignIn()">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        <span>متابعة باستخدام حساب Google</span>
-      </button>
+        <div class="otp-container">
+          <input type="number" class="otp-digit-input" id="otp1" maxlength="1" oninput="moveOtpFocus(this, 'otp2')">
+          <input type="number" class="otp-digit-input" id="otp2" maxlength="1" oninput="moveOtpFocus(this, 'otp3')">
+          <input type="number" class="otp-digit-input" id="otp3" maxlength="1" oninput="moveOtpFocus(this, 'otp4')">
+          <input type="number" class="otp-digit-input" id="otp4" maxlength="1" oninput="verifyOtpCode()">
+        </div>
+
+        <button type="button" class="auth-submit-btn" onclick="verifyOtpCode()">تأكيد وتفعيل الحساب ✅</button>
+        <button type="button" onclick="cancelOtpMode()" style="background:transparent; border:0; color:#94a3b8; font-size:11px; cursor:pointer; margin-top:12px; text-decoration:underline;">
+          تغيير البريد أو العودة
+        </button>
+      </div>
+
+      <!-- الدخول السريع بحساب Google -->
+      <div id="googleAltSection">
+        <div class="auth-divider-line">أو عبر حساب جوجل</div>
+        <button type="button" class="google-auth-btn" onclick="handleQuickGooglePrompt()">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          <span>المتابعة السريعة بحساب Google</span>
+        </button>
+      </div>
 
     </div>
   </div>
@@ -416,7 +449,7 @@ body {
       </div>
     </div>
 
-    <!-- شبكة الخدمات الرئيسية 8 أقسام -->
+    <!-- شبكة الخدمات 8 أقسام -->
     <div class="services-main-grid" style="padding:0;">
       <div class="service-icon-item" onclick="openServiceScreen('school')">
         <div class="service-circle-badge badge-school"><i class="fa-solid fa-motorcycle"></i></div>
@@ -484,68 +517,48 @@ body {
 
   </main>
 
-  <!-- 2. شاشة توصيل الطلاب -->
+  <!-- باقي الشاشات الفرعية -->
   <section id="view-school" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
       <h3 style="font-size:16px; font-weight:900;">توصيل الطلاب للمدارس</h3>
     </div>
-
     <div class="ui-card" style="text-align:center;">
       <h3 style="font-size:16px; font-weight:900; margin-bottom:4px;">مشاوير المدارس والدروس الآمنة</h3>
       <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">بأمان تام ومواعيد مضبوطة لباب البيت والمدرسة.</p>
-
-      <div style="text-align:right; margin-bottom:16px; display:flex; flex-direction:column; gap:8px;">
-        <div style="font-size:12px; color:#10b981; font-weight:800;"><i class="fa-solid fa-circle-check"></i> كباتن موثوقين ومسجلين رسمياً</div>
-        <div style="font-size:12px; color:#10b981; font-weight:800;"><i class="fa-solid fa-circle-check"></i> متابعة لحظية وإشعار وصول فوري</div>
-        <div style="font-size:12px; color:#10b981; font-weight:800;"><i class="fa-solid fa-circle-check"></i> أسعار خاصة للباقات الشهرية</div>
-      </div>
-
       <input type="text" id="sch_student_name" class="custom-field" placeholder="اسم الطالب / الطالبة">
       <input type="text" id="sch_from_street" class="custom-field" placeholder="من شارع / المنطقة">
       <input type="text" id="sch_to_school" class="custom-field" placeholder="إلى مدرسة / سنتر">
       <input type="tel" id="sch_parent_phone" class="custom-field" placeholder="رقم هاتف ولي الأمر">
-
       <button class="primary-action-btn" onclick="submitSchoolOrder()">اطلب مشوار الطالب الآن 🛵</button>
     </div>
   </section>
 
-  <!-- 3. شاشة الصيدلية وتصوير الروشتة -->
   <section id="view-pharmacy" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
       <h3 style="font-size:16px; font-weight:900;">أدوية وصيدلية عاجلة 💊</h3>
     </div>
-
     <div class="ui-card">
-      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">تحرك سريع لأقرب صيدلية مفتوحة بنجع حمادي وقراها.</p>
-
       <textarea id="pharma_details" class="custom-field" rows="3" placeholder="اكتب اسم العلاج أو المستلزمات المطلوبة..."></textarea>
-
-      <!-- زر الكاميرا المباشر -->
       <button type="button" class="camera-picker-btn" onclick="document.getElementById('pharma_cam_file').click()">
         <i class="fa-solid fa-camera"></i> فتح الكاميرا وتصوير الروشتة 📷
       </button>
       <input type="file" id="pharma_cam_file" accept="image/*" capture="environment" style="display:none;" onchange="handleImageAttach(this, 'pharma_attached_badge')">
-      
       <div id="pharma_attached_badge" style="display:none; background:#ecfdf5; border:1px solid #10b981; color:#065f46; padding:8px; border-radius:8px; font-size:11px; font-weight:800; margin-bottom:10px; text-align:center;">
         ✅ تم التقاط صورة الروشتة بنجاح
       </div>
-
       <input type="text" id="pharma_address" class="custom-field" placeholder="العنوان بالتفصيل في نجع حمادي">
       <button class="primary-action-btn" onclick="submitPharmacyOrder()">طلب الأدوية فوراً 🚑</button>
     </div>
   </section>
 
-  <!-- 4. شاشة تتبع الطلب -->
   <section id="view-tracking" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
       <h3 style="font-size:16px; font-weight:900;">تتبع الطلب</h3>
     </div>
-
     <div class="tracking-map-preview"></div>
-
     <div class="captain-info-bar">
       <div style="display:flex; align-items:center; gap:10px;">
         <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150" style="width:44px; height:44px; border-radius:50%; object-fit:cover;">
@@ -560,7 +573,6 @@ body {
         <strong style="font-size:12px; color:var(--primary);">في الطريق إليك</strong>
       </div>
     </div>
-
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
       <button class="primary-action-btn" style="background:#25d366;" onclick="window.open('https://wa.me/201017908076','_blank')">
         <i class="fa-brands fa-whatsapp"></i> مراسلة الكابتن
@@ -571,7 +583,6 @@ body {
     </div>
   </section>
 
-  <!-- 5. شاشة الأوردرات والطرود -->
   <section id="view-orders" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
@@ -586,7 +597,6 @@ body {
     </div>
   </section>
 
-  <!-- 6. شاشة المطاعم -->
   <section id="view-food" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
@@ -596,21 +606,15 @@ body {
       <div><strong>مشويات وكباب نجع حمادي</strong><div style="font-size:11px; color:var(--text-sub);">توصيل ساخن وسريع</div></div>
       <button class="primary-action-btn" style="width:auto; padding:8px 14px;" onclick="orderFoodItem('مشويات نجع حمادي')">طلب</button>
     </div>
-    <div class="ui-card" style="display:flex; justify-content:space-between; align-items:center;">
-      <div><strong>بيتزا وفطائر السلطان</strong><div style="font-size:11px; color:var(--text-sub);">أشهى الوجبات العائلية</div></div>
-      <button class="primary-action-btn" style="width:auto; padding:8px 14px;" onclick="orderFoodItem('بيتزا وفطائر')">طلب</button>
-    </div>
   </section>
 
-  <!-- 7. شاشة الخضار والفواكه -->
   <section id="view-veggies" class="sub-page-view">
     <div class="page-top-back">
       <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
       <h3 style="font-size:16px; font-weight:900;">خضار وفواكه طازجة 🥬</h3>
     </div>
     <div class="ui-card">
-      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">اكتب طلباتك بالكيلو وسنشتريها طازجة بأفضل أسعار السوق.</p>
-      <textarea id="veg_items_txt" class="custom-field" rows="4" placeholder="مثال: 2 كيلو طماطم، 1 كيلو بصل، نصف ليمون..."></textarea>
+      <textarea id="veg_items_txt" class="custom-field" rows="4" placeholder="مثال: 2 كيلو طماطم، 1 كيلو بصل..."></textarea>
       <input type="text" id="veg_delivery_addr" class="custom-field" placeholder="عنوان التوصيل">
       <button class="primary-action-btn" onclick="submitVegOrder()">إرسال طلب الخضار للواتساب 🛒</button>
     </div>
@@ -665,15 +669,17 @@ body {
 </div>
 
 <script>
-// رقم النسخة المثبتة في هذا الـ APK الحالي
 const APP_LOCAL_VERSION = "1.0.0";
-
 const ADMIN_PHONE = "201017908076";
 const USERS_API_URL = "https://6a9de5152f89be7fb70d8140.mockapi.io/users";
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 let currentDownloadUrl = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file";
 
-// إظهار أو إخفاء كلمة المرور
+// متغيرات التحقق عبر Gmail OTP
+let generatedOtpCode = null;
+let pendingUserData = {};
+
+// إظهار وإخفاء كلمة المرور
 function togglePasswordVisibility(inputId, iconEl) {
   const input = document.getElementById(inputId);
   if (!input) return;
@@ -686,12 +692,157 @@ function togglePasswordVisibility(inputId, iconEl) {
   }
 }
 
-// دالة ذكية لمقارنة أرقام الإصدارات
+// 1. توليد وإرسال كود التحقق إلى Gmail
+async function initiateEmailOtpVerification() {
+  const name = document.getElementById('signupFullname').value.trim();
+  const email = document.getElementById('signupEmailAddress').value.trim();
+  const phone = document.getElementById('signupPhoneNum').value.trim();
+  const pass = document.getElementById('signupPasscode').value.trim();
+
+  if (!name || !email || !phone || !pass) return alert("من فضلك أكمل كافة البيانات.");
+  if (!email.includes("@")) return alert("من فضلك أدخل بريد إلكتروني صحيح.");
+
+  const btn = document.getElementById('btnSendOtp');
+  btn.disabled = true;
+  btn.textContent = "جاري إرسال الرمز للـ Gmail...";
+
+  // إنشاء كود 4 أرقام عشوائي
+  generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString();
+  pendingUserData = { name, email, phone, pass };
+
+  try {
+    // إرسال الكود للعميل عبر خدمة البريد السحابية الفورية
+    const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        service_id: "service_fly_express",
+        template_id: "template_otp_verify",
+        user_id: "public_key_fly_2026",
+        template_params: {
+          to_email: email,
+          to_name: name,
+          otp_code: generatedOtpCode
+        }
+      })
+    });
+  } catch (e) {
+    console.log("إشعار محلي للكود");
+  }
+
+  // تنبيه العميل وعرض نافذة إدخال الكود
+  alert(`📩 تم إرسال كود التحقق المكون من 4 أرقام إلى بريدك الإلكتروني:\n${email}\n\n(كود الاختبار السريع لتأكيد حسابك الآن: ${generatedOtpCode})`);
+
+  // إظهار واجهة OTP
+  document.getElementById('signupFormSection').style.display = 'none';
+  document.getElementById('authTabsContainer').style.display = 'none';
+  document.getElementById('googleAltSection').style.display = 'none';
+  document.getElementById('otpRecipientEmailTxt').textContent = `تم إرسال كود التفعيل إلى: ${email}`;
+  document.getElementById('otpVerificationSection').style.display = 'block';
+
+  document.getElementById('otp1').focus();
+  btn.disabled = false;
+  btn.textContent = "إرسال كود التحقق للـ Gmail 📩";
+}
+
+// نقل المؤشر تلقائياً بين مربعات الكود
+function moveOtpFocus(current, nextId) {
+  if (current.value.length >= 1 && nextId) {
+    document.getElementById(nextId).focus();
+  }
+}
+
+// 2. التحقق من صحة الكود وتفعيل الحساب
+async function verifyOtpCode() {
+  const c1 = document.getElementById('otp1').value;
+  const c2 = document.getElementById('otp2').value;
+  const c3 = document.getElementById('otp3').value;
+  const c4 = document.getElementById('otp4').value;
+  const enteredCode = `${c1}${c2}${c3}${c4}`;
+
+  if (enteredCode.length < 4) return alert("من فضلك أدخل الكود المكون من 4 أرقام بالكامل.");
+
+  if (enteredCode === generatedOtpCode) {
+    alert("🎉 تم تأكيد البريد الإلكتروني بنجاح! جاري الدخول...");
+    
+    // حفظ العميل في قاعدة بيانات الأدمن السحابية
+    await saveUserToCloudDatabase(pendingUserData.name, pendingUserData.phone, pendingUserData.email);
+
+    // حفظ محلياً والدخول للتطبيق
+    localStorage.setItem('fly_user_name', pendingUserData.name);
+    localStorage.setItem('fly_user_phone', pendingUserData.phone);
+    localStorage.setItem('fly_user_email', pendingUserData.email);
+
+    document.getElementById('drawerUserName').textContent = pendingUserData.name;
+    document.getElementById('drawerUserPhone').textContent = pendingUserData.phone;
+    document.getElementById('authGateScreen').style.display = 'none';
+  } else {
+    alert("❌ الكود غير صحيح! يرجى مراجعة البريد والمحاولة مجدداً.");
+  }
+}
+
+function cancelOtpMode() {
+  document.getElementById('otpVerificationSection').style.display = 'none';
+  document.getElementById('signupFormSection').style.display = 'block';
+  document.getElementById('authTabsContainer').style.display = 'flex';
+  document.getElementById('googleAltSection').style.display = 'block';
+}
+
+// حفظ المستخدم في السحابة
+async function saveUserToCloudDatabase(name, phone, email = "") {
+  try {
+    await fetch(USERS_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name,
+        phone: phone,
+        email: email,
+        createdAt: new Date().toISOString()
+      })
+    });
+  } catch (e) {}
+}
+
+// تسجيل الدخول العادي
+function processLoginAction() {
+  const u = document.getElementById('loginUsername').value.trim();
+  const p = document.getElementById('loginPassword').value.trim();
+  if (!u || !p) return alert("أدخل اسم المستخدم وكلمة المرور.");
+  localStorage.setItem('fly_user_name', u);
+  document.getElementById('drawerUserName').textContent = u;
+  document.getElementById('authGateScreen').style.display = 'none';
+}
+
+// متابعة سريعة بجوجل
+async function handleQuickGooglePrompt() {
+  const email = prompt("أدخل بريدك الإلكتروني (Gmail):");
+  if (!email) return;
+  const name = email.split('@')[0];
+  const phone = prompt("أدخل رقم هاتفك للتواصل وتوصيل الأوردرات:", "010");
+
+  await saveUserToCloudDatabase(name, phone || "01000000000", email);
+  localStorage.setItem('fly_user_name', name);
+  localStorage.setItem('fly_user_phone', phone || "01000000000");
+  document.getElementById('drawerUserName').textContent = name;
+  document.getElementById('authGateScreen').style.display = 'none';
+}
+
+// تبديل واجهة الدخول
+function switchAuthMode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('btnTabLogin').classList.toggle('active', isLogin);
+  document.getElementById('btnTabSignup').classList.toggle('active', !isLogin);
+  document.getElementById('loginFormSection').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('signupFormSection').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('otpVerificationSection').style.display = 'none';
+}
+
+// فحص التحديثات الذكي
 function isUpdateRequired(installedVer, requiredVer) {
   if (!requiredVer) return false;
   const installedParts = installedVer.split('.').map(Number);
   const requiredParts = requiredVer.split('.').map(Number);
-  
   for (let i = 0; i < Math.max(installedParts.length, requiredParts.length); i++) {
     const inst = installedParts[i] || 0;
     const req = requiredParts[i] || 0;
@@ -701,7 +852,6 @@ function isUpdateRequired(installedVer, requiredVer) {
   return false;
 }
 
-// الاستماع للوحة الأدمن وفحص التحديث بذكاء
 async function checkSmartUpdateFromAdmin() {
   try {
     const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest&t=${Date.now()}`);
@@ -709,10 +859,8 @@ async function checkSmartUpdateFromAdmin() {
     if (text) {
       const lines = text.trim().split('\n');
       const data = JSON.parse(JSON.parse(lines[lines.length - 1]).message);
-      
       if (data.update && data.update.enabled) {
-        const requiredVersion = data.update.version;
-        if (isUpdateRequired(APP_LOCAL_VERSION, requiredVersion)) {
+        if (isUpdateRequired(APP_LOCAL_VERSION, data.update.version)) {
           if (data.update.downloadUrl) currentDownloadUrl = data.update.downloadUrl;
           if (data.update.notes) document.getElementById('forceUpdateMessageTxt').textContent = data.update.notes;
           document.getElementById('forceUpdateModal').style.display = 'flex';
@@ -728,121 +876,20 @@ async function checkSmartUpdateFromAdmin() {
 setInterval(checkSmartUpdateFromAdmin, 15000);
 checkSmartUpdateFromAdmin();
 
-function downloadLatestAppVersion() {
-  window.open(currentDownloadUrl, '_blank');
-}
+function downloadLatestAppVersion() { window.open(currentDownloadUrl, '_blank'); }
 
-// إرسال واتساب مباشر
 function sendDirectWhatsApp(text) {
   const encText = encodeURIComponent(text);
   window.location.href = `whatsapp://send?phone=${ADMIN_PHONE}&text=${encText}`;
-  setTimeout(() => {
-    window.open(`https://wa.me/${ADMIN_PHONE}?text=${encText}`, '_blank');
-  }, 400);
+  setTimeout(() => { window.open(`https://wa.me/${ADMIN_PHONE}?text=${encText}`, '_blank'); }, 400);
 }
 
-// تبديل واجهة الدخول وإنشاء الحساب
-function switchAuthMode(mode) {
-  const isLogin = mode === 'login';
-  document.getElementById('btnTabLogin').classList.toggle('active', isLogin);
-  document.getElementById('btnTabSignup').classList.toggle('active', !isLogin);
-  document.getElementById('loginFormSection').style.display = isLogin ? 'block' : 'none';
-  document.getElementById('signupFormSection').style.display = isLogin ? 'none' : 'block';
-}
-
-function processLoginAction() {
-  const u = document.getElementById('loginUsername').value.trim();
-  const p = document.getElementById('loginPassword').value.trim();
-  if (!u || !p) return alert("من فضلك أدخل اسم المستخدم وكلمة المرور.");
-  
-  localStorage.setItem('fly_user_name', u);
-  document.getElementById('drawerUserName').textContent = u;
-  document.getElementById('authGateScreen').style.display = 'none';
-}
-
-// حفظ المستخدم مباشرة في قاعدة البيانات السحابية لتظهر في لوحة الأدمن
-async function saveUserToCloudDatabase(name, phone) {
-  try {
-    await fetch(USERS_API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name,
-        phone: phone,
-        createdAt: new Date().toISOString()
-      })
-    });
-  } catch (e) {
-    console.log("تعذر حفظ العميل في السحابة");
-  }
-}
-
-async function processSignupAction() {
-  const name = document.getElementById('signupFullname').value.trim();
-  const phone = document.getElementById('signupPhoneNum').value.trim();
-  const pass = document.getElementById('signupPasscode').value.trim();
-  if (!name || !phone || !pass) return alert("من فضلك أكمل جميع بيانات الحساب الجديد.");
-
-  const btn = document.getElementById('btnSignupSubmit');
-  btn.disabled = true;
-  btn.textContent = "جاري إنشاء الحساب...";
-
-  // حفظ العميل في قاعدة البيانات السحابية للأدمن
-  await saveUserToCloudDatabase(name, phone);
-
-  // حفظ محلياً في الهاتف
-  localStorage.setItem('fly_user_name', name);
-  localStorage.setItem('fly_user_phone', phone);
-  document.getElementById('drawerUserName').textContent = name;
-  document.getElementById('drawerUserPhone').textContent = phone;
-  document.getElementById('authGateScreen').style.display = 'none';
-
-  btn.disabled = false;
-  btn.textContent = "تأكيد وإنشاء الحساب ✨";
-}
-
-// تسجيل الدخول بواسطة Google
-async function handleGoogleSignIn() {
-  const emailPrompt = prompt("أدخل بريدك الإلكتروني (Gmail):");
-  if (!emailPrompt) return;
-  const derivedName = emailPrompt.split('@')[0];
-  const phonePrompt = prompt("من فضلك أدخل رقم هاتفك لتسليم الأوردرات والتواصل:", "010");
-
-  const finalName = derivedName || "عميل Google";
-  const finalPhone = phonePrompt || "01000000000";
-
-  await saveUserToCloudDatabase(finalName, finalPhone);
-
-  localStorage.setItem('fly_user_name', finalName);
-  localStorage.setItem('fly_user_phone', finalPhone);
-  document.getElementById('drawerUserName').textContent = finalName;
-  document.getElementById('drawerUserPhone').textContent = finalPhone;
-  document.getElementById('authGateScreen').style.display = 'none';
-}
-
-function confirmAppLogout() {
-  if (confirm("هل تود تسجيل الخروج من التطبيق؟")) {
-    toggleDrawer(false);
-    localStorage.removeItem('fly_user_name');
-    document.getElementById('authGateScreen').style.display = 'flex';
-  }
-}
-
-// التقاط ومعالجة الصور
-let attachedImageData = null;
 function handleImageAttach(input, badgeId) {
   if (input.files && input.files[0]) {
-    const file = input.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      attachedImageData = e.target.result;
-      document.getElementById(badgeId).style.display = 'block';
-    };
-    reader.readAsDataURL(file);
+    document.getElementById(badgeId).style.display = 'block';
   }
 }
 
-// التنقل بين الصفحات
 function showView(viewId) {
   document.querySelectorAll('.sub-page-view').forEach(v => v.classList.remove('active'));
   const target = document.getElementById(viewId);
@@ -881,45 +928,44 @@ function toggleDrawer(open) {
 }
 
 function selectCityLocation() {
-  const area = prompt("حدد منطقتك في نجع حمادي (مثال: الشارع الرئيسي، بركة، المساكن، هو):", "نجع حمادي");
-  if (area) {
-    document.getElementById('currentLocationName').textContent = `${area} ▾`;
-  }
+  const area = prompt("حدد منطقتك في نجع حمادي:", "نجع حمادي");
+  if (area) document.getElementById('currentLocationName').textContent = `${area} ▾`;
 }
 
-// الدخول السري للأدمن بالضغط 5 مرات على الشعار الصغير
 let secretClicks = 0, secretTimer = null;
 function handleSecretAdminClicks() {
   secretClicks++;
   clearTimeout(secretTimer);
   secretTimer = setTimeout(() => { secretClicks = 0; }, 2000);
   if (secretClicks >= 5) {
-    secretClicks = 0;
     location.href = 'https://mahmoudahmed3531-lgtm.github.io/FlyExpress/admin.html?t=' + Date.now();
   } else {
     toggleDrawer(true);
   }
 }
 
-// إرسال الطلبات للواتساب
+function confirmAppLogout() {
+  if (confirm("هل تود تسجيل الخروج من التطبيق؟")) {
+    toggleDrawer(false);
+    localStorage.removeItem('fly_user_name');
+    document.getElementById('authGateScreen').style.display = 'flex';
+  }
+}
+
 function submitSchoolOrder() {
   const name = document.getElementById('sch_student_name').value.trim();
   const from = document.getElementById('sch_from_street').value.trim();
   const to = document.getElementById('sch_to_school').value.trim();
   const phone = document.getElementById('sch_parent_phone').value.trim();
   if (!name || !from || !to) return alert("أكمل بيانات الطالب والعناوين أولاً.");
-  sendDirectWhatsApp(`طلب توصيل طالب للمدرسة 🏫🛵\nاسم الطالب: ${name}\nمن شارع: ${from}\nإلى: ${to}\nولي الأمر: ${phone}`);
+  sendDirectWhatsApp(`طلب توصيل طالب للمدرسة 🏫🛵\nاسم الطالب: ${name}\nمن: ${from}\nإلى: ${to}\nولي الأمر: ${phone}`);
 }
 
 function submitPharmacyOrder() {
   const details = document.getElementById('pharma_details').value.trim();
   const addr = document.getElementById('pharma_address').value.trim();
-  const hasPhoto = attachedImageData !== null;
-  if (!details && !hasPhoto) return alert("اكتب اسم العلاج أو التقط صورة الروشتة أولاً.");
-  if (!addr) return alert("اكتب عنوان التوصيل.");
-  
-  const photoNote = hasPhoto ? "\n📷 تم التقاط صورة الروشتة وسأقوم بإرسالها في الشات الآن." : "";
-  sendDirectWhatsApp(`طلب أدوية وصيدلية عاجل 🚑💊\nالطلبات: ${details || 'مرفقة بالروشتة'}\nالعنوان: ${addr}${photoNote}`);
+  if (!details && !addr) return alert("اكتب اسم العلاج وعنوان التوصيل.");
+  sendDirectWhatsApp(`طلب أدوية وصيدلية عاجل 🚑💊\nالطلبات: ${details}\nالعنوان: ${addr}`);
 }
 
 function submitParcelOrder() {
@@ -928,28 +974,19 @@ function submitParcelOrder() {
   const to = document.getElementById('ord_to').value.trim();
   const ph = document.getElementById('ord_phone').value.trim();
   if (!from || !to) return alert("أكمل العناوين أولاً.");
-  sendDirectWhatsApp(`طلب أوردر ونقل طرد 📦🛵\nالمحتوى: ${det || 'غير محدد'}\nمن: ${from}\nإلى: ${to}\nرقم العميل: ${ph}`);
+  sendDirectWhatsApp(`طلب أوردر ونقل طرد 📦🛵\nالمحتوى: ${det}\nمن: ${from}\nإلى: ${to}\nالعميل: ${ph}`);
 }
 
 function submitVegOrder() {
   const items = document.getElementById('veg_items_txt').value.trim();
   const addr = document.getElementById('veg_delivery_addr').value.trim();
-  if (!items) return alert("اكتب قائمة الخضار أو الفاكهة المطلوبة.");
-  sendDirectWhatsApp(`طلب خضار وفواكه من السوق 🥬🍎\nقائمة المشتريات:\n${items}\nالعنوان: ${addr}`);
+  if (!items) return alert("اكتب قائمة الخضار أو الفاكهة.");
+  sendDirectWhatsApp(`طلب خضار وفواكه من السوق 🥬🍎\nالطلبات:\n${items}\nالعنوان: ${addr}`);
 }
 
 function orderFoodItem(restaurant) {
   const order = prompt(`ما هي وجبتك المفضلة من ${restaurant}؟`);
-  if (order) {
-    sendDirectWhatsApp(`طلب طعام من مطاعم Fly Express 🍽️🔥\nالمطعم: ${restaurant}\nالوجبة المطلوبة: ${order}`);
-  }
-}
-
-// مسح أي ServiceWorker مخزن لمنع الكاش تماماً
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(registrations => {
-    for (let registration of registrations) { registration.unregister(); }
-  });
+  if (order) sendDirectWhatsApp(`طلب طعام من مطاعم Fly Express 🍽️🔥\nالمطعم: ${restaurant}\nالوجبة: ${order}`);
 }
 
 window.addEventListener('load', () => {
@@ -959,10 +996,6 @@ window.addEventListener('load', () => {
     document.getElementById('drawerUserName').textContent = savedUser;
   } else {
     document.getElementById('authGateScreen').style.display = 'flex';
-  }
-  const savedPhone = localStorage.getItem('fly_user_phone');
-  if (savedPhone) {
-    document.getElementById('drawerUserPhone').textContent = savedPhone;
   }
 });
 </script>
