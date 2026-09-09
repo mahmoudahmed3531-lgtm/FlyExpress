@@ -118,12 +118,12 @@ input:checked + .slider:before { transform: translateX(24px); }
     </button>
   </div>
 
-  <!-- كارت التحكم الإجباري في التحديثات لجميع العملاء -->
+  <!-- كارت التحكم الإجباري في التحديثات وأزرار القفل والفتح المباشرة -->
   <div class="admin-card" style="border-color: #e11d48; background: rgba(225, 29, 72, 0.05);">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
       <div style="display:flex; align-items:center; gap:8px;">
         <i class="fa-solid fa-cloud-arrow-up" style="color:var(--primary); font-size:18px;"></i>
-        <h3 style="font-size:14px; font-weight:900; color:var(--primary);">إجبار العملاء على تحديث التطبيق</h3>
+        <h3 style="font-size:14px; font-weight:900; color:var(--primary);">التحكم في قفل وتحديث التطبيق</h3>
       </div>
       <label class="switch">
         <input type="checkbox" id="forceUpdateToggle">
@@ -131,17 +131,29 @@ input:checked + .slider:before { transform: translateX(24px); }
       </label>
     </div>
 
-    <label style="font-size:11px; color:var(--text-sub);">رقم الإصدار الإجباري (يجب أن يكون أعلى من إصدار هاتف العميل):</label>
-    <input type="text" id="appRequiredVersion" class="admin-input" placeholder="مثال: 1.0.1 أو 2.0.0" value="1.0.1">
+    <label style="font-size:11px; color:var(--text-sub);">رقم الإصدار المطلوب فرضه (مثال: 1.0.1 أو 2.0.0):</label>
+    <input type="text" id="appRequiredVersion" class="admin-input" placeholder="رقم النسخة" value="1.0.1">
 
-    <label style="font-size:11px; color:var(--text-sub);">رابط تحميل ملف APK الجديد (MediaFire / Drive):</label>
-    <input type="url" id="appNewDownloadUrl" class="admin-input" placeholder="https://www.mediafire.com/file/..." value="https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file">
+    <label style="font-size:11px; color:var(--text-sub);">رابط تحميل ملف APK المباشر:</label>
+    <input type="url" id="appNewDownloadUrl" class="admin-input" placeholder="https://www.mediafire.com/file/..." value="https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file">
 
-    <label style="font-size:11px; color:var(--text-sub);">رسالة التحديث للعميل:</label>
-    <textarea id="appUpdateNotes" class="admin-input" rows="2" placeholder="رسالة التنبيه التي ستظهر للعميل عند فتح التطبيق...">تم إطلاق تحديث رسمي جديد للتطبيق بواجهة وأيقونات جديدة وسرعة فائقة. يرجى التحديث الآن لمواصلة الاستخدام.</textarea>
+    <label style="font-size:11px; color:var(--text-sub);">رسالة التنبيه للعميل:</label>
+    <textarea id="appUpdateNotes" class="admin-input" rows="2">تم إطلاق تحديث رسمي جديد للتطبيق بواجهة وأيقونات جديدة وسرعة فائقة. يرجى التحديث الآن لمواصلة الاستخدام.</textarea>
 
-    <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="broadcastAppUpdate()">
-      <i class="fa-solid fa-tower-broadcast"></i> بث التحديث الإجباري لجميع الهواتف 📡
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px;">
+      <!-- زر القفل الإجباري المباشر -->
+      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="quickLockApp()">
+        <i class="fa-solid fa-lock"></i> قفل التطبيق الآن 🔒
+      </button>
+
+      <!-- زر إلغاء القفل وفتح التطبيق -->
+      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="quickUnlockApp()">
+        <i class="fa-solid fa-lock-open"></i> فتح التطبيق 🔓
+      </button>
+    </div>
+
+    <button class="btn-action" style="background:var(--primary); color:#fff; margin-top:8px;" onclick="broadcastAppUpdate()">
+      <i class="fa-solid fa-tower-broadcast"></i> بث الإعدادات الحالية لجميع الهواتف 📡
     </button>
   </div>
 
@@ -228,10 +240,24 @@ async function sendCloudPayload(extraData = {}) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-    if (res.ok) alert("✅ تم البث وتطبيق التعديل على جميع الهواتف بنجاح!");
+    if (res.ok) alert("✅ تم البث والتطبيق على جميع الهواتف لحظياً!");
   } catch (e) {
-    alert("تعذر الاتصال بالسيرفر السحابي.");
+    alert("تعذر الاتصال بالسيرفر.");
   }
+}
+
+// قفل فوري للتطبيق
+async function quickLockApp() {
+  document.getElementById('forceUpdateToggle').checked = true;
+  document.getElementById('appRequiredVersion').value = "9.9.9"; // رقم أعلى من كل النسخ ليقفل فورا
+  await broadcastAppUpdate();
+}
+
+// فتح فوري للتطبيق
+async function quickUnlockApp() {
+  document.getElementById('forceUpdateToggle').checked = false;
+  document.getElementById('appRequiredVersion').value = "1.0.0";
+  await broadcastAppUpdate();
 }
 
 async function broadcastAppUpdate() {
@@ -261,7 +287,7 @@ async function broadcastPrices() {
 async function loadRegisteredUsers() {
   const container = document.getElementById('usersListContainer');
   try {
-    const res = await fetch(USERS_API_URL);
+    const res = await fetch(USERS_API_URL + '?t=' + Date.now());
     if (!res.ok) throw new Error();
     const users = await res.json();
     container.innerHTML = "";
