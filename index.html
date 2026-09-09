@@ -190,7 +190,7 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
 .badge-pharmacy { background: #8b5cf6; }
 .badge-orders { background: #f59e0b; }
 
-/* عجلة الحظ الكانفاس */
+/* عجلة الحظ الاحترافية بالكانفاس */
 .wheel-stage-container {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 16px 0; position: relative;
@@ -682,8 +682,8 @@ body { background-color: #0b0f19; display: flex; justify-content: center; min-he
 <script>
 const APP_LOCAL_VERSION = "1.0.0";
 const ADMIN_PHONE = "201017908076";
-const USERS_STORAGE_KEY = "fly_cloud_users_v2";
-const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
+const CLOUD_CONFIG_URL = "https://fly-express-naga-default-rtdb.firebaseio.com/config.json";
+const CLOUD_USERS_URL = "https://fly-express-naga-default-rtdb.firebaseio.com/users.json";
 let currentDownloadUrl = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file";
 
 function showAppModal(title, msg, iconClass = "fa-circle-info") {
@@ -738,7 +738,7 @@ function orderFoodWhatsApp(restaurantName) {
   sendDirectWhatsApp(`طلب طعام من مطاعم نجع حمادي 🍽️🛵\nالمطعم: ${restaurantName}\nمن فضلك أرسل لي قائمة الوجبات المتاحة للطلب.`);
 }
 
-// عجلة الحظ الاحترافية
+// رسم عجلة الحظ الاحترافية
 const wheelCanvas = document.getElementById('luckyWheelCanvas');
 const ctx = wheelCanvas ? wheelCanvas.getContext('2d') : null;
 const wheelSlices = [
@@ -893,7 +893,7 @@ function submitPharmacyOrder() {
   if (!details || !addr) return showAppModal("بيانات ناقصة", "اكتب اسم العلاج وعنوان التوصيل.");
 
   recordOrderRewards(25, "أدوية وصيدلية");
-  sendDirectWhatsApp(`طلب أدوية وصيدلية عاجل 🚑💊\nالطلبات: ${details}\nالعنوان: ${addr}`);
+  sendDirectWhatsApp(`طلب أدوية وصيدلية 🚑💊\nالطلبات: ${details}\nالعنوان: ${addr}`);
 }
 
 function submitParcelOrder() {
@@ -932,21 +932,29 @@ function processLoginAction() {
   document.getElementById('authGateScreen').style.display = 'none';
 }
 
-// تسجيل الحساب وحفظه في سجل الأدمن
-function saveUserToAdminCloud(name, phone) {
+// حفظ العميل سحابياً في سيرفر Firebase
+async function saveUserToCloud(name, phone, email = "") {
   try {
-    let users = JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) || '[]');
-    users.push({ name: name, phone: phone, date: new Date().toLocaleTimeString('ar-EG') });
-    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+    await fetch(CLOUD_USERS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name,
+        phone: phone,
+        email: email,
+        timestamp: Date.now()
+      })
+    });
   } catch(e) {}
 }
 
 async function processSignupAction() {
   const name = document.getElementById('signupFullname').value.trim();
+  const email = document.getElementById('signupEmailAddress').value.trim();
   const phone = document.getElementById('signupPhoneNum').value.trim();
   if (!name || !phone) return showAppModal("تنبيه", "أكمل كافة البيانات المطلوبة.");
 
-  saveUserToAdminCloud(name, phone);
+  await saveUserToCloud(name, phone, email);
 
   localStorage.setItem('fly_user_name', name);
   localStorage.setItem('fly_user_phone', phone);
@@ -963,7 +971,7 @@ async function handleGoogleSignInDirect() {
   const name = email.split('@')[0];
   const phone = prompt("أدخل رقم هاتفك للتواصل مع الكابتن:", "010");
 
-  saveUserToAdminCloud(name, phone || "01000000000");
+  await saveUserToCloud(name, phone || "01000000000", email);
 
   localStorage.setItem('fly_user_name', name);
   localStorage.setItem('fly_user_phone', phone || "01000000000");
@@ -1019,63 +1027,50 @@ function toggleDrawer(open) {
   else d.classList.remove('show');
 }
 
-// الاستماع المباشر والحي للوحة الأدمن
+// الاستماع المباشر الحي للسيرفر السحابي كل 5 ثوانٍ
 async function listenToAdminUpdates() {
-  // قراءة الإعدادات من التخزين المشترك
-  const localSync = localStorage.getItem('fly_master_sync_data');
-  if (localSync) {
-    applyDataToApp(JSON.parse(localSync));
-  }
-
-  // الاستماع للسيرفر السحابي
   try {
-    const res = await fetch(`${CLOUD_CHANNEL}/json?poll=1&since=latest&t=${Date.now()}`);
-    const text = await res.text();
-    if (text) {
-      const lines = text.trim().split('\n');
-      const data = JSON.parse(JSON.parse(lines[lines.length - 1]).message);
-      applyDataToApp(data);
+    const res = await fetch(CLOUD_CONFIG_URL + '?t=' + Date.now());
+    if (res.ok) {
+      const data = await res.json();
+      if (!data) return;
+
+      // 1. الإعلان اليومي
+      if (data.notice) {
+        document.getElementById('dailyPromoTickerTxt').textContent = data.notice;
+      }
+
+      // 2. حالة تشغيل التطبيق (مفتوح / صيانة)
+      if (data.service === 'closed') {
+        showAppModal("تنبيه الصيانة ⚠️", "تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير وسيعود قريباً 🛵", "fa-triangle-exclamation");
+      }
+
+      // 3. تحديث أسعار المشاوير الحية
+      if (data.prices) {
+        if (data.prices.inside) document.getElementById('lbl_p_inside').textContent = data.prices.inside + ' ج';
+        if (data.prices.berka) document.getElementById('lbl_p_berka').textContent = data.prices.berka + ' ج';
+        if (data.prices.masaken) document.getElementById('lbl_p_masaken').textContent = data.prices.masaken + ' ج';
+        if (data.prices.alum) document.getElementById('lbl_p_alum').textContent = data.prices.alum + ' ج';
+        if (data.prices.haw) document.getElementById('lbl_p_haw').textContent = data.prices.haw + ' ج';
+        if (data.prices.naga) document.getElementById('lbl_p_naga').textContent = data.prices.naga + ' ج';
+      }
+
+      // 4. قفل وتحديث التطبيق الإجباري
+      if (data.update && data.update.enabled) {
+        if (data.update.version !== APP_LOCAL_VERSION) {
+          if (data.update.downloadUrl) currentDownloadUrl = data.update.downloadUrl;
+          document.getElementById('forceUpdateModal').style.display = 'flex';
+        } else {
+          document.getElementById('forceUpdateModal').style.display = 'none';
+        }
+      } else {
+        document.getElementById('forceUpdateModal').style.display = 'none';
+      }
     }
   } catch(e) {}
 }
 
-function applyDataToApp(data) {
-  if (!data) return;
-
-  // شريط الإعلان اليومي
-  if (data.notice) {
-    document.getElementById('dailyPromoTickerTxt').textContent = data.notice;
-  }
-
-  // حالة تشغيل التطبيق (مفتوح / صيانة)
-  if (data.service === 'closed') {
-    showAppModal("تنبيه الصيانة", "تطبيق Fly Express مغلق مؤقتاً للصيانة وسنعود للعمل قريباً 🛵", "fa-triangle-exclamation");
-  }
-
-  // تحديث أسعار المشاوير فوراً
-  if (data.prices) {
-    if (data.prices.inside) document.getElementById('lbl_p_inside').textContent = data.prices.inside + ' ج';
-    if (data.prices.berka) document.getElementById('lbl_p_berka').textContent = data.prices.berka + ' ج';
-    if (data.prices.masaken) document.getElementById('lbl_p_masaken').textContent = data.prices.masaken + ' ج';
-    if (data.prices.alum) document.getElementById('lbl_p_alum').textContent = data.prices.alum + ' ج';
-    if (data.prices.haw) document.getElementById('lbl_p_haw').textContent = data.prices.haw + ' ج';
-    if (data.prices.naga) document.getElementById('lbl_p_naga').textContent = data.prices.naga + ' ج';
-  }
-
-  // التحديث الإجباري
-  if (data.update && data.update.enabled) {
-    if (data.update.version !== APP_LOCAL_VERSION) {
-      if (data.update.downloadUrl) currentDownloadUrl = data.update.downloadUrl;
-      document.getElementById('forceUpdateModal').style.display = 'flex';
-    } else {
-      document.getElementById('forceUpdateModal').style.display = 'none';
-    }
-  } else {
-    document.getElementById('forceUpdateModal').style.display = 'none';
-  }
-}
-
-setInterval(listenToAdminUpdates, 10000);
+setInterval(listenToAdminUpdates, 5000);
 listenToAdminUpdates();
 
 function downloadLatestAppVersion() { window.open(currentDownloadUrl, '_blank'); }
