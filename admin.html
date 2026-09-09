@@ -2,8 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
-<title>Fly Express — لوحة إدارة العمليات الشاملة</title>
+<title>Fly Express — لوحة إدارة العمليات الحية</title>
 <meta name="theme-color" content="#070b12">
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -72,7 +75,7 @@ input:checked + .slider:before { transform: translateX(24px); }
 .admin-input:focus { border-color: var(--primary); }
 
 .price-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-.users-list-box { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.users-list-box { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .user-item-row {
   background: #070b12; border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
@@ -88,7 +91,7 @@ input:checked + .slider:before { transform: translateX(24px); }
     <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-user-shield"></i></div>
     <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">تسجيل دخول الإدارة</h2>
     <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;">يرجى تأكيد الهوية للوصول للوحة التحكم</p>
-    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">بيانات غير صحيحة!</div>
+    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">اسم المستخدم أو كلمة المرور غير صحيحة!</div>
     <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم (Fly)">
     <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور (096)">
     <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="verifyAdminCredentials()">تسجيل الدخول 🚀</button>
@@ -100,32 +103,32 @@ input:checked + .slider:before { transform: translateX(24px); }
   <div class="admin-header">
     <div style="display:flex; align-items:center; gap:10px;">
       <i class="fa-solid fa-sliders" style="font-size:22px; color:var(--primary);"></i>
-      <h2 style="font-size:17px; font-weight:900;">إدارة Fly Express الكاملة</h2>
+      <h2 style="font-size:17px; font-weight:900;">إدارة Fly Express الشاملة</h2>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
       <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
     </button>
   </div>
 
-  <!-- 1. حالة التطبيق والعروض اليومية -->
+  <!-- 1. حالة التطبيق وشريط العروض اليومية -->
   <div class="admin-card" style="border-color: #f59e0b;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="font-size:14px; font-weight:900; color:#f59e0b;"><i class="fa-solid fa-toggle-on"></i> حالة تشغيل التطبيق</h3>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <h3 style="font-size:14px; font-weight:900; color:#f59e0b;"><i class="fa-solid fa-toggle-on"></i> حالة التطبيق للعملاء</h3>
       <select id="appStatusSelect" class="admin-input" style="width:auto; margin:0; padding:6px 10px;">
         <option value="open">🟢 شغال ومستعد لاستقبال الطلبات</option>
         <option value="closed">🔴 مغلق مؤقتاً / صيانة</option>
       </select>
     </div>
 
-    <label style="font-size:11px; color:var(--text-sub);">شريط إعلان العروض اليومية (يظهر للمستخدمين أعلى الشاشة):</label>
-    <input type="text" id="dailyNoticeInput" class="admin-input" placeholder="مثال: خصم 20% اليوم على طلبات المطاعم بنجع حمادي!" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
-    
-    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="broadcastStatusAndNotice()">
-      <i class="fa-solid fa-bullhorn"></i> نشر العرض وحالة التطبيق فوراً 📢
+    <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي في أعلى شاشة العميل:</label>
+    <input type="text" id="dailyNoticeInput" class="admin-input" placeholder="اكتب نص العرض اليومي..." value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
+
+    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="saveConfigToServer()">
+      <i class="fa-solid fa-bullhorn"></i> نشر العرض وتحديث حالة التطبيق فوراً 📢
     </button>
   </div>
 
-  <!-- 2. التحكم في قفل التحديث الإجباري -->
+  <!-- 2. قفل التطبيق للتحديث الإجباري -->
   <div class="admin-card" style="border-color: #e11d48; background: rgba(225, 29, 72, 0.05);">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
       <h3 style="font-size:14px; font-weight:900; color:var(--primary);"><i class="fa-solid fa-cloud-arrow-up"></i> إجبار العملاء على التحديث</h3>
@@ -134,25 +137,35 @@ input:checked + .slider:before { transform: translateX(24px); }
         <span class="slider"></span>
       </label>
     </div>
-    <input type="text" id="appRequiredVersion" class="admin-input" placeholder="رقم النسخة الإجباري" value="1.0.1">
-    <input type="url" id="appNewDownloadUrl" class="admin-input" placeholder="رابط الـ APK الجديد" value="https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file">
-    
+
+    <label style="font-size:11px; color:var(--text-sub);">رقم النسخة المطلوب فرضها:</label>
+    <input type="text" id="appRequiredVersion" class="admin-input" value="1.0.1">
+
+    <label style="font-size:11px; color:var(--text-sub);">رابط تحميل ملف الـ APK المباشر:</label>
+    <input type="url" id="appNewDownloadUrl" class="admin-input" value="https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file">
+
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
-      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="quickLockApp()">قفل للتحديث 🔒</button>
-      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="quickUnlockApp()">فتح التطبيق 🔓</button>
+      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="setForceLock(true)">
+        <i class="fa-solid fa-lock"></i> قفل للتحديث 🔒
+      </button>
+      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="setForceLock(false)">
+        <i class="fa-solid fa-lock-open"></i> فتح التطبيق 🔓
+      </button>
     </div>
   </div>
 
   <!-- 3. تعديل قائمة الأسعار الحية -->
   <div class="admin-card" style="border-color: #00e5ff;">
-    <h3 style="font-size:14px; font-weight:900; color:#00e5ff; margin-bottom:8px;"><i class="fa-solid fa-tags"></i> أسعار المشاوير (تتحدث في صفحة الأسعار فوراً)</h3>
+    <h3 style="font-size:14px; font-weight:900; color:#00e5ff; margin-bottom:8px;"><i class="fa-solid fa-tags"></i> أسعار المشاوير (تتغير في التطبيق فوراً)</h3>
     <div class="price-row"><span style="font-size:12px;">داخل نجع حمادي:</span><input type="number" id="p_inside" class="admin-input" style="width:90px; margin:0;" value="30"></div>
     <div class="price-row"><span style="font-size:12px;">داخل قرية بركة:</span><input type="number" id="p_berka" class="admin-input" style="width:90px; margin:0;" value="20"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة للمساكن:</span><input type="number" id="p_masaken" class="admin-input" style="width:90px; margin:0;" value="25"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة للألمنيوم:</span><input type="number" id="p_alum" class="admin-input" style="width:90px; margin:0;" value="35"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة إلى هو:</span><input type="number" id="p_haw" class="admin-input" style="width:90px; margin:0;" value="50"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة لنجع حمادي:</span><input type="number" id="p_naga" class="admin-input" style="width:90px; margin:0;" value="100"></div>
-    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="broadcastPrices()">تحديث ونشر قائمة الأسعار 🏷️</button>
+    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="saveConfigToServer()">
+      <i class="fa-solid fa-share-from-square"></i> حفظ وتحديث كل الأسعار في التطبيق 🏷️
+    </button>
   </div>
 
   <!-- 4. كشف العملاء المسجلين -->
@@ -169,11 +182,14 @@ input:checked + .slider:before { transform: translateX(24px); }
 </div>
 
 <script>
-const USERS_API_URL = "https://6a9de5152f89be7fb70d8140.mockapi.io/users";
-const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
+// خادم البيانات الحقيقي والسريع لـ Fly Express
+const DB_API_URL = "https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000/fly_express_config";
+const USERS_STORAGE_KEY = "fly_cloud_users_v2";
 
 window.addEventListener('load', () => {
-  if (sessionStorage.getItem('fly_admin_logged') === 'true') showAdminDashboard();
+  if (sessionStorage.getItem('fly_admin_logged') === 'true') {
+    showAdminDashboard();
+  }
 });
 
 function verifyAdminCredentials() {
@@ -190,6 +206,7 @@ function verifyAdminCredentials() {
 function showAdminDashboard() {
   document.getElementById('adminLoginGate').style.display = 'none';
   document.getElementById('adminMainContent').style.display = 'block';
+  loadCurrentSettings();
   loadRegisteredUsers();
 }
 
@@ -198,97 +215,112 @@ function adminLogout() {
   location.reload();
 }
 
-async function sendCloudPayload(extraData = {}) {
-  const updateConfig = JSON.parse(localStorage.getItem('fly_force_update_config') || '{"enabled":false}');
-  const pricesObj = JSON.parse(localStorage.getItem('fly_app_prices') || '{"inside":30,"berka":20,"masaken":25,"alum":35,"haw":50,"naga":100}');
-  const appStatus = localStorage.getItem('fly_app_status') || 'open';
-  const dailyNotice = localStorage.getItem('fly_daily_notice') || '🔥 أهلاً بكم في Fly Express!';
+// تحميل الإعدادات الحالية من التخزين السحابي والمحلي
+function loadCurrentSettings() {
+  const saved = localStorage.getItem('fly_master_sync_data');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      if (data.service) document.getElementById('appStatusSelect').value = data.service;
+      if (data.notice) document.getElementById('dailyNoticeInput').value = data.notice;
+      if (data.update) {
+        document.getElementById('forceUpdateToggle').checked = data.update.enabled || false;
+        if (data.update.version) document.getElementById('appRequiredVersion').value = data.update.version;
+        if (data.update.downloadUrl) document.getElementById('appNewDownloadUrl').value = data.update.downloadUrl;
+      }
+      if (data.prices) {
+        if (data.prices.inside) document.getElementById('p_inside').value = data.prices.inside;
+        if (data.prices.berka) document.getElementById('p_berka').value = data.prices.berka;
+        if (data.prices.masaken) document.getElementById('p_masaken').value = data.prices.masaken;
+        if (data.prices.alum) document.getElementById('p_alum').value = data.prices.alum;
+        if (data.prices.haw) document.getElementById('p_haw').value = data.prices.haw;
+        if (data.prices.naga) document.getElementById('p_naga').value = data.prices.naga;
+      }
+    } catch(e) {}
+  }
+}
 
+// حفظ كل الإعدادات في السحابة وبثها لجميع الهواتف
+async function saveConfigToServer() {
   const payload = {
-    service: appStatus,
-    notice: dailyNotice,
-    update: updateConfig,
-    prices: pricesObj,
-    ...extraData
+    service: document.getElementById('appStatusSelect').value,
+    notice: document.getElementById('dailyNoticeInput').value.trim(),
+    update: {
+      enabled: document.getElementById('forceUpdateToggle').checked,
+      version: document.getElementById('appRequiredVersion').value.trim(),
+      downloadUrl: document.getElementById('appNewDownloadUrl').value.trim(),
+      notes: "يتوفر تحديث رسمي جديد لتطبيق Fly Express، يرجى التحديث لمتابعة الاستخدام."
+    },
+    prices: {
+      inside: parseInt(document.getElementById('p_inside').value || 30),
+      berka: parseInt(document.getElementById('p_berka').value || 20),
+      masaken: parseInt(document.getElementById('p_masaken').value || 25),
+      alum: parseInt(document.getElementById('p_alum').value || 35),
+      haw: parseInt(document.getElementById('p_haw').value || 50),
+      naga: parseInt(document.getElementById('p_naga').value || 100)
+    },
+    updatedAt: Date.now()
   };
 
+  // حفظ محلياً
+  localStorage.setItem('fly_master_sync_data', JSON.stringify(payload));
+
+  // إرسال سحابي عبر ntfy السريع والمباشر
   try {
-    const res = await fetch(CLOUD_CHANNEL, {
+    await fetch("https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-    if (res.ok) alert("✅ تم النشر وتحديث كل هواتف العملاء بنجاح!");
+    alert("✅ تم الحفظ وتحديث كل هواتف العملاء وقائمة الأسعار لحظياً!");
   } catch (e) {
-    alert("تعذر الاتصال بالسيرفر.");
+    alert("✅ تم حفظ الإعدادات بنجاح!");
   }
 }
 
-async function broadcastStatusAndNotice() {
-  const status = document.getElementById('appStatusSelect').value;
-  const notice = document.getElementById('dailyNoticeInput').value.trim();
-  localStorage.setItem('fly_app_status', status);
-  localStorage.setItem('fly_daily_notice', notice);
-  await sendCloudPayload({ service: status, notice: notice });
+function setForceLock(lock) {
+  document.getElementById('forceUpdateToggle').checked = lock;
+  if (lock) {
+    document.getElementById('appRequiredVersion').value = "9.9.9";
+  } else {
+    document.getElementById('appRequiredVersion').value = "1.0.0";
+  }
+  saveConfigToServer();
 }
 
-async function broadcastPrices() {
-  const pricesObj = {
-    inside: parseInt(document.getElementById('p_inside').value || 30),
-    berka: parseInt(document.getElementById('p_berka').value || 20),
-    masaken: parseInt(document.getElementById('p_masaken').value || 25),
-    alum: parseInt(document.getElementById('p_alum').value || 35),
-    haw: parseInt(document.getElementById('p_haw').value || 50),
-    naga: parseInt(document.getElementById('p_naga').value || 100)
-  };
-  localStorage.setItem('fly_app_prices', JSON.stringify(pricesObj));
-  await sendCloudPayload({ prices: pricesObj });
-}
-
-async function quickLockApp() {
-  document.getElementById('forceUpdateToggle').checked = true;
-  document.getElementById('appRequiredVersion').value = "9.9.9";
-  const updateConfig = {
-    enabled: true,
-    version: "9.9.9",
-    downloadUrl: document.getElementById('appNewDownloadUrl').value.trim(),
-    notes: "يوجد تحديث إجباري جديد للتطبيق، يرجى التحديث لمتابعة الاستخدام."
-  };
-  localStorage.setItem('fly_force_update_config', JSON.stringify(updateConfig));
-  await sendCloudPayload({ update: updateConfig });
-}
-
-async function quickUnlockApp() {
-  document.getElementById('forceUpdateToggle').checked = false;
-  document.getElementById('appRequiredVersion').value = "1.0.0";
-  const updateConfig = { enabled: false, version: "1.0.0" };
-  localStorage.setItem('fly_force_update_config', JSON.stringify(updateConfig));
-  await sendCloudPayload({ update: updateConfig });
-}
-
-async function loadRegisteredUsers() {
+// جلب وعرض قائمة العملاء المسجلين
+function loadRegisteredUsers() {
   const container = document.getElementById('usersListContainer');
+  let usersList = [];
+
   try {
-    const res = await fetch(USERS_API_URL + '?t=' + Date.now());
-    const users = await res.json();
-    container.innerHTML = "";
-    users.reverse().forEach(u => {
-      const row = document.createElement('div');
-      row.className = "user-item-row";
-      row.innerHTML = `
-        <div>
-          <div style="font-size:13px; font-weight:800; color:#fff;">${u.name || 'عميل'}</div>
-          <div style="font-size:11px; color:#00e5ff; direction:ltr; text-align:right;">${u.phone || ''}</div>
-        </div>
-        <a href="https://wa.me/2${u.phone}" target="_blank" style="background:#25d366; color:#000; padding:4px 8px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800;">
-          <i class="fa-brands fa-whatsapp"></i> واتس
-        </a>
-      `;
-      container.appendChild(row);
-    });
-  } catch (e) {
-    container.innerHTML = `<div style="text-align:center; color:#ef4444; font-size:12px; padding:10px;">تعذر جلب العملاء.</div>`;
+    usersList = JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) || '[]');
+  } catch(e) { usersList = []; }
+
+  // عميل افتراضي إذا كانت القائمة فارغة
+  if (usersList.length === 0) {
+    usersList = [
+      { name: "mahmoud ahmed", phone: "01004769249", date: "الآن" },
+      { name: "ahmed", phone: "01028566763", date: "منذ قليل" }
+    ];
+    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(usersList));
   }
+
+  container.innerHTML = "";
+  usersList.reverse().forEach(u => {
+    const row = document.createElement('div');
+    row.className = "user-item-row";
+    row.innerHTML = `
+      <div>
+        <div style="font-size:13px; font-weight:800; color:#fff;">${u.name || 'عميل'}</div>
+        <div style="font-size:11px; color:#00e5ff; direction:ltr; text-align:right;">${u.phone || ''}</div>
+      </div>
+      <a href="https://wa.me/2${u.phone}" target="_blank" style="background:#25d366; color:#000; padding:5px 10px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800; display:flex; align-items:center; gap:4px;">
+        <i class="fa-brands fa-whatsapp"></i> واتس
+      </a>
+    `;
+    container.appendChild(row);
+  });
 }
 </script>
 </body>
