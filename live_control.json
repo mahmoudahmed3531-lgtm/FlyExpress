@@ -1,0 +1,17 @@
+{
+  "service": "open",
+  "notice": "🔥 أهلاً بكم في Fly Express — أسرع دليفري في نجع حمادي!",
+  "update": {
+    "enabled": false,
+    "version": "1.0.0",
+    "downloadUrl": "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file"
+  },
+  "prices": {
+    "inside": 30,
+    "berka": 20,
+    "masaken": 25,
+    "alum": 35,
+    "haw": 50,
+    "naga": 100
+  }
+}
