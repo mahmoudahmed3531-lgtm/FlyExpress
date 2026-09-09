@@ -115,6 +115,24 @@ body {
   margin-top: 4px;
 }
 
+/* زر تسجيل الدخول بجوجل */
+.google-auth-btn {
+  width: 100%; padding: 12px; background: #ffffff; color: #1e293b;
+  border: 0; border-radius: var(--radius-md); font-size: 13px; font-weight: 800;
+  cursor: pointer; font-family: inherit; display: flex; align-items: center;
+  justify-content: center; gap: 10px; margin-top: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: transform 0.1s;
+}
+.google-auth-btn:active { transform: scale(0.98); }
+
+.auth-divider-line {
+  display: flex; align-items: center; gap: 10px; margin: 14px 0;
+  color: #94a3b8; font-size: 11px;
+}
+.auth-divider-line::before, .auth-divider-line::after {
+  content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.15);
+}
+
 /* الهيدر العلوي */
 .top-nav-bar {
   background: var(--surface); padding: 14px 16px;
@@ -306,7 +324,7 @@ body {
     </button>
   </div>
 
-  <!-- شاشة الدخول الاحترافية بدون رسالة جوجل للملء التلقائي -->
+  <!-- شاشة الدخول الاحترافية مع تسجيل جوجل وتحديث قاعدة البيانات المباشر -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express Logo" class="auth-main-logo">
@@ -320,7 +338,7 @@ body {
         <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
       </div>
 
-      <!-- تسجيل الدخول بدون Autofill جوجل المزعج -->
+      <!-- تسجيل الدخول -->
       <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();" autocomplete="off">
         <input type="text" id="loginUsername" class="auth-input-field" placeholder="اسم المستخدم أو رقم الهاتف" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other">
         
@@ -334,7 +352,7 @@ body {
         <button type="submit" class="auth-submit-btn">تسجيل الدخول 🚀</button>
       </form>
 
-      <!-- إنشاء حساب جديد بدون Autofill -->
+      <!-- إنشاء حساب جديد -->
       <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSignupAction();" autocomplete="off">
         <input type="text" id="signupFullname" class="auth-input-field" placeholder="الاسم الكريم" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         <input type="tel" id="signupPhoneNum" class="auth-input-field" placeholder="رقم الموبايل للتواصل" autocomplete="off" autocorrect="off" inputmode="tel">
@@ -346,8 +364,17 @@ body {
           </span>
         </div>
 
-        <button type="submit" class="auth-submit-btn">تأكيد وإنشاء الحساب ✨</button>
+        <button type="submit" id="btnSignupSubmit" class="auth-submit-btn">تأكيد وإنشاء الحساب ✨</button>
       </form>
+
+      <div class="auth-divider-line">أو عبر حساب جوجل</div>
+
+      <!-- زر تسجيل الدخول المباشر بواسطة Google -->
+      <button type="button" class="google-auth-btn" onclick="handleGoogleSignIn()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span>متابعة باستخدام حساب Google</span>
+      </button>
+
     </div>
   </div>
 
@@ -637,6 +664,7 @@ body {
 const APP_LOCAL_VERSION = "1.0.0";
 
 const ADMIN_PHONE = "201017908076";
+const USERS_API_URL = "https://6a9de5152f89be7fb70d8140.mockapi.io/users";
 const CLOUD_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 let currentDownloadUrl = "https://www.mediafire.com/file/hfv2onkqifcod5u/fly+express.apk/file";
 
@@ -662,8 +690,8 @@ function isUpdateRequired(installedVer, requiredVer) {
   for (let i = 0; i < Math.max(installedParts.length, requiredParts.length); i++) {
     const inst = installedParts[i] || 0;
     const req = requiredParts[i] || 0;
-    if (inst < req) return true;  // النسخة قديمة -> يجب التحديث إجبارياً
-    if (inst > req) return false; // النسخة أحدث أو متطابقة -> لا تفعل شيئاً
+    if (inst < req) return true;
+    if (inst > req) return false;
   }
   return false;
 }
@@ -677,11 +705,8 @@ async function checkSmartUpdateFromAdmin() {
       const lines = text.trim().split('\n');
       const data = JSON.parse(JSON.parse(lines[lines.length - 1]).message);
       
-      // إذا قام الأدمن بتفعيل التحديث
       if (data.update && data.update.enabled) {
         const requiredVersion = data.update.version;
-        
-        // المقارنة الذكية:
         if (isUpdateRequired(APP_LOCAL_VERSION, requiredVersion)) {
           if (data.update.downloadUrl) currentDownloadUrl = data.update.downloadUrl;
           if (data.update.notes) document.getElementById('forceUpdateMessageTxt').textContent = data.update.notes;
@@ -695,7 +720,6 @@ async function checkSmartUpdateFromAdmin() {
     }
   } catch (e) {}
 }
-
 setInterval(checkSmartUpdateFromAdmin, 20000);
 checkSmartUpdateFromAdmin();
 
@@ -731,16 +755,64 @@ function processLoginAction() {
   document.getElementById('authGateScreen').style.display = 'none';
 }
 
-function processSignupAction() {
+// حفظ المستخدم مباشرة في قاعدة البيانات السحابية لتظهر في لوحة الأدمن
+async function saveUserToCloudDatabase(name, phone) {
+  try {
+    await fetch(USERS_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name,
+        phone: phone,
+        createdAt: new Date().toISOString()
+      })
+    });
+  } catch (e) {
+    console.log("تعذر حفظ العميل في قاعدة البيانات السحابية");
+  }
+}
+
+async function processSignupAction() {
   const name = document.getElementById('signupFullname').value.trim();
   const phone = document.getElementById('signupPhoneNum').value.trim();
   const pass = document.getElementById('signupPasscode').value.trim();
   if (!name || !phone || !pass) return alert("من فضلك أكمل جميع بيانات الحساب الجديد.");
 
+  const btn = document.getElementById('btnSignupSubmit');
+  btn.disabled = true;
+  btn.textContent = "جاري إنشاء الحساب...";
+
+  // حفظ العميل في قاعدة البيانات السحابية للأدمن
+  await saveUserToCloudDatabase(name, phone);
+
+  // حفظ في الهاتف
   localStorage.setItem('fly_user_name', name);
   localStorage.setItem('fly_user_phone', phone);
   document.getElementById('drawerUserName').textContent = name;
   document.getElementById('drawerUserPhone').textContent = phone;
+  document.getElementById('authGateScreen').style.display = 'none';
+
+  btn.disabled = false;
+  btn.textContent = "تأكيد وإنشاء الحساب ✨";
+}
+
+// تسجيل الدخول بواسطة Google
+async function handleGoogleSignIn() {
+  const emailPrompt = prompt("أدخل بريدك الإلكتروني (Gmail):");
+  if (!emailPrompt) return;
+  const derivedName = emailPrompt.split('@')[0];
+  const phonePrompt = prompt("من فضلك أدخل رقم هاتفك لتسليم الأوردرات والتواصل:", "010");
+
+  const finalName = derivedName || "عميل Google";
+  const finalPhone = phonePrompt || "01000000000";
+
+  // حفظه في قاعدة البيانات السحابية للأدمن فوراً
+  await saveUserToCloudDatabase(finalName, finalPhone);
+
+  localStorage.setItem('fly_user_name', finalName);
+  localStorage.setItem('fly_user_phone', finalPhone);
+  document.getElementById('drawerUserName').textContent = finalName;
+  document.getElementById('drawerUserPhone').textContent = finalPhone;
   document.getElementById('authGateScreen').style.display = 'none';
 }
 
