@@ -3,10 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0"/>
-<meta http-equiv="Pragma" content="no-cache"/>
-<meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
-<title>Fly Express — لوحة إدارة العمليات والتحديثات</title>
+<title>Fly Express — إدارة العمليات</title>
 <meta name="theme-color" content="#070b12">
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -92,7 +90,7 @@ input:checked + .slider:before { transform: translateX(24px); }
     <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-user-shield"></i></div>
     <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">تسجيل دخول الإدارة</h2>
     <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;">يرجى تأكيد الهوية للوصول للوحة التحكم</p>
-    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">اسم المستخدم أو كلمة المرور غير صحيحة!</div>
+    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">بيانات غير صحيحة!</div>
     <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم (Fly)">
     <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور (096)">
     <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="verifyAdminCredentials()">تسجيل الدخول 🚀</button>
@@ -105,8 +103,8 @@ input:checked + .slider:before { transform: translateX(24px); }
     <div style="display:flex; align-items:center; gap:10px;">
       <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
       <div>
-        <h2 style="font-size:16px; font-weight:900;">إدارة Fly Express المباشرة</h2>
-        <span style="font-size:10px; color:#10b981;">🟢 البث السحابي المباشر شغال</span>
+        <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly Express</h2>
+        <span style="font-size:10px; color:#10b981;">🟢 متصل بالشبكة الحية</span>
       </div>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
@@ -124,10 +122,10 @@ input:checked + .slider:before { transform: translateX(24px); }
       </select>
     </div>
 
-    <label style="font-size:11px; color:var(--text-sub);">شريط إعلان العروض اليومية (يظهر للمستخدمين أعلى الشاشة):</label>
+    <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي في أعلى التطبيق:</label>
     <input type="text" id="dailyNoticeInput" class="admin-input" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
 
-    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="broadcastLiveControl()">
+    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="sendMasterBroadcast()">
       <i class="fa-solid fa-bullhorn"></i> نشر العرض وحالة التطبيق فوراً 📢
     </button>
   </div>
@@ -145,16 +143,13 @@ input:checked + .slider:before { transform: translateX(24px); }
     <label style="font-size:11px; color:var(--text-sub);">رقم الإصدار المطلوب فرضه:</label>
     <input type="text" id="appRequiredVersion" class="admin-input" value="1.0.1">
 
-    <label style="font-size:11px; color:var(--text-sub);">رابط تحميل ملف APK المباشر:</label>
+    <label style="font-size:11px; color:var(--text-sub);">رابط تحميل ملف الـ APK المباشر:</label>
     <input type="url" id="appNewDownloadUrl" class="admin-input" value="https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file">
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
-      <!-- زر القفل الإجباري المباشر -->
       <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="quickLockApp()">
         <i class="fa-solid fa-lock"></i> قفل للتحديث 🔒
       </button>
-
-      <!-- زر إلغاء القفل وفتح التطبيق -->
       <button class="btn-action" style="background:#10b981; color:#fff;" onclick="quickUnlockApp()">
         <i class="fa-solid fa-lock-open"></i> فتح التطبيق 🔓
       </button>
@@ -170,8 +165,8 @@ input:checked + .slider:before { transform: translateX(24px); }
     <div class="price-row"><span style="font-size:12px;">من بركة للألمنيوم:</span><input type="number" id="p_alum" class="admin-input" style="width:90px; margin:0;" value="35"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة إلى هو:</span><input type="number" id="p_haw" class="admin-input" style="width:90px; margin:0;" value="50"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة لنجع حمادي:</span><input type="number" id="p_naga" class="admin-input" style="width:90px; margin:0;" value="100"></div>
-    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="broadcastLiveControl()">
-      <i class="fa-solid fa-share-from-square"></i> نشر وتحديث قائمة الأسعار 🏷️
+    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="sendMasterBroadcast()">
+      <i class="fa-solid fa-share-from-square"></i> نشر الأسعار في التطبيق فوراً 🏷️
     </button>
   </div>
 
@@ -189,9 +184,9 @@ input:checked + .slider:before { transform: translateX(24px); }
 </div>
 
 <script>
-// قناة البث السحابي المباشرة لـ Fly Express
-const BROADCAST_ENDPOINT = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
-const USERS_ENDPOINT = "https://ntfy.sh/flyexpress_users_registration_2026";
+// قناة البث السحابي المباشرة فائقة السرعة
+const BROADCAST_URL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
+const USERS_URL = "https://ntfy.sh/flyexpress_users_registration_2026";
 
 window.addEventListener('load', () => {
   if (sessionStorage.getItem('fly_admin_logged') === 'true') {
@@ -221,21 +216,15 @@ function adminLogout() {
   location.reload();
 }
 
-// دالة البث السحابي التي تسيطر على تطبيق العميل فوراً
-async function broadcastLiveControl() {
-  const status = document.getElementById('appStatusSelect').value;
-  const notice = document.getElementById('dailyNoticeInput').value.trim();
-  const lockEnabled = document.getElementById('forceUpdateToggle').checked;
-  const reqVersion = document.getElementById('appRequiredVersion').value.trim();
-  const downUrl = document.getElementById('appNewDownloadUrl').value.trim();
-
+// دالة البث السحابي المباشرة
+async function sendMasterBroadcast() {
   const payload = {
-    service: status,
-    notice: notice,
+    service: document.getElementById('appStatusSelect').value,
+    notice: document.getElementById('dailyNoticeInput').value.trim(),
     update: {
-      enabled: lockEnabled,
-      version: reqVersion,
-      downloadUrl: downUrl
+      enabled: document.getElementById('forceUpdateToggle').checked,
+      version: document.getElementById('appRequiredVersion').value.trim(),
+      downloadUrl: document.getElementById('appNewDownloadUrl').value.trim()
     },
     prices: {
       inside: parseInt(document.getElementById('p_inside').value || 30),
@@ -245,44 +234,41 @@ async function broadcastLiveControl() {
       haw: parseInt(document.getElementById('p_haw').value || 50),
       naga: parseInt(document.getElementById('p_naga').value || 100)
     },
-    time: Date.now()
+    timestamp: Date.now()
   };
 
   try {
-    const res = await fetch(BROADCAST_ENDPOINT, {
+    const res = await fetch(BROADCAST_URL, {
       method: "POST",
       body: JSON.stringify(payload)
     });
     if (res.ok) {
-      alert("✅ تم البث والتطبيق على هواتف العملاء بنجاح!");
+      alert("✅ تم البث والتطبيق على هواتف العملاء فوراً!");
     } else {
       throw new Error();
     }
   } catch(e) {
-    alert("تعذر الاتصال بقناة البث، يرجى إعادة المحاولة.");
+    alert("تعذر الاتصال، تأكد من اتصال الإنترنت وحاول مجدداً.");
   }
 }
 
-// قفل فوري
 function quickLockApp() {
   document.getElementById('forceUpdateToggle').checked = true;
-  document.getElementById('appRequiredVersion').value = "9.9.9"; // رقم أعلى من نسخة العميل ليقفل فوراً
-  broadcastLiveControl();
+  document.getElementById('appRequiredVersion').value = "9.9.9";
+  sendMasterBroadcast();
 }
 
-// فتح فوري
 function quickUnlockApp() {
   document.getElementById('forceUpdateToggle').checked = false;
   document.getElementById('appRequiredVersion').value = "1.0.0";
-  broadcastLiveControl();
+  sendMasterBroadcast();
 }
 
-// جلب العملاء المسجلين من قناة التسجيل السحابية
 async function loadRegisteredUsers() {
   const container = document.getElementById('usersListContainer');
   container.innerHTML = `<div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">جاري جلب العملاء...</div>`;
   try {
-    const res = await fetch(`${USERS_ENDPOINT}/json?poll=1`);
+    const res = await fetch(`${USERS_URL}/json?poll=1`);
     const text = await res.text();
     container.innerHTML = "";
     if (!text.trim()) {
@@ -304,7 +290,7 @@ async function loadRegisteredUsers() {
         row.className = "user-item-row";
         row.innerHTML = `
           <div>
-            <div style="font-size:13px; font-weight:800; color:#fff;">${u.name || 'عميل Fly'}</div>
+            <div style="font-size:13px; font-weight:800; color:#fff;">${u.name || 'عميل'}</div>
             <div style="font-size:11px; color:#00e5ff; direction:ltr; text-align:right;">${u.phone || ''}</div>
           </div>
           <a href="https://wa.me/2${u.phone}" target="_blank" style="background:#25d366; color:#000; padding:5px 10px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800; display:flex; align-items:center; gap:4px;">
