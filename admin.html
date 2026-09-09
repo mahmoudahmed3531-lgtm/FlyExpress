@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
-<title>Fly Express — لوحة إدارة العمليات والتحديثات</title>
+<title>Fly Express — لوحة إدارة العمليات الشاملة</title>
 <meta name="theme-color" content="#070b12">
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -24,12 +24,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-body {
-  background-color: var(--bg-dark);
-  color: var(--text-main);
-  padding: 16px;
-  min-height: 100vh;
-}
+body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px; min-height: 100vh; }
 .admin-container { max-width: 480px; margin: 0 auto; }
 
 .admin-login-overlay {
@@ -39,7 +34,6 @@ body {
 .login-card {
   background: var(--surface); border: 1.5px solid var(--primary); border-radius: 24px;
   padding: 24px 20px; width: 100%; max-width: 340px; text-align: center;
-  box-shadow: 0 10px 40px rgba(225, 29, 72, 0.35);
 }
 
 .admin-header {
@@ -78,8 +72,7 @@ input:checked + .slider:before { transform: translateX(24px); }
 .admin-input:focus { border-color: var(--primary); }
 
 .price-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-
-.users-list-box { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.users-list-box { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .user-item-row {
   background: #070b12; border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
@@ -95,14 +88,10 @@ input:checked + .slider:before { transform: translateX(24px); }
     <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-user-shield"></i></div>
     <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">تسجيل دخول الإدارة</h2>
     <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;">يرجى تأكيد الهوية للوصول للوحة التحكم</p>
-    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">
-      اسم المستخدم أو كلمة المرور غير صحيحة!
-    </div>
+    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">بيانات غير صحيحة!</div>
     <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم (Fly)">
     <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور (096)">
-    <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="verifyAdminCredentials()">
-      تسجيل الدخول 🚀
-    </button>
+    <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="verifyAdminCredentials()">تسجيل الدخول 🚀</button>
   </div>
 </div>
 
@@ -110,66 +99,63 @@ input:checked + .slider:before { transform: translateX(24px); }
 
   <div class="admin-header">
     <div style="display:flex; align-items:center; gap:10px;">
-      <i class="fa-solid fa-chart-line" style="font-size:22px; color:var(--primary);"></i>
-      <h2 style="font-size:17px; font-weight:900;">لوحة تحكم Fly Express</h2>
+      <i class="fa-solid fa-sliders" style="font-size:22px; color:var(--primary);"></i>
+      <h2 style="font-size:17px; font-weight:900;">إدارة Fly Express الكاملة</h2>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
       <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
     </button>
   </div>
 
-  <!-- كارت التحكم الإجباري في التحديثات وأزرار القفل والفتح المباشرة -->
+  <!-- 1. حالة التطبيق والعروض اليومية -->
+  <div class="admin-card" style="border-color: #f59e0b;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="font-size:14px; font-weight:900; color:#f59e0b;"><i class="fa-solid fa-toggle-on"></i> حالة تشغيل التطبيق</h3>
+      <select id="appStatusSelect" class="admin-input" style="width:auto; margin:0; padding:6px 10px;">
+        <option value="open">🟢 شغال ومستعد لاستقبال الطلبات</option>
+        <option value="closed">🔴 مغلق مؤقتاً / صيانة</option>
+      </select>
+    </div>
+
+    <label style="font-size:11px; color:var(--text-sub);">شريط إعلان العروض اليومية (يظهر للمستخدمين أعلى الشاشة):</label>
+    <input type="text" id="dailyNoticeInput" class="admin-input" placeholder="مثال: خصم 20% اليوم على طلبات المطاعم بنجع حمادي!" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
+    
+    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="broadcastStatusAndNotice()">
+      <i class="fa-solid fa-bullhorn"></i> نشر العرض وحالة التطبيق فوراً 📢
+    </button>
+  </div>
+
+  <!-- 2. التحكم في قفل التحديث الإجباري -->
   <div class="admin-card" style="border-color: #e11d48; background: rgba(225, 29, 72, 0.05);">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <i class="fa-solid fa-cloud-arrow-up" style="color:var(--primary); font-size:18px;"></i>
-        <h3 style="font-size:14px; font-weight:900; color:var(--primary);">التحكم في قفل وتحديث التطبيق</h3>
-      </div>
+      <h3 style="font-size:14px; font-weight:900; color:var(--primary);"><i class="fa-solid fa-cloud-arrow-up"></i> إجبار العملاء على التحديث</h3>
       <label class="switch">
         <input type="checkbox" id="forceUpdateToggle">
         <span class="slider"></span>
       </label>
     </div>
-
-    <label style="font-size:11px; color:var(--text-sub);">رقم الإصدار المطلوب فرضه (مثال: 1.0.1 أو 2.0.0):</label>
-    <input type="text" id="appRequiredVersion" class="admin-input" placeholder="رقم النسخة" value="1.0.1">
-
-    <label style="font-size:11px; color:var(--text-sub);">رابط تحميل ملف APK المباشر:</label>
-    <input type="url" id="appNewDownloadUrl" class="admin-input" placeholder="https://www.mediafire.com/file/..." value="https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file">
-
-    <label style="font-size:11px; color:var(--text-sub);">رسالة التنبيه للعميل:</label>
-    <textarea id="appUpdateNotes" class="admin-input" rows="2">تم إطلاق تحديث رسمي جديد للتطبيق بواجهة وأيقونات جديدة وسرعة فائقة. يرجى التحديث الآن لمواصلة الاستخدام.</textarea>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px;">
-      <!-- زر القفل الإجباري المباشر -->
-      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="quickLockApp()">
-        <i class="fa-solid fa-lock"></i> قفل التطبيق الآن 🔒
-      </button>
-
-      <!-- زر إلغاء القفل وفتح التطبيق -->
-      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="quickUnlockApp()">
-        <i class="fa-solid fa-lock-open"></i> فتح التطبيق 🔓
-      </button>
+    <input type="text" id="appRequiredVersion" class="admin-input" placeholder="رقم النسخة الإجباري" value="1.0.1">
+    <input type="url" id="appNewDownloadUrl" class="admin-input" placeholder="رابط الـ APK الجديد" value="https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file">
+    
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
+      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="quickLockApp()">قفل للتحديث 🔒</button>
+      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="quickUnlockApp()">فتح التطبيق 🔓</button>
     </div>
-
-    <button class="btn-action" style="background:var(--primary); color:#fff; margin-top:8px;" onclick="broadcastAppUpdate()">
-      <i class="fa-solid fa-tower-broadcast"></i> بث الإعدادات الحالية لجميع الهواتف 📡
-    </button>
   </div>
 
-  <!-- تعديل أسعار المناطق المباشرة -->
+  <!-- 3. تعديل قائمة الأسعار الحية -->
   <div class="admin-card" style="border-color: #00e5ff;">
-    <h3 style="font-size:14px; font-weight:900; color:#00e5ff; margin-bottom:8px;"><i class="fa-solid fa-tags"></i> أسعار المشاوير الحية</h3>
+    <h3 style="font-size:14px; font-weight:900; color:#00e5ff; margin-bottom:8px;"><i class="fa-solid fa-tags"></i> أسعار المشاوير (تتحدث في صفحة الأسعار فوراً)</h3>
     <div class="price-row"><span style="font-size:12px;">داخل نجع حمادي:</span><input type="number" id="p_inside" class="admin-input" style="width:90px; margin:0;" value="30"></div>
     <div class="price-row"><span style="font-size:12px;">داخل قرية بركة:</span><input type="number" id="p_berka" class="admin-input" style="width:90px; margin:0;" value="20"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة للمساكن:</span><input type="number" id="p_masaken" class="admin-input" style="width:90px; margin:0;" value="25"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة للألمنيوم:</span><input type="number" id="p_alum" class="admin-input" style="width:90px; margin:0;" value="35"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة إلى هو:</span><input type="number" id="p_haw" class="admin-input" style="width:90px; margin:0;" value="50"></div>
     <div class="price-row"><span style="font-size:12px;">من بركة لنجع حمادي:</span><input type="number" id="p_naga" class="admin-input" style="width:90px; margin:0;" value="100"></div>
-    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="broadcastPrices()">تحديث أسعار المشاوير 🏷️</button>
+    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="broadcastPrices()">تحديث ونشر قائمة الأسعار 🏷️</button>
   </div>
 
-  <!-- كشف العملاء المسجلين -->
+  <!-- 4. كشف العملاء المسجلين -->
   <div class="admin-card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <h3 style="font-size:14px; font-weight:900; color:#fff;"><i class="fa-solid fa-address-book"></i> العملاء المسجلين</h3>
@@ -193,13 +179,11 @@ window.addEventListener('load', () => {
 function verifyAdminCredentials() {
   const user = document.getElementById('adminUserVal').value.trim();
   const pass = document.getElementById('adminPassVal').value.trim();
-  const err = document.getElementById('loginErrorTxt');
   if (user === 'Fly' && pass === '096') {
     sessionStorage.setItem('fly_admin_logged', 'true');
-    err.style.display = 'none';
     showAdminDashboard();
   } else {
-    err.style.display = 'block';
+    document.getElementById('loginErrorTxt').style.display = 'block';
   }
 }
 
@@ -207,15 +191,6 @@ function showAdminDashboard() {
   document.getElementById('adminLoginGate').style.display = 'none';
   document.getElementById('adminMainContent').style.display = 'block';
   loadRegisteredUsers();
-
-  const savedUpdate = localStorage.getItem('fly_force_update_config');
-  if (savedUpdate) {
-    const uData = JSON.parse(savedUpdate);
-    document.getElementById('forceUpdateToggle').checked = uData.enabled || false;
-    document.getElementById('appRequiredVersion').value = uData.version || "1.0.1";
-    document.getElementById('appNewDownloadUrl').value = uData.downloadUrl || "";
-    document.getElementById('appUpdateNotes').value = uData.notes || "";
-  }
 }
 
 function adminLogout() {
@@ -226,9 +201,12 @@ function adminLogout() {
 async function sendCloudPayload(extraData = {}) {
   const updateConfig = JSON.parse(localStorage.getItem('fly_force_update_config') || '{"enabled":false}');
   const pricesObj = JSON.parse(localStorage.getItem('fly_app_prices') || '{"inside":30,"berka":20,"masaken":25,"alum":35,"haw":50,"naga":100}');
+  const appStatus = localStorage.getItem('fly_app_status') || 'open';
+  const dailyNotice = localStorage.getItem('fly_daily_notice') || '🔥 أهلاً بكم في Fly Express!';
 
   const payload = {
-    service: 'online',
+    service: appStatus,
+    notice: dailyNotice,
     update: updateConfig,
     prices: pricesObj,
     ...extraData
@@ -240,35 +218,18 @@ async function sendCloudPayload(extraData = {}) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-    if (res.ok) alert("✅ تم البث والتطبيق على جميع الهواتف لحظياً!");
+    if (res.ok) alert("✅ تم النشر وتحديث كل هواتف العملاء بنجاح!");
   } catch (e) {
     alert("تعذر الاتصال بالسيرفر.");
   }
 }
 
-// قفل فوري للتطبيق
-async function quickLockApp() {
-  document.getElementById('forceUpdateToggle').checked = true;
-  document.getElementById('appRequiredVersion').value = "9.9.9"; // رقم أعلى من كل النسخ ليقفل فورا
-  await broadcastAppUpdate();
-}
-
-// فتح فوري للتطبيق
-async function quickUnlockApp() {
-  document.getElementById('forceUpdateToggle').checked = false;
-  document.getElementById('appRequiredVersion').value = "1.0.0";
-  await broadcastAppUpdate();
-}
-
-async function broadcastAppUpdate() {
-  const enabled = document.getElementById('forceUpdateToggle').checked;
-  const version = document.getElementById('appRequiredVersion').value.trim();
-  const downloadUrl = document.getElementById('appNewDownloadUrl').value.trim();
-  const notes = document.getElementById('appUpdateNotes').value.trim();
-
-  const updateConfig = { enabled, version, downloadUrl, notes, timestamp: Date.now() };
-  localStorage.setItem('fly_force_update_config', JSON.stringify(updateConfig));
-  await sendCloudPayload({ update: updateConfig });
+async function broadcastStatusAndNotice() {
+  const status = document.getElementById('appStatusSelect').value;
+  const notice = document.getElementById('dailyNoticeInput').value.trim();
+  localStorage.setItem('fly_app_status', status);
+  localStorage.setItem('fly_daily_notice', notice);
+  await sendCloudPayload({ service: status, notice: notice });
 }
 
 async function broadcastPrices() {
@@ -284,11 +245,31 @@ async function broadcastPrices() {
   await sendCloudPayload({ prices: pricesObj });
 }
 
+async function quickLockApp() {
+  document.getElementById('forceUpdateToggle').checked = true;
+  document.getElementById('appRequiredVersion').value = "9.9.9";
+  const updateConfig = {
+    enabled: true,
+    version: "9.9.9",
+    downloadUrl: document.getElementById('appNewDownloadUrl').value.trim(),
+    notes: "يوجد تحديث إجباري جديد للتطبيق، يرجى التحديث لمتابعة الاستخدام."
+  };
+  localStorage.setItem('fly_force_update_config', JSON.stringify(updateConfig));
+  await sendCloudPayload({ update: updateConfig });
+}
+
+async function quickUnlockApp() {
+  document.getElementById('forceUpdateToggle').checked = false;
+  document.getElementById('appRequiredVersion').value = "1.0.0";
+  const updateConfig = { enabled: false, version: "1.0.0" };
+  localStorage.setItem('fly_force_update_config', JSON.stringify(updateConfig));
+  await sendCloudPayload({ update: updateConfig });
+}
+
 async function loadRegisteredUsers() {
   const container = document.getElementById('usersListContainer');
   try {
     const res = await fetch(USERS_API_URL + '?t=' + Date.now());
-    if (!res.ok) throw new Error();
     const users = await res.json();
     container.innerHTML = "";
     users.reverse().forEach(u => {
