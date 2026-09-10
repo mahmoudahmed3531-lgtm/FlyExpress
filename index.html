@@ -42,7 +42,7 @@ body {
   color: var(--text-main); 
 }
 
-/* صورة الخلفية المظبوطة بالرابط المباشر الكامل */
+/* خلفية التطبيق */
 .mobile-frame {
   width: 100%; 
   max-width: 430px; 
@@ -62,12 +62,47 @@ body {
   overflow-x: hidden;
 }
 
-/* شريط الإشعار الإداري الحي */
-.admin-promo-ticker {
-  background: linear-gradient(90deg, #991b1b, #ef4444); color: #fff;
-  padding: 8px 14px; font-size: 11px; font-weight: 800; display: flex;
-  align-items: center; justify-content: space-between; gap: 8px; z-index: 60;
+/* ========================================= */
+/* شريط الإشعار الإداري الحي (RGB Marquee) */
+/* ========================================= */
+@keyframes glowingRGB {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
+
+.admin-promo-ticker {
+  background: linear-gradient(90deg, #ff0000, #ff8800, #e1ff00, #00ff00, #00c3ff, #0000ff, #8800ff, #ff0088, #ff0000);
+  background-size: 300% 300%;
+  animation: glowingRGB 4s linear infinite;
+  color: #ffffff;
+  padding: 10px 0;
+  font-size: 13px;
+  font-weight: 900;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 1), 0px 0px 8px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  position: relative;
+  z-index: 60;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+}
+
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scrollMarquee 15s linear infinite;
+}
+
+@keyframes scrollMarquee {
+  0% { transform: translateX(100vw); }   /* يبدأ من يمين الشاشة */
+  100% { transform: translateX(-100vw); } /* ينتهي في يسار الشاشة */
+}
+/* ========================================= */
 
 /* الهيدر العلوي */
 .top-nav-bar {
@@ -287,13 +322,15 @@ body {
 
 <div class="mobile-frame">
 
-  <!-- شريط الإشعار الإداري الحي -->
+  <!-- شريط الإشعار الإداري الحي (RGB Marquee) -->
   <div class="admin-promo-ticker" id="dailyPromoTicker">
-    <div style="display:flex; align-items:center; gap:6px;">
-      <i class="fa-solid fa-bullhorn" style="color:#fcd34d;"></i>
-      <span id="dailyPromoTickerTxt">🔥 أهلاً بكم في Fly Express — معاك في كل طريق!</span>
+    <div class="marquee-container">
+      <div class="marquee-text">
+        <i class="fa-solid fa-bullhorn" style="color:#fcd34d; margin-left:8px;"></i>
+        <span id="dailyPromoTickerTxt">🔥 أهلاً بكم في Fly Express — معاك في كل طريق!</span>
+        <i class="fa-solid fa-bolt" style="color:#ffff00; margin-right:8px;"></i>
+      </div>
     </div>
-    <i class="fa-solid fa-bolt" style="font-size:12px;"></i>
   </div>
 
   <!-- نافذة المودال الاحترافية المدمجة -->
@@ -955,7 +992,6 @@ function toggleDrawer(open) {
 
 // ==========================================
 // الاستماع الفوري واللحظي لأوامر الأدمن (عبر WebSockets)
-// اللي كان شغال معاك طلقة قبل التعديل الأخير
 // ==========================================
 const LIVE_CHANNEL_WS = "wss://ntfy.sh/flyexpress_super_admin_2026/ws";
 const LIVE_CHANNEL_HTTP = "https://ntfy.sh/flyexpress_super_admin_2026/json?poll=1&since=latest";
@@ -987,13 +1023,11 @@ function applyMasterData(data) {
 }
 
 async function fetchInitialAdminState() {
-  // فحص الذاكرة المحلية للتزامن الفوري
   const local = localStorage.getItem("fly_master_cmd");
   if (local) {
     try { applyMasterData(JSON.parse(local)); } catch(e) {}
   }
 
-  // فحص من قناة البث المباشرة عند بدء التطبيق
   try {
     const res = await fetch(LIVE_CHANNEL_HTTP, { cache: "no-store" });
     const text = await res.text();
