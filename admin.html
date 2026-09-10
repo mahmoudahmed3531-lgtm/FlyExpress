@@ -2,184 +2,98 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
 <title>Fly Express — لوحة التحكم</title>
-<meta name="theme-color" content="#070b12">
-
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <style>
-:root {
-  --bg-dark: #070b12;
-  --surface: #0f172a;
-  --primary: #e11d48;
-  --text-main: #f8fafc;
-  --text-sub: #94a3b8;
-  --border: rgba(255, 255, 255, 0.08);
-  font-family: 'Cairo', system-ui, sans-serif;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px; min-height: 100vh; }
+:root { --bg-dark: #070b12; --surface: #0f172a; --primary: #e11d48; --text-main: #f8fafc; --text-sub: #94a3b8; --border: rgba(255, 255, 255, 0.08); font-family: 'Cairo', sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px; }
 .admin-container { max-width: 480px; margin: 0 auto; }
-
-.admin-login-overlay {
-  position: fixed; inset: 0; background: #070b12; z-index: 99999;
-  display: flex; align-items: center; justify-content: center; padding: 20px;
-}
-.login-card {
-  background: var(--surface); border: 1.5px solid var(--primary); border-radius: 24px;
-  padding: 24px 20px; width: 100%; max-width: 340px; text-align: center;
-}
-
-.admin-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px;
-}
-
-.admin-card {
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 20px; padding: 16px; margin-bottom: 16px;
-}
-
-.btn-action {
-  width: 100%; border: 0; cursor: pointer; padding: 12px;
-  border-radius: 12px; font-weight: 800; font-family: inherit; font-size: 13px; margin-top: 8px;
-}
+.admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+.admin-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 16px; margin-bottom: 16px; }
+.btn-action { width: 100%; border: 0; cursor: pointer; padding: 12px; border-radius: 12px; font-weight: 800; font-family: inherit; font-size: 13px; margin-top: 8px; }
 .btn-action:active { transform: scale(0.98); }
-
-.admin-input {
-  width: 100%; padding: 10px 12px; border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.12); background: #070b12;
-  color: #fff; font-family: inherit; font-size: 12px; outline: none; margin-bottom: 8px;
-}
+.admin-input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: #070b12; color: #fff; font-family: inherit; font-size: 12px; outline: none; margin-bottom: 8px; }
 .admin-input:focus { border-color: var(--primary); }
 </style>
 </head>
-
 <body>
 
-<div class="admin-login-overlay" id="adminLoginGate">
-  <div class="login-card">
-    <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-user-shield"></i></div>
-    <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">تسجيل دخول الإدارة</h2>
-    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;">يرجى تأكيد الهوية للوصول للوحة التحكم</p>
-    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">بيانات غير صحيحة!</div>
-    <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم (Fly)">
-    <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور (096)">
-    <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="verifyAdminCredentials()">تسجيل الدخول 🚀</button>
-  </div>
-</div>
-
-<div class="admin-container" id="adminMainContent" style="display:none;">
-
+<div class="admin-container" id="adminMainContent">
   <div class="admin-header">
     <div style="display:flex; align-items:center; gap:10px;">
       <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
       <div>
-        <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly Express</h2>
-        <span style="font-size:10px; color:#10b981;">🟢 القناة المباشرة شغالة 100%</span>
+        <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly</h2>
+        <span style="font-size:10px; color:#10b981;">🟢 البث المباشر (SSE) متصل</span>
       </div>
     </div>
-    <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
-      <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
-    </button>
   </div>
 
-  <!-- 1. حالة التطبيق وشريط الإعلانات -->
   <div class="admin-card" style="border-color: #f59e0b;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="font-size:14px; font-weight:900; color:#f59e0b;"><i class="fa-solid fa-toggle-on"></i> حالة التطبيق للعملاء</h3>
-      <select id="appStatusSelect" class="admin-input" style="width:auto; margin:0; padding:6px 10px;">
-        <option value="open">🟢 شغال ومستعد للطلبات</option>
-        <option value="closed">🔴 مغلق مؤقتاً / صيانة</option>
-      </select>
-    </div>
-
-    <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي في أعلى هاتف العميل:</label>
+    <h3 style="font-size:14px; font-weight:900; color:#f59e0b; margin-bottom:10px;"><i class="fa-solid fa-toggle-on"></i> حالة التطبيق للعملاء</h3>
+    <select id="appStatusSelect" class="admin-input" style="width:100%;">
+      <option value="open">🟢 شغال ومستعد للطلبات</option>
+      <option value="closed">🔴 مغلق مؤقتاً / صيانة</option>
+    </select>
+    <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي:</label>
     <input type="text" id="dailyNoticeInput" class="admin-input" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
-
-    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="sendLiveCommand()">
-      <i class="fa-solid fa-bullhorn"></i> نشر العرض وحالة التطبيق فوراً 📢
+    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="sendCommand()">
+      <i class="fa-solid fa-bullhorn"></i> نشر العرض والحالة فوراً 📢
     </button>
   </div>
 
-  <!-- 2. قفل التطبيق للتحديث الإجباري -->
   <div class="admin-card" style="border-color: #e11d48; background: rgba(225, 29, 72, 0.05);">
     <h3 style="font-size:14px; font-weight:900; color:var(--primary); margin-bottom:8px;"><i class="fa-solid fa-cloud-arrow-up"></i> إجبار العملاء على التحديث</h3>
-
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="toggleLockState(true)">
-        <i class="fa-solid fa-lock"></i> قفل التطبيق الآن 🔒
-      </button>
-      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="toggleLockState(false)">
-        <i class="fa-solid fa-lock-open"></i> فتح التطبيق 🔓
-      </button>
+      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="toggleLock(true)">قفل التطبيق 🔒</button>
+      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="toggleLock(false)">فتح التطبيق 🔓</button>
     </div>
   </div>
 
+  <!-- الزر السحري الجديد لمسح الكاش وتحديث الواجهة -->
+  <div class="admin-card" style="border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05);">
+    <h3 style="font-size:14px; font-weight:900; color:#8b5cf6; margin-bottom:8px;"><i class="fa-solid fa-rotate"></i> تحديث الواجهة (مسح الكاش)</h3>
+    <p style="font-size:10px; color:var(--text-sub); margin-bottom:10px;">اضغط هنا عند تغيير أي أكواد أو صور في GitHub، لإجبار جميع تطبيقات العملاء على عرض الشكل الجديد فوراً.</p>
+    <button class="btn-action" style="background:#8b5cf6; color:#fff;" onclick="forceAppRefresh()">
+      <i class="fa-solid fa-arrows-rotate"></i> تحديث الواجهة للعملاء فوراً 🔄
+    </button>
+  </div>
 </div>
 
 <script>
-// القناة الموحدة المباشرة اللي كانت شغالة معاك
-const LIVE_CHANNEL = "https://ntfy.sh/flyexpress_super_admin_2026";
-let isLockedNow = false;
+const TOPIC = "flyexpress_control_naga_v99";
+let isLocked = false;
 
-window.addEventListener('load', () => {
-  if (sessionStorage.getItem('fly_admin_session') === 'true') {
-    showDashboard();
-  }
-});
-
-function verifyAdminCredentials() {
-  const u = document.getElementById('adminUserVal').value.trim();
-  const p = document.getElementById('adminPassVal').value.trim();
-  if (u === 'Fly' && p === '096') {
-    sessionStorage.setItem('fly_admin_session', 'true');
-    showDashboard();
-  } else {
-    document.getElementById('loginErrorTxt').style.display = 'block';
-  }
-}
-
-function showDashboard() {
-  document.getElementById('adminLoginGate').style.display = 'none';
-  document.getElementById('adminMainContent').style.display = 'block';
-}
-
-function adminLogout() {
-  sessionStorage.removeItem('fly_admin_session');
-  location.reload();
-}
-
-async function sendLiveCommand() {
+async function sendCommand() {
   const payload = {
     service: document.getElementById('appStatusSelect').value,
     notice: document.getElementById('dailyNoticeInput').value.trim(),
-    lock: isLockedNow,
-    t: Date.now()
+    lock: isLocked,
+    time: Date.now()
   };
-
+  localStorage.setItem("fly_admin_cmd", JSON.stringify(payload));
   try {
-    const res = await fetch(LIVE_CHANNEL, {
-      method: "POST",
-      body: JSON.stringify(payload)
-    });
-
-    if (res.ok) {
-      alert("✅ تم إرسال الأمر وتطبيقه لحظياً عند العملاء!");
-    } else {
-      alert("❌ فشل الإرسال، حاول مجدداً.");
-    }
-  } catch(e) {
-    alert("❌ خطأ بالشبكة، تأكد من اتصالك بالإنترنت.");
-  }
+    const res = await fetch(`https://ntfy.sh/${TOPIC}`, { method: 'POST', body: JSON.stringify(payload) });
+    if(res.ok) alert("✅ تم النشر والتحديث بنجاح!");
+  } catch(e) { alert("❌ تأكد من اتصال الإنترنت"); }
 }
 
-function toggleLockState(locked) {
-  isLockedNow = locked;
-  sendLiveCommand();
+function toggleLock(state) {
+  isLocked = state;
+  sendCommand();
+}
+
+// دالة إرسال أمر مسح الكاش
+async function forceAppRefresh() {
+  if(!confirm("هل أنت متأكد من إجبار تطبيقات العملاء على التحديث ومسح الكاش الآن؟")) return;
+  const payload = { force_reload_id: Date.now() }; // إرسال كود فريد للتحديث
+  try {
+    const res = await fetch(`https://ntfy.sh/${TOPIC}`, { method: 'POST', body: JSON.stringify(payload) });
+    if(res.ok) alert("✅ تم إرسال أمر مسح الكاش وتحديث الواجهة لجميع العملاء!");
+  } catch(e) {}
 }
 </script>
 </body>
