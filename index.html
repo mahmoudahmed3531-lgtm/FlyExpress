@@ -42,7 +42,7 @@ body {
   color: var(--text-main); 
 }
 
-/* الرابط المباشر للصورة الجديدة اللي إنت لسه رافعها */
+/* صورة الخلفية المظبوطة بالرابط المباشر الكامل */
 .mobile-frame {
   width: 100%; 
   max-width: 430px; 
@@ -792,7 +792,6 @@ body {
 const APP_LOCAL_VERSION = "1.0.0";
 const ADMIN_PHONE = "201017908076";
 let currentDownloadUrl = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file";
-const TOPIC = "flyexpress_control_naga_v99";
 
 function showAppModal(title, msg, iconClass = "fa-circle-info") {
   document.getElementById('customModalTitle').textContent = title;
@@ -955,8 +954,12 @@ function toggleDrawer(open) {
 }
 
 // ==========================================
-// أوامر التحكم والاستماع (لا تمس)
+// الاستماع الفوري واللحظي لأوامر الأدمن (عبر WebSockets)
+// اللي كان شغال معاك طلقة قبل التعديل الأخير
 // ==========================================
+const LIVE_CHANNEL_WS = "wss://ntfy.sh/flyexpress_super_admin_2026/ws";
+const LIVE_CHANNEL_HTTP = "https://ntfy.sh/flyexpress_super_admin_2026/json?poll=1&since=latest";
+
 function applyMasterData(data) {
   if (!data) return;
 
@@ -965,59 +968,65 @@ function applyMasterData(data) {
     document.getElementById("dailyPromoTickerTxt").textContent = data.notice;
   }
 
-  // 2. حالة التطبيق
-  const maintenanceModal = document.getElementById("appCustomModal");
+  // 2. حالة التطبيق (مفتوح / مغلق صيانة)
   if (data.service === "closed") {
-    if(maintenanceModal) maintenanceModal.classList.add("show");
+    showAppModal("تنبيه الصيانة ⚠️", "تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير وسنعود قريباً 🛵", "fa-triangle-exclamation");
   } else {
-    if(maintenanceModal) maintenanceModal.classList.remove("show");
+    const modal = document.getElementById('appCustomModal');
+    if (modal && modal.classList.contains('show') && document.getElementById('customModalTitle').textContent.includes('الصيانة')) {
+      closeAppModal();
+    }
   }
 
-  // 3. قفل التطبيق
-  const lockModal = document.getElementById("forceUpdateModal");
+  // 3. قفل التطبيق للتحديث الإجباري
   if (data.lock === true) {
-    if(lockModal) lockModal.style.display = "flex";
-  } else {
-    if(lockModal) lockModal.style.display = "none";
-  }
-
-  // 4. الأسعار
-  if (data.prices) {
-    if (data.prices.inside && document.getElementById("lbl_p_inside")) document.getElementById("lbl_p_inside").textContent = data.prices.inside + " ج";
-    if (data.prices.berka && document.getElementById("lbl_p_berka")) document.getElementById("lbl_p_berka").textContent = data.prices.berka + " ج";
-    if (data.prices.masaken && document.getElementById("lbl_p_masaken")) document.getElementById("lbl_p_masaken").textContent = data.prices.masaken + " ج";
-    if (data.prices.alum && document.getElementById("lbl_p_alum")) document.getElementById("lbl_p_alum").textContent = data.prices.alum + " ج";
-    if (data.prices.haw && document.getElementById("lbl_p_haw")) document.getElementById("lbl_p_haw").textContent = data.prices.haw + " ج";
-    if (data.prices.naga && document.getElementById("lbl_p_naga")) document.getElementById("lbl_p_naga").textContent = data.prices.naga + " ج";
+    document.getElementById("forceUpdateModal").style.display = "flex";
+  } else if (data.lock === false) {
+    document.getElementById("forceUpdateModal").style.display = "none";
   }
 }
 
-// 1. فحص محلي
-setInterval(() => {
-  const localData = localStorage.getItem("fly_admin_cmd");
-  if(localData) {
-    try { applyMasterData(JSON.parse(localData)); } catch(e){}
+async function fetchInitialAdminState() {
+  // فحص الذاكرة المحلية للتزامن الفوري
+  const local = localStorage.getItem("fly_master_cmd");
+  if (local) {
+    try { applyMasterData(JSON.parse(local)); } catch(e) {}
   }
-}, 1500);
 
-// 2. نظام البث المباشر (SSE)
-function connectSSE() {
-  const eventSource = new EventSource(`https://ntfy.sh/${TOPIC}/sse`);
-  eventSource.onmessage = (event) => {
-    try {
-      const parsedEvent = JSON.parse(event.data);
-      if (parsedEvent.event === "message" && parsedEvent.message) {
-        applyMasterData(JSON.parse(parsedEvent.message));
+  // فحص من قناة البث المباشرة عند بدء التطبيق
+  try {
+    const res = await fetch(LIVE_CHANNEL_HTTP, { cache: "no-store" });
+    const text = await res.text();
+    if (!text.trim()) return;
+
+    const lines = text.trim().split("\n");
+    for (let i = lines.length - 1; i >= 0; i--) {
+      if (!lines[i].trim()) continue;
+      const item = JSON.parse(lines[i]);
+      if (item.message) {
+        const payload = typeof item.message === "string" ? JSON.parse(item.message) : item.message;
+        applyMasterData(payload);
+        break;
       }
-    } catch(err) {}
-  };
-  eventSource.onerror = () => {
-    eventSource.close();
-    setTimeout(connectSSE, 3000);
-  };
+    }
+  } catch(e) {}
 }
 
-connectSSE();
+function connectLiveSocket() {
+  const ws = new WebSocket(LIVE_CHANNEL_WS);
+  ws.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      if (data.event === "message" && data.message) {
+        applyMasterData(JSON.parse(data.message));
+      }
+    } catch (e) {}
+  };
+  ws.onclose = () => { setTimeout(connectLiveSocket, 3000); };
+}
+
+fetchInitialAdminState();
+connectLiveSocket();
 
 window.addEventListener('load', () => {
   const savedUser = localStorage.getItem('fly_user_name');
