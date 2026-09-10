@@ -79,7 +79,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
       <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
       <div>
         <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly Express</h2>
-        <span style="font-size:10px; color:#10b981;">🟢 القناة المباشرة شغالة</span>
+        <span style="font-size:10px; color:#10b981;">🟢 القناة المباشرة شغالة 100%</span>
       </div>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
@@ -100,7 +100,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي في أعلى هاتف العميل:</label>
     <input type="text" id="dailyNoticeInput" class="admin-input" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
 
-    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="sendDirectBroadcast()">
+    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="sendLiveCommand()">
       <i class="fa-solid fa-bullhorn"></i> نشر العرض وحالة التطبيق فوراً 📢
     </button>
   </div>
@@ -122,7 +122,8 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
 </div>
 
 <script>
-const LIVE_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
+// القناة الموحدة المباشرة
+const LIVE_CHANNEL = "https://ntfy.sh/flyexpress_super_admin_2026";
 let isLockedNow = false;
 
 window.addEventListener('load', () => {
@@ -152,7 +153,7 @@ function adminLogout() {
   location.reload();
 }
 
-async function sendDirectBroadcast() {
+async function sendLiveCommand() {
   const payload = {
     service: document.getElementById('appStatusSelect').value,
     notice: document.getElementById('dailyNoticeInput').value.trim(),
@@ -160,24 +161,25 @@ async function sendDirectBroadcast() {
     t: Date.now()
   };
 
-  // حفظ في الذاكرة المحلية للتزامن الفوري
-  localStorage.setItem("fly_master_cmd", JSON.stringify(payload));
-
-  // إرسال مباشر لقناة البث
   try {
-    await fetch(LIVE_CHANNEL, {
+    const res = await fetch(LIVE_CHANNEL, {
       method: "POST",
       body: JSON.stringify(payload)
     });
-    alert("✅ تم تنفيذ ونشر الأمر وتحديث التطبيق لحظياً عند كل العملاء!");
+
+    if (res.ok) {
+      alert("✅ تم إرسال الأمر وتطبيقه لحظياً عند العملاء!");
+    } else {
+      alert("❌ فشل الإرسال، حاول مجدداً.");
+    }
   } catch(e) {
-    alert("✅ تم تحديث حالة التطبيق بنجاح!");
+    alert("❌ خطأ بالشبكة، تأكد من اتصالك بالإنترنت.");
   }
 }
 
 function toggleLockState(locked) {
   isLockedNow = locked;
-  sendDirectBroadcast();
+  sendLiveCommand();
 }
 </script>
 </body>
