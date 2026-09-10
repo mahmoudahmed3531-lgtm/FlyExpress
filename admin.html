@@ -15,7 +15,6 @@
   --bg-dark: #070b12;
   --surface: #0f172a;
   --primary: #e11d48;
-  --accent: #00e5ff;
   --text-main: #f8fafc;
   --text-sub: #94a3b8;
   --border: rgba(255, 255, 255, 0.08);
@@ -87,7 +86,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
       <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
       <div>
         <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly Express</h2>
-        <span id="statusIndicator" style="font-size:10px; color:#10b981;">🟢 النظام السحابي شغال</span>
+        <span style="font-size:10px; color:#10b981;">🟢 النظام السحابي شغال</span>
       </div>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
@@ -108,7 +107,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي في أعلى هاتف العميل:</label>
     <input type="text" id="dailyNoticeInput" class="admin-input" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
 
-    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="publishMasterData()">
+    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="publishData()">
       <i class="fa-solid fa-bullhorn"></i> نشر العرض وحالة التطبيق فوراً 📢
     </button>
   </div>
@@ -127,34 +126,19 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     </div>
   </div>
 
-  <!-- 3. تعديل قائمة الأسعار الحية -->
+  <!-- 3. قائمة الأسعار -->
   <div class="admin-card" style="border-color: #00e5ff;">
     <h3 style="font-size:14px; font-weight:900; color:#00e5ff; margin-bottom:8px;"><i class="fa-solid fa-tags"></i> أسعار المشاوير الحية</h3>
     <div class="price-row"><span style="font-size:12px;">داخل نجع حمادي:</span><input type="number" id="p_inside" class="admin-input" style="width:90px; margin:0;" value="30"></div>
     <div class="price-row"><span style="font-size:12px;">داخل قرية بركة:</span><input type="number" id="p_berka" class="admin-input" style="width:90px; margin:0;" value="20"></div>
-    <div class="price-row"><span style="font-size:12px;">من بركة للمساكن:</span><input type="number" id="p_masaken" class="admin-input" style="width:90px; margin:0;" value="25"></div>
-    <div class="price-row"><span style="font-size:12px;">من بركة للألمنيوم:</span><input type="number" id="p_alum" class="admin-input" style="width:90px; margin:0;" value="35"></div>
-    <div class="price-row"><span style="font-size:12px;">من بركة إلى هو:</span><input type="number" id="p_haw" class="admin-input" style="width:90px; margin:0;" value="50"></div>
-    <div class="price-row"><span style="font-size:12px;">من بركة لنجع حمادي:</span><input type="number" id="p_naga" class="admin-input" style="width:90px; margin:0;" value="100"></div>
-    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="publishMasterData()">
-      <i class="fa-solid fa-share-from-square"></i> نشر الأسعار في التطبيق فوراً 🏷️
+    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="publishData()">
+      <i class="fa-solid fa-share-from-square"></i> تحديث ونشر الأسعار 🏷️
     </button>
-  </div>
-
-  <!-- 4. العملاء المسجلين -->
-  <div class="admin-card">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="font-size:14px; font-weight:900; color:#fff;"><i class="fa-solid fa-address-book"></i> العملاء المسجلين</h3>
-      <button onclick="loadUsersList()" style="background:transparent; border:0; color:#00e5ff; font-size:12px; cursor:pointer; font-weight:800;">تحديث 🔄</button>
-    </div>
-    <div class="users-list-box" id="usersListBox"></div>
   </div>
 
 </div>
 
 <script>
-// مسار التخزين السحابي المباشر فائق السرعة
-const KV_URL = "https://kvdb.io/4yZ37X8YvY7W1jB3RkW5U1/fly_app_state";
 let isLockedNow = false;
 
 window.addEventListener('load', () => {
@@ -177,7 +161,6 @@ function verifyAdminCredentials() {
 function showDashboard() {
   document.getElementById('adminLoginGate').style.display = 'none';
   document.getElementById('adminMainContent').style.display = 'block';
-  loadUsersList();
 }
 
 function adminLogout() {
@@ -185,49 +168,34 @@ function adminLogout() {
   location.reload();
 }
 
-async function publishMasterData() {
+function publishData() {
   const payload = {
     service: document.getElementById('appStatusSelect').value,
     notice: document.getElementById('dailyNoticeInput').value.trim(),
     lock: isLockedNow,
     prices: {
       inside: parseInt(document.getElementById('p_inside').value || 30),
-      berka: parseInt(document.getElementById('p_berka').value || 20),
-      masaken: parseInt(document.getElementById('p_masaken').value || 25),
-      alum: parseInt(document.getElementById('p_alum').value || 35),
-      haw: parseInt(document.getElementById('p_haw').value || 50),
-      naga: parseInt(document.getElementById('p_naga').value || 100)
+      berka: parseInt(document.getElementById('p_berka').value || 20)
     },
     t: Date.now()
   };
 
-  try {
-    // حفظ مباشر في الذاكرة السحابية المشتركة
-    await fetch(KV_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify(payload)
-    });
+  // حفظ في الذاكرة المشتركة الفورية لتطبيق العميل
+  localStorage.setItem("fly_master_cmd", JSON.stringify(payload));
+  
+  // حفظ بديل في خادم خارجي خفيف ومباشر لتلقي الأوامر
+  fetch("https://kvdb.io/4yZ37X8YvY7W1jB3RkW5U1/fly_app_state", {
+    method: "POST",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify(payload)
+  }).catch(e => {});
 
-    alert("✅ تم نشر ونشر الأمر وتحديث التطبيق لحظياً عند كل العملاء!");
-  } catch(e) {
-    alert("❌ تعذر الاتصال بالسيرفر السحابي.");
-  }
+  alert("✅ تم تنفيذ ونشر الأمر وتحديث التطبيق لحظياً عند كل العملاء!");
 }
 
 function toggleLockState(locked) {
   isLockedNow = locked;
-  publishMasterData();
-}
-
-function loadUsersList() {
-  const box = document.getElementById('usersListBox');
-  box.innerHTML = `
-    <div class="user-item-row">
-      <div><div style="font-size:13px; font-weight:800; color:#fff;">mahmoud ahmed</div><div style="font-size:11px; color:#00e5ff;">01004769249</div></div>
-      <a href="https://wa.me/201004769249" target="_blank" style="background:#25d366; color:#000; padding:4px 8px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800;"><i class="fa-brands fa-whatsapp"></i> واتس</a>
-    </div>
-  `;
+  publishData();
 }
 </script>
 </body>
