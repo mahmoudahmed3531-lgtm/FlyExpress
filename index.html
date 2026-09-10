@@ -9,7 +9,7 @@
 <title>Fly Express — معاك في كل طريق</title>
 <meta name="theme-color" content="#070b12">
 
-<link rel="icon" href="https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png"/>
+<link rel="icon" href="icon-512.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -42,13 +42,16 @@ body {
   color: var(--text-main); 
 }
 
-/* الرابط المباشر للخلفية لضمان ظهورها داخل التطبيق */
+/* 
+   تم تحديث اسم الصورة هنا لتتطابق مع الصورة الجديدة التي أرسلتها 
+   (1789048683343.jpg) مع الحفاظ على التدرج اللوني الشفاف 
+*/
 .mobile-frame {
   width: 100%; 
   max-width: 430px; 
   background-color: #090d16;
   background-image: linear-gradient(180deg, rgba(9, 13, 22, 0.45) 0%, rgba(9, 13, 22, 0.85) 100%), 
-                    url('https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/1789033195311.jpg');
+                    url('1789048683343.jpg');
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
@@ -98,7 +101,7 @@ body {
 }
 .search-bar input::placeholder { color: #94a3b8; }
 
-/* البانر الترويجي مع الشعار الأصلي */
+/* البانر الترويجي */
 .hero-slider-wrap { padding: 8px 16px 6px; }
 .hero-banner-card {
   background: linear-gradient(135deg, rgba(9,13,22,0.9) 0%, rgba(30,27,75,0.85) 60%, rgba(225,29,72,0.85) 100%);
@@ -295,7 +298,7 @@ body {
     <i class="fa-solid fa-bolt" style="font-size:12px;"></i>
   </div>
 
-  <!-- نافذة المودال الاحترافية המدمجة -->
+  <!-- نافذة المودال الاحترافية المدمجة -->
   <div class="app-custom-modal-overlay" id="appCustomModal">
     <div class="app-custom-modal-card">
       <div id="customModalIcon" style="font-size:40px; color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-circle-info"></i></div>
@@ -305,10 +308,10 @@ body {
     </div>
   </div>
 
-  <!-- شاشة الدخول بالشعار القديم الأصلي -->
+  <!-- شاشة الدخول بالشعار الأصلي المعتمد -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
-      <img src="https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png" alt="Fly Express Logo" class="auth-main-logo">
+      <img src="icon-512.png" alt="Fly Express Logo" class="auth-main-logo">
       <h2 style="font-size:24px; font-weight:900; margin-bottom:4px; font-style:italic;">FLY <span style="color:var(--primary);">EXPRESS</span></h2>
       <p style="font-size:12px; color:#cbd5e1; margin-bottom:18px;">معاك في كل طريق — أسرع وأأمن توصيل 🚀</p>
 
@@ -339,7 +342,7 @@ body {
 
   <!-- بوابة التحديث الإجباري السحابي -->
   <div class="force-update-gate" id="forceUpdateModal">
-    <img src="https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png" style="width:110px; height:110px; border-radius:28px; margin-bottom:18px; border:2px solid var(--primary); object-fit:cover;">
+    <img src="icon-512.png" style="width:110px; height:110px; border-radius:28px; margin-bottom:18px; border:2px solid var(--primary); object-fit:cover;">
     <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
     <p style="font-size:13px; color:#cbd5e1; margin-bottom:24px;">يرجى التحديث الآن لمواصلة استخدام التطبيق.</p>
     <button onclick="window.open(currentDownloadUrl, '_blank')" class="primary-action-btn"><i class="fa-solid fa-cloud-arrow-down"></i> تحديث التطبيق الآن ⚡</button>
@@ -355,7 +358,7 @@ body {
       </div>
     </div>
     <div class="brand-header-badge" onclick="openServiceScreen('profile')">
-      <img src="https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png" id="topHeaderUserAvatar" class="brand-user-avatar">
+      <img src="icon-512.png" id="topHeaderUserAvatar" class="brand-user-avatar">
     </div>
   </header>
 
@@ -374,13 +377,13 @@ body {
       </div>
     </div>
 
-    <!-- البانر الرئيسي مع الشعار الأصلي المعتمد -->
+    <!-- البانر الرئيسي مع الشعار الأصلي -->
     <div class="hero-slider-wrap" style="padding:0 0 10px;">
       <div class="hero-banner-card">
         <div class="hero-tag"><i class="fa-solid fa-motorcycle"></i> أسرع دليفري</div>
         <h2 style="font-size:18px; font-weight:900; margin-bottom:4px;">معاك في كل طريق</h2>
         <p style="font-size:11px; color:#f1f5f9; max-width:65%;">كل احتياجاتك.. في مكان واحد وبأمان تام.</p>
-        <img src="https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png" alt="Fly Express Logo">
+        <img src="icon-512.png" alt="Fly Express Logo">
       </div>
     </div>
 
@@ -741,7 +744,7 @@ body {
     <div class="drawer-sheet">
       <div>
         <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); padding-bottom:16px;">
-          <img src="https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png" id="drawerUserAvatarImg" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--primary); background:#0f172a;">
+          <img src="icon-512.png" id="drawerUserAvatarImg" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--primary); background:#0f172a;">
           <div>
             <h4 style="font-size:14px; font-weight:900;" id="drawerUserName">عميل Fly Express</h4>
             <span style="font-size:11px; color:#94a3b8;" id="drawerUserPhone">حساب معتمد</span>
@@ -953,8 +956,7 @@ function toggleDrawer(open) {
 }
 
 // ==========================================
-// الاستماع الفوري واللحظي لأوامر الإدارة
-// عبر WebSockets لتخطي حظر الـ HTTP 
+// الاستماع الفوري لأوامر الأدمن (WebSockets + Polling)
 // ==========================================
 const LIVE_CHANNEL_WS = "wss://ntfy.sh/flyexpress_super_admin_2026/ws";
 const LIVE_CHANNEL_HTTP = "https://ntfy.sh/flyexpress_super_admin_2026/json?poll=1&since=latest";
@@ -985,7 +987,6 @@ function applyMasterData(data) {
   }
 }
 
-// فحص أولي عند فتح التطبيق لضمان سحب آخر الأوامر
 async function fetchInitialAdminState() {
   const local = localStorage.getItem("fly_master_cmd");
   if (local) { try { applyMasterData(JSON.parse(local)); } catch(e) {} }
@@ -1006,7 +1007,6 @@ async function fetchInitialAdminState() {
   } catch(e) {}
 }
 
-// اتصال دائم وفوري غير قابل للتعليق
 function connectLiveSocket() {
   const ws = new WebSocket(LIVE_CHANNEL_WS);
   ws.onmessage = (event) => {
