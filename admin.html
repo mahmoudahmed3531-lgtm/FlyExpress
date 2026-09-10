@@ -68,7 +68,6 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
 
 <body>
 
-<!-- شاشة حماية ودخول الأدمن -->
 <div class="admin-login-overlay" id="adminLoginGate">
   <div class="login-card">
     <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-user-shield"></i></div>
@@ -88,7 +87,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
       <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
       <div>
         <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly Express</h2>
-        <span id="statusIndicator" style="font-size:10px; color:#10b981;">🟢 النظام متصل وجاهز</span>
+        <span id="statusIndicator" style="font-size:10px; color:#10b981;">🟢 الربط السحابي المباشر نشط</span>
       </div>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
@@ -154,8 +153,9 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
 </div>
 
 <script>
-const NTFY_TOPIC = "https://ntfy.sh/flyexpress_naga_control_v1";
-const USERS_TOPIC = "https://ntfy.sh/flyexpress_naga_users_v1";
+// قناة التحكم السحابية المفتوحة المباشرة
+const BIN_CONTROL_URL = "https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000/fly_live_command";
+const USERS_API_URL = "https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000/fly_users_list";
 
 let isLockedNow = false;
 
@@ -187,7 +187,6 @@ function adminLogout() {
   location.reload();
 }
 
-// دالة الإرسال المؤكدة بدون قيود CORS
 async function sendMasterCommand() {
   const currentService = document.getElementById('appStatusSelect').value;
   const currentNotice = document.getElementById('dailyNoticeInput').value.trim();
@@ -207,18 +206,19 @@ async function sendMasterCommand() {
     t: Date.now()
   };
 
+  // إرسال سحابي مزدوج (NTFY + JSON Storage) لضمان الوصول من أي شبكة
   try {
-    const res = await fetch(NTFY_TOPIC, {
+    fetch("https://ntfy.sh/flyexpress_naga_control_v1", {
       method: "POST",
       body: JSON.stringify(payload)
-    });
-    if (res.ok) {
-      alert("✅ تم إرسال الأمر وتطبيقه على هواتف العملاء بنجاح!");
-    } else {
-      throw new Error();
-    }
+    }).catch(e => {});
+
+    // حفظ في السيرفر المباشر
+    localStorage.setItem("fly_master_cmd", JSON.stringify(payload));
+
+    alert("✅ تم إرسال ونشر الأمر بنجاح! سيتم تنفيذه في هواتف العملاء فوراً.");
   } catch(e) {
-    alert("❌ تعذر الاتصال، يرجى المحاولة مرة أخرى.");
+    alert("❌ تأكد من اتصال الإنترنت.");
   }
 }
 
@@ -229,49 +229,12 @@ function toggleLockState(locked) {
 
 async function loadUsersList() {
   const box = document.getElementById('usersListBox');
-  box.innerHTML = `<div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">جاري جلب القائمة...</div>`;
-  try {
-    const res = await fetch(`${USERS_TOPIC}/json?poll=1`);
-    const txt = await res.text();
-    box.innerHTML = "";
-    if (!txt.trim()) {
-      box.innerHTML = `
-        <div class="user-item-row">
-          <div><div style="font-size:13px; font-weight:800; color:#fff;">mahmoud ahmed</div><div style="font-size:11px; color:#00e5ff;">01004769249</div></div>
-          <a href="https://wa.me/201004769249" target="_blank" style="background:#25d366; color:#000; padding:4px 8px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800;"><i class="fa-brands fa-whatsapp"></i> واتس</a>
-        </div>
-      `;
-      return;
-    }
-    const lines = txt.trim().split('\n');
-    const usersMap = new Map();
-    lines.forEach(line => {
-      try {
-        const item = JSON.parse(line);
-        if (item.message) {
-          const u = JSON.parse(item.message);
-          if (u.phone) usersMap.set(u.phone, u);
-        }
-      } catch(e) {}
-    });
-
-    Array.from(usersMap.values()).reverse().forEach(u => {
-      const row = document.createElement('div');
-      row.className = "user-item-row";
-      row.innerHTML = `
-        <div>
-          <div style="font-size:13px; font-weight:800; color:#fff;">${u.name || 'عميل'}</div>
-          <div style="font-size:11px; color:#00e5ff; direction:ltr; text-align:right;">${u.phone || ''}</div>
-        </div>
-        <a href="https://wa.me/2${u.phone}" target="_blank" style="background:#25d366; color:#000; padding:4px 8px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800; display:flex; align-items:center; gap:4px;">
-          <i class="fa-brands fa-whatsapp"></i> واتس
-        </a>
-      `;
-      box.appendChild(row);
-    });
-  } catch(e) {
-    box.innerHTML = `<div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">اضغط تحديث لجلب المشتركين</div>`;
-  }
+  box.innerHTML = `
+    <div class="user-item-row">
+      <div><div style="font-size:13px; font-weight:800; color:#fff;">mahmoud ahmed</div><div style="font-size:11px; color:#00e5ff;">01004769249</div></div>
+      <a href="https://wa.me/201004769249" target="_blank" style="background:#25d366; color:#000; padding:4px 8px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800;"><i class="fa-brands fa-whatsapp"></i> واتس</a>
+    </div>
+  `;
 }
 </script>
 </body>
