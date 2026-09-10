@@ -19,7 +19,7 @@
   --primary-gradient: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
   --bg-app: #090d16;
   --surface: rgba(15, 23, 42, 0.72);
-  --card-bg: rgba(19, 27, 46, 0.78);
+  --card-bg: rgba(19, 27, 46, 0.8);
   --text-main: #f8fafc;
   --text-sub: #cbd5e1;
   --border: rgba(255, 255, 255, 0.12);
@@ -42,7 +42,7 @@ body {
   color: var(--text-main); 
 }
 
-/* وضع صورة السائق الحقيقية الأصلية في الخلفية مع تظليل خفيف واضح جداً */
+/* خلفية السائق السينمائية الأصلية واضحة بنعومة خلف واجهة التطبيق بالكامل */
 .mobile-frame {
   width: 100%; 
   max-width: 430px; 
@@ -62,7 +62,7 @@ body {
   overflow-x: hidden;
 }
 
-/* شريط الإشعار الإداري */
+/* شريط الإشعار الإداري الحي */
 .admin-promo-ticker {
   background: linear-gradient(90deg, #991b1b, #ef4444); color: #fff;
   padding: 8px 14px; font-size: 11px; font-weight: 800; display: flex;
@@ -98,7 +98,7 @@ body {
 }
 .search-bar input::placeholder { color: #94a3b8; }
 
-/* بطاقة البانر الرئيسي للشاشة مع الشعار الأصلي القديم */
+/* البانر الترويجي مع الشعار الأصلي */
 .hero-slider-wrap { padding: 8px 16px 6px; }
 .hero-banner-card {
   background: linear-gradient(135deg, rgba(9,13,22,0.9) 0%, rgba(30,27,75,0.85) 60%, rgba(225,29,72,0.85) 100%);
@@ -127,7 +127,7 @@ body {
   cursor: pointer; box-shadow: 0 6px 20px rgba(168,85,247,0.25); backdrop-filter: blur(8px);
 }
 
-/* شبكة الخدمات السريعة الـ 8 */
+/* شبكة الخدمات السريعة الـ 8 من الواجهة */
 .quick-services-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 14px 8px; padding: 10px 16px; margin-bottom: 12px;
@@ -165,7 +165,7 @@ body {
 }
 @keyframes pulse { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } 100% { transform: translateX(-50%) scale(1); } }
 
-/* عناصر البطاقات */
+/* عناصر البطاقات والحقول */
 .ui-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px;
@@ -228,7 +228,7 @@ body {
 }
 .drawer-item.active { background: rgba(255,255,255,0.08); color: #fff; }
 
-/* المودال */
+/* نافذة المودال المدمجة */
 .app-custom-modal-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.85);
   z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px;
@@ -240,7 +240,7 @@ body {
   box-shadow: 0 10px 40px rgba(225,29,72,0.4);
 }
 
-/* شاشة تسجيل الدخول */
+/* شاشة تسجيل الدخول بالشعار الأصلي */
 .auth-overlay {
   position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
   background: #090d16; z-index: 9999; display: flex; flex-direction: column;
@@ -248,7 +248,6 @@ body {
 }
 .auth-card-box { position: relative; z-index: 2; width: 100%; max-width: 360px; text-align: center; }
 
-/* الشعار الأصلي القديم */
 .auth-main-logo {
   width: 110px; height: 110px; border-radius: 28px;
   box-shadow: 0 0 35px rgba(225, 29, 72, 0.6);
@@ -287,7 +286,7 @@ body {
 
 <div class="mobile-frame">
 
-  <!-- شريط الإشعار الإداري المباشر -->
+  <!-- شريط الإشعار الإداري الحي المربوط بالأدمن -->
   <div class="admin-promo-ticker" id="dailyPromoTicker">
     <div style="display:flex; align-items:center; gap:6px;">
       <i class="fa-solid fa-bullhorn" style="color:#fcd34d;"></i>
@@ -306,7 +305,7 @@ body {
     </div>
   </div>
 
-  <!-- شاشة الدخول بالشعار القديم الأصلي -->
+  <!-- شاشة الدخول بالشعار الأصلي القديم -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express Logo" class="auth-main-logo">
@@ -791,6 +790,8 @@ body {
 <script>
 const APP_LOCAL_VERSION = "1.0.0";
 const ADMIN_PHONE = "201017908076";
+const RELAY_URL = "https://kvdb.io/4yZ37X8YvY7W1jB3RkW5U1/fly_app_state";
+const NTFY_TOPIC = "https://ntfy.sh/flyexpress_naga_control_v1";
 let currentDownloadUrl = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file";
 
 function showAppModal(title, msg, iconClass = "fa-circle-info") {
@@ -954,7 +955,7 @@ function toggleDrawer(open) {
 }
 
 // ========================================================
-// نظام مزامنة أوامر الأدمن المباشر فائق السرعة
+// نظام مزامنة أوامر الأدمن السحابي المباشر فائق السرعة
 // ========================================================
 function applyMasterData(data) {
   if (!data) return;
@@ -987,22 +988,25 @@ function applyMasterData(data) {
   }
 }
 
-// الفحص المباشر والسريع
-function syncAdminCommands() {
-  // فحص مباشر من التخزين المشترك
-  const localCmd = localStorage.getItem("fly_master_cmd");
-  if (localCmd) {
-    try {
-      applyMasterData(JSON.parse(localCmd));
-    } catch(e) {}
-  }
+// قراءة الأوامر من السيرفر السحابي المباشر كل ثانية ونصف
+async function syncAdminCommands() {
+  try {
+    const res = await fetch(`${RELAY_URL}?nocache=${Date.now()}`);
+    if (res.ok) {
+      const text = await res.text();
+      if (text && text.startsWith("{")) {
+        applyMasterData(JSON.parse(text));
+        return;
+      }
+    }
+  } catch(e) {}
 
-  // فحص عبر السيرفر
-  fetch("https://ntfy.sh/flyexpress_naga_control_v1/json?poll=1&since=latest&t=" + Date.now())
-    .then(r => r.text())
-    .then(text => {
-      if (!text.trim()) return;
-      const lines = text.trim().split("\n");
+  // فحص احتياطي عبر ntfy
+  try {
+    const res2 = await fetch(NTFY_TOPIC + "/json?poll=1&since=latest&t=" + Date.now());
+    const text2 = await res2.text();
+    if (text2.trim()) {
+      const lines = text2.trim().split("\n");
       for (let i = lines.length - 1; i >= 0; i--) {
         if (!lines[i].trim()) continue;
         const item = JSON.parse(lines[i]);
@@ -1012,7 +1016,8 @@ function syncAdminCommands() {
           break;
         }
       }
-    }).catch(e => {});
+    }
+  } catch(err) {}
 }
 
 setInterval(syncAdminCommands, 1500);
