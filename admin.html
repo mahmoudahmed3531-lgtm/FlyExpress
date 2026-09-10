@@ -153,9 +153,8 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
 </div>
 
 <script>
-// قناة التحكم السحابية المفتوحة المباشرة
-const BIN_CONTROL_URL = "https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000/fly_live_command";
-const USERS_API_URL = "https://api.jsonstorage.net/v1/json/00000000-0000-0000-0000-000000000000/fly_users_list";
+// قناة تحكم مباشرة موثوقة تعمل بنظام Key-Value مفتوح بدون حظر
+const RELAY_URL = "https://kvdb.io/4yZ37X8YvY7W1jB3RkW5U1/fly_app_state";
 
 let isLockedNow = false;
 
@@ -187,6 +186,7 @@ function adminLogout() {
   location.reload();
 }
 
+// دالة الإرسال السحابي المباشرة بدون أي حظر CORS
 async function sendMasterCommand() {
   const currentService = document.getElementById('appStatusSelect').value;
   const currentNotice = document.getElementById('dailyNoticeInput').value.trim();
@@ -206,19 +206,23 @@ async function sendMasterCommand() {
     t: Date.now()
   };
 
-  // إرسال سحابي مزدوج (NTFY + JSON Storage) لضمان الوصول من أي شبكة
   try {
+    // 1. الإرسال إلى السيرفر السحابي المباشر المفتوح
+    await fetch(RELAY_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify(payload)
+    });
+
+    // 2. إرسال بديل إلى ntfy احتياطياً
     fetch("https://ntfy.sh/flyexpress_naga_control_v1", {
       method: "POST",
       body: JSON.stringify(payload)
     }).catch(e => {});
 
-    // حفظ في السيرفر المباشر
-    localStorage.setItem("fly_master_cmd", JSON.stringify(payload));
-
-    alert("✅ تم إرسال ونشر الأمر بنجاح! سيتم تنفيذه في هواتف العملاء فوراً.");
+    alert("✅ تم إرسال ونشر الأمر بنجاح! سيتم تنفيذه عند كل العملاء فوراً.");
   } catch(e) {
-    alert("❌ تأكد من اتصال الإنترنت.");
+    alert("❌ تعذر الاتصال، يرجى التأكد من اتصال الإنترنت والمحاولة ثانية.");
   }
 }
 
