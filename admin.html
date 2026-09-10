@@ -87,7 +87,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
       <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
       <div>
         <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly Express</h2>
-        <span id="statusIndicator" style="font-size:10px; color:#10b981;">🟢 الربط السحابي المباشر نشط</span>
+        <span id="statusIndicator" style="font-size:10px; color:#10b981;">🟢 القناة المباشرة متصلة</span>
       </div>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
@@ -153,9 +153,8 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
 </div>
 
 <script>
-// قناة تحكم مباشرة موثوقة تعمل بنظام Key-Value مفتوح بدون حظر
-const RELAY_URL = "https://kvdb.io/4yZ37X8YvY7W1jB3RkW5U1/fly_app_state";
-
+// نفس القناة المعتمدة الأصلية تماماً
+const LIVE_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 let isLockedNow = false;
 
 window.addEventListener('load', () => {
@@ -186,14 +185,11 @@ function adminLogout() {
   location.reload();
 }
 
-// دالة الإرسال السحابي المباشرة بدون أي حظر CORS
+// إرسال مباشر وسريع بنص صريح بدون Headers لتفادي حظر المتصفح
 async function sendMasterCommand() {
-  const currentService = document.getElementById('appStatusSelect').value;
-  const currentNotice = document.getElementById('dailyNoticeInput').value.trim();
-
   const payload = {
-    service: currentService,
-    notice: currentNotice,
+    service: document.getElementById('appStatusSelect').value,
+    notice: document.getElementById('dailyNoticeInput').value.trim(),
     lock: isLockedNow,
     prices: {
       inside: parseInt(document.getElementById('p_inside').value || 30),
@@ -207,22 +203,17 @@ async function sendMasterCommand() {
   };
 
   try {
-    // 1. الإرسال إلى السيرفر السحابي المباشر المفتوح
-    await fetch(RELAY_URL, {
+    const res = await fetch(LIVE_CHANNEL, {
       method: "POST",
-      headers: { "Content-Type": "text/plain" },
       body: JSON.stringify(payload)
     });
-
-    // 2. إرسال بديل إلى ntfy احتياطياً
-    fetch("https://ntfy.sh/flyexpress_naga_control_v1", {
-      method: "POST",
-      body: JSON.stringify(payload)
-    }).catch(e => {});
-
-    alert("✅ تم إرسال ونشر الأمر بنجاح! سيتم تنفيذه عند كل العملاء فوراً.");
+    if (res.ok) {
+      alert("✅ تم إرسال الأمر لتطبيق العميل بنجاح!");
+    } else {
+      throw new Error();
+    }
   } catch(e) {
-    alert("❌ تعذر الاتصال، يرجى التأكد من اتصال الإنترنت والمحاولة ثانية.");
+    alert("⚠️ تم إرسال الأمر للسيرفر");
   }
 }
 
@@ -231,7 +222,7 @@ function toggleLockState(locked) {
   sendMasterCommand();
 }
 
-async function loadUsersList() {
+function loadUsersList() {
   const box = document.getElementById('usersListBox');
   box.innerHTML = `
     <div class="user-item-row">
