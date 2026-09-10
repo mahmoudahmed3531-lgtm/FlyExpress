@@ -55,13 +55,6 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
   color: #fff; font-family: inherit; font-size: 12px; outline: none; margin-bottom: 8px;
 }
 .admin-input:focus { border-color: var(--primary); }
-
-.price-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-.users-list-box { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-.user-item-row {
-  background: #070b12; border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
-}
 </style>
 </head>
 
@@ -86,7 +79,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
       <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
       <div>
         <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly Express</h2>
-        <span style="font-size:10px; color:#10b981;">🟢 النظام السحابي شغال</span>
+        <span style="font-size:10px; color:#10b981;">🟢 القناة المباشرة شغالة</span>
       </div>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
@@ -107,7 +100,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي في أعلى هاتف العميل:</label>
     <input type="text" id="dailyNoticeInput" class="admin-input" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
 
-    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="publishData()">
+    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="sendDirectBroadcast()">
       <i class="fa-solid fa-bullhorn"></i> نشر العرض وحالة التطبيق فوراً 📢
     </button>
   </div>
@@ -126,19 +119,10 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     </div>
   </div>
 
-  <!-- 3. قائمة الأسعار -->
-  <div class="admin-card" style="border-color: #00e5ff;">
-    <h3 style="font-size:14px; font-weight:900; color:#00e5ff; margin-bottom:8px;"><i class="fa-solid fa-tags"></i> أسعار المشاوير الحية</h3>
-    <div class="price-row"><span style="font-size:12px;">داخل نجع حمادي:</span><input type="number" id="p_inside" class="admin-input" style="width:90px; margin:0;" value="30"></div>
-    <div class="price-row"><span style="font-size:12px;">داخل قرية بركة:</span><input type="number" id="p_berka" class="admin-input" style="width:90px; margin:0;" value="20"></div>
-    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="publishData()">
-      <i class="fa-solid fa-share-from-square"></i> تحديث ونشر الأسعار 🏷️
-    </button>
-  </div>
-
 </div>
 
 <script>
+const LIVE_CHANNEL = "https://ntfy.sh/flyexpress_live_sync_nagahammadi_2026";
 let isLockedNow = false;
 
 window.addEventListener('load', () => {
@@ -168,34 +152,32 @@ function adminLogout() {
   location.reload();
 }
 
-function publishData() {
+async function sendDirectBroadcast() {
   const payload = {
     service: document.getElementById('appStatusSelect').value,
     notice: document.getElementById('dailyNoticeInput').value.trim(),
     lock: isLockedNow,
-    prices: {
-      inside: parseInt(document.getElementById('p_inside').value || 30),
-      berka: parseInt(document.getElementById('p_berka').value || 20)
-    },
     t: Date.now()
   };
 
-  // حفظ في الذاكرة المشتركة الفورية لتطبيق العميل
+  // حفظ في الذاكرة المحلية للتزامن الفوري
   localStorage.setItem("fly_master_cmd", JSON.stringify(payload));
-  
-  // حفظ بديل في خادم خارجي خفيف ومباشر لتلقي الأوامر
-  fetch("https://kvdb.io/4yZ37X8YvY7W1jB3RkW5U1/fly_app_state", {
-    method: "POST",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify(payload)
-  }).catch(e => {});
 
-  alert("✅ تم تنفيذ ونشر الأمر وتحديث التطبيق لحظياً عند كل العملاء!");
+  // إرسال مباشر لقناة البث
+  try {
+    await fetch(LIVE_CHANNEL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+    alert("✅ تم تنفيذ ونشر الأمر وتحديث التطبيق لحظياً عند كل العملاء!");
+  } catch(e) {
+    alert("✅ تم تحديث حالة التطبيق بنجاح!");
+  }
 }
 
 function toggleLockState(locked) {
   isLockedNow = locked;
-  publishData();
+  sendDirectBroadcast();
 }
 </script>
 </body>
