@@ -18,11 +18,11 @@
   --primary: #e11d48;
   --primary-gradient: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
   --bg-app: #090d16;
-  --surface: rgba(15, 23, 42, 0.9);
+  --surface: rgba(15, 23, 42, 0.82);
   --card-bg: rgba(19, 27, 46, 0.85);
   --text-main: #f8fafc;
-  --text-sub: #94a3b8;
-  --border: rgba(255, 255, 255, 0.1);
+  --text-sub: #cbd5e1;
+  --border: rgba(255, 255, 255, 0.12);
   --radius-xl: 24px;
   --radius-lg: 18px;
   --radius-md: 12px;
@@ -42,17 +42,22 @@ body {
   color: var(--text-main); 
 }
 
-/* إطار الموبايل مع خلفية صورة السائق الجديدة وتدرج داكن */
+/* إطار الهاتف مع إظهار صورة السائق في الخلفية بوضوح تام */
 .mobile-frame {
   width: 100%; 
   max-width: 430px; 
-  background: linear-gradient(180deg, rgba(9, 13, 22, 0.88) 0%, rgba(9, 13, 22, 0.96) 100%), 
-              url('https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=1000') center/cover no-repeat fixed;
+  background-color: #090d16;
+  background-image: linear-gradient(180deg, rgba(9, 13, 22, 0.72) 0%, rgba(9, 13, 22, 0.88) 100%), 
+                    url('1789033195311.jpg');
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
   min-height: 100vh; 
   display: flex; 
   flex-direction: column;
   position: relative; 
-  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+  box-shadow: 0 0 50px rgba(0,0,0,0.9);
   padding-bottom: 85px; 
   overflow-x: hidden;
 }
@@ -64,9 +69,9 @@ body {
   align-items: center; justify-content: space-between; gap: 8px; z-index: 60;
 }
 
-/* الهيدر */
+/* الهيدر العلوي */
 .top-nav-bar {
-  background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(12px);
   padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
   border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50;
 }
@@ -77,45 +82,46 @@ body {
 .brand-header-badge { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .brand-user-avatar {
   width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary);
-  object-fit: cover; background: #0f172a;
+  object-fit: cover; background: #0b0f19;
 }
 
-/* شريط البحث */
+/* شريط البحث الداكن */
 .search-wrapper { padding: 10px 16px; background: transparent; }
 .search-bar {
-  background: var(--surface); border-radius: 14px; display: flex; align-items: center;
-  padding: 10px 14px; gap: 10px; border: 1px solid var(--border); backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.85); border-radius: 14px; display: flex; align-items: center;
+  padding: 10px 14px; gap: 10px; border: 1px solid var(--border); backdrop-filter: blur(10px);
 }
 .search-bar:focus-within { border-color: var(--primary); }
 .search-bar input {
   border: 0; background: transparent; width: 100%; font-family: inherit;
   font-size: 13px; color: #fff;
 }
-.search-bar input::placeholder { color: #64748b; }
+.search-bar input::placeholder { color: #94a3b8; }
 
-/* بطاقة البانر الرئيسي للشاشة */
+/* بطاقة البانر الرئيسي للشاشة مع الشعار الأصلي */
 .hero-slider-wrap { padding: 8px 16px 6px; }
 .hero-banner-card {
-  background: linear-gradient(135deg, rgba(9,13,22,0.95) 0%, rgba(30,27,75,0.9) 60%, rgba(225,29,72,0.85) 100%);
+  background: linear-gradient(135deg, rgba(9,13,22,0.92) 0%, rgba(30,27,75,0.85) 60%, rgba(225,29,72,0.85) 100%);
   border-radius: var(--radius-xl); padding: 18px; position: relative;
   overflow: hidden; color: #fff; min-height: 140px; display: flex;
   flex-direction: column; justify-content: center; box-shadow: 0 10px 25px rgba(225,29,72,0.3);
-  border: 1px solid rgba(225,29,72,0.4); backdrop-filter: blur(6px);
+  border: 1px solid rgba(225,29,72,0.4); backdrop-filter: blur(8px);
 }
 .hero-tag {
-  background: rgba(255,255,255,0.18); backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);
   color: #fff; font-size: 10px; font-weight: 800; padding: 4px 10px;
   border-radius: 20px; width: fit-content; margin-bottom: 6px;
 }
 .hero-banner-card img {
-  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
-  width: 90px; height: 90px; object-fit: cover; border-radius: 20px;
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 88px; height: 88px; object-fit: cover; border-radius: 20px;
   border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  background: #0b0f19;
 }
 
 /* بطاقة FLY PASS */
 .fly-pass-card {
-  margin: 8px 16px; background: linear-gradient(90deg, rgba(30,27,75,0.95), rgba(49,16,75,0.95));
+  margin: 8px 16px; background: linear-gradient(90deg, rgba(30,27,75,0.92), rgba(49,16,75,0.92));
   border: 1.5px solid #a855f7; border-radius: var(--radius-lg); padding: 12px 16px;
   color: #fff; display: flex; align-items: center; justify-content: space-between;
   cursor: pointer; box-shadow: 0 6px 20px rgba(168,85,247,0.25); backdrop-filter: blur(8px);
@@ -135,9 +141,9 @@ body {
   width: 58px; height: 58px; border-radius: 18px;
   display: flex; align-items: center; justify-content: center;
   font-size: 24px; color: #fff; margin-bottom: 6px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.12);
 }
-.quick-service-label { font-size: 11px; font-weight: 800; color: #f1f5f9; }
+.quick-service-label { font-size: 11px; font-weight: 800; color: #f8fafc; }
 .quick-service-sub { font-size: 9px; color: var(--text-sub); }
 
 .bg-rides { background: linear-gradient(135deg, #0284c7, #0369a1); }
@@ -155,7 +161,7 @@ body {
   background: var(--primary-gradient); color: #fff; padding: 12px 28px;
   border-radius: 30px; font-weight: 900; font-size: 14px; display: flex;
   align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(225,29,72,0.6);
-  cursor: pointer; z-index: 90; animation: pulse 2s infinite; border: 1px solid rgba(255,255,255,0.2);
+  cursor: pointer; z-index: 90; animation: pulse 2s infinite; border: 1px solid rgba(255,255,255,0.25);
 }
 @keyframes pulse { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } 100% { transform: translateX(-50%) scale(1); } }
 
@@ -163,11 +169,11 @@ body {
 .ui-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 .custom-field {
   width: 100%; padding: 12px; border-radius: var(--radius-sm);
-  border: 1px solid var(--border); background: #131b2e; font-family: inherit;
+  border: 1px solid var(--border); background: rgba(19, 27, 46, 0.9); font-family: inherit;
   font-size: 13px; margin-bottom: 10px; color: #fff;
 }
 .custom-field:focus { border-color: var(--primary); }
@@ -190,7 +196,7 @@ body {
 /* شريط التنقل السفلي */
 .tab-bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; max-width: 430px; margin: 0 auto;
-  height: 68px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
+  height: 68px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px);
   border-top: 1px solid var(--border); display: flex; justify-content: space-around;
   align-items: center; z-index: 100;
 }
@@ -203,7 +209,7 @@ body {
 
 /* القائمة الجانبية */
 .drawer-menu {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75);
   z-index: 10000; display: none; justify-content: flex-end;
 }
 .drawer-menu.show { display: flex; }
@@ -224,7 +230,7 @@ body {
 
 /* المودال */
 .app-custom-modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  position: fixed; inset: 0; background: rgba(0,0,0,0.82);
   z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px;
 }
 .app-custom-modal-overlay.show { display: flex; }
@@ -234,7 +240,7 @@ body {
   box-shadow: 0 10px 40px rgba(225,29,72,0.4);
 }
 
-/* شاشة تسجيل الدخول مع الشعار القديم الأصلي */
+/* شاشة تسجيل الدخول */
 .auth-overlay {
   position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
   background: #090d16; z-index: 9999; display: flex; flex-direction: column;
@@ -242,7 +248,7 @@ body {
 }
 .auth-card-box { position: relative; z-index: 2; width: 100%; max-width: 360px; text-align: center; }
 
-/* الشعار الأصلي القديم */
+/* الشعار الأصلي المعتمد */
 .auth-main-logo {
   width: 110px; height: 110px; border-radius: 28px;
   box-shadow: 0 0 35px rgba(225, 29, 72, 0.6);
@@ -300,10 +306,9 @@ body {
     </div>
   </div>
 
-  <!-- شاشة الدخول مع الشعار القديم الأصلي -->
+  <!-- شاشة الدخول بالشعار الأصلي القديم -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
-      <!-- الشعار الأصلي بدلاً من الموتوسيكل -->
       <img src="icon-512.png" onerror="this.src='https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/icon-512.png'" alt="Fly Express Logo" class="auth-main-logo">
       <h2 style="font-size:24px; font-weight:900; margin-bottom:4px; font-style:italic;">FLY <span style="color:var(--primary);">EXPRESS</span></h2>
       <p style="font-size:12px; color:#cbd5e1; margin-bottom:18px;">معاك في كل طريق — أسرع وأأمن توصيل 🚀</p>
@@ -370,7 +375,7 @@ body {
       </div>
     </div>
 
-    <!-- البانر الرئيسي مع الشعار المعتمد -->
+    <!-- البانر الرئيسي مع الشعار الأصلي المعتمد -->
     <div class="hero-slider-wrap" style="padding:0 0 10px;">
       <div class="hero-banner-card">
         <div class="hero-tag"><i class="fa-solid fa-motorcycle"></i> أسرع دليفري</div>
@@ -958,59 +963,62 @@ function toggleDrawer(open) {
   else d.classList.remove('show');
 }
 
-// ==========================================
-// الاستماع اللحظي فائق السرعة لقرارات الأدمن
-// ==========================================
-async function listenToAdminUpdates() {
-  try {
-    const res = await fetch(`${NTFY_TOPIC}/json?poll=1&since=latest&t=${Date.now()}`);
-    const text = await res.text();
-    if (!text.trim()) return;
+// ========================================================
+// نظام الاستعلام المباشر فائق السرعة المتوافق مع Brave
+// ========================================================
+function pollAdminCommands() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", NTFY_TOPIC + "/json?poll=1&since=latest&t=" + Date.now(), true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var text = xhr.responseText.trim();
+      if (!text) return;
+      var lines = text.split("\n");
+      for (var i = lines.length - 1; i >= 0; i--) {
+        if (!lines[i].trim()) continue;
+        try {
+          var item = JSON.parse(lines[i]);
+          if (item.message) {
+            var data = typeof item.message === "string" ? JSON.parse(item.message) : item.message;
 
-    const lines = text.trim().split('\n');
-    for (let i = lines.length - 1; i >= 0; i--) {
-      if (!lines[i].trim()) continue;
-      try {
-        const item = JSON.parse(lines[i]);
-        if (item.message) {
-          const data = typeof item.message === 'string' ? JSON.parse(item.message) : item.message;
+            // 1. تحديث شريط الإعلان
+            if (data.notice && document.getElementById("dailyPromoTickerTxt")) {
+              document.getElementById("dailyPromoTickerTxt").textContent = data.notice;
+            }
 
-          // 1. تحديث شريط الإعلان
-          if (data.notice && document.getElementById('dailyPromoTickerTxt')) {
-            document.getElementById('dailyPromoTickerTxt').textContent = data.notice;
+            // 2. حالة تشغيل التطبيق (مفتوح / مغلق صيانة)
+            if (data.service === "closed") {
+              showAppModal("تنبيه الصيانة ⚠️", "تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير وسنعود قريباً 🛵", "fa-triangle-exclamation");
+            }
+
+            // 3. قفل التطبيق الإجباري للتحديث
+            if (data.lock === true) {
+              document.getElementById("forceUpdateModal").style.display = "flex";
+            } else if (data.lock === false) {
+              document.getElementById("forceUpdateModal").style.display = "none";
+            }
+
+            // 4. تحديث قائمة الأسعار
+            if (data.prices) {
+              if (data.prices.inside && document.getElementById("lbl_p_inside")) document.getElementById("lbl_p_inside").textContent = data.prices.inside + " ج";
+              if (data.prices.berka && document.getElementById("lbl_p_berka")) document.getElementById("lbl_p_berka").textContent = data.prices.berka + " ج";
+              if (data.prices.masaken && document.getElementById("lbl_p_masaken")) document.getElementById("lbl_p_masaken").textContent = data.prices.masaken + " ج";
+              if (data.prices.alum && document.getElementById("lbl_p_alum")) document.getElementById("lbl_p_alum").textContent = data.prices.alum + " ج";
+              if (data.prices.haw && document.getElementById("lbl_p_haw")) document.getElementById("lbl_p_haw").textContent = data.prices.haw + " ج";
+              if (data.prices.naga && document.getElementById("lbl_p_naga")) document.getElementById("lbl_p_naga").textContent = data.prices.naga + " ج";
+            }
+            break;
           }
-
-          // 2. حالة تشغيل التطبيق (مفتوح / مغلق صيانة)
-          if (data.service === 'closed') {
-            showAppModal("تنبيه الصيانة ⚠️", "تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير وسنعود قريباً 🛵", "fa-triangle-exclamation");
-          }
-
-          // 3. قفل التطبيق الإجباري للتحديث
-          if (data.lock === true) {
-            document.getElementById('forceUpdateModal').style.display = 'flex';
-          } else if (data.lock === false) {
-            document.getElementById('forceUpdateModal').style.display = 'none';
-          }
-
-          // 4. تحديث قائمة الأسعار
-          if (data.prices) {
-            if (data.prices.inside && document.getElementById('lbl_p_inside')) document.getElementById('lbl_p_inside').textContent = data.prices.inside + ' ج';
-            if (data.prices.berka && document.getElementById('lbl_p_berka')) document.getElementById('lbl_p_berka').textContent = data.prices.berka + ' ج';
-            if (data.prices.masaken && document.getElementById('lbl_p_masaken')) document.getElementById('lbl_p_masaken').textContent = data.prices.masaken + ' ج';
-            if (data.prices.alum && document.getElementById('lbl_p_alum')) document.getElementById('lbl_p_alum').textContent = data.prices.alum + ' ج';
-            if (data.prices.haw && document.getElementById('lbl_p_haw')) document.getElementById('lbl_p_haw').textContent = data.prices.haw + ' ج';
-            if (data.prices.naga && document.getElementById('lbl_p_naga')) document.getElementById('lbl_p_naga').textContent = data.prices.naga + ' ج';
-          }
-          break;
-        }
-      } catch(err) {}
+        } catch (e) {}
+      }
     }
-  } catch(e) {}
+  };
+  xhr.send();
 }
 
-// فحص كل ثانيتين للاستجابة اللحظية
-setInterval(listenToAdminUpdates, 2000);
-listenToAdminUpdates();
+// فحص سريع كل ثانية ونصف
+setInterval(pollAdminCommands, 1500);
+pollAdminCommands();
 
 window.addEventListener('load', () => {
   const savedUser = localStorage.getItem('fly_user_name');
