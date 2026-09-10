@@ -8,11 +8,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root { --bg-dark: #070b12; --surface: #0f172a; --primary: #e11d48; --text-main: #f8fafc; --text-sub: #94a3b8; --border: rgba(255, 255, 255, 0.08); font-family: 'Cairo', sans-serif; }
-* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px; min-height: 100vh; }
-.admin-container { max-width: 480px; margin: 0 auto; }
-.admin-login-overlay { position: fixed; inset: 0; background: #070b12; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.login-card { background: var(--surface); border: 1.5px solid var(--primary); border-radius: 24px; padding: 24px 20px; width: 100%; max-width: 340px; text-align: center; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px; }
+.admin-container { max-width: 480px; margin: 0 auto; padding-bottom: 40px; }
 .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
 .admin-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 16px; margin-bottom: 16px; }
 .btn-action { width: 100%; border: 0; cursor: pointer; padding: 12px; border-radius: 12px; font-weight: 800; font-family: inherit; font-size: 13px; margin-top: 8px; }
@@ -23,12 +21,10 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
 </head>
 <body>
 
-<div class="admin-login-overlay" id="adminLoginGate">
-  <div class="login-card">
+<div class="admin-login-overlay" id="adminLoginGate" style="position: fixed; inset: 0; background: #070b12; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px;">
+  <div class="login-card" style="background: var(--surface); border: 1.5px solid var(--primary); border-radius: 24px; padding: 24px 20px; width: 100%; max-width: 340px; text-align: center;">
     <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-user-shield"></i></div>
-    <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">تسجيل دخول الإدارة</h2>
-    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;">يرجى تأكيد الهوية للوصول للوحة التحكم</p>
-    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">بيانات غير صحيحة!</div>
+    <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">دخول الإدارة</h2>
     <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم (Fly)">
     <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور (096)">
     <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="verifyAdminCredentials()">تسجيل الدخول 🚀</button>
@@ -45,6 +41,20 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
       </div>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">خروج</button>
+  </div>
+
+  <!-- القسم الجديد: تفعيل الاشتراكات (مضاد للغش) -->
+  <div class="admin-card" style="border-color: #c084fc; background: rgba(192, 132, 252, 0.05);">
+    <h3 style="font-size:14px; font-weight:900; color:#c084fc; margin-bottom:8px;"><i class="fa-solid fa-crown"></i> تفعيل باقة FLY PASS للعميل</h3>
+    <p style="font-size:10px; color:var(--text-sub); margin-bottom:10px;">انسخ كود العميل من رسالة الواتساب، والصقه هنا لتفعيل اشتراكه على جهازه فوراً وبأمان.</p>
+    <input type="text" id="targetClientUid" class="admin-input" placeholder="كود حساب العميل (مثال: FLY-010-8475)">
+    <select id="subDaysSelect" class="admin-input">
+      <option value="30">اشتراك شهر كامل (30 يوم)</option>
+      <option value="7">فترة تجريبية (7 أيام)</option>
+    </select>
+    <button class="btn-action" style="background:#c084fc; color:#fff;" onclick="activateClientSub()">
+      <i class="fa-solid fa-check-circle"></i> تفعيل الباقة للعميل الآن 👑
+    </button>
   </div>
 
   <div class="admin-card" style="border-color: #f59e0b;">
@@ -68,13 +78,9 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     </div>
   </div>
 
-  <!-- زر التحديث ومسح الكاش الأوتوماتيك -->
   <div class="admin-card" style="border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05);">
     <h3 style="font-size:14px; font-weight:900; color:#8b5cf6; margin-bottom:8px;"><i class="fa-solid fa-rotate"></i> تحديث الواجهة (مسح الكاش)</h3>
-    <p style="font-size:10px; color:var(--text-sub); margin-bottom:10px;">استخدم هذا الزر إذا قمت بتعديل أكواد الموقع وتريد إجبار تطبيقات العملاء على عرض التحديث الجديد فوراً.</p>
-    <button class="btn-action" style="background:#8b5cf6; color:#fff;" onclick="forceAppRefresh()">
-      <i class="fa-solid fa-arrows-rotate"></i> تحديث تطبيق العملاء الآن 🔄
-    </button>
+    <button class="btn-action" style="background:#8b5cf6; color:#fff;" onclick="forceAppRefresh()">تحديث تطبيق العملاء الآن 🔄</button>
   </div>
 </div>
 
@@ -83,15 +89,11 @@ const TOPIC = "flyexpress_control_naga_v99";
 let isLocked = false;
 
 window.addEventListener('load', () => {
-  if (sessionStorage.getItem('fly_admin_session') === 'true') {
-    showDashboard();
-  }
+  if (sessionStorage.getItem('fly_admin_session') === 'true') showDashboard();
 });
 
 function verifyAdminCredentials() {
-  const u = document.getElementById('adminUserVal').value.trim();
-  const p = document.getElementById('adminPassVal').value.trim();
-  if (u === 'Fly' && p === '096') {
+  if (document.getElementById('adminUserVal').value.trim() === 'Fly' && document.getElementById('adminPassVal').value.trim() === '096') {
     sessionStorage.setItem('fly_admin_session', 'true');
     showDashboard();
   } else {
@@ -119,22 +121,44 @@ async function sendCommand() {
   localStorage.setItem("fly_admin_cmd", JSON.stringify(payload));
   try {
     const res = await fetch(`https://ntfy.sh/${TOPIC}`, { method: 'POST', body: JSON.stringify(payload) });
-    if(res.ok) alert("✅ تم نشر الأمر لجميع العملاء!");
+    if(res.ok) alert("✅ تم النشر لجميع العملاء!");
   } catch(e) { alert("❌ تأكد من اتصال الإنترنت"); }
 }
 
-function toggleLock(state) {
-  isLocked = state;
-  sendCommand();
-}
+function toggleLock(state) { isLocked = state; sendCommand(); }
 
 async function forceAppRefresh() {
   if(!confirm("سيتم تحديث التطبيق ومسح الكاش عند جميع العملاء الآن، هل أنت متأكد؟")) return;
   const payload = { force_reload_id: Date.now() };
   try {
     const res = await fetch(`https://ntfy.sh/${TOPIC}`, { method: 'POST', body: JSON.stringify(payload) });
-    if(res.ok) alert("✅ تم إرسال أمر التحديث لجميع العملاء، جاري إعادة تشغيل تطبيقاتهم!");
-  } catch(e) { alert("❌ تأكد من اتصال الإنترنت"); }
+    if(res.ok) alert("✅ تم إرسال أمر التحديث لجميع العملاء!");
+  } catch(e) {}
+}
+
+// دالة تفعيل الاشتراك الخاصة بالعميل (الحماية العالية)
+async function activateClientSub() {
+  const uid = document.getElementById('targetClientUid').value.trim();
+  const days = parseInt(document.getElementById('subDaysSelect').value);
+  
+  if(!uid) return alert("⚠️ يرجى إدخال كود العميل المرفق في رسالة الواتساب!");
+  
+  const payload = {
+    action: "activate_sub",
+    target_uid: uid,
+    days: days,
+    time: Date.now()
+  };
+
+  try {
+    const res = await fetch(`https://ntfy.sh/${TOPIC}`, { method: 'POST', body: JSON.stringify(payload) });
+    if(res.ok) {
+      alert("✅ تم إرسال أمر التفعيل بنجاح! سيتم فتح الاشتراك في جهاز العميل فوراً.");
+      document.getElementById('targetClientUid').value = ""; // تفريغ الخانة بعد الإرسال
+    }
+  } catch(e) {
+    alert("❌ فشل الاتصال، تأكد من الإنترنت.");
+  }
 }
 </script>
 </body>
