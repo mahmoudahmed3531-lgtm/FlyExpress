@@ -6,288 +6,1177 @@
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
-<title>Fly Express — لوحة التحكم الإدارية</title>
-<meta name="theme-color" content="#070b12">
+<title>Fly Express — معاك في كل طريق</title>
+<meta name="theme-color" content="#e11d48">
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="icon" href="icon-512.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 :root {
-  --bg-dark: #070b12;
-  --surface: #0f172a;
   --primary: #e11d48;
-  --accent: #00e5ff;
-  --success: #10b981;
-  --danger: #ef4444;
-  --text-main: #f8fafc;
-  --text-sub: #94a3b8;
-  --border: rgba(255, 255, 255, 0.08);
+  --primary-gradient: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+  --bg-app: #f8fafc;
+  --surface: #ffffff;
+  --dark-surface: #0f172a;
+  --text-main: #0f172a;
+  --text-sub: #64748b;
+  --border: #e2e8f0;
+  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
   font-family: 'Cairo', system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px; min-height: 100vh; }
-.admin-container { max-width: 480px; margin: 0 auto; }
+input, textarea, select { user-select: auto; outline: none; }
 
-.admin-login-overlay {
-  position: fixed; inset: 0; background: #070b12; z-index: 99999;
-  display: flex; align-items: center; justify-content: center; padding: 20px;
-}
-.login-card {
-  background: var(--surface); border: 1.5px solid var(--primary); border-radius: 24px;
-  padding: 24px 20px; width: 100%; max-width: 340px; text-align: center;
+body { background-color: #0b0f19; display: flex; justify-content: center; min-height: 100vh; }
+
+.mobile-frame {
+  width: 100%; max-width: 430px; background: var(--bg-app);
+  min-height: 100vh; display: flex; flex-direction: column;
+  position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5);
+  padding-bottom: 85px; overflow-x: hidden;
 }
 
-.admin-header {
+/* شريط الإشعار العلوي */
+.admin-promo-ticker {
+  background: linear-gradient(90deg, #991b1b, #ef4444); color: #fff;
+  padding: 8px 14px; font-size: 11px; font-weight: 800; display: flex;
+  align-items: center; justify-content: space-between; gap: 8px; z-index: 60;
+}
+
+/* الهيدر العلوي الفاخر */
+.top-nav-bar {
+  background: var(--surface); padding: 12px 16px;
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px;
+  border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50;
+}
+.location-selector { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.loc-icon { color: var(--primary); font-size: 18px; }
+.loc-text { font-size: 10px; color: var(--text-sub); }
+.loc-title { font-size: 13px; font-weight: 800; color: var(--text-main); }
+.brand-header-badge { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.brand-user-avatar {
+  width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary);
+  object-fit: cover; background: #0f172a;
 }
 
-.admin-card {
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 20px; padding: 16px; margin-bottom: 16px;
+/* شريط البحث */
+.search-wrapper { padding: 10px 16px; background: var(--surface); }
+.search-bar {
+  background: #f1f5f9; border-radius: 14px; display: flex; align-items: center;
+  padding: 10px 14px; gap: 10px; border: 1px solid transparent;
+}
+.search-bar:focus-within { border-color: var(--primary); background: #fff; }
+.search-bar input {
+  border: 0; background: transparent; width: 100%; font-family: inherit;
+  font-size: 13px; color: var(--text-main);
 }
 
-.btn-action {
-  width: 100%; border: 0; cursor: pointer; padding: 12px;
-  border-radius: 12px; font-weight: 800; font-family: inherit; font-size: 13px; margin-top: 8px;
-  transition: opacity 0.2s;
+/* البانر الرئيسي الاحترافي */
+.hero-slider-wrap { padding: 12px 16px 6px; }
+.hero-banner-card {
+  background: linear-gradient(135deg, #090d16 0%, #1e1b4b 60%, #e11d48 100%);
+  border-radius: var(--radius-xl); padding: 18px; position: relative;
+  overflow: hidden; color: #fff; min-height: 140px; display: flex;
+  flex-direction: column; justify-content: center; box-shadow: 0 10px 25px rgba(225,29,72,0.25);
 }
-.btn-action:active { opacity: 0.85; transform: scale(0.98); }
-
-.admin-input {
-  width: 100%; padding: 10px 12px; border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.12); background: #070b12;
-  color: #fff; font-family: inherit; font-size: 12px; outline: none; margin-bottom: 8px;
+.hero-tag {
+  background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);
+  color: #fff; font-size: 10px; font-weight: 800; padding: 4px 10px;
+  border-radius: 20px; width: fit-content; margin-bottom: 6px;
 }
-.admin-input:focus { border-color: var(--primary); }
+.hero-banner-card img {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  width: 95px; height: 95px; object-fit: cover; border-radius: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+}
 
-.price-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-.users-list-box { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-.user-item-row {
-  background: #070b12; border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
+/* بطاقة FLY PASS الاشتراك الشهري */
+.fly-pass-card {
+  margin: 10px 16px; background: linear-gradient(90deg, #1e1b4b, #31104b);
+  border: 1.5px solid #a855f7; border-radius: var(--radius-lg); padding: 12px 16px;
+  color: #fff; display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; box-shadow: 0 6px 20px rgba(168,85,247,0.25);
+}
+
+/* 1. شبكة الخدمات السريعة الـ 8 من الشاشة الرئيسية */
+.quick-services-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 14px 8px; padding: 12px 16px; margin-bottom: 12px;
+}
+.quick-service-item {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  cursor: pointer; transition: transform 0.15s ease;
+}
+.quick-service-item:active { transform: scale(0.92); }
+.quick-service-icon {
+  width: 58px; height: 58px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: #fff; margin-bottom: 6px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+}
+.quick-service-label { font-size: 11px; font-weight: 800; color: var(--text-main); }
+.quick-service-sub { font-size: 9px; color: var(--text-sub); }
+
+.bg-rides { background: linear-gradient(135deg, #0284c7, #0369a1); }
+.bg-school { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+.bg-parcel { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.bg-food { background: linear-gradient(135deg, #ea580c, #c2410c); }
+.bg-grocery { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+.bg-veggies { background: linear-gradient(135deg, #10b981, #047857); }
+.bg-pharmacy { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.bg-bringme { background: linear-gradient(135deg, #ec4899, #be185d); }
+
+/* 7. زر "اطلب الآن" العائم الدائم */
+.floating-order-btn {
+  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+  background: var(--primary-gradient); color: #fff; padding: 12px 28px;
+  border-radius: 30px; font-weight: 900; font-size: 14px; display: flex;
+  align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(225,29,72,0.5);
+  cursor: pointer; z-index: 90; animation: pulse 2s infinite;
+}
+@keyframes pulse { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } 100% { transform: translateX(-50%) scale(1); } }
+
+/* عناصر UI والبطاقات */
+.ui-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px;
+}
+.custom-field {
+  width: 100%; padding: 12px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: #f8fafc; font-family: inherit;
+  font-size: 13px; margin-bottom: 10px;
+}
+.primary-action-btn {
+  width: 100%; background: var(--primary); color: #fff; border: 0;
+  padding: 14px; border-radius: var(--radius-md); font-size: 14px; font-weight: 900;
+  font-family: inherit; cursor: pointer; box-shadow: 0 6px 18px rgba(225,29,72,0.3);
+}
+
+/* الشاشات الفرعية */
+.sub-page-view { display: none; padding: 16px; }
+.sub-page-view.active { display: block; }
+.page-top-back { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.back-circle-btn {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--surface);
+  border: 1px solid var(--border); display: flex; align-items: center;
+  justify-content: center; cursor: pointer; color: var(--text-main);
+}
+
+/* شريط التنقل السفلي */
+.tab-bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; max-width: 430px; margin: 0 auto;
+  height: 68px; background: #fff; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around; align-items: center; z-index: 100;
+}
+.tab-btn {
+  background: transparent; border: 0; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; color: var(--text-sub); font-size: 11px;
+  font-weight: 800; font-family: inherit; cursor: pointer; flex: 1;
+}
+.tab-btn.active { color: var(--primary); }
+
+/* القائمة الجانبية */
+.drawer-menu {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  z-index: 10000; display: none; justify-content: flex-end;
+}
+.drawer-menu.show { display: flex; }
+.drawer-sheet {
+  width: 82%; max-width: 320px; height: 100%; background: #0f172a;
+  color: #fff; padding: 24px 18px; display: flex; flex-direction: column;
+  justify-content: space-between; animation: slideIn 0.25s ease-out;
+}
+@keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+.drawer-links-box { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; }
+.drawer-item {
+  display: flex; align-items: center; gap: 12px; padding: 12px;
+  border-radius: var(--radius-sm); font-size: 13px; font-weight: 700;
+  color: #cbd5e1; cursor: pointer; text-decoration: none;
+}
+.drawer-item.active { background: rgba(255,255,255,0.08); color: #fff; }
+
+/* مودال التنبيهات */
+.app-custom-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+  z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.app-custom-modal-overlay.show { display: flex; }
+.app-custom-modal-card {
+  background: #0f172a; border: 1.5px solid var(--primary); border-radius: 22px;
+  width: 100%; max-width: 320px; padding: 22px; text-align: center; color: #fff;
+  box-shadow: 0 10px 40px rgba(225,29,72,0.4);
+}
+
+/* شاشة تسجيل الدخول */
+.auth-overlay {
+  position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
+  background: #090d16 url('1789033195311.jpg') center/cover no-repeat;
+  z-index: 9999; display: flex; flex-direction: column; justify-content: center;
+  align-items: center; padding: 24px 20px; color: #fff; overflow-y: auto;
+}
+.auth-overlay::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(9,13,22,0.88) 0%, rgba(9,13,22,0.98) 100%);
+}
+.auth-card-box { position: relative; z-index: 2; width: 100%; max-width: 360px; text-align: center; }
+
+.auth-nav-tabs {
+  display: flex; gap: 8px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md);
+  padding: 4px; margin-bottom: 16px;
+}
+.auth-tab-btn {
+  flex: 1; padding: 10px; border: 0; border-radius: 10px;
+  background: transparent; color: #cbd5e1; font-family: inherit;
+  font-size: 13px; font-weight: 800; cursor: pointer;
+}
+.auth-tab-btn.active { background: var(--primary); color: #fff; }
+
+.google-auth-btn {
+  width: 100%; padding: 12px; background: #ffffff; color: #1e293b;
+  border: 0; border-radius: var(--radius-md); font-size: 13px; font-weight: 800;
+  cursor: pointer; font-family: inherit; display: flex; align-items: center;
+  justify-content: center; gap: 10px; margin-top: 12px;
+}
+
+/* نافذة التحديث الإجباري */
+.force-update-gate {
+  position: fixed; inset: 0; max-width: 430px; margin: 0 auto;
+  background: #090d16; z-index: 999999; display: none; flex-direction: column;
+  align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff;
 }
 </style>
 </head>
 
 <body>
 
-<!-- شاشة حماية الأدمن -->
-<div class="admin-login-overlay" id="adminLoginGate">
-  <div class="login-card">
-    <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-user-shield"></i></div>
-    <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">تسجيل دخول الإدارة</h2>
-    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;">يرجى تأكيد الهوية للوصول للوحة التحكم</p>
-    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; font-weight:800; margin-bottom:10px;">بيانات غير صحيحة!</div>
-    <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم (Fly)">
-    <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور (096)">
-    <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="verifyAdminCredentials()">تسجيل الدخول 🚀</button>
+<div class="mobile-frame">
+
+  <!-- شريط الإشعار الإداري الحي -->
+  <div class="admin-promo-ticker" id="dailyPromoTicker">
+    <div style="display:flex; align-items:center; gap:6px;">
+      <i class="fa-solid fa-bullhorn" style="color:#fcd34d;"></i>
+      <span id="dailyPromoTickerTxt">🔥 أهلاً بكم في Fly Express — معاك في كل طريق!</span>
+    </div>
+    <i class="fa-solid fa-bolt" style="font-size:12px;"></i>
   </div>
-</div>
 
-<div class="admin-container" id="adminMainContent" style="display:none;">
+  <!-- نافذة المودال المدمجة -->
+  <div class="app-custom-modal-overlay" id="appCustomModal">
+    <div class="app-custom-modal-card">
+      <div id="customModalIcon" style="font-size:40px; color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-circle-info"></i></div>
+      <h3 style="font-size:16px; font-weight:900; margin-bottom:6px;" id="customModalTitle">تنبيه</h3>
+      <p style="font-size:13px; color:#cbd5e1; margin-bottom:18px; line-height:1.5;" id="customModalMessage">نص الرسالة</p>
+      <button class="primary-action-btn" onclick="closeAppModal()">حسناً فهمت ✅</button>
+    </div>
+  </div>
 
-  <div class="admin-header">
-    <div style="display:flex; align-items:center; gap:10px;">
-      <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
+  <!-- شاشة الدخول والتسجيل مع بوستر السائق الجديد -->
+  <div class="auth-overlay" id="authGateScreen">
+    <div class="auth-card-box">
+      <img src="1789033195311.jpg" style="width:110px; height:110px; border-radius:28px; border:2px solid var(--primary); object-fit:cover; margin-bottom:12px; box-shadow:0 0 35px rgba(225,29,72,0.6);">
+      <h2 style="font-size:24px; font-weight:900; margin-bottom:4px; font-style:italic;">FLY <span style="color:var(--primary);">EXPRESS</span></h2>
+      <p style="font-size:12px; color:#cbd5e1; margin-bottom:18px;">معاك في كل طريق — أسرع وأأمن توصيل 🚀</p>
+
+      <div class="auth-nav-tabs">
+        <button class="auth-tab-btn active" id="btnTabLogin" onclick="switchAuthMode('login')">تسجيل الدخول</button>
+        <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
+      </div>
+
+      <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();">
+        <input type="text" id="loginUsername" class="custom-field" style="background:rgba(15,23,42,0.85); color:#fff;" placeholder="اسم المستخدم أو الهاتف">
+        <input type="password" id="loginPassword" class="custom-field" style="background:rgba(15,23,42,0.85); color:#fff;" placeholder="كلمة المرور">
+        <button type="submit" class="primary-action-btn">تسجيل الدخول 🚀</button>
+      </form>
+
+      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSignupAction();">
+        <input type="text" id="signupFullname" class="custom-field" style="background:rgba(15,23,42,0.85); color:#fff;" placeholder="الاسم الكريم" required>
+        <input type="tel" id="signupPhoneNum" class="custom-field" style="background:rgba(15,23,42,0.85); color:#fff;" placeholder="رقم الهاتف للتواصل" required>
+        <input type="password" id="signupPasscode" class="custom-field" style="background:rgba(15,23,42,0.85); color:#fff;" placeholder="كلمة المرور" required>
+        <button type="submit" class="primary-action-btn">تأكيد وإنشاء الحساب ✨</button>
+      </form>
+
+      <button type="button" class="google-auth-btn" onclick="handleGoogleSignInDirect()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span>متابعة باستخدام حساب Google</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- بوابة التحديث الإجباري السحابي -->
+  <div class="force-update-gate" id="forceUpdateModal">
+    <img src="1789033195311.jpg" style="width:110px; height:110px; border-radius:28px; margin-bottom:18px; border:2px solid var(--primary); object-fit:cover;">
+    <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
+    <p style="font-size:13px; color:#cbd5e1; margin-bottom:24px;">يرجى التحديث الآن لمواصلة استخدام التطبيق.</p>
+    <button onclick="window.open(currentDownloadUrl, '_blank')" class="primary-action-btn"><i class="fa-solid fa-cloud-arrow-down"></i> تحديث التطبيق الآن ⚡</button>
+  </div>
+
+  <!-- الهيدر العلوي -->
+  <header class="top-nav-bar">
+    <div class="location-selector" onclick="showAppModal('الموقع الحالي', 'الموقع محدد تلقائياً: نجع حمادي وجميع القرى المجاورة 📍')">
+      <i class="fa-solid fa-location-dot loc-icon"></i>
       <div>
-        <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly Express</h2>
-        <span style="font-size:10px; color:#10b981;">🟢 البث المباشر شغال ولحظي</span>
+        <div class="loc-text">موقعك الحالي</div>
+        <div class="loc-title">نجع حمادي وقراها ▾</div>
       </div>
     </div>
-    <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">
-      <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
-    </button>
+    <div class="brand-header-badge" onclick="openServiceScreen('profile')">
+      <img src="1789033195311.jpg" id="topHeaderUserAvatar" class="brand-user-avatar">
+    </div>
+  </header>
+
+  <!-- 7. الزر العائم "اطلب الآن" الدائم في أسفل الشاشة -->
+  <div class="floating-order-btn" onclick="openServiceScreen('multistop')">
+    <i class="fa-solid fa-bolt"></i> اطلب الآن سريعاً
   </div>
 
-  <!-- 1. حالة التطبيق والعروض اليومية -->
-  <div class="admin-card" style="border-color: #f59e0b;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="font-size:14px; font-weight:900; color:#f59e0b;"><i class="fa-solid fa-toggle-on"></i> حالة تشغيل التطبيق</h3>
-      <select id="appStatusSelect" class="admin-input" style="width:auto; margin:0; padding:6px 10px;">
-        <option value="open">🟢 شغال ومستعد لاستقبال الطلبات</option>
-        <option value="closed">🔴 مغلق مؤقتاً / صيانة</option>
-      </select>
+  <!-- 1. الشاشة الرئيسية -->
+  <main id="view-home" class="sub-page-view active">
+
+    <!-- حقل البحث -->
+    <div class="search-wrapper" style="padding:0 0 10px;">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;"></i>
+        <input type="text" placeholder="ابحث عن أكلة، محل، صيدلية، أو مشوار...">
+      </div>
     </div>
 
-    <label style="font-size:11px; color:var(--text-sub);">شريط إعلان العروض اليومية (أعلى التطبيق):</label>
-    <input type="text" id="dailyNoticeInput" class="admin-input" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
+    <!-- البانر السلايدر الترويجي -->
+    <div class="hero-slider-wrap" style="padding:0 0 10px;">
+      <div class="hero-banner-card">
+        <div class="hero-tag"><i class="fa-solid fa-motorcycle"></i> أسرع دليفري</div>
+        <h2 style="font-size:18px; font-weight:900; margin-bottom:4px;">معاك في كل طريق</h2>
+        <p style="font-size:11px; color:#f1f5f9; max-width:65%;">كل احتياجاتك.. في مكان واحد وبأمان تام.</p>
+        <img src="1789033195311.jpg" alt="Fly Express Driver">
+      </div>
+    </div>
 
-    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="sendAdminBroadcast()">
-      <i class="fa-solid fa-bullhorn"></i> نشر العرض وحالة التطبيق فوراً 📢
-    </button>
-  </div>
+    <!-- بطاقة FLY PASS الاشتراك الشهري -->
+    <div class="fly-pass-card" onclick="openServiceScreen('flypass')">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="font-size:24px; color:#c084fc;"><i class="fa-solid fa-crown"></i></div>
+        <div>
+          <h4 style="font-size:13px; font-weight:900;">FLY PASS — وفر أكتر من 200 ج شهرياً</h4>
+          <p style="font-size:10px; color:#d8b4fe;">توصيل مجاني وخصومات حصرية على المشاوير والمطاعم</p>
+        </div>
+      </div>
+      <i class="fa-solid fa-angle-left"></i>
+    </div>
 
-  <!-- 2. قفل التطبيق للتحديث الإجباري -->
-  <div class="admin-card" style="border-color: #e11d48; background: rgba(225, 29, 72, 0.05);">
-    <h3 style="font-size:14px; font-weight:900; color:var(--primary); margin-bottom:10px;">
-      <i class="fa-solid fa-cloud-arrow-up"></i> إجبار العملاء على التحديث
-    </h3>
+    <!-- 1. شبكة الخدمات السريعة الـ 8 من الشاشة الرئيسية -->
+    <div class="quick-services-grid" style="padding:10px 0;">
+      <!-- 1. مشوار عادي / متعدد -->
+      <div class="quick-service-item" onclick="openServiceScreen('multistop')">
+        <div class="quick-service-icon bg-rides"><i class="fa-solid fa-car-side"></i></div>
+        <div class="quick-service-label">مشوار</div>
+        <div class="quick-service-sub">عادي ومتعدد</div>
+      </div>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="toggleLockState(true)">
-        <i class="fa-solid fa-lock"></i> قفل للتحديث الآن 🔒
+      <!-- 2. توصيل الطلاب المدارس المميز -->
+      <div class="quick-service-item" onclick="openServiceScreen('school')">
+        <div class="quick-service-icon bg-school"><i class="fa-solid fa-bus"></i></div>
+        <div class="quick-service-label">توصيل طالب</div>
+        <div class="quick-service-sub">مدارس ودروس</div>
+      </div>
+
+      <!-- 3. إرسال طرد -->
+      <div class="quick-service-item" onclick="openServiceScreen('orders')">
+        <div class="quick-service-icon bg-parcel"><i class="fa-solid fa-box-open"></i></div>
+        <div class="quick-service-label">إرسال طرد</div>
+        <div class="quick-service-sub">شحن ونقل</div>
+      </div>
+
+      <!-- 4. طلب أكل -->
+      <div class="quick-service-item" onclick="openServiceScreen('food')">
+        <div class="quick-service-icon bg-food"><i class="fa-solid fa-burger"></i></div>
+        <div class="quick-service-label">طلب أكل</div>
+        <div class="quick-service-sub">أشهر المطاعم</div>
+      </div>
+
+      <!-- 5. بقالة -->
+      <div class="quick-service-item" onclick="openServiceScreen('bringme')">
+        <div class="quick-service-icon bg-grocery"><i class="fa-solid fa-basket-shopping"></i></div>
+        <div class="quick-service-label">بقالة</div>
+        <div class="quick-service-sub">سوبر ماركت</div>
+      </div>
+
+      <!-- 6. خضار وفاكهة -->
+      <div class="quick-service-item" onclick="openServiceScreen('bringme')">
+        <div class="quick-service-icon bg-veggies"><i class="fa-solid fa-leaf"></i></div>
+        <div class="quick-service-label">خضار وفاكهة</div>
+        <div class="quick-service-sub">طازج من السوق</div>
+      </div>
+
+      <!-- 7. صيدلية -->
+      <div class="quick-service-item" onclick="openServiceScreen('pharmacy')">
+        <div class="quick-service-icon bg-pharmacy"><i class="fa-solid fa-capsules"></i></div>
+        <div class="quick-service-label">صيدلية</div>
+        <div class="quick-service-sub">روشتة وعلاج</div>
+      </div>
+
+      <!-- 8. هاتلي أي حاجة (شراء من أي محل) -->
+      <div class="quick-service-item" onclick="openServiceScreen('bringme')">
+        <div class="quick-service-icon bg-bringme"><i class="fa-solid fa-bag-shopping"></i></div>
+        <div class="quick-service-label">هاتلي أي حاجة</div>
+        <div class="quick-service-sub">من أي مكان</div>
+      </div>
+    </div>
+
+    <!-- ميزات سريعة إضافية -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px;">
+      <div class="ui-card" style="padding:12px; margin:0; cursor:pointer;" onclick="openServiceScreen('family')">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="font-size:22px; color:#0284c7;"><i class="fa-solid fa-people-roof"></i></div>
+          <div>
+            <h4 style="font-size:12px; font-weight:900;">الحساب العائلي</h4>
+            <p style="font-size:10px; color:var(--text-sub);">إضافة الأبناء والطلاب</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui-card" style="padding:12px; margin:0; cursor:pointer;" onclick="openServiceScreen('merchant')">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="font-size:22px; color:#f59e0b;"><i class="fa-solid fa-store"></i></div>
+          <div>
+            <h4 style="font-size:12px; font-weight:900;">بوابة التجار</h4>
+            <p style="font-size:10px; color:var(--text-sub);">إدارة طلبات المحل</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 2. قسم المدارس المتطور والمميز -->
+  <section id="view-school" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">🚌 توصيل الطلاب للمدارس والدروس</h3>
+    </div>
+
+    <div class="ui-card" style="border-color:#ef4444; background:rgba(239,68,68,0.02);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span style="font-size:13px; font-weight:900; color:#ef4444;"><i class="fa-solid fa-shield-halved"></i> أمان وحماية للطلاب</span>
+        <button style="background:#dc2626; color:#fff; border:0; padding:6px 12px; border-radius:20px; font-size:11px; font-weight:900; cursor:pointer;" onclick="triggerEmergencyAlert()">
+          🚨 زر الطوارئ
+        </button>
+      </div>
+
+      <div id="studentsListContainer" style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+        <div style="background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); padding:10px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h4 style="font-size:13px; font-weight:800;" id="st_name_val">أحمد محمود</h4>
+            <p style="font-size:10px; color:var(--text-sub);">مدرسة النجباء الرسمية • ميعاد الذهاب: 7:30 ص</p>
+          </div>
+          <span style="background:#ecfdf5; color:#059669; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800;">تم الركوب بنجاح ✅</span>
+        </div>
+      </div>
+
+      <button class="primary-action-btn" style="background:#fff; color:var(--primary); border:1.5px dashed var(--primary); box-shadow:none; margin-bottom:12px;" onclick="promptAddStudent()">
+        + إضافة طالب جديد للعائلة
       </button>
-      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="toggleLockState(false)">
-        <i class="fa-solid fa-lock-open"></i> فتح التطبيق 🔓
+
+      <input type="text" id="sch_pickup_location" class="custom-field" placeholder="عنوان البيت بالتفصيل">
+      <input type="text" id="sch_school_name" class="custom-field" placeholder="اسم المدرسة أو السنتر">
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div>
+          <label style="font-size:10px; color:var(--text-sub);">ميعاد الذهاب صباحاً:</label>
+          <input type="time" id="sch_go_time" class="custom-field" value="07:30">
+        </div>
+        <div>
+          <label style="font-size:10px; color:var(--text-sub);">ميعاد العودة ظهراً:</label>
+          <input type="time" id="sch_back_time" class="custom-field" value="14:00">
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; background:#f1f5f9; padding:10px; border-radius:10px; margin-bottom:12px;">
+        <span style="font-size:11px; font-weight:800;">تفعيل الرحلة اليومية تلقائياً</span>
+        <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--primary);">
+      </div>
+
+      <button class="primary-action-btn" onclick="confirmSchoolSubscription()">
+        تأكيد وبدء رحلات الطالب (عرض 5 ج) 🛵
+      </button>
+    </div>
+  </section>
+
+  <!-- 3. ميزة "هاتلي أي حاجة" من أي محل -->
+  <section id="view-bringme" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">🛍️ خدمة "هاتلي أي حاجة"</h3>
+    </div>
+
+    <div class="ui-card">
+      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">
+        اكتب اللي محتاجه بالتفصيل أو صوره، والكابتن هيشتريه ويوصله لباب بيتك فوراً!
+      </p>
+
+      <textarea id="bringme_text" class="custom-field" rows="3" placeholder="مثال: شاحن Type-C سريع من محل جنب المحطة، علبة شوكولاتة، كرتونة مياه..."></textarea>
+
+      <!-- زر تصوير أو رفع صورة المنتج -->
+      <button type="button" class="primary-action-btn" style="background:#fff; border:1.5px dashed var(--primary); color:var(--primary); box-shadow:none; margin-bottom:10px;" onclick="document.getElementById('bringme_file').click()">
+        <i class="fa-solid fa-camera"></i> تصوير أو رفع صورة المنتج المطلوب 📷
+      </button>
+      <input type="file" id="bringme_file" accept="image/*" style="display:none;" onchange="showAppModal('تم التقاط الصورة', 'تم إرفاق صورة المنتج المطلوب بنجاح!')">
+
+      <input type="text" id="bringme_store_addr" class="custom-field" placeholder="اسم المحل أو المكان اللي نشتري منه (اختياري)">
+      <input type="text" id="bringme_user_addr" class="custom-field" placeholder="عنوان التوصيل في نجع حمادي بالتفصيل">
+
+      <button class="primary-action-btn" style="background:#ec4899;" onclick="submitBringMeOrder()">
+        إرسال الطلب للكابتن فوراً 🛵
+      </button>
+    </div>
+  </section>
+
+  <!-- 4. مشوار متعدد المحطات (Multi-Stop Ride) -->
+  <section id="view-multistop" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">🛵 مشوار عادي ومتعدد المحطات</h3>
+    </div>
+
+    <div class="ui-card">
+      <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">
+        تقدر تضيف أكتر من محطة في نفس المشوار (البيت ➔ الصيدلية ➔ السوبرماركت ➔ البيت).
+      </p>
+
+      <div id="multiStopInputsWrap">
+        <input type="text" class="custom-field" placeholder="نقطة الانطلاق (مثال: البيت شارع 15)" value="البيت">
+        <input type="text" class="custom-field" placeholder="المحطة الأولى (مثال: صيدلية الدكتور أحمد)">
+      </div>
+
+      <button type="button" style="background:transparent; border:0; color:#0284c7; font-size:12px; font-weight:800; cursor:pointer; margin-bottom:14px;" onclick="addStopField()">
+        + إضافة محطة توقف أخرى
+      </button>
+
+      <div style="background:#f8fafc; border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span style="font-size:11px; color:var(--text-sub);">السعر التقديري للمشوار:</span>
+          <h4 style="font-size:16px; font-weight:900; color:var(--primary);"><span id="multiStopPriceEst">35</span> ج.م</h4>
+        </div>
+        <span style="font-size:11px; color:#10b981; font-weight:800;">الوقت المتوقع: 20 دقيقة</span>
+      </div>
+
+      <button class="primary-action-btn" onclick="confirmMultiStopRide()">
+        طلب المشوار الآن 🚀
+      </button>
+    </div>
+  </section>
+
+  <!-- 5 و 6. محفظة FLY ونظام النقاط والمكافآت -->
+  <section id="view-wallet" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">💰 محفظة FLY ونقاط المكافآت</h3>
+    </div>
+
+    <div class="ui-card" style="background: linear-gradient(135deg, #0f172a, #1e293b); color:#fff; border-color:var(--primary); text-align:center;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:12px; margin-bottom:12px;">
+        <div>
+          <span style="font-size:11px; color:#94a3b8;">رصيد المحفظة</span>
+          <h3 style="font-size:26px; font-weight:900; color:#10b981;"><span id="flyWalletCash">0</span> ج.م</h3>
+        </div>
+        <div>
+          <span style="font-size:11px; color:#94a3b8;">نقاط المكافآت ⭐</span>
+          <h3 style="font-size:26px; font-weight:900; color:#f59e0b;"><span id="flyWalletPoints">0</span> نقطة</h3>
+        </div>
+      </div>
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <button class="primary-action-btn" style="padding:10px; font-size:12px; background:#0284c7;" onclick="promptRechargeWallet()">
+          <i class="fa-solid fa-plus-circle"></i> شحن الرصيد
+        </button>
+        <button class="primary-action-btn" style="padding:10px; font-size:12px; background:#059669;" onclick="convertPointsToCashback()">
+          <i class="fa-solid fa-arrows-rotate"></i> استبدال النقاط
+        </button>
+      </div>
+    </div>
+
+    <div class="ui-card">
+      <h4 style="font-size:13px; font-weight:900; margin-bottom:10px;"><i class="fa-solid fa-receipt"></i> سجل المدفوعات والمعاملات:</h4>
+      <div id="walletDynamicLog" style="display:flex; flex-direction:column; gap:8px;">
+        <div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">لا توجد معاملات سابقة بعد.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. شاشة التتبع المباشر الاحترافي -->
+  <section id="view-tracking" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">📍 التتبع المباشر للطلب</h3>
+    </div>
+
+    <!-- محاكاة الخريطة الحية -->
+    <div style="height:210px; width:100%; border-radius:var(--radius-lg); background:#e2e8f0 url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600') center/cover no-repeat; margin-bottom:14px; position:relative; border:1px solid var(--border);">
+      <div style="position:absolute; top:12px; right:12px; background:#fff; padding:6px 12px; border-radius:20px; font-size:11px; font-weight:900; color:var(--primary); box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+        <i class="fa-solid fa-circle-dot" style="color:#10b981;"></i> تتبع حي مباشر
+      </div>
+    </div>
+
+    <!-- بطاقة الكابتن -->
+    <div class="ui-card" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="1789033195311.jpg" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
+        <div>
+          <h4 style="font-size:14px; font-weight:900;">محمد أحمد (كابتن FLY)</h4>
+          <span style="font-size:11px; color:#f59e0b;"><i class="fa-solid fa-star"></i> 4.9 (120 تقييم)</span>
+          <div style="font-size:10px; color:var(--text-sub);">دراجة نارية • رقم 2563</div>
+        </div>
+      </div>
+      <div style="text-align:left;">
+        <span style="font-size:10px; color:var(--text-sub);">الوقت المتوقع</span>
+        <h4 style="font-size:14px; font-weight:900; color:var(--primary);">8 دقائق</h4>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+      <button class="primary-action-btn" style="padding:10px; font-size:11px; background:#25d366;" onclick="window.open('https://wa.me/201017908076','_blank')">
+        <i class="fa-brands fa-whatsapp"></i> محادثة
+      </button>
+      <button class="primary-action-btn" style="padding:10px; font-size:11px; background:#0284c7;" onclick="location.href='tel:01017908076'">
+        <i class="fa-solid fa-phone"></i> اتصال
+      </button>
+      <button class="primary-action-btn" style="padding:10px; font-size:11px; background:#64748b;" onclick="shareLiveTracking()">
+        <i class="fa-solid fa-share-nodes"></i> مشاركة
+      </button>
+    </div>
+  </section>
+
+  <!-- 9. الحساب العائلي -->
+  <section id="view-family" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">👨‍👩‍👧 الحساب العائلي</h3>
+    </div>
+
+    <div class="ui-card">
+      <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">
+        أضف أفراد أسرتك واطلب لهم الرحلات والوجبات بضغطة زر من نفس حسابك ومحفظتك.
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+        <div style="background:#f8fafc; border:1px solid var(--border); border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <strong>أحمد (الابن - طالب)</strong>
+            <div style="font-size:10px; color:var(--text-sub);">توصيل المدارس اليومي</div>
+          </div>
+          <button style="background:transparent; border:0; color:#ef4444; font-size:12px;"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+
+      <button class="primary-action-btn" onclick="showAppModal('إضافة فرد جديد', 'يمكنك إضافة ابن أو زوجة لطلب المشاوير والوجبات لهم مباشرة!')">
+        + إضافة فرد جديد للعائلة
+      </button>
+    </div>
+  </section>
+
+  <!-- 10. حساب التاجر / المحلات -->
+  <section id="view-merchant" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">🏪 بوابة التجار والمحلات</h3>
+    </div>
+
+    <div class="ui-card">
+      <h4 style="font-size:14px; font-weight:900; margin-bottom:6px;">مرحباً بك في لوحة التاجر</h4>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">استقبل طلبات الزبائن، جهز الأوردر، واستدعِ كابتن FLY فوراً.</p>
+
+      <div style="background:#f8fafc; border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <strong>طلب جديد #892</strong>
+          <span style="background:#fef3c7; color:#d97706; padding:3px 8px; border-radius:6px; font-size:10px; font-weight:800;">قيد التجهيز</span>
+        </div>
+        <p style="font-size:11px; color:var(--text-main);">وجبة برجر عائلي + بطاطس</p>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <button class="primary-action-btn" style="padding:8px; font-size:11px; background:#10b981;" onclick="showAppModal('جاهز للتسليم', 'تم إرسال إشعار لكابتن FLY لاستلام الأوردر فوراً!')">تم تجهيز الطلب 🛵</button>
+          <button class="primary-action-btn" style="padding:8px; font-size:11px; background:#ef4444;" onclick="showAppModal('إلغاء', 'تم إلغاء الطلب.')">رفض</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- باقة FLY PASS -->
+  <section id="view-flypass" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">👑 باقة FLY PASS الذهبية</h3>
+    </div>
+    <div class="ui-card" style="background:linear-gradient(135deg, #1e1b4b, #0f172a); color:#fff; border-color:#a855f7;">
+      <h3 style="font-size:18px; font-weight:900; color:#c084fc; margin-bottom:8px;">اشترك بـ 49 ج فقط شهرياً!</h3>
+      <div style="display:flex; flex-direction:column; gap:8px; font-size:12px; margin-bottom:16px;">
+        <div>✅ 10 مشاوير توصيل مجاني تماماً كل شهر</div>
+        <div>✅ خصم 25% على طلبات جميع المطاعم المشتركة</div>
+        <div>✅ أولوية قصوى لوصول كابتن FLY في أوقات الذروة</div>
+        <div>✅ نقاط مكافآت مضاعفة 2X مع كل طلب</div>
+      </div>
+      <button class="primary-action-btn" style="background:#a855f7;" onclick="showAppModal('FLY PASS', 'تم تفعيل اشتراكك التجريبي المجاني لمدة 7 أيام! 🎉')">
+        اشترك الآن واستمتع بالمميزات 👑
+      </button>
+    </div>
+  </section>
+
+  <!-- المطاعم -->
+  <section id="view-food" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">🍔 مطاعم نجع حمادي</h3>
+    </div>
+    <div class="ui-card" style="display:flex; justify-content:space-between; align-items:center;">
+      <div><strong>مشويات وكباب نجع حمادي</strong><div style="font-size:11px; color:#10b981;">+5 ج كاش باك فوراً</div></div>
+      <button class="primary-action-btn" style="width:auto; padding:8px 16px;" onclick="orderFoodWhatsApp('مشويات وكباب نجع حمادي')">طلب الآن</button>
+    </div>
+    <div class="ui-card" style="display:flex; justify-content:space-between; align-items:center;">
+      <div><strong>بيتزا وفطائر السلطان</strong><div style="font-size:11px; color:#10b981;">+5 ج كاش باك فوراً</div></div>
+      <button class="primary-action-btn" style="width:auto; padding:8px 16px;" onclick="orderFoodWhatsApp('بيتزا وفطائر السلطان')">طلب الآن</button>
+    </div>
+  </section>
+
+  <!-- الصيدلية -->
+  <section id="view-pharmacy" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">💊 الصيدلية والعلاج العاجل</h3>
+    </div>
+    <div class="ui-card">
+      <textarea id="pharma_details" class="custom-field" rows="3" placeholder="اكتب اسم العلاج أو صور الروشتة..."></textarea>
+      <input type="text" id="pharma_address" class="custom-field" placeholder="العنوان في نجع حمادي">
+      <button class="primary-action-btn" onclick="submitPharmacyOrder()">طلب الأدوية فوراً 🚑</button>
+    </div>
+  </section>
+
+  <!-- إرسال طرد -->
+  <section id="view-orders" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">📦 شحن وإرسال طرد</h3>
+    </div>
+    <div class="ui-card">
+      <input type="text" id="ord_details" class="custom-field" placeholder="محتوى الطرد">
+      <input type="text" id="ord_from" class="custom-field" placeholder="مكان الاستلام بالتفصيل">
+      <input type="text" id="ord_to" class="custom-field" placeholder="مكان التسليم بالتفصيل">
+      <button class="primary-action-btn" onclick="submitParcelOrder()">تأكيد طلب التوصيل 🛵</button>
+    </div>
+  </section>
+
+  <!-- الملف الشخصي -->
+  <section id="view-profile" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">👤 الملف الشخصي</h3>
+    </div>
+    <div class="ui-card" style="text-align:center;">
+      <img src="1789033195311.jpg" id="profilePageAvatarPreview" style="width:90px; height:90px; border-radius:50%; border:3px solid var(--primary); object-fit:cover; margin-bottom:10px;">
+      <button type="button" class="primary-action-btn" style="width:auto; padding:8px 14px; font-size:12px; margin-bottom:14px;" onclick="document.getElementById('userAvatarFileInput').click()">
+        <i class="fa-solid fa-camera"></i> تغيير صورتك الشخصية 📷
+      </button>
+      <input type="file" id="userAvatarFileInput" accept="image/*" style="display:none;" onchange="handleUserAvatarUpload(this)">
+      <input type="text" id="editProfileNameInput" class="custom-field" placeholder="اسمك">
+      <input type="tel" id="editProfilePhoneInput" class="custom-field" placeholder="رقم الهاتف">
+      <button class="primary-action-btn" onclick="saveUpdatedProfileData()">حفظ التعديلات ✅</button>
+    </div>
+  </section>
+
+  <!-- قائمة الأسعار -->
+  <section id="view-prices" class="sub-page-view">
+    <div class="page-top-back">
+      <div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div>
+      <h3 style="font-size:16px; font-weight:900;">🏷️ قائمة الأسعار الحية</h3>
+    </div>
+    <div class="ui-card" style="padding:8px 14px;">
+      <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
+        <span>مشوار داخل نجع حمادي:</span>
+        <strong id="lbl_p_inside" style="color:var(--primary);">30 ج</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
+        <span>مشوار داخل قرية بركة:</span>
+        <strong id="lbl_p_berka" style="color:var(--primary);">20 ج</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
+        <span>من بركة للمساكن:</span>
+        <strong id="lbl_p_masaken" style="color:var(--primary);">25 ج</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
+        <span>من بركة للألمنيوم:</span>
+        <strong id="lbl_p_alum" style="color:var(--primary);">35 ج</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
+        <span>من بركة إلى هو:</span>
+        <strong id="lbl_p_haw" style="color:var(--primary);">50 ج</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:10px 0;">
+        <span>من بركة لنجع حمادي:</span>
+        <strong id="lbl_p_naga" style="color:var(--primary);">100 ج</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- القائمة الجانبية -->
+  <div class="drawer-menu" id="profileDrawer" onclick="if(event.target===this) toggleDrawer(false)">
+    <div class="drawer-sheet">
+      <div>
+        <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:16px;">
+          <img src="1789033195311.jpg" id="drawerUserAvatarImg" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
+          <div>
+            <h4 style="font-size:14px; font-weight:900;" id="drawerUserName">عميل Fly Express</h4>
+            <span style="font-size:11px; color:#94a3b8;" id="drawerUserPhone">حساب معتمد</span>
+          </div>
+        </div>
+
+        <div class="drawer-links-box">
+          <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('profile');"><i class="fa-solid fa-user-pen"></i> تعديل بياناتي وصورتي</div>
+          <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('wallet');"><i class="fa-solid fa-wallet"></i> محفظة FLY والنقاط</div>
+          <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('flypass');"><i class="fa-solid fa-crown" style="color:#c084fc;"></i> اشتراك FLY PASS</div>
+          <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('family');"><i class="fa-solid fa-people-roof"></i> الحساب العائلي</div>
+          <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('prices');"><i class="fa-solid fa-tags"></i> قائمة الأسعار الحية</div>
+          <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('merchant');"><i class="fa-solid fa-store"></i> بوابة التجار والمحلات</div>
+          <div class="drawer-item" onclick="toggleDrawer(false); window.open('https://wa.me/201017908076','_blank');"><i class="fa-solid fa-headset"></i> الدعم والمساعدة</div>
+        </div>
+      </div>
+
+      <button onclick="confirmAppLogout()" style="width:100%; padding:12px; background:rgba(239,68,68,0.15); border:1px solid #ef4444; color:#ef4444; border-radius:var(--radius-md); font-weight:800; cursor:pointer;">
+        تسجيل الخروج 🚪
       </button>
     </div>
   </div>
 
-  <!-- 3. تعديل قائمة الأسعار الحية -->
-  <div class="admin-card" style="border-color: #00e5ff;">
-    <h3 style="font-size:14px; font-weight:900; color:#00e5ff; margin-bottom:8px;"><i class="fa-solid fa-tags"></i> أسعار المشاوير الحية</h3>
-    <div class="price-row"><span style="font-size:12px;">داخل نجع حمادي:</span><input type="number" id="p_inside" class="admin-input" style="width:90px; margin:0;" value="30"></div>
-    <div class="price-row"><span style="font-size:12px;">داخل قرية بركة:</span><input type="number" id="p_berka" class="admin-input" style="width:90px; margin:0;" value="20"></div>
-    <div class="price-row"><span style="font-size:12px;">من بركة للمساكن:</span><input type="number" id="p_masaken" class="admin-input" style="width:90px; margin:0;" value="25"></div>
-    <div class="price-row"><span style="font-size:12px;">من بركة للألمنيوم:</span><input type="number" id="p_alum" class="admin-input" style="width:90px; margin:0;" value="35"></div>
-    <div class="price-row"><span style="font-size:12px;">من بركة إلى هو:</span><input type="number" id="p_haw" class="admin-input" style="width:90px; margin:0;" value="50"></div>
-    <div class="price-row"><span style="font-size:12px;">من بركة لنجع حمادي:</span><input type="number" id="p_naga" class="admin-input" style="width:90px; margin:0;" value="100"></div>
-    <button class="btn-action" style="background:#00e5ff; color:#000;" onclick="sendAdminBroadcast()">
-      <i class="fa-solid fa-share-from-square"></i> نشر الأسعار في التطبيق فوراً 🏷️
+  <!-- شريط التنقل السفلي -->
+  <nav class="tab-bottom-nav">
+    <button class="tab-btn active" onclick="switchNavTab('home', this)">
+      <i class="fa-solid fa-house" style="font-size:18px;"></i>
+      <span>الرئيسية</span>
     </button>
-  </div>
-
-  <!-- 4. العملاء المسجلين -->
-  <div class="admin-card">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="font-size:14px; font-weight:900; color:#fff;"><i class="fa-solid fa-address-book"></i> العملاء المسجلين</h3>
-      <button onclick="loadUsersList()" style="background:transparent; border:0; color:#00e5ff; font-size:12px; cursor:pointer; font-weight:800;">تحديث 🔄</button>
-    </div>
-    <div class="users-list-box" id="usersListBox">
-      <div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">جاري جلب العملاء...</div>
-    </div>
-  </div>
+    <button class="tab-btn" onclick="switchNavTab('tracking', this)">
+      <i class="fa-solid fa-map-location-dot" style="font-size:18px;"></i>
+      <span>التتبع</span>
+    </button>
+    <button class="tab-btn" onclick="switchNavTab('wallet', this)">
+      <i class="fa-solid fa-wallet" style="font-size:18px;"></i>
+      <span>المحفظة</span>
+    </button>
+    <button class="tab-btn" onclick="toggleDrawer(true)">
+      <i class="fa-solid fa-bars" style="font-size:18px;"></i>
+      <span>المزيد</span>
+    </button>
+  </nav>
 
 </div>
 
 <script>
-// قناة البث المباشرة الفورية
+const APP_LOCAL_VERSION = "1.0.0";
+const ADMIN_PHONE = "201017908076";
 const CONTROL_ENDPOINT = "https://ntfy.sh/flyexpress_admin_stream_2026";
 const USERS_ENDPOINT = "https://ntfy.sh/flyexpress_users_stream_2026";
+let currentDownloadUrl = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file";
 
-let isAppLocked = false;
+// نافذة المودال المدمجة
+function showAppModal(title, msg, iconClass = "fa-circle-info") {
+  document.getElementById('customModalTitle').textContent = title;
+  document.getElementById('customModalMessage').textContent = msg;
+  document.getElementById('customModalIcon').innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+  document.getElementById('appCustomModal').classList.add('show');
+}
+function closeAppModal() { document.getElementById('appCustomModal').classList.remove('show'); }
 
-window.addEventListener('load', () => {
-  if (sessionStorage.getItem('fly_admin_session') === 'true') {
-    showDashboard();
+// إضافة محطة لمشوار متعدد المحطات
+function addStopField() {
+  const wrap = document.getElementById('multiStopInputsWrap');
+  const count = wrap.querySelectorAll('input').length;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'custom-field';
+  input.placeholder = `المحطة رقم ${count} (مثال: السوبرماركت)`;
+  wrap.appendChild(input);
+  
+  // تحديث السعر التقديري
+  const p = parseInt(document.getElementById('multiStopPriceEst').textContent) + 15;
+  document.getElementById('multiStopPriceEst').textContent = p;
+}
+
+function confirmMultiStopRide() {
+  const price = document.getElementById('multiStopPriceEst').textContent;
+  recordOrderRewards(parseInt(price), "مشوار متعدد المحطات");
+  sendDirectWhatsApp(`طلب مشوار متعدد المحطات 🛵⚡\nالسعر المقدر: ${price} ج\nيرجى التواصل معي لتحديد خط السير.`);
+}
+
+// خدمة هاتلي أي حاجة
+function submitBringMeOrder() {
+  const txt = document.getElementById('bringme_text').value.trim();
+  const userAddr = document.getElementById('bringme_user_addr').value.trim();
+  const storeAddr = document.getElementById('bringme_store_addr').value.trim();
+  if (!txt || !userAddr) return showAppModal("بيانات ناقصة", "اكتب المطلوب وعنوان التوصيل أولاً.");
+  recordOrderRewards(20, "هاتلي أي حاجة");
+  sendDirectWhatsApp(`طلب خدمة هاتلي أي حاجة 🛍️🛵\nالمطلوب: ${txt}\nمن: ${storeAddr || 'أي محل قريب'}\nإلى: ${userAddr}`);
+}
+
+// اشتراك المدارس
+function confirmSchoolSubscription() {
+  const pickup = document.getElementById('sch_pickup_location').value.trim();
+  const school = document.getElementById('sch_school_name').value.trim();
+  const goTime = document.getElementById('sch_go_time').value;
+  const backTime = document.getElementById('sch_back_time').value;
+  if (!pickup || !school) return showAppModal("بيانات ناقصة", "أكمل عنوان البيت والمدرسة.");
+  recordOrderRewards(5, "توصيل طالب مدرسة");
+  sendDirectWhatsApp(`اشتراك توصيل طالب للمدرسة 🚌🎒\nالعنوان: ${pickup}\nالمدرسة: ${school}\nالذهاب: ${goTime} | العودة: ${backTime}`);
+}
+
+function promptAddStudent() {
+  const name = prompt("اكتب اسم الطالب الجديد:");
+  if (name) {
+    const container = document.getElementById('studentsListContainer');
+    const div = document.createElement('div');
+    div.style.cssText = "background:#fff; border:1px solid var(--border); border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center;";
+    div.innerHTML = `<div><h4 style="font-size:13px; font-weight:800;">${name}</h4><p style="font-size:10px; color:var(--text-sub);">تمت الإضافة لقائمة الرحلات اليومية</p></div><span style="color:#059669; font-size:11px; font-weight:800;">جاهز</span>`;
+    container.appendChild(div);
   }
-});
+}
 
-function verifyAdminCredentials() {
-  const u = document.getElementById('adminUserVal').value.trim();
-  const p = document.getElementById('adminPassVal').value.trim();
-  if (u === 'Fly' && p === '096') {
-    sessionStorage.setItem('fly_admin_session', 'true');
-    showDashboard();
+function triggerEmergencyAlert() {
+  sendDirectWhatsApp(`🚨 تنبيه طوارئ عاجل من ولي الأمر!\nيرجى الاطمئنان فوراً على رحلة الطالب ومشاركتها معي.`);
+}
+
+function shareLiveTracking() {
+  if (navigator.share) {
+    navigator.share({ title: 'تتبع رحلة كابتن FLY', text: 'تابع مشواري وحالة الكابتن لحظياً على FLY EXPRESS', url: window.location.href });
   } else {
-    document.getElementById('loginErrorTxt').style.display = 'block';
+    showAppModal("مشاركة التتبع", "تم نسخ رابط التتبع الحي لرحلتك بنجاح!");
   }
 }
 
-function showDashboard() {
-  document.getElementById('adminLoginGate').style.display = 'none';
-  document.getElementById('adminMainContent').style.display = 'block';
-  loadUsersList();
-}
-
-function adminLogout() {
-  sessionStorage.removeItem('fly_admin_session');
-  location.reload();
-}
-
-// دالة البث اللحظية المؤكدة
-async function sendAdminBroadcast() {
-  const payload = {
-    service: document.getElementById('appStatusSelect').value,
-    notice: document.getElementById('dailyNoticeInput').value.trim(),
-    lock: isAppLocked,
-    prices: {
-      inside: parseInt(document.getElementById('p_inside').value || 30),
-      berka: parseInt(document.getElementById('p_berka').value || 20),
-      masaken: parseInt(document.getElementById('p_masaken').value || 25),
-      alum: parseInt(document.getElementById('p_alum').value || 35),
-      haw: parseInt(document.getElementById('p_haw').value || 50),
-      naga: parseInt(document.getElementById('p_naga').value || 100)
-    },
-    t: Date.now()
-  };
-
-  try {
-    const res = await fetch(CONTROL_ENDPOINT, {
-      method: "POST",
-      body: JSON.stringify(payload)
-    });
-    if (res.ok) {
-      alert("✅ تم تنفيذ الأمر وتحديث التطبيق لحظياً!");
-    } else {
-      alert("✅ تم إرسال الأمر");
-    }
-  } catch(e) {
-    alert("❌ تأكد من اتصال هاتفك بالإنترنت");
+function promptRechargeWallet() {
+  const amount = prompt("أدخل المبلغ المراد شحنه في محفظة FLY (ج.م):", "50");
+  if (amount) {
+    let cur = parseInt(localStorage.getItem('fly_wallet_cash') || '0');
+    cur += parseInt(amount);
+    localStorage.setItem('fly_wallet_cash', cur.toString());
+    document.getElementById('flyWalletCash').textContent = cur;
+    showAppModal("تم الشحن بنجاح", `تمت إضافة ${amount} ج.م إلى محفظتك بنجاح! 💳`);
   }
 }
 
-function toggleLockState(locked) {
-  isAppLocked = locked;
-  sendAdminBroadcast();
+function recordOrderRewards(amount, type) {
+  const cashback = Math.round(amount * 0.1);
+  let curCash = parseInt(localStorage.getItem('fly_wallet_cash') || '0') + cashback;
+  let curPts = parseInt(localStorage.getItem('fly_wallet_pts') || '0') + amount;
+
+  localStorage.setItem('fly_wallet_cash', curCash.toString());
+  localStorage.setItem('fly_wallet_pts', curPts.toString());
+  document.getElementById('flyWalletCash').textContent = curCash;
+  document.getElementById('flyWalletPoints').textContent = curPts;
+
+  const log = document.getElementById('walletDynamicLog');
+  const div = document.createElement('div');
+  div.style.cssText = "display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:12px;";
+  div.innerHTML = `<div><strong>${type}</strong><div style="font-size:10px; color:var(--text-sub);">${new Date().toLocaleTimeString('ar-EG')}</div></div><div style="color:#10b981;">+${cashback} ج (+${amount} نقطة)</div>`;
+  if (log.children.length === 1 && log.children[0].textContent.includes('لا توجد')) log.innerHTML = "";
+  log.prepend(div);
 }
 
-// جلب العملاء المسجلين
-async function loadUsersList() {
-  const box = document.getElementById('usersListBox');
-  box.innerHTML = `<div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">جاري جلب القائمة...</div>`;
-  try {
-    const res = await fetch(`${USERS_ENDPOINT}/json?poll=1`);
-    const txt = await res.text();
-    box.innerHTML = "";
-    if (!txt.trim()) {
-      box.innerHTML = `
-        <div class="user-item-row">
-          <div><div style="font-size:13px; font-weight:800; color:#fff;">mahmoud ahmed</div><div style="font-size:11px; color:#00e5ff;">01004769249</div></div>
-          <a href="https://wa.me/201004769249" target="_blank" style="background:#25d366; color:#000; padding:5px 10px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800;"><i class="fa-brands fa-whatsapp"></i> واتس</a>
-        </div>
-      `;
-      return;
-    }
-    const lines = txt.trim().split('\n');
-    const usersMap = new Map();
+function convertPointsToCashback() {
+  let pts = parseInt(localStorage.getItem('fly_wallet_pts') || '0');
+  if (pts < 50) return showAppModal("النقاط غير كافية", "الحد الأدنى للاستبدال 50 نقطة (كل 50 نقطة = 5 ج).");
+  const gained = Math.floor(pts / 10);
+  let curCash = parseInt(localStorage.getItem('fly_wallet_cash') || '0') + gained;
+  pts = pts % 10;
+  localStorage.setItem('fly_wallet_cash', curCash.toString());
+  localStorage.setItem('fly_wallet_pts', pts.toString());
+  document.getElementById('flyWalletCash').textContent = curCash;
+  document.getElementById('flyWalletPoints').textContent = pts;
+  showAppModal("تم الاستبدال! ⭐", `تم تحويل نقاطك إلى ${gained} ج في المحفظة!`);
+}
 
-    lines.forEach(line => {
+function orderFoodWhatsApp(resName) {
+  recordOrderRewards(50, `مطعم ${resName}`);
+  sendDirectWhatsApp(`طلب وجبة من مطعم ${resName} 🍔🛵`);
+}
+function submitPharmacyOrder() {
+  const d = document.getElementById('pharma_details').value.trim();
+  const a = document.getElementById('pharma_address').value.trim();
+  if (!d || !a) return showAppModal("بيانات ناقصة", "اكتب اسم العلاج وعنوان التوصيل.");
+  recordOrderRewards(25, "أدوية وعلاج");
+  sendDirectWhatsApp(`طلب أدوية عاجل 🚑💊\nالطلبات: ${d}\nالعنوان: ${a}`);
+}
+function submitParcelOrder() {
+  const d = document.getElementById('ord_details').value.trim();
+  const f = document.getElementById('ord_from').value.trim();
+  const t = document.getElementById('ord_to').value.trim();
+  if (!f || !t) return showAppModal("بيانات ناقصة", "أكمل العناوين أولاً.");
+  recordOrderRewards(30, "شحن طرد");
+  sendDirectWhatsApp(`طلب إرسال طرد 📦🛵\nالمحتوى: ${d}\nمن: ${f}\nإلى: ${t}`);
+}
+
+function sendDirectWhatsApp(text) {
+  const encText = encodeURIComponent(text);
+  window.location.href = `whatsapp://send?phone=${ADMIN_PHONE}&text=${encText}`;
+  setTimeout(() => { window.open(`https://wa.me/${ADMIN_PHONE}?text=${encText}`, '_blank'); }, 400);
+}
+
+// إدارة الحسابات
+function switchAuthMode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('btnTabLogin').classList.toggle('active', isLogin);
+  document.getElementById('btnTabSignup').classList.toggle('active', !isLogin);
+  document.getElementById('loginFormSection').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('signupFormSection').style.display = isLogin ? 'none' : 'block';
+}
+
+function processLoginAction() {
+  const u = document.getElementById('loginUsername').value.trim();
+  if (!u) return showAppModal("تنبيه", "أدخل اسم المستخدم.");
+  localStorage.setItem('fly_user_name', u);
+  document.getElementById('drawerUserName').textContent = u;
+  document.getElementById('authGateScreen').style.display = 'none';
+}
+
+async function registerUserToAdminStream(name, phone) {
+  try {
+    await fetch(USERS_ENDPOINT, { method: "POST", body: JSON.stringify({ name, phone, time: Date.now() }) });
+  } catch(e) {}
+}
+
+async function processSignupAction() {
+  const name = document.getElementById('signupFullname').value.trim();
+  const phone = document.getElementById('signupPhoneNum').value.trim();
+  if (!name || !phone) return showAppModal("تنبيه", "أكمل كافة البيانات.");
+  await registerUserToAdminStream(name, phone);
+  localStorage.setItem('fly_user_name', name);
+  localStorage.setItem('fly_user_phone', phone);
+  document.getElementById('drawerUserName').textContent = name;
+  document.getElementById('drawerUserPhone').textContent = phone;
+  document.getElementById('authGateScreen').style.display = 'none';
+  showAppModal("أهلاً بك! ✨", "تم تفعيل حسابك في Fly Express بنجاح!");
+}
+
+async function handleGoogleSignInDirect() {
+  const email = prompt("أدخل بريدك الإلكتروني (Gmail):");
+  if (!email || !email.includes("@")) return showAppModal("تنبيه", "بريد غير صحيح.");
+  const name = email.split('@')[0];
+  const phone = prompt("أدخل رقم هاتفك للتواصل مع الكابتن:", "010");
+  await registerUserToAdminStream(name, phone || "01000000000");
+  localStorage.setItem('fly_user_name', name);
+  localStorage.setItem('fly_user_phone', phone || "01000000000");
+  document.getElementById('drawerUserName').textContent = name;
+  document.getElementById('authGateScreen').style.display = 'none';
+  showAppModal("تم الدخول بنجاح! 🚀", `أهلاً بك يا ${name} بحساب Google!`);
+}
+
+function handleUserAvatarUpload(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      localStorage.setItem('fly_user_avatar', e.target.result);
+      document.getElementById('topHeaderUserAvatar').src = e.target.result;
+      document.getElementById('drawerUserAvatarImg').src = e.target.result;
+      document.getElementById('profilePageAvatarPreview').src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function saveUpdatedProfileData() {
+  const n = document.getElementById('editProfileNameInput').value.trim();
+  const p = document.getElementById('editProfilePhoneInput').value.trim();
+  if (n) localStorage.setItem('fly_user_name', n);
+  if (p) localStorage.setItem('fly_user_phone', p);
+  showAppModal("تم الحفظ", "تم تحديث الملف الشخصي بنجاح!");
+}
+
+function confirmAppLogout() {
+  toggleDrawer(false);
+  localStorage.removeItem('fly_user_name');
+  document.getElementById('authGateScreen').style.display = 'flex';
+}
+
+function showView(viewId) {
+  document.querySelectorAll('.sub-page-view').forEach(v => v.classList.remove('active'));
+  const target = document.getElementById(viewId);
+  if (target) target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+function navigateToHome() {
+  showView('view-home');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn')[0].classList.add('active');
+}
+function switchNavTab(tabName, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (tabName === 'home') showView('view-home');
+  else if (tabName === 'tracking') showView('view-tracking');
+  else if (tabName === 'wallet') showView('view-wallet');
+}
+function openServiceScreen(type) {
+  if (type === 'school') showView('view-school');
+  else if (type === 'bringme') showView('view-bringme');
+  else if (type === 'multistop') showView('view-multistop');
+  else if (type === 'wallet') showView('view-wallet');
+  else if (type === 'food') showView('view-food');
+  else if (type === 'pharmacy') showView('view-pharmacy');
+  else if (type === 'orders') showView('view-orders');
+  else if (type === 'family') showView('view-family');
+  else if (type === 'merchant') showView('view-merchant');
+  else if (type === 'flypass') showView('view-flypass');
+  else if (type === 'prices') showView('view-prices');
+  else if (type === 'profile') showView('view-profile');
+  else toggleDrawer(true);
+}
+function toggleDrawer(open) {
+  const d = document.getElementById('profileDrawer');
+  if (open) d.classList.add('show');
+  else d.classList.remove('show');
+}
+
+// الاستماع اللحظي للوحة الأدمن
+function connectLiveAdminStream() {
+  try {
+    const sse = new EventSource(`${CONTROL_ENDPOINT}/sse`);
+    sse.onmessage = (event) => {
       try {
-        const item = JSON.parse(line);
+        const item = JSON.parse(event.data);
         if (item.event === "message" && item.message) {
-          const u = JSON.parse(item.message);
-          if (u.phone) usersMap.set(u.phone, u);
+          const data = typeof item.message === 'string' ? JSON.parse(item.message) : item.message;
+          if (data.notice) document.getElementById('dailyPromoTickerTxt').textContent = data.notice;
+          if (data.lock === true) document.getElementById('forceUpdateModal').style.display = 'flex';
+          else if (data.lock === false) document.getElementById('forceUpdateModal').style.display = 'none';
+          if (data.prices) {
+            if (data.prices.inside) document.getElementById('lbl_p_inside').textContent = data.prices.inside + ' ج';
+            if (data.prices.berka) document.getElementById('lbl_p_berka').textContent = data.prices.berka + ' ج';
+            if (data.prices.masaken) document.getElementById('lbl_p_masaken').textContent = data.prices.masaken + ' ج';
+            if (data.prices.alum) document.getElementById('lbl_p_alum').textContent = data.prices.alum + ' ج';
+            if (data.prices.haw) document.getElementById('lbl_p_haw').textContent = data.prices.haw + ' ج';
+            if (data.prices.naga) document.getElementById('lbl_p_naga').textContent = data.prices.naga + ' ج';
+          }
         }
       } catch(e) {}
-    });
-
-    if (usersMap.size === 0) {
-      box.innerHTML = `<div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">لا يوجد عملاء جدد حالياً.</div>`;
-      return;
-    }
-
-    Array.from(usersMap.values()).reverse().forEach(u => {
-      const row = document.createElement('div');
-      row.className = "user-item-row";
-      row.innerHTML = `
-        <div>
-          <div style="font-size:13px; font-weight:800; color:#fff;">${u.name || 'عميل'}</div>
-          <div style="font-size:11px; color:#00e5ff; direction:ltr; text-align:right;">${u.phone || ''}</div>
-        </div>
-        <a href="https://wa.me/2${u.phone}" target="_blank" style="background:#25d366; color:#000; padding:5px 10px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800; display:flex; align-items:center; gap:4px;">
-          <i class="fa-brands fa-whatsapp"></i> واتس
-        </a>
-      `;
-      box.appendChild(row);
-    });
-  } catch(e) {
-    box.innerHTML = `<div style="text-align:center; color:var(--text-sub); font-size:12px; padding:10px;">اضغط تحديث لجلب المشتركين</div>`;
-  }
+    };
+  } catch(err) {}
 }
+
+window.addEventListener('load', () => {
+  const savedUser = localStorage.getItem('fly_user_name');
+  if (savedUser) {
+    document.getElementById('authGateScreen').style.display = 'none';
+    document.getElementById('drawerUserName').textContent = savedUser;
+  }
+  const av = localStorage.getItem('fly_user_avatar');
+  if (av) {
+    document.getElementById('topHeaderUserAvatar').src = av;
+    document.getElementById('drawerUserAvatarImg').src = av;
+    document.getElementById('profilePageAvatarPreview').src = av;
+  }
+  document.getElementById('flyWalletCash').textContent = localStorage.getItem('fly_wallet_cash') || '0';
+  document.getElementById('flyWalletPoints').textContent = localStorage.getItem('fly_wallet_pts') || '0';
+  connectLiveAdminStream();
+});
 </script>
 </body>
 </html>
