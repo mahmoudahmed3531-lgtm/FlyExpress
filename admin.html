@@ -43,20 +43,20 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">خروج</button>
   </div>
 
-  <!-- القسم الجديد: إرسال إشعارات مباشرة للمستخدمين -->
+  <!-- إرسال إشعار مباشر للعميل -->
   <div class="admin-card" style="border-color: #3b82f6; background: rgba(59, 130, 246, 0.05);">
     <h3 style="font-size:14px; font-weight:900; color:#3b82f6; margin-bottom:8px;"><i class="fa-solid fa-bell"></i> إرسال إشعار مباشر للعميل</h3>
-    <p style="font-size:10px; color:var(--text-sub); margin-bottom:10px;">يظهر كرسالة منبثقة داخل تطبيق العميل فوراً وبدون الحاجة لواتساب.</p>
     <input type="text" id="notifyClientUid" class="admin-input" placeholder="كود حساب العميل (مثال: FLY-010-8475)">
     <select id="notifyMsgSelect" class="admin-input">
-      <option value="تم توصيل الطالب بسلام ✅">تم توصيل الطالب للمدرسة/المنزل بسلام ✅</option>
-      <option value="الكابتن وصل، يرجى الاستلام 🛵">الكابتن وصل الموقع، يرجى الاستلام 🛵</option>
-      <option value="تم تسليم الأوردر بنجاح 🍔">تم تسليم الأوردر الخاص بك بنجاح 🍔</option>
-      <option value="عذراً، الكابتن تأخر بسبب الزحام وسيصل قريباً 🚦">الكابتن متأخر قليلاً بسبب الزحام 🚦</option>
+      <option value="تم توصيل الطالب للمدرسة/المنزل بسلام ✅">تم توصيل الطالب بسلام ✅</option>
+      <option value="الكابتن وصل الموقع، يرجى الاستلام 🛵">الكابتن وصل، يرجى الاستلام 🛵</option>
+      <option value="تم تسليم الأوردر الخاص بك بنجاح 🍔">تم تسليم الأوردر بنجاح 🍔</option>
+      <option value="الكابتن متأخر قليلاً بسبب الزحام وسيصل قريباً 🚦">الكابتن متأخر بسبب الزحام 🚦</option>
     </select>
     <button class="btn-action" style="background:#3b82f6; color:#fff;" onclick="sendDirectAppNotification()">إرسال الإشعار للعميل 🔔</button>
   </div>
 
+  <!-- تفعيل باقة FLY PASS -->
   <div class="admin-card" style="border-color: #c084fc; background: rgba(192, 132, 252, 0.05);">
     <h3 style="font-size:14px; font-weight:900; color:#c084fc; margin-bottom:8px;"><i class="fa-solid fa-crown"></i> تفعيل باقة FLY PASS للعميل</h3>
     <input type="text" id="targetClientUid" class="admin-input" placeholder="كود حساب العميل">
@@ -67,8 +67,9 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     <button class="btn-action" style="background:#c084fc; color:#fff;" onclick="activateClientSub()">تفعيل الباقة للعميل الآن 👑</button>
   </div>
 
+  <!-- الإعلان اليومي والصيانة -->
   <div class="admin-card" style="border-color: #f59e0b;">
-    <h3 style="font-size:14px; font-weight:900; color:#f59e0b; margin-bottom:10px;"><i class="fa-solid fa-toggle-on"></i> حالة التطبيق للإعلانات والصيانة</h3>
+    <h3 style="font-size:14px; font-weight:900; color:#f59e0b; margin-bottom:10px;"><i class="fa-solid fa-toggle-on"></i> الإعلانات والصيانة</h3>
     <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي:</label>
     <input type="text" id="dailyNoticeInput" class="admin-input" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
     <button class="btn-action" style="background:#f59e0b; color:#000; margin-bottom:12px;" onclick="sendNoticeCommand()">نشر الإعلان فوراً 📢</button>
@@ -78,8 +79,9 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     </div>
   </div>
 
+  <!-- التحديث الإجباري (APK) -->
   <div class="admin-card" style="border-color: #0ea5e9; background: rgba(14, 165, 233, 0.05);">
-    <h3 style="font-size:14px; font-weight:900; color:#0ea5e9; margin-bottom:8px;"><i class="fa-solid fa-cloud-arrow-down"></i> إرسال تحديث إجباري للتطبيق</h3>
+    <h3 style="font-size:14px; font-weight:900; color:#0ea5e9; margin-bottom:8px;"><i class="fa-solid fa-cloud-arrow-down"></i> التحديث الإجباري للتطبيق</h3>
     <input type="text" id="apkDownloadLink" class="admin-input" placeholder="رابط الـ APK (مثال: Mediafire link)">
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
       <button class="btn-action" style="background:#0ea5e9; color:#fff;" onclick="sendForceUpdate(true)">إرسال التحديث 🚀</button>
@@ -87,8 +89,9 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     </div>
   </div>
 
+  <!-- تحديث الواجهة (بدون مسح بيانات العميل) -->
   <div class="admin-card" style="border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05);">
-    <h3 style="font-size:14px; font-weight:900; color:#8b5cf6; margin-bottom:8px;"><i class="fa-solid fa-rotate"></i> تحديث الواجهة (بدون مسح بيانات العميل)</h3>
+    <h3 style="font-size:14px; font-weight:900; color:#8b5cf6; margin-bottom:8px;"><i class="fa-solid fa-rotate"></i> تحديث الواجهة (للعملاء)</h3>
     <button class="btn-action" style="background:#8b5cf6; color:#fff;" onclick="forceAppRefresh()">تحديث واجهة العملاء الآن 🔄</button>
   </div>
 </div>
@@ -114,20 +117,38 @@ function showDashboard() {
   document.getElementById('adminLoginGate').style.display = 'none';
   document.getElementById('adminMainContent').style.display = 'block';
 }
-function adminLogout() { sessionStorage.removeItem('fly_admin_session'); location.reload(); }
 
-function sendPayloadToApp(payload, successMsg) {
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", `https://ntfy.sh/${TOPIC}?_t=${Date.now()}`, true);
-  xhr.onload = function() {
-    if (xhr.status >= 200 && xhr.status < 300) alert(successMsg);
-    else alert("⚠️ تم الإرسال.");
-  };
-  xhr.onerror = function() { alert("❌ فشل الإرسال! تأكد من الإنترنت."); };
-  xhr.send(JSON.stringify(payload));
+function adminLogout() {
+  sessionStorage.removeItem('fly_admin_session');
+  location.reload();
 }
 
-// دالة إرسال الإشعار المباشر للعميل
+// دالة الإرسال المزدوجة (لا يتم استخدام cache buster في الـ POST أبداً)
+function sendPayloadToApp(payload, successMsg) {
+  const url = `https://ntfy.sh/${TOPIC}`; // الرابط الصافي الأصلي بدون أي زيادات
+  
+  // المحاولة الأولى: باستخدام تقنية Fetch الحديثة
+  fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if(res.ok) alert(successMsg);
+    else throw new Error("Fetch failed");
+  })
+  .catch(err => {
+    // المحاولة الثانية: لو الـ WebView حظر الـ Fetch، هيشتغل بالـ XMLHttpRequest غصب عنه
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 300) alert(successMsg);
+      else alert("⚠️ تم الإرسال (تأكد من استجابة تطبيق العميل).");
+    };
+    xhr.onerror = function() { alert("❌ فشل الإرسال نهائياً! تأكد من اتصالك بالإنترنت."); };
+    xhr.send(JSON.stringify(payload));
+  });
+}
+
 function sendDirectAppNotification() {
   const uid = document.getElementById('notifyClientUid').value.trim();
   const msg = document.getElementById('notifyMsgSelect').value;
@@ -135,7 +156,7 @@ function sendDirectAppNotification() {
   
   const payload = { action: "direct_msg", target_uid: uid, msg: msg, time: Date.now() };
   sendPayloadToApp(payload, "✅ تم إرسال الإشعار لتطبيق العميل بنجاح!");
-  document.getElementById('notifyClientUid').value = ""; // مسح الكود بعد الإرسال
+  document.getElementById('notifyClientUid').value = "";
 }
 
 function sendNoticeCommand() {
@@ -143,25 +164,32 @@ function sendNoticeCommand() {
   currentState.time = Date.now();
   sendPayloadToApp(currentState, "✅ تم نشر الإعلان بنجاح!");
 }
+
 function sendMaintenanceCommand(status) {
-  currentState.service = status; currentState.time = Date.now();
+  currentState.service = status;
+  currentState.time = Date.now();
   sendPayloadToApp(currentState, status === 'closed' ? "⛔ تم إغلاق التطبيق للصيانة!" : "🟢 تم فتح التطبيق للعملاء.");
 }
+
 function sendForceUpdate(isLocked) {
   currentState.update_lock = isLocked;
   if(isLocked) currentState.apk_link = document.getElementById('apkDownloadLink').value.trim();
   currentState.time = Date.now();
   sendPayloadToApp(currentState, isLocked ? "🚀 تم إرسال أمر التحديث الإجباري!" : "🔓 تم إلغاء شاشة التحديث.");
 }
+
 function forceAppRefresh() {
-  if(!confirm("سيتم عمل ريفرش لواجهة العملاء، متأكد؟")) return;
-  sendPayloadToApp({ force_reload_id: Date.now() }, "✅ تم أمر التحديث للواجهة!");
+  if(!confirm("سيتم عمل ريفرش لواجهة العملاء (مع الحفاظ على اشتراكاتهم)، متأكد؟")) return;
+  const payload = { force_reload_id: Date.now() };
+  sendPayloadToApp(payload, "✅ تم إرسال أمر التحديث للواجهة!");
 }
+
 function activateClientSub() {
   const uid = document.getElementById('targetClientUid').value.trim();
   const days = parseInt(document.getElementById('subDaysSelect').value);
   if(!uid) return alert("⚠️ يرجى إدخال كود العميل!");
-  sendPayloadToApp({ action: "activate_sub", target_uid: uid, days: days, time: Date.now() }, "✅ تم إرسال أمر التفعيل بنجاح!");
+  const payload = { action: "activate_sub", target_uid: uid, days: days, time: Date.now() };
+  sendPayloadToApp(payload, "✅ تم إرسال أمر التفعيل بنجاح!");
   document.getElementById('targetClientUid').value = ""; 
 }
 </script>
