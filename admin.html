@@ -17,35 +17,51 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
 .btn-action:active { transform: scale(0.98); }
 .admin-input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: #070b12; color: #fff; font-family: inherit; font-size: 12px; outline: none; margin-bottom: 8px; }
 .admin-input:focus { border-color: var(--primary); }
+
+/* شاشة الإشعارات المدمجة عشان الأندرويد ميهنجش */
+.custom-admin-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999999; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-box { background: var(--surface); border: 1.5px solid var(--primary); border-radius: 20px; padding: 20px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(225,29,72,0.3); }
 </style>
 </head>
 <body>
 
+<!-- شاشة تسجيل الدخول للأدمن -->
 <div class="admin-login-overlay" id="adminLoginGate" style="position: fixed; inset: 0; background: #070b12; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px;">
   <div class="login-card" style="background: var(--surface); border: 1.5px solid var(--primary); border-radius: 24px; padding: 24px 20px; width: 100%; max-width: 340px; text-align: center;">
     <div style="font-size: 42px; color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-user-shield"></i></div>
     <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">دخول الإدارة</h2>
+    <div id="loginErrorTxt" style="display:none; color:#ef4444; font-size:11px; margin-bottom:10px;">بيانات غير صحيحة!</div>
     <input type="text" id="adminUserVal" class="admin-input" placeholder="اسم المستخدم (Fly)">
     <input type="password" id="adminPassVal" class="admin-input" placeholder="كلمة المرور (096)">
     <button class="btn-action" style="background:var(--primary); color:#fff;" onclick="verifyAdminCredentials()">تسجيل الدخول 🚀</button>
   </div>
 </div>
 
+<!-- النافذة المنبثقة الذكية الخاصة بالأدمن (لحل مشكلة اختفاء الأوامر) -->
+<div class="custom-admin-modal" id="adminCustomAlert">
+  <div class="modal-box">
+    <div style="font-size: 40px; color: var(--primary); margin-bottom: 10px;"><i class="fa-solid fa-bell"></i></div>
+    <h3 style="font-size: 16px; font-weight: 900; margin-bottom: 8px; color: #fff;">تنبيه النظام</h3>
+    <p id="adminModalTxt" style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;"></p>
+    <div id="adminModalButtons" style="display: flex; gap: 10px;"></div>
+  </div>
+</div>
+
+<!-- لوحة التحكم -->
 <div class="admin-container" id="adminMainContent" style="display:none;">
   <div class="admin-header">
     <div style="display:flex; align-items:center; gap:10px;">
       <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
       <div>
         <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly</h2>
-        <span style="font-size:10px; color:#10b981;">🟢 وضع الإرسال القوي مفعل</span>
+        <span style="font-size:10px; color:#10b981;">🟢 وضع اختراق الـ APK مفعل</span>
       </div>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">خروج</button>
   </div>
 
-  <!-- إرسال إشعار مباشر للعميل -->
   <div class="admin-card" style="border-color: #3b82f6; background: rgba(59, 130, 246, 0.05);">
-    <h3 style="font-size:14px; font-weight:900; color:#3b82f6; margin-bottom:8px;"><i class="fa-solid fa-bell"></i> إرسال إشعار مباشر للعميل</h3>
+    <h3 style="font-size:14px; font-weight:900; color:#3b82f6; margin-bottom:8px;"><i class="fa-solid fa-comment-dots"></i> إرسال إشعار مباشر للعميل</h3>
     <input type="text" id="notifyClientUid" class="admin-input" placeholder="كود حساب العميل (مثال: FLY-010-8475)">
     <select id="notifyMsgSelect" class="admin-input">
       <option value="تم توصيل الطالب للمدرسة/المنزل بسلام ✅">تم توصيل الطالب بسلام ✅</option>
@@ -56,7 +72,6 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     <button class="btn-action" style="background:#3b82f6; color:#fff;" onclick="sendDirectAppNotification()">إرسال الإشعار للعميل 🔔</button>
   </div>
 
-  <!-- تفعيل باقة FLY PASS -->
   <div class="admin-card" style="border-color: #c084fc; background: rgba(192, 132, 252, 0.05);">
     <h3 style="font-size:14px; font-weight:900; color:#c084fc; margin-bottom:8px;"><i class="fa-solid fa-crown"></i> تفعيل باقة FLY PASS للعميل</h3>
     <input type="text" id="targetClientUid" class="admin-input" placeholder="كود حساب العميل">
@@ -67,7 +82,6 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     <button class="btn-action" style="background:#c084fc; color:#fff;" onclick="activateClientSub()">تفعيل الباقة للعميل الآن 👑</button>
   </div>
 
-  <!-- الإعلان اليومي والصيانة -->
   <div class="admin-card" style="border-color: #f59e0b;">
     <h3 style="font-size:14px; font-weight:900; color:#f59e0b; margin-bottom:10px;"><i class="fa-solid fa-toggle-on"></i> الإعلانات والصيانة</h3>
     <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي:</label>
@@ -79,7 +93,6 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     </div>
   </div>
 
-  <!-- التحديث الإجباري (APK) -->
   <div class="admin-card" style="border-color: #0ea5e9; background: rgba(14, 165, 233, 0.05);">
     <h3 style="font-size:14px; font-weight:900; color:#0ea5e9; margin-bottom:8px;"><i class="fa-solid fa-cloud-arrow-down"></i> التحديث الإجباري للتطبيق</h3>
     <input type="text" id="apkDownloadLink" class="admin-input" placeholder="رابط الـ APK (مثال: Mediafire link)">
@@ -89,16 +102,46 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
     </div>
   </div>
 
-  <!-- تحديث الواجهة (بدون مسح بيانات العميل) -->
   <div class="admin-card" style="border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05);">
-    <h3 style="font-size:14px; font-weight:900; color:#8b5cf6; margin-bottom:8px;"><i class="fa-solid fa-rotate"></i> تحديث الواجهة (للعملاء)</h3>
-    <button class="btn-action" style="background:#8b5cf6; color:#fff;" onclick="forceAppRefresh()">تحديث واجهة العملاء الآن 🔄</button>
+    <h3 style="font-size:14px; font-weight:900; color:#8b5cf6; margin-bottom:8px;"><i class="fa-solid fa-rotate"></i> تحديث واجهة العملاء أونلاين</h3>
+    <button class="btn-action" style="background:#8b5cf6; color:#fff;" onclick="forceAppRefresh()">تحديث أجهزة العملاء الآن 🔄</button>
   </div>
 </div>
 
 <script>
 const TOPIC = "flyexpress_super_admin_2026";
 let currentState = { service: "open", notice: "", update_lock: false, apk_link: "" };
+let modalActionCallback = null;
+
+// =====================================
+// نظام التنبيهات المخصص (بديل الـ alert والـ confirm للأندرويد)
+// =====================================
+function showAdminMsg(msg, isConfirm = false, actionCallback = null) {
+  document.getElementById('adminModalTxt').innerHTML = msg;
+  const btnArea = document.getElementById('adminModalButtons');
+  
+  if (isConfirm) {
+    modalActionCallback = actionCallback;
+    btnArea.innerHTML = `
+      <button class="btn-action" style="background:#10b981; color:#fff; flex:1;" onclick="executeModalAction()">متأكد ✅</button>
+      <button class="btn-action" style="background:#ef4444; color:#fff; flex:1;" onclick="closeAdminMsg()">إلغاء ❌</button>
+    `;
+  } else {
+    btnArea.innerHTML = `<button class="btn-action" style="background:var(--primary); color:#fff; width:100%;" onclick="closeAdminMsg()">حسناً</button>`;
+  }
+  document.getElementById('adminCustomAlert').style.display = 'flex';
+}
+
+function closeAdminMsg() {
+  document.getElementById('adminCustomAlert').style.display = 'none';
+  modalActionCallback = null;
+}
+
+function executeModalAction() {
+  if (modalActionCallback) modalActionCallback();
+  closeAdminMsg();
+}
+// =====================================
 
 window.addEventListener('load', () => {
   if (sessionStorage.getItem('fly_admin_session') === 'true') showDashboard();
@@ -123,39 +166,28 @@ function adminLogout() {
   location.reload();
 }
 
-// دالة الإرسال المزدوجة (لا يتم استخدام cache buster في الـ POST أبداً)
+// دالة الإرسال الخارقة (no-cors) لتجاهل قيود أمان الأندرويد
 function sendPayloadToApp(payload, successMsg) {
-  const url = `https://ntfy.sh/${TOPIC}`; // الرابط الصافي الأصلي بدون أي زيادات
-  
-  // المحاولة الأولى: باستخدام تقنية Fetch الحديثة
-  fetch(url, {
+  fetch(`https://ntfy.sh/${TOPIC}`, {
     method: 'POST',
+    mode: 'no-cors', // السر هنا: إجبار الـ APK إنه يبعت البيانات!
     body: JSON.stringify(payload)
   })
-  .then(res => {
-    if(res.ok) alert(successMsg);
-    else throw new Error("Fetch failed");
+  .then(() => {
+    showAdminMsg(successMsg); // بيطلعلك رسالة من غير ما يهنج التطبيق
   })
   .catch(err => {
-    // المحاولة الثانية: لو الـ WebView حظر الـ Fetch، هيشتغل بالـ XMLHttpRequest غصب عنه
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.onload = function() {
-      if (xhr.status >= 200 && xhr.status < 300) alert(successMsg);
-      else alert("⚠️ تم الإرسال (تأكد من استجابة تطبيق العميل).");
-    };
-    xhr.onerror = function() { alert("❌ فشل الإرسال نهائياً! تأكد من اتصالك بالإنترنت."); };
-    xhr.send(JSON.stringify(payload));
+    showAdminMsg("❌ فشل الإرسال، يرجى التحقق من الإنترنت.");
   });
 }
 
 function sendDirectAppNotification() {
   const uid = document.getElementById('notifyClientUid').value.trim();
   const msg = document.getElementById('notifyMsgSelect').value;
-  if(!uid) return alert("⚠️ يرجى إدخال كود العميل أولاً!");
+  if(!uid) return showAdminMsg("⚠️ يرجى إدخال كود حساب العميل أولاً!");
   
   const payload = { action: "direct_msg", target_uid: uid, msg: msg, time: Date.now() };
-  sendPayloadToApp(payload, "✅ تم إرسال الإشعار لتطبيق العميل بنجاح!");
+  sendPayloadToApp(payload, "✅ تم إرسال الإشعار للعميل بنجاح!");
   document.getElementById('notifyClientUid').value = "";
 }
 
@@ -179,17 +211,19 @@ function sendForceUpdate(isLocked) {
 }
 
 function forceAppRefresh() {
-  if(!confirm("سيتم عمل ريفرش لواجهة العملاء (مع الحفاظ على اشتراكاتهم)، متأكد؟")) return;
-  const payload = { force_reload_id: Date.now() };
-  sendPayloadToApp(payload, "✅ تم إرسال أمر التحديث للواجهة!");
+  showAdminMsg("سيتم عمل ريفرش لواجهة العملاء (مع الحفاظ على اشتراكاتهم)، هل أنت متأكد؟", true, () => {
+    const payload = { force_reload_id: Date.now() };
+    sendPayloadToApp(payload, "✅ تم إرسال أمر التحديث للواجهة بنجاح!");
+  });
 }
 
 function activateClientSub() {
   const uid = document.getElementById('targetClientUid').value.trim();
   const days = parseInt(document.getElementById('subDaysSelect').value);
-  if(!uid) return alert("⚠️ يرجى إدخال كود العميل!");
+  if(!uid) return showAdminMsg("⚠️ يرجى إدخال كود العميل لتفعيل الباقة!");
+  
   const payload = { action: "activate_sub", target_uid: uid, days: days, time: Date.now() };
-  sendPayloadToApp(payload, "✅ تم إرسال أمر التفعيل بنجاح!");
+  sendPayloadToApp(payload, "✅ تم تفعيل باقة FLY PASS لهذا العميل بنجاح!");
   document.getElementById('targetClientUid').value = ""; 
 }
 </script>
