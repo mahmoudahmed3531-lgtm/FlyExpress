@@ -132,6 +132,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 <div class="mobile-frame">
 
+  <!-- إشعار حي للأوردرات -->
   <div class="live-toast-notification" id="liveOrderToast">
     <i class="fa-solid fa-motorcycle" style="color:#10b981; font-size:16px;"></i>
     <span id="liveOrderToastTxt">كابتن أحمد استلم طرد متجه لقرية بركة 📦</span>
@@ -150,7 +151,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
   <div class="app-custom-modal-overlay" id="appCustomModal">
     <div class="app-custom-modal-card">
       <div id="customModalIcon" style="font-size:40px; color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-bell"></i></div>
-      <h3 style="font-size:16px; font-weight:900; margin-bottom:6px;" id="customModalTitle">إشعار من الإدارة</h3>
+      <h3 style="font-size:16px; font-weight:900; margin-bottom:6px;" id="customModalTitle">تنبيه</h3>
       <p style="font-size:13px; color:#cbd5e1; margin-bottom:18px;" id="customModalMessage">نص الرسالة</p>
       <button class="primary-action-btn" onclick="closeAppModal()">حسناً فهمت ✅</button>
     </div>
@@ -201,7 +202,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
   </div>
 
   <header class="top-nav-bar">
-    <div class="location-selector" onclick="alert('الموقع محدد تلقائياً: نجع حمادي وجميع القرى المجاورة 📍')">
+    <div class="location-selector" onclick="showAppModal('الموقع الحالي', 'الموقع محدد تلقائياً: نجع حمادي وجميع القرى المجاورة 📍')">
       <i class="fa-solid fa-location-dot loc-icon"></i>
       <div>
         <div class="loc-text">موقعك الحالي</div>
@@ -309,6 +310,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🛍️ خدمة "هاتلي أي حاجة"</h3></div>
     <div class="ui-card">
       <textarea id="bringme_text" class="custom-field" rows="3" placeholder="مثال: شاحن Type-C سريع..."></textarea>
+      <input type="text" id="bringme_store_addr" class="custom-field" placeholder="اسم المحل أو المكان المطلوب الشراء منه">
       <input type="text" id="bringme_user_addr" class="custom-field" placeholder="عنوان التوصيل في نجع حمادي بالتفصيل">
       <button class="primary-action-btn" style="background:#ec4899;" onclick="submitBringMeOrderAction()">إرسال الطلب للكابتن فوراً 🛵</button>
     </div>
@@ -336,7 +338,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
         <div><span style="font-size:11px; color:#94a3b8;">رصيد المحفظة</span><h3 style="font-size:26px; font-weight:900; color:#10b981;"><span id="flyWalletCash">0</span> ج.م</h3></div>
         <div><span style="font-size:11px; color:#94a3b8;">نقاط المكافآت ⭐</span><h3 style="font-size:26px; font-weight:900; color:#f59e0b;"><span id="flyWalletPoints">0</span> نقطة</h3></div>
       </div>
-      <button class="primary-action-btn" style="padding:10px; font-size:12px; background:#059669;" onclick="alert('استبدال النقاط متاح قريباً')">استبدال النقاط بكاش باك 🔄</button>
+      <button class="primary-action-btn" style="padding:10px; font-size:12px; background:#059669;" onclick="showAppModal('قريباً', 'ميزة استبدال النقاط ستكون متاحة في التحديث القادم!')">استبدال النقاط بكاش باك 🔄</button>
     </div>
   </section>
 
@@ -347,7 +349,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
     <div class="ui-card" style="display:flex; align-items:center; justify-content:space-between;">
       <div><h4 style="font-size:14px; font-weight:900;">محمد أحمد (كابتن FLY)</h4><div style="font-size:11px; color:#f59e0b;">⭐ 4.9 • سكوتر 2563</div></div>
-      <button class="primary-action-btn" style="width:auto; padding:8px 16px; background:#25d366;" onclick="window.open('https://wa.me/201017908076','_blank')"><i class="fa-brands fa-whatsapp"></i> محادثة</button>
+      <button class="primary-action-btn" style="width:auto; padding:8px 16px; background:#25d366;" onclick="sendDirectWhatsApp('محتاج أتابع الطلب بتاعي')"><i class="fa-brands fa-whatsapp"></i> محادثة</button>
     </div>
   </section>
 
@@ -426,7 +428,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">قم بتحويل مبلغ <strong style="color:#10b981; font-size:14px;">99 ج.م</strong> لتفعيل الباقة إلى الرقم التالي:</p>
       <div style="background:#090d16; border:1px dashed #e11d48; padding:14px; border-radius:12px; text-align:center; margin-bottom:16px;">
         <h2 style="font-size:26px; font-weight:900; color:#fff;" id="vfCashNumber">01017908076</h2>
-        <button style="background:transparent; border:0; color:#94a3b8; font-size:11px; margin-top:8px; cursor:pointer;" onclick="alert('انسخ الرقم يدوياً 01017908076')"><i class="fa-solid fa-copy"></i> نسخ الرقم</button>
+        <button style="background:transparent; border:0; color:#94a3b8; font-size:11px; margin-top:8px; cursor:pointer;" onclick="copyVFNumber()"><i class="fa-solid fa-copy"></i> نسخ الرقم</button>
       </div>
       <div style="background:rgba(225,29,72,0.1); border-right:3px solid #e11d48; padding:10px; margin-bottom:14px; border-radius:4px;">
         <p style="font-size:10px; color:#fff; margin-bottom:4px;">كود حسابك السري (للتفعيل الآمن):</p>
@@ -437,6 +439,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
 
+  <!-- الحساب العائلي الذكي -->
   <section id="view-family" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">👨‍👩‍👧 الحساب العائلي</h3></div>
     <div class="ui-card" style="border-color:#0284c7; background:rgba(2, 132, 199, 0.05);">
@@ -456,7 +459,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     <div class="ui-card">
       <h4 style="font-size:14px; font-weight:900; margin-bottom:6px;">لوحة التاجر</h4>
       <p style="font-size:11px; color:var(--text-sub); margin-bottom:14px;">استقبل طلبات الزبائن، جهز الأوردر، واستدعِ كابتن FLY فوراً.</p>
-      <button class="primary-action-btn" style="background:#10b981;" onclick="alert('تم إرسال إشعار للكابتن')">تم تجهيز الطلب 🛵</button>
+      <button class="primary-action-btn" style="background:#10b981;" onclick="sendDirectWhatsApp('🚨 تنبيه من التاجر: تم تجهيز الطلب، يرجى إرسال كابتن FLY للاستلام فوراً! 🛵')">تم تجهيز الطلب 🛵</button>
     </div>
   </section>
 
@@ -491,7 +494,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
           <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('family');"><i class="fa-solid fa-people-roof"></i> الحساب العائلي</div>
           <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('prices');"><i class="fa-solid fa-tags"></i> قائمة الأسعار الحية</div>
           <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('merchant');"><i class="fa-solid fa-store"></i> بوابة التجار والمحلات</div>
-          <div class="drawer-item" onclick="toggleDrawer(false); window.open('https://wa.me/201017908076','_blank');"><i class="fa-solid fa-headset"></i> الدعم والمساعدة</div>
+          <div class="drawer-item" onclick="toggleDrawer(false); sendDirectWhatsApp('طلب مساعدة من الدعم الفني');"><i class="fa-solid fa-headset"></i> الدعم والمساعدة</div>
         </div>
       </div>
       <button onclick="confirmAppLogout()" style="width:100%; padding:12px; background:rgba(239,68,68,0.15); border:1px solid #ef4444; color:#ef4444; border-radius:var(--radius-md); font-weight:800; cursor:pointer;">تسجيل الخروج 🚪</button>
@@ -509,7 +512,13 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 <script>
 const ADMIN_PHONE = "201017908076";
-const TOPIC = "flyexpress_super_admin_2026"; 
+const TOPIC = "flyexpress_control_naga_v99"; 
+
+// حل مشكلة الواتساب في الـ APK (باستخدام الرابط المباشر wa.me)
+function sendDirectWhatsApp(text) {
+  const url = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(text)}`;
+  window.location.href = url;
+}
 
 const liveNotifications = [
   "كابتن أحمد استلم طرد متجه لقرية بركة 📦",
@@ -550,7 +559,7 @@ function closeAppModal() { document.getElementById('appCustomModal').classList.r
 
 function confirmSubscriptionPayment() {
   const senderPhone = document.getElementById('senderPhoneNumber').value.trim();
-  if (!senderPhone || senderPhone.length < 10) return alert("يرجى كتابة رقم الموبايل الذي قمت بالتحويل منه.");
+  if (!senderPhone || senderPhone.length < 10) return showAppModal("تنبيه", "يرجى كتابة رقم الموبايل المحول منه.");
   sendDirectWhatsApp(`طلب تفعيل باقة FLY PASS 👑\nالمبلغ المحول: 99 ج.م\nمن رقم: ${senderPhone}\nكود حسابي (للتفعيل): ${getMyUid()}`);
 }
 
@@ -591,7 +600,52 @@ function saveNewFamilyMember() {
   renderFamilyMembers();
 }
 
-function sendDirectWhatsApp(text) { window.location.href = `whatsapp://send?phone=${ADMIN_PHONE}&text=${encodeURIComponent(text)}`; }
+function addStopField() {
+  const wrap = document.getElementById('multiStopInputsWrap');
+  const count = wrap.querySelectorAll('input').length;
+  const input = document.createElement('input');
+  input.type = 'text'; input.className = 'custom-field'; input.placeholder = `المحطة رقم ${count} (مثال: السوبرماركت)`;
+  wrap.appendChild(input);
+  const p = parseInt(document.getElementById('multiStopPriceEst').textContent) + 15;
+  document.getElementById('multiStopPriceEst').textContent = p;
+}
+
+function confirmMultiStopRideAction() {
+  const price = document.getElementById('multiStopPriceEst').textContent;
+  sendDirectWhatsApp(`طلب مشوار متعدد المحطات 🛵⚡\nالسعر المقدر: ${price} ج`);
+}
+
+function submitBringMeOrderAction() {
+  const txt = document.getElementById('bringme_text').value.trim();
+  const userAddr = document.getElementById('bringme_user_addr').value.trim();
+  const storeAddr = document.getElementById('bringme_store_addr').value.trim();
+  if (!txt || !userAddr) return showAppModal("بيانات ناقصة", "اكتب المطلوب وعنوان التوصيل أولاً.");
+  sendDirectWhatsApp(`طلب خدمة هاتلي أي حاجة 🛍️🛵\nالمطلوب: ${txt}\nمن: ${storeAddr || 'أي محل قريب'}\nإلى: ${userAddr}`);
+}
+
+function submitSchoolOrderAction() {
+  const pickup = document.getElementById('sch_pickup_location').value.trim();
+  const school = document.getElementById('sch_school_name').value.trim();
+  const goTime = document.getElementById('sch_go_time').value;
+  const backTime = document.getElementById('sch_back_time').value;
+  if (!pickup || !school) return showAppModal("بيانات ناقصة", "أكمل عنوان البيت والمدرسة.");
+  sendDirectWhatsApp(`اشتراك توصيل طالب للمدرسة 🚌🎒\nالعنوان: ${pickup}\nالمدرسة: ${school}\nالذهاب: ${goTime} | العودة: ${backTime}`);
+}
+
+function submitPharmacyOrderAction() {
+  const d = document.getElementById('pharma_details').value.trim();
+  const a = document.getElementById('pharma_address').value.trim();
+  if (!d || !a) return showAppModal("بيانات ناقصة", "اكتب اسم العلاج وعنوان التوصيل.");
+  sendDirectWhatsApp(`طلب أدوية عاجل 🚑💊\nالطلبات: ${d}\nالعنوان: ${a}`);
+}
+
+function submitParcelOrderAction() {
+  const d = document.getElementById('ord_details').value.trim();
+  const f = document.getElementById('ord_from').value.trim();
+  const t = document.getElementById('ord_to').value.trim();
+  if (!f || !t) return showAppModal("بيانات ناقصة", "أكمل العناوين أولاً.");
+  sendDirectWhatsApp(`طلب إرسال طرد 📦🛵\nالمحتوى: ${d}\nمن: ${f}\nإلى: ${t}`);
+}
 
 function switchAuthMode(mode) {
   const isLogin = mode === 'login';
@@ -614,11 +668,7 @@ function processSignupAction() {
   
   const uid = getMyUid();
   const adminMsg = `🚨 *عميل جديد سجل في التطبيق!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`;
-  
-  fetch(`https://ntfy.sh/flyexpress_admin_notify_2026?_t=${Date.now()}`, {
-      method: 'POST',
-      body: adminMsg
-  }).then(() => console.log('Admin notified'));
+  fetch(`https://ntfy.sh/flyexpress_admin_notify_2026?_t=${Date.now()}`, { method: 'POST', body: adminMsg });
   
   initializeUserSession();
   showAppModal("أهلاً بك! ✨", "تم تفعيل حسابك في Fly Express بنجاح!");
@@ -632,11 +682,7 @@ function handleGoogleSignInDirect() {
   
   const uid = getMyUid();
   const adminMsg = `🚨 *عميل جديد سجل (عبر Google)!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`;
-  
-  fetch(`https://ntfy.sh/flyexpress_admin_notify_2026?_t=${Date.now()}`, {
-      method: 'POST',
-      body: adminMsg
-  }).then(() => console.log('Admin notified'));
+  fetch(`https://ntfy.sh/flyexpress_admin_notify_2026?_t=${Date.now()}`, { method: 'POST', body: adminMsg });
 
   initializeUserSession();
   showAppModal("تم الدخول بنجاح! 🚀", `أهلاً بك يا ${name} بحساب Google!`);
@@ -646,7 +692,7 @@ function initializeUserSession() {
   document.getElementById('authGateScreen').style.display = 'none';
   document.getElementById('drawerUserName').textContent = localStorage.getItem('fly_user_name') || 'عميل Fly';
   document.getElementById('displayUserUid').textContent = getMyUid();
-  document.getElementById('drawerUidTxt').textContent = getMyUid(); // التأكد من كتابة الكود في القائمة الجانبية
+  document.getElementById('drawerUidTxt').textContent = getMyUid();
   checkFlyPassStatus(); 
 }
 
@@ -667,12 +713,10 @@ let lastPolledTime = 0;
 function applyMasterData(data) {
   if (!data) return;
 
-  // 1. الإشعار المباشر للعميل المخصص من الأدمن
   if (data.action === "direct_msg" && data.target_uid === getMyUid()) {
      showAppModal("🔔 إشعار من الإدارة", data.msg, "fa-bell");
   }
 
-  // 2. تفعيل الاشتراك
   if (data.action === "activate_sub" && data.target_uid === getMyUid()) {
     const currentExpire = localStorage.getItem("fly_pass_expire");
     const baseTime = (currentExpire && parseInt(currentExpire) > Date.now()) ? parseInt(currentExpire) : Date.now();
@@ -681,14 +725,12 @@ function applyMasterData(data) {
     showAppModal("تهانينا! 🎉", `تم تفعيل باقة FLY PASS بنجاح لمدة ${data.days} يوم!`);
   }
 
-  // 3. تحديث الكاش
   if (data.force_reload_id && localStorage.getItem('fly_reload_id') != data.force_reload_id) {
     localStorage.setItem('fly_reload_id', data.force_reload_id);
     window.location.replace(window.location.pathname + "?v=" + data.force_reload_id);
     return; 
   }
 
-  // 4. التحديث الإجباري
   if (data.update_lock === true && data.apk_link) {
     document.getElementById("forceUpdateModal").style.display = "flex";
     document.getElementById("btnDownloadApk").onclick = () => window.open(data.apk_link, '_blank');
@@ -696,7 +738,6 @@ function applyMasterData(data) {
     document.getElementById("forceUpdateModal").style.display = "none";
   }
 
-  // 5. الإعلان والصيانة
   if (data.notice && document.getElementById("dailyPromoTickerTxt")) {
     document.getElementById("dailyPromoTickerTxt").textContent = data.notice;
   }
