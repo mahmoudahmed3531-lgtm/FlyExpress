@@ -37,7 +37,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
       <i class="fa-solid fa-tower-broadcast" style="font-size:22px; color:var(--primary);"></i>
       <div>
         <h2 style="font-size:16px; font-weight:900;">لوحة تحكم Fly</h2>
-        <span style="font-size:10px; color:#10b981;">🟢 القناة المباشرة شغالة 100%</span>
+        <span style="font-size:10px; color:#10b981;">🟢 وضع الإرسال القوي مفعل</span>
       </div>
     </div>
     <button onclick="adminLogout()" style="background:transparent; border:0; color:#ef4444; font-size:12px; font-weight:800; cursor:pointer;">خروج</button>
@@ -51,45 +51,42 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding: 16px;
       <option value="30">اشتراك شهر كامل (30 يوم)</option>
       <option value="7">فترة تجريبية (7 أيام)</option>
     </select>
-    <button class="btn-action" style="background:#c084fc; color:#fff;" onclick="activateClientSub()">
-      تفعيل الباقة للعميل الآن 👑
-    </button>
+    <button class="btn-action" style="background:#c084fc; color:#fff;" onclick="activateClientSub()">تفعيل الباقة للعميل الآن 👑</button>
   </div>
 
   <!-- حالة التطبيق والإعلانات -->
   <div class="admin-card" style="border-color: #f59e0b;">
-    <h3 style="font-size:14px; font-weight:900; color:#f59e0b; margin-bottom:10px;"><i class="fa-solid fa-toggle-on"></i> حالة التطبيق للعملاء</h3>
+    <h3 style="font-size:14px; font-weight:900; color:#f59e0b; margin-bottom:10px;"><i class="fa-solid fa-toggle-on"></i> حالة التطبيق للإعلانات</h3>
     <select id="appStatusSelect" class="admin-input" style="width:100%;">
       <option value="open">🟢 شغال ومستعد للطلبات</option>
       <option value="closed">🔴 مغلق مؤقتاً / صيانة</option>
     </select>
     <label style="font-size:11px; color:var(--text-sub);">شريط الإعلان اليومي:</label>
     <input type="text" id="dailyNoticeInput" class="admin-input" value="🔥 عرض اليوم: توصيل الطلاب بـ 5 جنيه فقط لفترة محدودة!">
-    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="sendCommand()">
-      نشر العرض والحالة فوراً 📢
-    </button>
+    <button class="btn-action" style="background:#f59e0b; color:#000;" onclick="sendCommand()">نشر العرض والحالة فوراً 📢</button>
   </div>
 
-  <!-- قفل التطبيق -->
+  <!-- القسم الجديد: إرسال تحديث إجباري برابط جديد -->
   <div class="admin-card" style="border-color: #e11d48; background: rgba(225, 29, 72, 0.05);">
-    <h3 style="font-size:14px; font-weight:900; color:var(--primary); margin-bottom:8px;"><i class="fa-solid fa-cloud-arrow-up"></i> إجبار العملاء على التحديث</h3>
+    <h3 style="font-size:14px; font-weight:900; color:var(--primary); margin-bottom:8px;"><i class="fa-solid fa-cloud-arrow-down"></i> إرسال تحديث إجباري للتطبيق</h3>
+    <p style="font-size:10px; color:var(--text-sub); margin-bottom:10px;">ضع رابط الـ APK الجديد هنا، وسيتم إغلاق التطبيق عند جميع العملاء وإجبارهم على التحميل.</p>
+    <input type="text" id="apkDownloadLink" class="admin-input" placeholder="رابط الـ APK (مثال: Mediafire link)">
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="toggleLock(true)">قفل التطبيق 🔒</button>
-      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="toggleLock(false)">فتح التطبيق 🔓</button>
+      <button class="btn-action" style="background:#ef4444; color:#fff;" onclick="sendForceUpdate(true)">إرسال التحديث 🚀</button>
+      <button class="btn-action" style="background:#10b981; color:#fff;" onclick="sendForceUpdate(false)">إلغاء التحديث (فتح التطبيق) 🔓</button>
     </div>
   </div>
 
-  <!-- تحديث الواجهة ومسح الكاش -->
   <div class="admin-card" style="border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05);">
     <h3 style="font-size:14px; font-weight:900; color:#8b5cf6; margin-bottom:8px;"><i class="fa-solid fa-rotate"></i> تحديث الواجهة (مسح الكاش)</h3>
-    <button class="btn-action" style="background:#8b5cf6; color:#fff;" onclick="forceAppRefresh()">تحديث تطبيق العملاء الآن 🔄</button>
+    <button class="btn-action" style="background:#8b5cf6; color:#fff;" onclick="forceAppRefresh()">تحديث واجهة العملاء الآن 🔄</button>
   </div>
 </div>
 
 <script>
-// رجعنا للقناة الأصلية المضمونة بتاعتك!
-const LIVE_CHANNEL = "https://ntfy.sh/flyexpress_super_admin_2026";
-let isLocked = false;
+const TOPIC = "flyexpress_control_naga_v99";
+let isUpdateLocked = false;
+let currentApkLink = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file"; // رابط افتراضي
 
 window.addEventListener('load', () => {
   if (sessionStorage.getItem('fly_admin_session') === 'true') showDashboard();
@@ -114,42 +111,52 @@ function adminLogout() {
   location.reload();
 }
 
-async function sendPayload(payload, successMsg) {
-  try {
-    const res = await fetch(LIVE_CHANNEL, { method: "POST", body: JSON.stringify(payload) });
-    if(res.ok) alert(successMsg);
-    else alert("❌ فشل الإرسال");
-  } catch(e) { alert("❌ خطأ بالشبكة، تأكد من الإنترنت"); }
+function sendPayloadToApp(payload, successMsg) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", `https://ntfy.sh/${TOPIC}?_t=${Date.now()}`, true);
+  xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) alert(successMsg);
+    else alert("⚠️ تم الإرسال.");
+  };
+  xhr.onerror = function() { alert("❌ فشل الإرسال! تأكد من الإنترنت."); };
+  xhr.send(JSON.stringify(payload));
 }
 
 function sendCommand() {
   const payload = {
     service: document.getElementById('appStatusSelect').value,
     notice: document.getElementById('dailyNoticeInput').value.trim(),
-    lock: isLocked,
-    t: Date.now()
+    time: Date.now()
   };
   localStorage.setItem("fly_admin_cmd", JSON.stringify(payload));
-  sendPayload(payload, "✅ تم النشر وتطبيق الأوامر لحظياً!");
+  sendPayloadToApp(payload, "✅ تم النشر والتحديث لجميع العملاء بنجاح!");
 }
 
-function toggleLock(state) { 
-  isLocked = state; 
-  sendCommand(); 
+function sendForceUpdate(lockState) {
+  isUpdateLocked = lockState;
+  const linkInput = document.getElementById('apkDownloadLink').value.trim();
+  if (lockState && linkInput) currentApkLink = linkInput;
+  
+  const payload = {
+    update_lock: isUpdateLocked,
+    apk_link: currentApkLink,
+    time: Date.now()
+  };
+  sendPayloadToApp(payload, lockState ? "✅ تم إرسال أمر التحديث الإجباري وقفل التطبيق!" : "✅ تم إلغاء التحديث وفتح التطبيق للعملاء.");
 }
 
 function forceAppRefresh() {
-  if(!confirm("سيتم تحديث التطبيق ومسح الكاش عند جميع العملاء الآن، هل أنت متأكد؟")) return;
+  if(!confirm("سيتم تحديث التطبيق ومسح الكاش، هل أنت متأكد؟")) return;
   const payload = { force_reload_id: Date.now() };
-  sendPayload(payload, "✅ تم إرسال أمر التحديث الإجباري لجميع العملاء!");
+  sendPayloadToApp(payload, "✅ تم أمر التحديث الإجباري للكاش!");
 }
 
 function activateClientSub() {
   const uid = document.getElementById('targetClientUid').value.trim();
   const days = parseInt(document.getElementById('subDaysSelect').value);
-  if(!uid) return alert("⚠️ يرجى إدخال كود العميل!");
-  const payload = { action: "activate_sub", target_uid: uid, days: days, t: Date.now() };
-  sendPayload(payload, "✅ تم التفعيل بنجاح! سيتم فتح الاشتراك في جهاز العميل فوراً.");
+  if(!uid) return alert("⚠️ يرجى إدخال كود العميل المرفق في رسالة الواتساب!");
+  const payload = { action: "activate_sub", target_uid: uid, days: days, time: Date.now() };
+  sendPayloadToApp(payload, "✅ تم إرسال أمر التفعيل بنجاح!");
   document.getElementById('targetClientUid').value = ""; 
 }
 </script>
