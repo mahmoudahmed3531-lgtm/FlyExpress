@@ -25,7 +25,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-input, textarea { user-select: auto; outline: none; }
+input, textarea, select { user-select: auto; outline: none; }
 body { background-color: #030712; display: flex; justify-content: center; min-height: 100vh; color: var(--text-main); }
 
 .mobile-frame {
@@ -55,14 +55,16 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 .search-wrapper { padding: 10px 16px; background: transparent; }
 .search-bar { background: rgba(15, 23, 42, 0.8); border-radius: 14px; display: flex; align-items: center; padding: 10px 14px; gap: 10px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+.search-bar:focus-within { border-color: var(--primary); }
 .search-bar input { border: 0; background: transparent; width: 100%; font-family: inherit; font-size: 13px; color: #fff; }
+.search-bar input::placeholder { color: #94a3b8; }
 
 .hero-slider-wrap { padding: 8px 16px 6px; }
 .hero-banner-card { background: linear-gradient(135deg, rgba(9,13,22,0.9) 0%, rgba(30,27,75,0.85) 60%, rgba(225,29,72,0.85) 100%); border-radius: 24px; padding: 18px; position: relative; overflow: hidden; color: #fff; min-height: 140px; display: flex; flex-direction: column; justify-content: center; border: 1px solid rgba(225,29,72,0.4); backdrop-filter: blur(8px); }
 .hero-tag { background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 20px; width: fit-content; margin-bottom: 6px; }
 .hero-banner-card img { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 88px; height: 88px; object-fit: cover; border-radius: 20px; border: 2px solid rgba(255,255,255,0.3); background: #0b0f19; }
 
-.fly-pass-card { margin: 8px 16px; background: linear-gradient(90deg, rgba(30,27,75,0.9), rgba(49,16,75,0.9)); border: 1.5px solid #a855f7; border-radius: var(--radius-lg); padding: 12px 16px; color: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; backdrop-filter: blur(8px); }
+.fly-pass-card { margin: 8px 16px; background: linear-gradient(90deg, rgba(30,27,75,0.9), rgba(49,16,75,0.9)); border: 1.5px solid #a855f7; border-radius: 18px; padding: 12px 16px; color: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; backdrop-filter: blur(8px); }
 
 .quick-services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 8px; padding: 10px 16px; margin-bottom: 12px; }
 .quick-service-item { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.15s ease; }
@@ -82,10 +84,10 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 .floating-order-btn { position: fixed; bottom: 78px; left: 50%; transform: translateX(-50%); background: var(--primary-gradient); color: #fff; padding: 12px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(225,29,72,0.6); cursor: pointer; z-index: 90; border: 1px solid rgba(255,255,255,0.25); }
 
-.ui-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; backdrop-filter: blur(12px); }
-.custom-field { width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: rgba(19, 27, 46, 0.9); font-family: inherit; font-size: 13px; margin-bottom: 10px; color: #fff; }
+.ui-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 14px; backdrop-filter: blur(12px); }
+.custom-field { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: rgba(19, 27, 46, 0.9); font-family: inherit; font-size: 13px; margin-bottom: 10px; color: #fff; }
 .custom-field:focus { border-color: var(--primary); }
-.primary-action-btn { width: 100%; background: var(--primary); color: #fff; border: 0; padding: 14px; border-radius: var(--radius-md); font-size: 14px; font-weight: 900; font-family: inherit; cursor: pointer; box-shadow: 0 6px 18px rgba(225,29,72,0.4); }
+.primary-action-btn { width: 100%; background: var(--primary); color: #fff; border: 0; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 900; font-family: inherit; cursor: pointer; box-shadow: 0 6px 18px rgba(225,29,72,0.4); }
 
 .sub-page-view { display: none; padding: 16px; }
 .sub-page-view.active { display: block; }
@@ -101,7 +103,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .drawer-sheet { width: 82%; max-width: 320px; height: 100%; background: #0b0f19; color: #fff; padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; animation: slideIn 0.25s ease-out; border-right: 1px solid var(--border); }
 @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 .drawer-links-box { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; }
-.drawer-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 700; color: #cbd5e1; cursor: pointer; text-decoration: none; }
+.drawer-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #cbd5e1; cursor: pointer; text-decoration: none; }
 .drawer-item.active { background: rgba(255,255,255,0.08); color: #fff; }
 
 .app-custom-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px; }
@@ -111,9 +113,10 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .auth-overlay { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 20px; color: #fff; overflow-y: auto; }
 .auth-card-box { position: relative; z-index: 2; width: 100%; max-width: 360px; text-align: center; }
 .auth-main-logo { width: 110px; height: 110px; border-radius: 28px; box-shadow: 0 0 35px rgba(225, 29, 72, 0.6); margin-bottom: 12px; border: 2px solid var(--primary); object-fit: cover; background: #0b0f19; }
-.auth-nav-tabs { display: flex; gap: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); padding: 4px; margin-bottom: 16px; }
+.auth-nav-tabs { display: flex; gap: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 4px; margin-bottom: 16px; }
 .auth-tab-btn { flex: 1; padding: 10px; border: 0; border-radius: 10px; background: transparent; color: #cbd5e1; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
 .auth-tab-btn.active { background: var(--primary); color: #fff; }
+.google-auth-btn { width: 100%; padding: 12px; background: #ffffff; color: #1e293b; border: 0; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px; }
 
 .force-update-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
 </style>
@@ -123,7 +126,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 <div class="mobile-frame">
 
-  <!-- شريط الإشعار الإداري الحي (RGB Marquee) -->
   <div class="admin-promo-ticker" id="dailyPromoTicker">
     <div class="marquee-container">
       <div class="marquee-text">
@@ -137,8 +139,8 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
   <div class="app-custom-modal-overlay" id="appCustomModal">
     <div class="app-custom-modal-card">
       <div id="customModalIcon" style="font-size:40px; color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-      <h3 style="font-size:16px; font-weight:900; margin-bottom:6px;" id="customModalTitle">تنبيه الصيانة ⚠️</h3>
-      <p style="font-size:13px; color:#cbd5e1; margin-bottom:18px;" id="customModalMessage">تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير وسنعود قريباً 🛵</p>
+      <h3 style="font-size:16px; font-weight:900; margin-bottom:6px;" id="customModalTitle">تنبيه</h3>
+      <p style="font-size:13px; color:#cbd5e1; margin-bottom:18px;" id="customModalMessage">نص الرسالة</p>
       <button class="primary-action-btn" onclick="closeAppModal()">حسناً فهمت ✅</button>
     </div>
   </div>
@@ -166,6 +168,11 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
         <input type="password" id="signupPasscode" class="custom-field" placeholder="كلمة المرور" required>
         <button type="submit" class="primary-action-btn">تأكيد وإنشاء الحساب ✨</button>
       </form>
+
+      <button type="button" class="google-auth-btn" onclick="handleGoogleSignInDirect()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span>متابعة باستخدام حساب Google</span>
+      </button>
     </div>
   </div>
 
@@ -173,7 +180,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     <img src="icon-512.png" style="width:110px; height:110px; border-radius:28px; margin-bottom:18px; border:2px solid var(--primary); object-fit:cover;">
     <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
     <p style="font-size:13px; color:#cbd5e1; margin-bottom:24px;">يرجى التحديث الآن لمواصلة استخدام التطبيق.</p>
-    <button onclick="window.open(currentDownloadUrl, '_blank')" class="primary-action-btn">تحديث التطبيق الآن ⚡</button>
+    <button onclick="window.open(currentDownloadUrl, '_blank')" class="primary-action-btn"><i class="fa-solid fa-cloud-arrow-down"></i> تحديث التطبيق الآن ⚡</button>
   </div>
 
   <header class="top-nav-bar">
@@ -210,7 +217,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       </div>
     </div>
 
-    <!-- كارت FLY PASS -->
     <div class="fly-pass-card" onclick="openServiceScreen('flypass')">
       <div style="display:flex; align-items:center; gap:10px;">
         <div style="font-size:24px; color:#c084fc;"><i class="fa-solid fa-crown"></i></div>
@@ -253,7 +259,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       <div class="ui-card" style="padding:12px; margin:0; cursor:pointer;" onclick="openServiceScreen('family')">
         <div style="display:flex; align-items:center; gap:8px;">
           <div style="font-size:22px; color:#0284c7;"><i class="fa-solid fa-people-roof"></i></div>
-          <div><h4 style="font-size:12px; font-weight:900;">الحساب العائلي</h4><p style="font-size:10px; color:var(--text-sub);">إضافة الأبناء والطلاب</p></div>
+          <div><h4 style="font-size:12px; font-weight:900;">الحساب العائلي</h4><p style="font-size:10px; color:var(--text-sub);">إضافة الأبناء والزوجة</p></div>
         </div>
       </div>
       <div class="ui-card" style="padding:12px; margin:0; cursor:pointer;" onclick="openServiceScreen('merchant')">
@@ -265,19 +271,12 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </main>
 
-  <!-- باقي الشاشات -->
   <section id="view-school" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🚌 توصيل الطلاب للمدارس والدروس</h3></div>
     <div class="ui-card" style="border-color:#ef4444; background:rgba(239,68,68,0.05);">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
         <span style="font-size:13px; font-weight:900; color:#ef4444;"><i class="fa-solid fa-shield-halved"></i> أمان وحماية للطلاب</span>
         <button style="background:#dc2626; color:#fff; border:0; padding:6px 12px; border-radius:20px; font-size:11px; font-weight:900; cursor:pointer;" onclick="sendDirectWhatsApp('🚨 تنبيه طوارئ عاجل من ولي الأمر بخصوص رحلة الطالب!')">🚨 زر الطوارئ</button>
-      </div>
-      <div id="studentsListContainer" style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
-        <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:10px; display:flex; justify-content:space-between; align-items:center;">
-          <div><h4 style="font-size:13px; font-weight:800;">أحمد محمود</h4><p style="font-size:10px; color:var(--text-sub);">مدرسة النجباء الرسمية • الذهاب: 7:30 ص</p></div>
-          <span style="background:#064e3b; color:#10b981; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800;">تم الركوب ✅</span>
-        </div>
       </div>
       <input type="text" id="sch_pickup_location" class="custom-field" placeholder="عنوان البيت بالتفصيل">
       <input type="text" id="sch_school_name" class="custom-field" placeholder="اسم المدرسة أو السنتر">
@@ -292,7 +291,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
   <section id="view-bringme" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🛍️ خدمة "هاتلي أي حاجة"</h3></div>
     <div class="ui-card">
-      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">اكتب اللي محتاجه بالتفصيل، والكابتن هيشتريه ويوصله لباب بيتك فوراً!</p>
       <textarea id="bringme_text" class="custom-field" rows="3" placeholder="مثال: شاحن Type-C سريع..."></textarea>
       <input type="text" id="bringme_store_addr" class="custom-field" placeholder="اسم المحل أو المكان المطلوب الشراء منه">
       <input type="text" id="bringme_user_addr" class="custom-field" placeholder="عنوان التوصيل في نجع حمادي بالتفصيل">
@@ -381,7 +379,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- باقة FLY PASS المُحدثة بالحماية -->
   <section id="view-flypass" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">👑 باقة FLY PASS</h3></div>
     
@@ -406,7 +403,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- شاشة الدفع -->
   <section id="view-payment" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="openServiceScreen('flypass')"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">💳 تفعيل الاشتراك</h3></div>
     
@@ -429,18 +425,36 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       <input type="tel" id="senderPhoneNumber" class="custom-field" placeholder="رقم الموبايل اللي حولت منه الفلوس..." style="border-color:#e11d48;">
       <button class="primary-action-btn" style="background:#10b981;" onclick="confirmSubscriptionPayment()">تأكيد الدفع وإرسال للإدارة 🚀</button>
     </div>
-
-    <div class="ui-card" style="border-color:#6366f1; opacity:0.6;">
-      <h3 style="font-size:14px; font-weight:900; margin-bottom:6px; color:#6366f1;"><i class="fa-solid fa-building-columns"></i> إنستاباي (InstaPay)</h3>
-      <p style="font-size:11px; color:var(--text-sub);">قريباً سيتم إضافة عنوان الدفع البنكي...</p>
-    </div>
   </section>
 
+  <!-- القسم الجديد والذكي: الحساب العائلي -->
   <section id="view-family" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">👨‍👩‍👧 الحساب العائلي</h3></div>
-    <div class="ui-card">
-      <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">أضف أفراد أسرتك واطلب لهم الرحلات والوجبات بضغطة زر من حسابك.</p>
-      <button class="primary-action-btn" onclick="showAppModal('إضافة فرد', 'يمكنك إضافة ابن أو زوجة لطلب المشاوير والوجبات لهم مباشرة!')">+ إضافة فرد جديد للعائلة</button>
+    
+    <div class="ui-card" style="border-color:#0284c7; background:rgba(2, 132, 199, 0.05);">
+      <h3 style="font-size:14px; font-weight:900; color:#0284c7; margin-bottom:8px;"><i class="fa-solid fa-shield-halved"></i> أمان وحرية لأسرتك</h3>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:12px;">تقدر تضيف أبنائك أو زوجتك وتطلب ليهم مشاوير أو أكل وتتابعهم من حسابك، وتدفع من محفظتك مباشرة.</p>
+      
+      <!-- قائمة الأفراد المضافين -->
+      <div id="familyMembersList" style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+        <!-- يتم ملء هذا الجزء برمجياً (JavaScript) -->
+      </div>
+
+      <button class="primary-action-btn" style="background:#0284c7;" onclick="toggleAddFamilyForm()">+ إضافة فرد جديد للعائلة</button>
+    </div>
+
+    <!-- نموذج إضافة الفرد (مخفي يظهر عند الضغط) -->
+    <div class="ui-card" id="addFamilyForm" style="display:none; border-color:#10b981;">
+      <h4 style="font-size:13px; font-weight:900; margin-bottom:10px; color:#10b981;">بيانات الفرد الجديد</h4>
+      <input type="text" id="famName" class="custom-field" placeholder="الاسم (مثال: أحمد)">
+      <input type="tel" id="famPhone" class="custom-field" placeholder="رقم الموبايل (اختياري)">
+      <select id="famRelation" class="custom-field">
+        <option value="ابن/ابنة">ابن / ابنة</option>
+        <option value="زوج/زوجة">زوج / زوجة</option>
+        <option value="أب/أم">أب / أم</option>
+        <option value="أخرى">أخرى</option>
+      </select>
+      <button class="primary-action-btn" style="background:#10b981;" onclick="saveNewFamilyMember()">حفظ الفرد الجديد ✅</button>
     </div>
   </section>
 
@@ -504,8 +518,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 const APP_LOCAL_VERSION = "1.0.0";
 const ADMIN_PHONE = "201017908076";
 let currentDownloadUrl = "https://www.mediafire.com/file/aig75l9pg1k2oup/FlyExpress-Official.apk/file";
-
-// رجعنا للقناة المضمونة الأصلية اللي كانت شغالة على التطبيق زي الطلقة
 const TOPIC = "flyexpress_super_admin_2026";
 const LIVE_CHANNEL_WS = "wss://ntfy.sh/flyexpress_super_admin_2026/ws";
 const LIVE_CHANNEL_HTTP = "https://ntfy.sh/flyexpress_super_admin_2026/json?poll=1&since=latest";
@@ -553,33 +565,84 @@ function checkFlyPassStatus() {
   if (expire && parseInt(expire) > Date.now()) {
     document.getElementById("flyPassNotActiveCard").style.display = "none";
     document.getElementById("flyPassActiveCard").style.display = "block";
-    
     const dateObj = new Date(parseInt(expire));
     const dateStr = dateObj.toLocaleDateString('ar-EG');
     document.getElementById("subExpireDateTxt").textContent = dateStr;
-
-    if (homeTitle) {
-      homeTitle.innerHTML = 'باقة FLY PASS <span style="color:#10b981;">(مفعلة ✅)</span>';
-      homeTitle.style.color = "#fff";
-    }
-    if (homeSub) {
-      homeSub.textContent = `👑 اشتراكك ساري ومفعل حتى: ${dateStr}`;
-      homeSub.style.color = "#10b981";
-    }
+    if (homeTitle) { homeTitle.innerHTML = 'باقة FLY PASS <span style="color:#10b981;">(مفعلة ✅)</span>'; homeTitle.style.color = "#fff"; }
+    if (homeSub) { homeSub.textContent = `👑 اشتراكك ساري ومفعل حتى: ${dateStr}`; homeSub.style.color = "#10b981"; }
   } else {
     document.getElementById("flyPassNotActiveCard").style.display = "block";
     document.getElementById("flyPassActiveCard").style.display = "none";
-    
-    if (homeTitle) {
-      homeTitle.innerHTML = 'FLY PASS — اشترك بـ 99 ج شهرياً';
-      homeTitle.style.color = "#fff";
-    }
-    if (homeSub) {
-      homeSub.textContent = "توصيل مجاني وخصومات حصرية على المشاوير والمطاعم";
-      homeSub.style.color = "#d8b4fe";
-    }
+    if (homeTitle) { homeTitle.innerHTML = 'FLY PASS — اشترك بـ 99 ج شهرياً'; homeTitle.style.color = "#fff"; }
+    if (homeSub) { homeSub.textContent = "توصيل مجاني وخصومات حصرية على المشاوير والمطاعم"; homeSub.style.color = "#d8b4fe"; }
   }
 }
+
+// ----------------------------------------
+// وظائف الحساب العائلي (Family Account)
+// ----------------------------------------
+function toggleAddFamilyForm() {
+  const form = document.getElementById('addFamilyForm');
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+function renderFamilyMembers() {
+  const list = document.getElementById('familyMembersList');
+  let members = JSON.parse(localStorage.getItem('fly_family') || '[]');
+  
+  if(members.length === 0) {
+    list.innerHTML = `<p style="font-size:11px; color:#94a3b8; text-align:center;">لا يوجد أفراد مضافين حالياً. أضف أسرتك الآن!</p>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  members.forEach((m, index) => {
+    list.innerHTML += `
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h4 style="font-size:13px; font-weight:800;">${m.name} <span style="font-size:10px; color:#0ea5e9;">(${m.relation})</span></h4>
+          <p style="font-size:10px; color:var(--text-sub);">${m.phone || 'بدون رقم هاتف'}</p>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button style="background:#e11d48; color:#fff; border:0; padding:6px 10px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer;" onclick="orderForFamilyMember('${m.name}')">اطلب له 🛵</button>
+          <button style="background:transparent; color:#ef4444; border:0; cursor:pointer; padding:6px;" onclick="deleteFamilyMember(${index})"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function saveNewFamilyMember() {
+  const name = document.getElementById('famName').value.trim();
+  const phone = document.getElementById('famPhone').value.trim();
+  const relation = document.getElementById('famRelation').value;
+  
+  if(!name) return showAppModal("تنبيه", "يرجى كتابة اسم الفرد أولاً.");
+  
+  let members = JSON.parse(localStorage.getItem('fly_family') || '[]');
+  members.push({ name, phone, relation });
+  localStorage.setItem('fly_family', JSON.stringify(members));
+  
+  document.getElementById('famName').value = '';
+  document.getElementById('famPhone').value = '';
+  document.getElementById('addFamilyForm').style.display = 'none';
+  
+  renderFamilyMembers();
+  showAppModal("نجاح", "تم إضافة الفرد للعائلة بنجاح ✅");
+}
+
+function deleteFamilyMember(index) {
+  if(!confirm("هل أنت متأكد من حذف هذا الفرد؟")) return;
+  let members = JSON.parse(localStorage.getItem('fly_family') || '[]');
+  members.splice(index, 1);
+  localStorage.setItem('fly_family', JSON.stringify(members));
+  renderFamilyMembers();
+}
+
+function orderForFamilyMember(name) {
+  sendDirectWhatsApp(`طلب خاص لأحد أفراد العائلة 👨‍👩‍👧\n\nالاسم المضاف: ${name}\n\nتفاصيل الطلب: `);
+}
+// ----------------------------------------
 
 function addStopField() {
   const wrap = document.getElementById('multiStopInputsWrap');
@@ -719,7 +782,7 @@ function openServiceScreen(type) {
   else if (type === 'food') showView('view-food');
   else if (type === 'pharmacy') showView('view-pharmacy');
   else if (type === 'orders') showView('view-orders');
-  else if (type === 'family') showView('view-family');
+  else if (type === 'family') { showView('view-family'); renderFamilyMembers(); } // استدعاء دالة الرسم هنا
   else if (type === 'merchant') showView('view-merchant');
   else if (type === 'flypass') { showView('view-flypass'); checkFlyPassStatus(); }
   else if (type === 'payment') showView('view-payment');
@@ -737,9 +800,7 @@ function toggleDrawer(open) {
   else d.classList.remove('show');
 }
 
-// ==========================================
-// WebSockets المباشر اللي اشتغل معاك 100%
-// ==========================================
+// WebSockets
 function applyMasterData(data) {
   if (!data) return;
 
@@ -789,7 +850,7 @@ async function fetchInitialAdminState() {
   if (local) { try { applyMasterData(JSON.parse(local)); } catch(e) {} }
 
   try {
-    const res = await fetch(LIVE_CHANNEL_HTTP, { cache: "no-store" });
+    const res = await fetch(LIVE_CHANNEL_HTTP + "&nocache=" + Date.now(), { cache: "no-store", headers: {'Pragma': 'no-cache', 'Cache-Control': 'no-cache'} });
     const text = await res.text();
     if (!text.trim()) return;
     const lines = text.trim().split("\n");
@@ -822,7 +883,6 @@ function connectLiveSocket() {
 fetchInitialAdminState();
 connectLiveSocket();
 
-// تحديث محلي احتياطي
 setInterval(() => {
   const localData = localStorage.getItem("fly_admin_cmd");
   if(localData) {
