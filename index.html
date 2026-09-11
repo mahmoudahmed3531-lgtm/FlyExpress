@@ -2,7 +2,6 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<!-- الكود السحري لعدم كشط الـ LocalStorage عند الريفرش -->
 <meta http-equiv="Cache-Control" content="max-age=0, no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -107,16 +106,16 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 .drawer-menu { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 10000; display: none; justify-content: flex-end; }
 .drawer-menu.show { display: flex; }
-.drawer-sheet { width: 82%; max-width: 320px; height: 100%; background: #0b0f19; color: #fff; padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; animation: slideIn 0.25s ease-out; border-right: 1px solid var(--border); overflow-y:auto; }
-@keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+.drawer-sheet { width: 82%; max-width: 320px; height: 100%; background: #0b0f19; color: #fff; padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border); overflow-y:auto; }
 .drawer-links-box { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; }
 .drawer-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #cbd5e1; cursor: pointer; text-decoration: none; }
 .drawer-item.active { background: rgba(255,255,255,0.08); color: #fff; }
 
-/* شاشة الإغلاق للصيانة (منفصلة وبدون أزرار) */
-.maintenance-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
+.app-custom-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.app-custom-modal-overlay.show { display: flex; }
+.app-custom-modal-card { background: #0f172a; border: 1.5px solid var(--primary); border-radius: 22px; width: 100%; max-width: 320px; padding: 22px; text-align: center; color: #fff; box-shadow: 0 10px 40px rgba(225,29,72,0.4); }
 
-/* شاشة التحديث الإجباري (برابط الـ APK) */
+.maintenance-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
 .force-update-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
 
 .auth-overlay { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 20px; color: #fff; overflow-y: auto; }
@@ -133,7 +132,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 <div class="mobile-frame">
 
-  <!-- إشعار حي للأوردرات -->
   <div class="live-toast-notification" id="liveOrderToast">
     <i class="fa-solid fa-motorcycle" style="color:#10b981; font-size:16px;"></i>
     <span id="liveOrderToastTxt">كابتن أحمد استلم طرد متجه لقرية بركة 📦</span>
@@ -149,7 +147,15 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </div>
 
-  <!-- شاشة الدخول والتسجيل -->
+  <div class="app-custom-modal-overlay" id="appCustomModal">
+    <div class="app-custom-modal-card">
+      <div id="customModalIcon" style="font-size:40px; color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-bell"></i></div>
+      <h3 style="font-size:16px; font-weight:900; margin-bottom:6px;" id="customModalTitle">إشعار من الإدارة</h3>
+      <p style="font-size:13px; color:#cbd5e1; margin-bottom:18px;" id="customModalMessage">نص الرسالة</p>
+      <button class="primary-action-btn" onclick="closeAppModal()">حسناً فهمت ✅</button>
+    </div>
+  </div>
+
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" alt="Fly Express Logo" class="auth-main-logo">
@@ -181,14 +187,12 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </div>
 
-  <!-- شاشة الصيانة المغلقة تماماً -->
   <div class="maintenance-gate" id="maintenanceScreen">
     <div style="font-size:60px; color:#ef4444; margin-bottom:16px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
     <h2 style="font-size:22px; font-weight:900; margin-bottom:8px;">تنبيه الصيانة ⛔</h2>
     <p style="font-size:13px; color:#cbd5e1; line-height:1.6;">تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير، نعتذر عن الإزعاج وسنعود قريباً لخدمتكم بشكل أفضل! 🛵</p>
   </div>
 
-  <!-- شاشة التحديث الإجباري (مع زرار التحميل) -->
   <div class="force-update-gate" id="forceUpdateModal">
     <img src="icon-512.png" style="width:110px; height:110px; border-radius:28px; margin-bottom:18px; border:2px solid var(--primary); object-fit:cover;">
     <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
@@ -230,7 +234,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       </div>
     </div>
 
-    <!-- كارت FLY PASS في الصفحة الرئيسية -->
     <div class="fly-pass-card" onclick="openServiceScreen('flypass')">
       <div style="display:flex; align-items:center; gap:10px;">
         <div style="font-size:24px; color:#c084fc;"><i class="fa-solid fa-crown"></i></div>
@@ -294,6 +297,10 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       </div>
       <input type="text" id="sch_pickup_location" class="custom-field" placeholder="عنوان البيت بالتفصيل">
       <input type="text" id="sch_school_name" class="custom-field" placeholder="اسم المدرسة أو السنتر">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div><label style="font-size:10px; color:var(--text-sub);">الذهاب صباحاً:</label><input type="time" id="sch_go_time" class="custom-field" value="07:30"></div>
+        <div><label style="font-size:10px; color:var(--text-sub);">العودة ظهراً:</label><input type="time" id="sch_back_time" class="custom-field" value="14:00"></div>
+      </div>
       <button class="primary-action-btn" onclick="submitSchoolOrderAction()">تأكيد رحلات الطالب 🛵</button>
     </div>
   </section>
@@ -387,6 +394,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
 
+  <!-- باقة FLY PASS -->
   <section id="view-flypass" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">👑 باقة FLY PASS</h3></div>
     
@@ -400,7 +408,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       <button class="primary-action-btn" style="background:#a855f7;" onclick="openServiceScreen('payment')">تفعيل الاشتراك والدفع 👑</button>
     </div>
 
-    <!-- كارت الاشتراك المفعل -->
     <div class="ui-card" style="background:linear-gradient(135deg, #064e3b, #0f172a); border-color:#10b981; display:none;" id="flyPassActiveCard">
       <div style="font-size:40px; color:#10b981; text-align:center; margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i></div>
       <h3 style="font-size:18px; font-weight:900; color:#10b981; text-align:center; margin-bottom:8px;">اشتراكك مفعل! 👑</h3>
@@ -430,7 +437,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- الحساب العائلي الذكي -->
   <section id="view-family" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">👨‍👩‍👧 الحساب العائلي</h3></div>
     <div class="ui-card" style="border-color:#0284c7; background:rgba(2, 132, 199, 0.05);">
@@ -463,7 +469,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- القائمة الجانبية كاملة ومظبوطة -->
+  <!-- القائمة الجانبية -->
   <div class="drawer-menu" id="profileDrawer" onclick="if(event.target===this) toggleDrawer(false)">
     <div class="drawer-sheet">
       <div>
@@ -502,11 +508,9 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 </div>
 
 <script>
-const APP_LOCAL_VERSION = "1.0.0";
 const ADMIN_PHONE = "201017908076";
-const TOPIC = "flyexpress_super_admin_2026";
+const TOPIC = "flyexpress_super_admin_2026"; 
 
-// 1. نظام إشعارات الأوردرات الحي (Fake Live)
 const liveNotifications = [
   "كابتن أحمد استلم طرد متجه لقرية بركة 📦",
   "تم توصيل أوردر من مطعم بيتزا السلطان 🍕",
@@ -526,7 +530,6 @@ function showRandomLiveNotification() {
 }
 setInterval(showRandomLiveNotification, 12000);
 
-// الكود السري للعميل
 function getMyUid() {
   let uid = localStorage.getItem("fly_uid");
   if (!uid) {
@@ -536,6 +539,14 @@ function getMyUid() {
   }
   return uid;
 }
+
+function showAppModal(title, msg, iconClass = "fa-circle-info") {
+  document.getElementById('customModalTitle').textContent = title;
+  document.getElementById('customModalMessage').textContent = msg;
+  document.getElementById('customModalIcon').innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+  document.getElementById('appCustomModal').classList.add('show');
+}
+function closeAppModal() { document.getElementById('appCustomModal').classList.remove('show'); }
 
 function confirmSubscriptionPayment() {
   const senderPhone = document.getElementById('senderPhoneNumber').value.trim();
@@ -557,7 +568,6 @@ function checkFlyPassStatus() {
   }
 }
 
-// الحساب العائلي
 function toggleAddFamilyForm() { document.getElementById('addFamilyForm').style.display = document.getElementById('addFamilyForm').style.display === 'none' ? 'block' : 'none'; }
 function renderFamilyMembers() {
   const list = document.getElementById('familyMembersList');
@@ -601,9 +611,17 @@ function processSignupAction() {
   const phone = document.getElementById('signupPhoneNum').value.trim();
   localStorage.setItem('fly_user_name', name);
   localStorage.setItem('fly_user_phone', phone);
+  
   const uid = getMyUid();
-  sendDirectWhatsApp(`🚨 *عميل جديد سجل في التطبيق!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`);
+  const adminMsg = `🚨 *عميل جديد سجل في التطبيق!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`;
+  
+  fetch(`https://ntfy.sh/flyexpress_admin_notify_2026?_t=${Date.now()}`, {
+      method: 'POST',
+      body: adminMsg
+  }).then(() => console.log('Admin notified'));
+  
   initializeUserSession();
+  showAppModal("أهلاً بك! ✨", "تم تفعيل حسابك في Fly Express بنجاح!");
 }
 
 function handleGoogleSignInDirect() {
@@ -611,16 +629,24 @@ function handleGoogleSignInDirect() {
   const phone = prompt("أدخل رقم هاتفك:") || "010";
   localStorage.setItem('fly_user_name', name);
   localStorage.setItem('fly_user_phone', phone);
+  
   const uid = getMyUid();
-  sendDirectWhatsApp(`🚨 *عميل جديد سجل (عبر Google)!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`);
+  const adminMsg = `🚨 *عميل جديد سجل (عبر Google)!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`;
+  
+  fetch(`https://ntfy.sh/flyexpress_admin_notify_2026?_t=${Date.now()}`, {
+      method: 'POST',
+      body: adminMsg
+  }).then(() => console.log('Admin notified'));
+
   initializeUserSession();
+  showAppModal("تم الدخول بنجاح! 🚀", `أهلاً بك يا ${name} بحساب Google!`);
 }
 
 function initializeUserSession() {
   document.getElementById('authGateScreen').style.display = 'none';
   document.getElementById('drawerUserName').textContent = localStorage.getItem('fly_user_name') || 'عميل Fly';
   document.getElementById('displayUserUid').textContent = getMyUid();
-  document.getElementById('drawerUidTxt').textContent = getMyUid();
+  document.getElementById('drawerUidTxt').textContent = getMyUid(); // التأكد من كتابة الكود في القائمة الجانبية
   checkFlyPassStatus(); 
 }
 
@@ -636,30 +662,33 @@ function openServiceScreen(type) {
 }
 function toggleDrawer(open) { const d = document.getElementById('profileDrawer'); if (open) d.classList.add('show'); else d.classList.remove('show'); }
 
-// ==========================================
-// التحديث الذكي والنبض المستمر المانع للكاش
-// ==========================================
 let lastPolledTime = 0;
 
 function applyMasterData(data) {
   if (!data) return;
 
-  // 1. تفعيل اشتراك العميل بدون مسح الكاش
+  // 1. الإشعار المباشر للعميل المخصص من الأدمن
+  if (data.action === "direct_msg" && data.target_uid === getMyUid()) {
+     showAppModal("🔔 إشعار من الإدارة", data.msg, "fa-bell");
+  }
+
+  // 2. تفعيل الاشتراك
   if (data.action === "activate_sub" && data.target_uid === getMyUid()) {
     const currentExpire = localStorage.getItem("fly_pass_expire");
     const baseTime = (currentExpire && parseInt(currentExpire) > Date.now()) ? parseInt(currentExpire) : Date.now();
     localStorage.setItem("fly_pass_expire", baseTime + (data.days * 24 * 60 * 60 * 1000));
     checkFlyPassStatus(); 
+    showAppModal("تهانينا! 🎉", `تم تفعيل باقة FLY PASS بنجاح لمدة ${data.days} يوم!`);
   }
 
-  // 2. تحديث الواجهة بقوة بدون مسح بيانات العميل
+  // 3. تحديث الكاش
   if (data.force_reload_id && localStorage.getItem('fly_reload_id') != data.force_reload_id) {
     localStorage.setItem('fly_reload_id', data.force_reload_id);
     window.location.replace(window.location.pathname + "?v=" + data.force_reload_id);
     return; 
   }
 
-  // 3. التحديث الإجباري (التطبيق الخارجي APK)
+  // 4. التحديث الإجباري
   if (data.update_lock === true && data.apk_link) {
     document.getElementById("forceUpdateModal").style.display = "flex";
     document.getElementById("btnDownloadApk").onclick = () => window.open(data.apk_link, '_blank');
@@ -667,7 +696,7 @@ function applyMasterData(data) {
     document.getElementById("forceUpdateModal").style.display = "none";
   }
 
-  // 4. الإعلانات والصيانة
+  // 5. الإعلان والصيانة
   if (data.notice && document.getElementById("dailyPromoTickerTxt")) {
     document.getElementById("dailyPromoTickerTxt").textContent = data.notice;
   }
@@ -699,7 +728,7 @@ function fetchLiveUpdates() {
   xhr.send();
 }
 
-setInterval(fetchLiveUpdates, 3000); // النبض المستمر كل 3 ثواني للـ APK
+setInterval(fetchLiveUpdates, 3000);
 
 window.addEventListener('load', () => {
   if (localStorage.getItem('fly_user_name')) initializeUserSession();
