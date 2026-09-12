@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="max-age=0, no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
 <title>Fly Express</title>
-<meta name="theme-color" content="#0b0f19">
+<meta name="theme-color" content="#0d111c">
 
 <link rel="icon" href="icon-512.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -24,10 +24,10 @@
 </script>
 
 <style>
-/* ================== تطابق تصميم الصورة 100% ================== */
+/* ================== تطابق تصميمك الأصلي بالمللي ================== */
 :root {
-  --bg-dark: #0b0f19;
-  --card-dark: #151a28;
+  --bg-dark: #0d111c; /* لون الخلفية الكحلي الغامق المطابق للصورة */
+  --card-dark: #161b2b;
   --bg-light: #f8fafc;
   --primary: #e11d48;
   --text-main: #ffffff;
@@ -39,183 +39,96 @@ body { background-color: #000; display: flex; justify-content: center; min-heigh
 
 .mobile-frame { width: 100%; max-width: 430px; background-color: var(--bg-dark); min-height: 100vh; position: relative; padding-bottom: 75px; overflow-x: hidden; }
 
-/* شاشة البداية (Splash) مطابقة للصورة الأولى */
-#splashScreen { position: fixed; inset: 0; background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600') center/cover; z-index: 100000; display: flex; flex-direction: column; justify-content: flex-end; padding: 30px 20px; align-items: center; }
-#splashScreen::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(11,15,25,1)); z-index: 1; }
-.splash-content { position: relative; z-index: 2; width: 100%; text-align: center; }
-.splash-logo { width: 120px; margin-bottom: 10px; }
-.splash-btn { width: 100%; background: var(--primary); color: #fff; padding: 16px; border-radius: 12px; font-weight: 900; font-size: 16px; border: none; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 20px rgba(225,29,72,0.4); }
-
 /* الهيدر العلوي */
-.top-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; background: var(--bg-dark); position: sticky; top: 0; z-index: 50; }
-.loc-box { display: flex; flex-direction: column; }
-.loc-text { font-size: 10px; color: var(--text-sub); }
-.loc-title { font-size: 13px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 4px; }
-.loc-icon { color: var(--primary); margin-left: 4px; }
-.bell-icon { font-size: 20px; color: #fff; }
+.top-header { padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; background: transparent; position: sticky; top: 0; z-index: 50; }
+.loc-box { display: flex; flex-direction: column; align-items: flex-start; }
+.loc-text { font-size: 11px; color: var(--text-sub); margin-bottom: 2px; }
+.loc-title { font-size: 14px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.loc-icon { color: var(--primary); }
+.bell-icon { font-size: 22px; color: #fff; cursor: pointer; }
 
 /* شعار المنتصف في الرئيسية */
-.center-brand { display: flex; flex-direction: column; align-items: center; margin: 10px 0; }
-.center-brand img { width: 80px; margin-bottom: 6px; }
-.center-brand span { font-size: 12px; color: #fff; font-weight: 700; }
+.center-brand { display: flex; flex-direction: column; align-items: center; margin: 0 0 20px 0; }
+.center-brand img { width: 85px; margin-bottom: 8px; border-radius: 20px; box-shadow: 0 0 20px rgba(225,29,72,0.3); border: 1px solid rgba(225,29,72,0.5); }
+.center-brand span { font-size: 13px; color: #fff; font-weight: 700; }
 
 /* البحث المطابق للصورة */
-.search-container { padding: 0 20px 16px; }
-.search-box { background: var(--card-dark); border-radius: 12px; display: flex; align-items: center; padding: 12px 16px; gap: 10px; border: 1px solid rgba(255,255,255,0.05); }
+.search-container { padding: 0 24px 20px; }
+.search-box { background: var(--card-dark); border-radius: 16px; display: flex; align-items: center; padding: 14px 18px; gap: 12px; }
 .search-box input { border: 0; background: transparent; width: 100%; font-family: inherit; font-size: 13px; color: #fff; text-align: center; }
+.search-box input::placeholder { color: #64748b; }
+.search-box i { color: #e11d48; font-size: 16px; }
 
-/* شبكة الخدمات المطابقة للصورة (3 عواميد) */
-.services-grid-3x4 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 12px; padding: 0 20px 20px; }
-.srv-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
-.srv-icon { width: 65px; height: 65px; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-size: 28px; color: #fff; }
-.srv-title { font-size: 12px; font-weight: 800; color: #fff; }
+/* شبكة الخدمات المطابقة للصورة (3 عواميد وأيقونات مربعة كبيرة) */
+.services-grid-3x4 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 16px; padding: 0 24px 20px; }
+.srv-item { display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: transform 0.2s; }
+.srv-item:active { transform: scale(0.95); }
+.srv-icon { width: 72px; height: 72px; border-radius: 22px; display: flex; justify-content: center; align-items: center; font-size: 30px; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.srv-title { font-size: 14px; font-weight: 800; color: #fff; }
 
-/* ألوان الأيقونات حسب صورتك */
-.bg-rides { background: #3b82f6; } /* أزرق فاتح */
-.bg-students { background: #6366f1; } /* بنفسجي مائل للأزرق */
+/* ألوان الأيقونات المتطابقة مع الصورة الخاصة بك */
+.bg-rides { background: #3b82f6; } /* أزرق */
+.bg-students { background: #6366f1; } /* بنفسجي */
 .bg-parcel { background: #f59e0b; } /* برتقالي */
 .bg-food { background: #ef4444; } /* أحمر */
-.bg-pharm { background: #0ea5e9; } /* لبني */
+.bg-pharm { background: #0ea5e9; } /* لبني فاتح */
 .bg-grocery { background: #10b981; } /* أخضر */
-.bg-market { background: #14b8a6; } /* تيل / تركواز */
-.bg-laundry { background: #4f46e5; } /* أزرق غامق */
-.bg-bills { background: #1e3a8a; } /* كحلي */
-.bg-home { background: #334155; } /* رصاصي غامق */
-.bg-bring { background: #d946ef; } /* بينك فوشيا */
+.bg-market { background: #14b8a6; } /* تيل/سماوي غامق */
+.bg-laundry { background: #8b5cf6; } /* موف */
+.bg-bills { background: #1e3a8a; } /* أزرق غامق / كحلي */
+.bg-tech { background: #334155; } /* رصاصي غامق */
+.bg-bring { background: #d946ef; } /* فوشيا */
 .bg-more { background: #475569; } /* رصاصي */
 
-/* باقة Fly Pass */
-.flypass-banner { margin: 0 20px 20px; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; position: relative; display: flex; justify-content: space-between; align-items: center; }
-.flypass-banner .left-side { display: flex; flex-direction: column; }
-.flypass-title { font-size: 15px; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 6px; }
-.flypass-title i { color: #f59e0b; }
-.flypass-sub { font-size: 10px; color: var(--text-sub); margin-top: 4px; }
-.flypass-btn { background: var(--primary); color: #fff; border: 0; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; }
-
-/* عروض اليوم (تمرير أفقي) */
-.offers-section { padding: 0 0 20px 0; }
-.offers-title { font-size: 14px; font-weight: 800; color: #fff; padding: 0 20px; margin-bottom: 12px; }
-.offers-scroll { display: flex; gap: 12px; padding: 0 20px; overflow-x: auto; scroll-snap-type: x mandatory; }
-.offers-scroll::-webkit-scrollbar { display: none; }
-.offer-card { min-width: 240px; height: 120px; border-radius: 16px; background-size: cover; background-position: center; scroll-snap-align: start; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
-.offer-card.c1 { background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=400'); }
-.offer-card.c2 { background-image: url('https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=400'); }
-
-/* الناف بار السفلي المطابق للصورة */
-.bottom-nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 430px; height: 70px; background: var(--bg-dark); border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-.nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); font-size: 11px; font-weight: 700; cursor: pointer; background: none; border: none; font-family: inherit; }
-.nav-item i { font-size: 20px; }
+/* الناف بار السفلي */
+.bottom-nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 430px; height: 75px; background: var(--card-dark); border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-sub); font-size: 11px; font-weight: 800; cursor: pointer; background: none; border: none; font-family: inherit; width: 60px; }
+.nav-item i { font-size: 22px; }
 .nav-item.active { color: var(--primary); }
 
 /* إعدادات الشاشات الفرعية */
 .sub-page-view { display: none; background: var(--bg-dark); min-height: 100vh; padding-bottom: 80px; }
 .sub-page-view.active { display: block; }
-.sub-page-light { background: var(--bg-light); color: #0f172a; }
 
-.sub-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-.sub-header.dark { background: var(--bg-dark); border-bottom: 1px solid rgba(255,255,255,0.05); }
-.sub-header.light { background: #fff; border-bottom: 1px solid #e2e8f0; color: #0f172a; }
-.back-btn { background: transparent; border: 0; color: inherit; font-size: 18px; cursor: pointer; }
-
-/* شاشة المشاوير (كما بالصورة - فاتحة) */
-.map-placeholder { width: 100%; height: 250px; background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600') center/cover; position: relative; }
-.rides-input-box { background: #fff; border-radius: 12px; margin: -30px 20px 20px; padding: 16px; position: relative; z-index: 5; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-.rides-input-box input { width: 100%; border: 0; border-bottom: 1px solid #e2e8f0; padding: 12px 0; font-family: inherit; outline: none; }
-.car-types-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 20px 20px; }
-.car-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; }
-.car-card.active { border-color: var(--primary); background: rgba(225,29,72,0.05); }
-.car-card img { width: 50px; margin-bottom: 6px; }
-.car-card-title { font-size: 12px; font-weight: 800; color: #0f172a; }
-.car-card-price { font-size: 11px; color: var(--text-sub); }
-
-/* شاشة الخدمات المنزلية (كما بالصورة - غامقة) */
-.tech-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px; }
-.tech-card { background: var(--card-dark); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-.tech-card i { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; }
-
-/* شاشة المطاعم */
-.food-cats { display: flex; gap: 10px; padding: 16px 20px; overflow-x: auto; }
-.food-cat-btn { padding: 6px 16px; border-radius: 20px; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-family: inherit; font-size: 12px; white-space: nowrap; }
-.food-cat-btn.active { background: var(--primary); border-color: var(--primary); }
-.rest-card { margin: 0 20px 16px; background: var(--card-dark); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; padding: 12px; gap: 12px; }
-.rest-logo { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; }
-.rest-info h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
-.rest-info p { font-size: 11px; color: #f59e0b; }
+.sub-header { padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; background: var(--bg-dark); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 10; }
+.back-btn { background: transparent; border: 0; color: #fff; font-size: 20px; cursor: pointer; padding: 5px; }
 
 /* أزرار وحقول عامة */
-.action-btn-red { width: calc(100% - 40px); margin: 0 20px; background: var(--primary); color: #fff; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 900; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(225,29,72,0.4); text-align: center; display: block; }
-.input-dark { width: 100%; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 12px; font-family: inherit; font-size: 13px; margin-bottom: 12px; }
+.action-btn-red { width: calc(100% - 48px); margin: 20px 24px; background: var(--primary); color: #fff; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 900; border: none; cursor: pointer; box-shadow: 0 6px 20px rgba(225,29,72,0.4); text-align: center; display: block; }
+.input-dark { width: 100%; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 16px; border-radius: 14px; font-family: inherit; font-size: 14px; margin-bottom: 14px; }
+.input-dark::placeholder { color: #64748b; }
 
-/* شاشات تسجيل الدخول والـ OTP */
-.auth-overlay { position: fixed; inset: 0; background: var(--bg-dark); z-index: 90000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 20px; }
-.auth-box { width: 100%; max-width: 360px; }
-.auth-nav { display: flex; gap: 10px; margin-bottom: 20px; }
-.auth-tab { flex: 1; padding: 12px; background: var(--card-dark); color: var(--text-sub); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; font-weight: 800; font-family: inherit; cursor: pointer; }
-.auth-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.form-container { padding: 24px; }
+
+/* مودال التنبيهات */
+.app-custom-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.app-custom-modal-overlay.show { display: flex; }
+.app-custom-modal-card { background: var(--card-dark); border-radius: 22px; width: 100%; max-width: 320px; padding: 24px; text-align: center; color: #fff; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
 </style>
 </head>
 
 <body>
 <div class="mobile-frame">
 
-  <!-- شاشة البداية (Splash) -->
-  <div id="splashScreen">
-    <div class="splash-content">
-      <img src="icon-512.png" class="splash-logo" alt="Logo">
-      <h1 style="font-size:32px; font-weight:900; font-style:italic; margin-bottom:4px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">FLY <span style="color:var(--primary)">EXPRESS</span></h1>
-      <p style="font-size:14px; color:#cbd5e1; margin-bottom:30px;">معاك في كل طريق</p>
-      <button class="splash-btn" onclick="document.getElementById('splashScreen').style.display='none'; checkLogin();">ابدأ الآن</button>
-      <p style="font-size:11px; color:#94a3b8; margin-top:16px;">كل احتياجاتك.. في مكان واحد</p>
+  <!-- مودال الإشعارات -->
+  <div class="app-custom-modal-overlay" id="appCustomModal">
+    <div class="app-custom-modal-card">
+      <div id="customModalIcon" style="font-size:40px; color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-bell"></i></div>
+      <h3 style="font-size:18px; font-weight:900; margin-bottom:8px;" id="customModalTitle">تنبيه</h3>
+      <p style="font-size:14px; color:var(--text-sub); margin-bottom:24px;" id="customModalMessage">نص الرسالة</p>
+      <button style="width:100%; background:var(--primary); color:#fff; border:0; padding:14px; border-radius:12px; font-weight:900; font-family:inherit; cursor:pointer;" onclick="closeAppModal()">حسناً فهمت</button>
     </div>
   </div>
 
-  <!-- شاشة المصادقة -->
-  <div class="auth-overlay" id="authGateScreen" style="display:none;">
-    <div class="auth-box">
-      <div style="text-align:center; margin-bottom:24px;">
-        <img src="icon-512.png" style="width:80px; border-radius:20px; margin-bottom:10px;">
-        <h2 style="font-size:20px; font-weight:900;">FLY EXPRESS</h2>
-      </div>
-
-      <div class="auth-nav">
-        <button class="auth-tab active" id="btnTabLogin" onclick="switchAuthMode('login')">تسجيل الدخول</button>
-        <button class="auth-tab" id="btnTabSignup" onclick="switchAuthMode('signup')">حساب جديد</button>
-      </div>
-
-      <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();">
-        <input type="email" id="loginEmail" class="input-dark" placeholder="البريد الإلكتروني (Gmail)">
-        <input type="password" id="loginPassword" class="input-dark" placeholder="كلمة المرور">
-        <button type="submit" class="splash-btn" style="margin-top:10px;">دخول</button>
-      </form>
-
-      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSendRealOtp();">
-        <input type="text" id="signupFullname" class="input-dark" placeholder="الاسم الكريم" required>
-        <input type="tel" id="signupPhoneNum" class="input-dark" placeholder="رقم الهاتف" required>
-        <input type="email" id="signupEmailVal" class="input-dark" placeholder="البريد الإلكتروني (لاستلام الكود)" required>
-        <input type="password" id="signupPasscode" class="input-dark" placeholder="كلمة المرور" required>
-        <button type="submit" class="splash-btn" id="btnSendOtp" style="margin-top:10px;">إرسال كود التحقق 📨</button>
-      </form>
-
-      <div id="verifyCodeSection" style="display:none; text-align:center;">
-        <p style="font-size:12px; color:#10b981; margin-bottom:14px;">تم إرسال كود لبريدك الإلكتروني، ادخله هنا:</p>
-        <input type="text" id="enteredOtpCode" class="input-dark" placeholder="----" style="text-align:center; font-size:24px; letter-spacing:8px; font-weight:900;" maxlength="4">
-        <button type="button" class="splash-btn" style="background:#10b981;" onclick="verifyRealOtpCode()">تأكيد الكود ✨</button>
-      </div>
-
-      <button type="button" onclick="handleGoogleSignInDirect()" style="width:100%; padding:14px; background:#fff; color:#000; border:none; border-radius:12px; font-weight:800; margin-top:16px; cursor:pointer; display:flex; justify-content:center; align-items:center; gap:8px;">
-        <i class="fa-brands fa-google" style="color:#ea4335;"></i> متابعة باستخدام Google
-      </button>
-    </div>
-  </div>
-
-  <!-- الشاشة الرئيسية -->
+  <!-- الشاشة الرئيسية المطابقة للتصميم -->
   <main id="view-home" class="sub-page-view active" style="padding-bottom:100px;">
+    
     <div class="top-header">
+      <i class="fa-regular fa-bell bell-icon"></i>
       <div class="loc-box">
         <span class="loc-text">موقعك الحالي</span>
-        <div class="loc-title" onclick="alert('نجع حمادي')"><i class="fa-solid fa-location-dot loc-icon"></i> نجع حمادي وقراها</div>
+        <div class="loc-title" onclick="alert('تغيير الموقع')">نجع حمادي وقراها <i class="fa-solid fa-location-dot loc-icon"></i></div>
       </div>
-      <i class="fa-regular fa-bell bell-icon"></i>
     </div>
 
     <div class="center-brand">
@@ -225,24 +138,25 @@ body { background-color: #000; display: flex; justify-content: center; min-heigh
 
     <div class="search-container">
       <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text" placeholder="ماذا تحتاج اليوم ؟">
-        <i class="fa-solid fa-magnifying-glass" style="color:#e11d48;"></i>
       </div>
     </div>
 
-    <!-- شبكة الخدمات 3x4 (نفس صورتك بالمللي) -->
+    <!-- شبكة الخدمات (نفس الألوان والأحجام والترتيب بالظبط) -->
     <div class="services-grid-3x4">
-      <!-- Row 1 -->
+      <!-- الصف الأول -->
       <div class="srv-item" onclick="openScreen('view-rides')">
         <div class="srv-icon bg-rides"><i class="fa-solid fa-car-side"></i></div><span class="srv-title">مشاوير</span>
       </div>
       <div class="srv-item" onclick="openScreen('view-school')">
-        <div class="srv-icon bg-students"><i class="fa-solid fa-bus"></i></div><span class="srv-title">الطلاب</span>
+        <div class="srv-icon bg-students"><i class="fa-solid fa-bus-simple"></i></div><span class="srv-title">الطلاب</span>
       </div>
       <div class="srv-item" onclick="openScreen('view-orders')">
         <div class="srv-icon bg-parcel"><i class="fa-solid fa-box-open"></i></div><span class="srv-title">طرود</span>
       </div>
-      <!-- Row 2 -->
+      
+      <!-- الصف الثاني -->
       <div class="srv-item" onclick="openScreen('view-food')">
         <div class="srv-icon bg-food"><i class="fa-solid fa-utensils"></i></div><span class="srv-title">مطاعم</span>
       </div>
@@ -252,7 +166,8 @@ body { background-color: #000; display: flex; justify-content: center; min-heigh
       <div class="srv-item" onclick="openScreen('view-grocery')">
         <div class="srv-icon bg-grocery"><i class="fa-solid fa-basket-shopping"></i></div><span class="srv-title">بقالة</span>
       </div>
-      <!-- Row 3 -->
+      
+      <!-- الصف الثالث -->
       <div class="srv-item" onclick="openScreen('view-market')">
         <div class="srv-icon bg-market"><i class="fa-solid fa-store"></i></div><span class="srv-title">سوق</span>
       </div>
@@ -262,243 +177,229 @@ body { background-color: #000; display: flex; justify-content: center; min-heigh
       <div class="srv-item" onclick="openScreen('view-bills')">
         <div class="srv-icon bg-bills"><i class="fa-solid fa-file-invoice-dollar"></i></div><span class="srv-title">دفع فواتير</span>
       </div>
-      <!-- Row 4 -->
+      
+      <!-- الصف الرابع -->
       <div class="srv-item" onclick="openScreen('view-tech')">
-        <div class="srv-icon bg-home"><i class="fa-solid fa-screwdriver-wrench"></i></div><span class="srv-title">خدمات منزلية</span>
+        <div class="srv-icon bg-tech"><i class="fa-solid fa-screwdriver-wrench"></i></div><span class="srv-title">خدمات منزلية</span>
       </div>
       <div class="srv-item" onclick="openScreen('view-bringme')">
         <div class="srv-icon bg-bring"><i class="fa-solid fa-bag-shopping"></i></div><span class="srv-title">هاتلي أي حاجة</span>
       </div>
       <div class="srv-item" onclick="openScreen('view-more')">
-        <div class="srv-icon bg-more"><i class="fa-solid fa-ellipsis-stroke"></i><i class="fa-solid fa-layer-group"></i></div><span class="srv-title">المزيد</span>
-      </div>
-    </div>
-
-    <!-- باقة Fly Pass -->
-    <div class="flypass-banner" onclick="openScreen('view-flypass')">
-      <div class="left-side">
-        <div class="flypass-title"><i class="fa-solid fa-crown"></i> FLY PASS</div>
-        <div class="flypass-sub">خصومات حصرية .. توصيل مجاني</div>
-      </div>
-      <button class="flypass-btn">اشترك الآن</button>
-    </div>
-
-    <!-- عروض اليوم -->
-    <div class="offers-section">
-      <div class="offers-title">عروض اليوم</div>
-      <div class="offers-scroll">
-        <div class="offer-card c1"></div>
-        <div class="offer-card c2"></div>
+        <div class="srv-icon bg-more"><i class="fa-solid fa-ellipsis"></i></div><span class="srv-title">المزيد</span>
       </div>
     </div>
   </main>
 
-  <!-- ================= الشاشات الفرعية (مبنية على صورتك) ================= -->
-
-  <!-- 1. المشاوير (فاتحة) -->
-  <section id="view-rides" class="sub-page-view sub-page-light">
-    <div class="sub-header light">
-      <div style="font-weight:900; font-size:16px;">المشاوير</div>
-      <button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button>
+  <!-- ================= الشاشات الفرعية لكل خدمة ================= -->
+  <!-- 1. المشاوير -->
+  <section id="view-rides" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">المشاوير</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <input type="text" id="ride_from" class="input-dark" placeholder="نقطة الانطلاق (موقعي الحالي)" value="البيت">
+      <input type="text" id="ride_to" class="input-dark" placeholder="إلى أين تريد الذهاب؟">
+      <select id="ride_type" class="input-dark">
+        <option value="عادي">توصيلة عادية (موتوسيكل)</option>
+        <option value="اقتصادي">اقتصادي (توكتوك)</option>
+        <option value="مميز">مميز (ملاكي مكيف)</option>
+      </select>
     </div>
-    <div class="map-placeholder"></div>
-    <div class="rides-input-box">
-      <input type="text" id="ride_from" placeholder="موقعي الحالي" value="البيت">
-      <input type="text" id="ride_to" placeholder="أدخل الوجهة (إلى أين؟)">
-    </div>
-    <div class="car-types-grid">
-      <div class="car-card active" onclick="selCar(this, 'عادي')">
-        <i class="fa-solid fa-car-side" style="font-size:24px; color:#1e293b; margin-bottom:8px;"></i>
-        <div class="car-card-title">عادي</div><div class="car-card-price">~ 20 ج</div>
-      </div>
-      <div class="car-card" onclick="selCar(this, 'اقتصادي')">
-        <i class="fa-solid fa-motorcycle" style="font-size:24px; color:#1e293b; margin-bottom:8px;"></i>
-        <div class="car-card-title">اقتصادي</div><div class="car-card-price">~ 15 ج</div>
-      </div>
-      <div class="car-card" onclick="selCar(this, 'مميز')">
-        <i class="fa-solid fa-car" style="font-size:24px; color:#1e293b; margin-bottom:8px;"></i>
-        <div class="car-card-title">مميز</div><div class="car-card-price">~ 35 ج</div>
-      </div>
-    </div>
-    <button class="action-btn-red" onclick="sendOrder('🚕 طلب مشوار', ['ride_from', 'ride_to'])">اطلب الآن</button>
+    <button class="action-btn-red" onclick="sendOrder('🚕 طلب مشوار', ['ride_type', 'ride_from', 'ride_to'])">اطلب الآن</button>
   </section>
 
-  <!-- 2. المطاعم (غامقة) -->
+  <!-- 2. الطلاب -->
+  <section id="view-school" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">الطلاب والمدارس</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <input type="text" id="sch_name" class="input-dark" placeholder="اسم المدرسة أو السنتر">
+      <input type="text" id="sch_address" class="input-dark" placeholder="عنوان المنزل للالتقاط">
+      <div style="display:flex; gap:10px;">
+        <input type="time" id="sch_go" class="input-dark" placeholder="موعد الذهاب">
+        <input type="time" id="sch_back" class="input-dark" placeholder="موعد العودة">
+      </div>
+    </div>
+    <button class="action-btn-red" onclick="sendOrder('🚌 اشتراك وتوصيل طالب', ['sch_name', 'sch_address', 'sch_go', 'sch_back'])">تأكيد الحجز</button>
+  </section>
+
+  <!-- 3. الطرود -->
+  <section id="view-orders" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">الطرود والشحن</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <input type="text" id="parcel_item" class="input-dark" placeholder="ما هو الطرد؟ (أوراق، ملابس، إلخ)">
+      <input type="text" id="parcel_from" class="input-dark" placeholder="استلام منين؟">
+      <input type="text" id="parcel_to" class="input-dark" placeholder="توصيل لفين؟">
+    </div>
+    <button class="action-btn-red" onclick="sendOrder('📦 إرسال طرد', ['parcel_item', 'parcel_from', 'parcel_to'])">إرسال الطرد</button>
+  </section>
+
+  <!-- 4. المطاعم -->
   <section id="view-food" class="sub-page-view">
-    <div class="sub-header dark">
-      <div style="font-weight:900; font-size:16px;">المطاعم</div>
-      <button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button>
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">المطاعم</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <textarea id="food_order" class="input-dark" rows="3" placeholder="اكتب وجبتك المفضلة واسم المطعم هنا..."></textarea>
+      <input type="text" id="food_addr" class="input-dark" placeholder="عنوان التوصيل">
     </div>
-    <div class="search-container" style="padding-top:10px;"><div class="search-box"><input type="text" placeholder="ابحث عن مطعم أو وجبة..."><i class="fa-solid fa-magnifying-glass"></i></div></div>
-    <div class="food-cats">
-      <button class="food-cat-btn active">الكل</button>
-      <button class="food-cat-btn">أكلات مصرية</button>
-      <button class="food-cat-btn">برجر</button>
-      <button class="food-cat-btn">بيتزا</button>
-    </div>
-    <div class="offers-section"><div class="offers-scroll"><div class="offer-card c1" style="width:100%; margin:0 20px;"></div></div></div>
-    
-    <div class="rest-card" onclick="sendOrder('🍔 طلب من ماكدونالدز')">
-      <div style="width:60px; height:60px; background:#e11d48; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:900; color:#fff;">M</div>
-      <div class="rest-info"><h4>ماكدونالدز</h4><p>⭐ 4.5 • وقت التوصيل 20 دقيقة</p></div>
-    </div>
-    <div class="rest-card" onclick="sendOrder('🍗 طلب من كنتاكي')">
-      <div style="width:60px; height:60px; background:#fff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900; color:#e11d48;">KFC</div>
-      <div class="rest-info"><h4>KFC</h4><p>⭐ 4.3 • وقت التوصيل 30 دقيقة</p></div>
-    </div>
+    <button class="action-btn-red" onclick="sendOrder('🍔 طلب أكل', ['food_order', 'food_addr'])">اطلب الأكل الآن</button>
   </section>
 
-  <!-- 3. خدمات منزلية (غامقة) -->
-  <section id="view-tech" class="sub-page-view">
-    <div class="sub-header dark">
-      <div style="font-weight:900; font-size:16px;">خدمات منزلية</div>
-      <button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button>
+  <!-- 5. صيدلية -->
+  <section id="view-pharmacy" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">صيدلية</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <textarea id="pharm_order" class="input-dark" rows="3" placeholder="اكتب اسم العلاج أو طلبك..."></textarea>
+      <input type="text" id="pharm_addr" class="input-dark" placeholder="عنوان التوصيل">
     </div>
-    <div class="search-container" style="padding-top:10px;"><div class="search-box"><input type="text" placeholder="ابحث عن خدمة..."><i class="fa-solid fa-magnifying-glass"></i></div></div>
-    
-    <div class="tech-grid">
-      <div class="tech-card" onclick="sendOrder('🛠️ طلب سباك')"><i class="fa-solid fa-sink" style="background:#3b82f6;"></i><span style="font-weight:800; font-size:13px;">سباكة</span></div>
-      <div class="tech-card" onclick="sendOrder('⚡ طلب كهربائي')"><i class="fa-solid fa-plug" style="background:#f59e0b;"></i><span style="font-weight:800; font-size:13px;">كهرباء</span></div>
-      <div class="tech-card" onclick="sendOrder('🪚 طلب نجار')"><i class="fa-solid fa-hammer" style="background:#8b5cf6;"></i><span style="font-weight:800; font-size:13px;">نجارة</span></div>
-      <div class="tech-card" onclick="sendOrder('❄️ طلب فني تكييف')"><i class="fa-solid fa-snowflake" style="background:#0ea5e9;"></i><span style="font-weight:800; font-size:13px;">تكييف</span></div>
-    </div>
+    <button class="action-btn-red" onclick="sendOrder('💊 طلب صيدلية', ['pharm_order', 'pharm_addr'])">اطلب الدواء</button>
   </section>
 
-  <!-- 4. دفع الفواتير (غامقة) -->
+  <!-- 6. بقالة -->
+  <section id="view-grocery" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">بقالة وسوبر ماركت</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <textarea id="groc_order" class="input-dark" rows="3" placeholder="اكتب طلبات البيت (لبن، جبنة، عيش...)"></textarea>
+      <input type="text" id="groc_addr" class="input-dark" placeholder="عنوان التوصيل">
+    </div>
+    <button class="action-btn-red" onclick="sendOrder('🛒 طلب بقالة', ['groc_order', 'groc_addr'])">إرسال الطلبات</button>
+  </section>
+
+  <!-- 7. سوق -->
+  <section id="view-market" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">السوق والخضار</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <textarea id="market_order" class="input-dark" rows="3" placeholder="اكتب طلبات السوق (خضار، فاكهة، لحوم...)"></textarea>
+      <input type="text" id="market_addr" class="input-dark" placeholder="عنوان التوصيل">
+    </div>
+    <button class="action-btn-red" onclick="sendOrder('🥦 طلب سوق', ['market_order', 'market_addr'])">تسوق الآن</button>
+  </section>
+
+  <!-- 8. غسيل وتنظيف -->
+  <section id="view-laundry" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">غسيل وتنظيف</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <select id="laundry_type" class="input-dark">
+        <option value="غسيل ومكواة ملابس">غسيل ومكواة ملابس</option>
+        <option value="تنظيف سجاد/بطاطين">تنظيف سجاد أو بطاطين</option>
+      </select>
+      <input type="text" id="laundry_addr" class="input-dark" placeholder="عنوان استلام الملابس">
+    </div>
+    <button class="action-btn-red" onclick="sendOrder('👕 خدمة غسيل وتنظيف', ['laundry_type', 'laundry_addr'])">حجز مندوب الاستلام</button>
+  </section>
+
+  <!-- 9. دفع فواتير -->
   <section id="view-bills" class="sub-page-view">
-    <div class="sub-header dark">
-      <div style="font-weight:900; font-size:16px;">دفع الفواتير</div>
-      <button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button>
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">دفع الفواتير</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <select id="bill_type" class="input-dark">
+        <option value="شحن رصيد/باقة نت">شحن رصيد / باقة نت</option>
+        <option value="فاتورة كهرباء/مياه">فاتورة كهرباء / مياه</option>
+      </select>
+      <input type="text" id="bill_num" class="input-dark" placeholder="رقم الموبايل أو كود المشترك">
+      <input type="number" id="bill_amount" class="input-dark" placeholder="المبلغ (ج.م)">
     </div>
-    <div class="tech-grid">
-      <div class="tech-card" onclick="sendOrder('📱 شحن رصيد')"><i class="fa-solid fa-mobile-screen" style="background:#e11d48;"></i><span style="font-weight:800; font-size:13px;">شحن رصيد</span></div>
-      <div class="tech-card" onclick="sendOrder('💡 فاتورة كهرباء')"><i class="fa-solid fa-lightbulb" style="background:#f59e0b;"></i><span style="font-weight:800; font-size:13px;">كهرباء</span></div>
-      <div class="tech-card" onclick="sendOrder('💧 فاتورة مياه')"><i class="fa-solid fa-faucet-drip" style="background:#0ea5e9;"></i><span style="font-weight:800; font-size:13px;">مياه</span></div>
-      <div class="tech-card" onclick="sendOrder('🌐 فاتورة إنترنت')"><i class="fa-solid fa-wifi" style="background:#10b981;"></i><span style="font-weight:800; font-size:13px;">إنترنت</span></div>
-    </div>
-    <div style="padding:20px;">
-      <input type="text" id="bill_num" class="input-dark" placeholder="رقم المشترك أو الهاتف">
-      <button class="action-btn-red" style="margin:0; width:100%;" onclick="sendOrder('🧾 تأكيد دفع فاتورة', ['bill_num'])">تأكيد الدفع</button>
-    </div>
+    <button class="action-btn-red" onclick="sendOrder('🧾 دفع فواتير', ['bill_type', 'bill_num', 'bill_amount'])">تأكيد الدفع</button>
   </section>
 
-  <!-- 5. هاتلي أي حاجة (غامقة) -->
-  <section id="view-bringme" class="sub-page-view">
-    <div class="sub-header dark">
-      <div style="font-weight:900; font-size:16px;">هاتلي أي حاجة</div>
-      <button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button>
+  <!-- 10. خدمات منزلية (فني) -->
+  <section id="view-tech" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">خدمات منزلية</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <select id="tech_type" class="input-dark">
+        <option value="سباك">سباك</option>
+        <option value="كهربائي">كهربائي</option>
+        <option value="فني تكييف">فني تكييف</option>
+      </select>
+      <textarea id="tech_desc" class="input-dark" rows="3" placeholder="اشرح المشكلة..."></textarea>
+      <input type="text" id="tech_addr" class="input-dark" placeholder="العنوان بالتفصيل">
     </div>
-    <div style="padding:20px; text-align:center;">
-      <textarea id="bring_text" class="input-dark" rows="4" placeholder="اكتب اسم المنتج أو طلبك هنا..."></textarea>
+    <button class="action-btn-red" onclick="sendOrder('🛠️ طلب فني', ['tech_type', 'tech_desc', 'tech_addr'])">اطلب الفني</button>
+  </section>
+
+  <!-- 11. هاتلي أي حاجة -->
+  <section id="view-bringme" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">هاتلي أي حاجة</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <textarea id="bring_text" class="input-dark" rows="3" placeholder="اكتب اللي إنت محتاجه..."></textarea>
+      <input type="text" id="bring_from" class="input-dark" placeholder="اسم المحل (اختياري)">
       <input type="text" id="bring_addr" class="input-dark" placeholder="عنوان التوصيل">
-      <button class="action-btn-red" style="margin:20px 0 0 0; width:100%;" onclick="sendOrder('🛍️ هاتلي أي حاجة', ['bring_text', 'bring_addr'])">إرسال الطلب</button>
+    </div>
+    <button class="action-btn-red" onclick="sendOrder('🛍️ طلب هاتلي أي حاجة', ['bring_text', 'bring_from', 'bring_addr'])">إرسال الطلب</button>
+  </section>
+
+  <!-- 12. المزيد (الحساب والمحفظة) -->
+  <section id="view-more" class="sub-page-view">
+    <div class="sub-header"><div style="font-weight:900; font-size:16px;">المزيد والحساب</div><button class="back-btn" onclick="openScreen('view-home')"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div class="form-container">
+      <div style="background:var(--card-dark); border-radius:16px; padding:20px; text-align:center; margin-bottom:16px; border:1px solid rgba(255,255,255,0.05);">
+        <h3 style="font-size:20px; font-weight:900; color:var(--primary); margin-bottom:8px;">باقة FLY PASS 👑</h3>
+        <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">اشترك بـ 99 ج شهرياً واستمتع بتوصيل مجاني وخصومات.</p>
+        <button style="background:var(--primary); color:#fff; border:0; padding:10px 20px; border-radius:10px; font-weight:800; cursor:pointer;" onclick="sendDirectWhatsApp('طلب تفعيل باقة FLY PASS')">تفعيل الباقة</button>
+      </div>
+      <div style="background:var(--card-dark); border-radius:16px; padding:20px; text-align:center; border:1px solid rgba(255,255,255,0.05);">
+        <span style="font-size:12px; color:var(--text-sub);">رصيد المحفظة</span>
+        <h2 style="font-size:28px; font-weight:900; color:#10b981; margin:8px 0;">0 ج.م</h2>
+        <button style="background:#0ea5e9; color:#fff; border:0; padding:10px 20px; border-radius:10px; font-weight:800; cursor:pointer; width:100%; mt:10px;" onclick="showAppModal('الدعم', 'تواصل معنا لشحن المحفظة')">شحن المحفظة</button>
+      </div>
     </div>
   </section>
 
   <!-- البار السفلي المطابق للصورة -->
   <nav class="bottom-nav-bar">
-    <button class="nav-item active" onclick="openScreen('view-home')"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
-    <button class="nav-item" onclick="openScreen('view-orders')"><i class="fa-solid fa-box"></i><span>الطلبات</span></button>
-    <button class="nav-item" onclick="openScreen('view-bills')"><i class="fa-solid fa-wallet"></i><span>المحفظة</span></button>
-    <button class="nav-item" onclick="openScreen('view-more')"><i class="fa-solid fa-user"></i><span>الحساب</span></button>
+    <button class="nav-item active" id="nav-home" onclick="openScreen('view-home')"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
+    <button class="nav-item" id="nav-orders" onclick="openScreen('view-orders')"><i class="fa-solid fa-box"></i><span>الطلبات</span></button>
+    <button class="nav-item" id="nav-wallet" onclick="openScreen('view-more')"><i class="fa-solid fa-wallet"></i><span>المحفظة</span></button>
+    <button class="nav-item" id="nav-account" onclick="openScreen('view-more')"><i class="fa-solid fa-user"></i><span>الحساب</span></button>
   </nav>
 
 </div>
 
 <script>
-// ==================== البرمجة والموتور الأساسي ====================
+// ==================== البرمجة والتنقل والواتساب ====================
 const ADMIN_PHONE = "201017908076";
 
-function sendDirectWhatsApp(text) { window.location.href = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(text)}`; }
-
+// إرسال الطلبات للواتساب بشكل منظم
 function sendOrder(title, inputIds = []) {
-  let msg = title + "\n";
+  let msg = title + "\n\nالتفاصيل:\n";
   inputIds.forEach(id => {
-    const val = document.getElementById(id)?.value;
-    if(val) msg += `- ${val}\n`;
+    const el = document.getElementById(id);
+    if(el && el.value) {
+      msg += `- ${el.placeholder || 'إدخال'}: ${el.value}\n`;
+    }
   });
-  sendDirectWhatsApp(msg);
+  window.location.href = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(msg)}`;
 }
 
-function selCar(element, type) {
-  document.querySelectorAll('.car-card').forEach(c => c.classList.remove('active'));
-  element.classList.add('active');
+function sendDirectWhatsApp(text) { 
+  window.location.href = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(text)}`; 
 }
 
-// التنقل بين الشاشات
+// فتح الشاشات بدون تحويل عشوائي وتفعيل الناف بار السفلي
 function openScreen(id) {
-  document.querySelectorAll('.sub-page-view').forEach(el => el.classList.remove('active'));
-  const target = document.getElementById(id);
-  if(target) {
-    target.classList.add('active');
+  const targetScreen = document.getElementById(id);
+  if(targetScreen) {
+    // إخفاء كل الشاشات
+    document.querySelectorAll('.sub-page-view').forEach(el => el.classList.remove('active'));
+    // إظهار الشاشة المطلوبة
+    targetScreen.classList.add('active');
     window.scrollTo(0,0);
+    
+    // تلوين الناف بار السفلي
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    if(id === 'view-home') document.getElementById('nav-home').classList.add('active');
+    else if(id === 'view-orders') document.getElementById('nav-orders').classList.add('active');
+    else if(id === 'view-more') document.getElementById('nav-account').classList.add('active');
   } else {
-    // لو الشاشة لسه متبرمجتش كـ UI بس، بنبعت اوردر للواتس
-    sendDirectWhatsApp(`طلب خدمة: ${id}`);
+    showAppModal('قريباً', 'هذه الخدمة قيد التطوير وسيتم تفعيلها قريباً!');
   }
 }
 
-// نظام الدخول والـ OTP
-let generatedOtpCode = "";
-function checkLogin() {
-  if(!localStorage.getItem('fly_user_name')) {
-    document.getElementById('authGateScreen').style.display = 'flex';
-  }
+// نافذة التنبيهات المنبثقة
+function showAppModal(title, msg, iconClass = "fa-circle-info") {
+  document.getElementById('customModalTitle').textContent = title;
+  document.getElementById('customModalMessage').textContent = msg;
+  document.getElementById('customModalIcon').innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+  document.getElementById('appCustomModal').classList.add('show');
 }
-function switchAuthMode(mode) {
-  const isLogin = mode === 'login';
-  document.getElementById('btnTabLogin').classList.toggle('active', isLogin);
-  document.getElementById('btnTabSignup').classList.toggle('active', !isLogin);
-  document.getElementById('loginFormSection').style.display = isLogin ? 'block' : 'none';
-  document.getElementById('signupFormSection').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('verifyCodeSection').style.display = 'none';
-}
-function processLoginAction() {
-  localStorage.setItem('fly_user_name', document.getElementById('loginEmail').value || 'عميل');
-  document.getElementById('authGateScreen').style.display = 'none';
-}
-function processSendRealOtp() {
-  const email = document.getElementById('signupEmailVal').value;
-  if(!email) return alert("اكتب الإيميل");
-  generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString(); 
-  document.getElementById('btnSendOtp').textContent = "جاري الإرسال...";
-  emailjs.send("service_xylpe3a", "template_4ovzrts", { to_email: email, otp_code: generatedOtpCode })
-    .then(() => {
-       document.getElementById('signupFormSection').style.display = 'none';
-       document.getElementById('verifyCodeSection').style.display = 'block';
-    }).catch(() => alert("خطأ في الإرسال"));
-}
-function verifyRealOtpCode() {
-  if(document.getElementById('enteredOtpCode').value === generatedOtpCode) {
-    localStorage.setItem('fly_user_name', document.getElementById('signupFullname').value);
-    document.getElementById('authGateScreen').style.display = 'none';
-  } else alert("كود خاطئ");
-}
-function handleGoogleSignInDirect() {
-  const provider = new window.firebaseFns.GoogleAuthProvider();
-  window.firebaseFns.signInWithPopup(window.firebaseAuth, provider).then(res => {
-    localStorage.setItem('fly_user_name', res.user.displayName);
-    document.getElementById('authGateScreen').style.display = 'none';
-  });
-}
-
-// تشغيل الـ WebSockets الأصلية
-function connectWebSocket() {
-  const ws = new WebSocket("wss://ntfy.sh/flyexpress_super_admin_2026/ws");
-  ws.onmessage = function(event) {
-    try {
-      const data = JSON.parse(event.data);
-      if (data.event === "message" && data.message) {
-        const msg = JSON.parse(data.message);
-        if (msg.notice && document.getElementById("dailyPromoTickerTxt")) {
-          document.getElementById("dailyPromoTickerTxt").textContent = msg.notice;
-        }
-      }
-    } catch(e) {}
-  };
-  ws.onclose = () => setTimeout(connectWebSocket, 3000);
-}
-connectWebSocket();
+function closeAppModal() { document.getElementById('appCustomModal').classList.remove('show'); }
 </script>
 </body>
 </html>
