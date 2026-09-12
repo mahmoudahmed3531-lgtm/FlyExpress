@@ -38,6 +38,7 @@
 input, textarea, select { user-select: auto; outline: none; }
 body { background-color: #030712; display: flex; justify-content: center; min-height: 100vh; color: var(--text-main); }
 
+/* الخلفية الأصلية للموتوسيكل مع التغطية الداكنة الفخمة */
 .mobile-frame {
   width: 100%; max-width: 430px; background-color: #090d16;
   background-image: linear-gradient(180deg, rgba(9, 13, 22, 0.75) 0%, rgba(9, 13, 22, 0.92) 100%), url('https://raw.githubusercontent.com/mahmoudahmed3531-lgtm/FlyExpress/main/1789048683343.jpg');
@@ -124,7 +125,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 <body>
 <div class="mobile-frame">
 
-  <!-- شريط الـ RGB المتحرك (مرتبط بلوحة تحكم الأدمن) -->
+  <!-- شريط الـ RGB المتحرك (مرتبط بلوحة تحكم الأدمن ومزود بنظام جلب ذكي أوتوماتيك) -->
   <div class="admin-promo-ticker">
     <div class="marquee-container">
       <div class="marquee-text">
@@ -338,7 +339,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
   <!-- الناف بار السفلي -->
   <nav class="tab-bottom-nav">
     <button class="tab-btn active" onclick="switchNavTab('home', this)"><i class="fa-solid fa-house" style="font-size:18px;"></i><span>الرئيسية</span></button>
-    <button class="tab-btn" onclick="switchNavTab('orders', this)"><></i><span>التتبع</span></button>
+    <button class="tab-btn" onclick="switchNavTab('orders', this)"><i class="fa-solid fa-box" style="font-size:18px;"></i><span>التتبع</span></button>
     <button class="tab-btn" onclick="switchNavTab('wallet', this)"><i class="fa-solid fa-wallet" style="font-size:18px;"></i><span>المحفظة</span></button>
     <button class="tab-btn" onclick="toggleDrawer(true)"><i class="fa-solid fa-bars" style="font-size:18px;"></i><span>المزيد</span></button>
   </nav>
@@ -381,24 +382,21 @@ function confirmAppLogout() {
   document.getElementById('authGateScreen').style.display = 'flex';
 }
 
-// الاتصال المباشر بلوحة تحكم الأدمن لضمان تحديث الأوامر فوراً
-function applyMasterData(data) {
-  if (!data) return;
-  if (data.notice && document.getElementById("dailyPromoTickerTxt")) {
-    document.getElementById("dailyPromoTickerTxt").textContent = data.notice;
-  }
+// نظام تحديث تلقائي ذكي (Auto-Fetch Polling) لضمان استقبال أوامر الأدمن بدون كاش أو مشاكل
+async function fetchAdminTickerUpdates() {
+  try {
+    const response = await fetch("https://ntfy.sh/flyexpress_super_admin_2026/json?poll=1", { cache: "no-store" });
+    const data = await response.json();
+    if (data && data.message) {
+      const parsed = JSON.parse(data.message);
+      if (parsed.notice && document.getElementById("dailyPromoTickerTxt")) {
+        document.getElementById("dailyPromoTickerTxt").textContent = parsed.notice;
+      }
+    }
+  } catch (e) {}
 }
-function connectWebSocket() {
-  const ws = new WebSocket("wss://ntfy.sh/flyexpress_super_admin_2026/ws");
-  ws.onmessage = function(event) {
-    try {
-      const data = JSON.parse(event.data);
-      if (data.event === "message" && data.message) { applyMasterData(JSON.parse(data.message)); }
-    } catch(e) {}
-  };
-  ws.onclose = function() { setTimeout(connectWebSocket, 3000); };
-}
-connectWebSocket();
+// فحص التحديثات كل 3 ثواني أوتوماتيك
+setInterval(fetchAdminTickerUpdates, 3000);
 
 let generatedOtpCode = "";
 function switchAuthMode(mode) {
@@ -440,7 +438,7 @@ function initializeUserSession() {
   if(document.getElementById('drawerUserName')) document.getElementById('drawerUserName').textContent = name;
 }
 window.addEventListener('load', () => { 
-  if (localStorage.getItem('fly_user_name')) { 
+  if (localStorage.-getItem('fly_user_name')) { 
     document.getElementById('authGateScreen').style.display = 'none'; 
     initializeUserSession();
   } 
