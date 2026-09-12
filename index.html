@@ -21,10 +21,10 @@
   })();
 </script>
 
-<!-- ربط Firebase لتسجيل الدخول وحفظ الحسابات -->
+<!-- ربط Firebase لتسجيل الدخول وحسابات Google -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
   
   const firebaseConfig = {
     apiKey: "AIzaSyApqKjD46xobFTyBXY4lXRVZttnLGZxO98",
@@ -39,8 +39,7 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   window.firebaseAuth = auth;
-  // تم إضافة createUserWithEmailAndPassword لإنشاء الحساب بصمت بعد تأكيد الكود
-  window.firebaseFns = { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup };
+  window.firebaseFns = { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup };
 </script>
 
 <style>
@@ -145,6 +144,9 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .app-custom-modal-overlay.show { display: flex; }
 .app-custom-modal-card { background: #0f172a; border: 1.5px solid var(--primary); border-radius: 22px; width: 100%; max-width: 320px; padding: 22px; text-align: center; color: #fff; box-shadow: 0 10px 40px rgba(225,29,72,0.4); }
 
+.maintenance-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
+.force-update-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
+
 .auth-overlay { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 20px; color: #fff; overflow-y: auto; }
 .auth-card-box { position: relative; z-index: 2; width: 100%; max-width: 360px; text-align: center; }
 .auth-main-logo { width: 110px; height: 110px; border-radius: 28px; box-shadow: 0 0 35px rgba(225, 29, 72, 0.6); margin-bottom: 12px; border: 2px solid var(--primary); object-fit: cover; background: #0b0f19; }
@@ -198,24 +200,24 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
       <!-- نموذج تسجيل الدخول -->
       <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();">
-        <input type="email" id="loginEmail" class="custom-field" placeholder="البريد الإلكتروني (Gmail)">
+        <input type="text" id="loginUsername" class="custom-field" placeholder="اسم المستخدم أو الهاتف">
         <input type="password" id="loginPassword" class="custom-field" placeholder="كلمة المرور">
         <button type="submit" class="primary-action-btn">تسجيل الدخول 🚀</button>
       </form>
 
-      <!-- نموذج التسجيل بالـ OTP الحقيقي -->
+      <!-- نموذج التسجيل بالـ OTP -->
       <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSendRealOtp();">
         <input type="text" id="signupFullname" class="custom-field" placeholder="الاسم الكريم" required>
         <input type="tel" id="signupPhoneNum" class="custom-field" placeholder="رقم الهاتف للتواصل" required>
-        <!-- حقل الإيميل المطلوب لإرسال الكود -->
-        <input type="email" id="signupEmailVal" class="custom-field" placeholder="البريد الإلكتروني (لاستلام الكود)" required>
+        <!-- تمت إضافة حقل الإيميل المطلوب لإرسال الكود -->
+        <input type="email" id="signupEmailVal" class="custom-field" placeholder="البريد الإلكتروني (Gmail لاستلام الكود)" required>
         <input type="password" id="signupPasscode" class="custom-field" placeholder="كلمة المرور (6 أحرف فأكثر)" required>
         <button type="submit" class="primary-action-btn" id="btnSendOtp">إرسال كود الـ OTP إلى إيميلك 📨</button>
       </form>
 
-      <!-- شاشة إدخال الـ OTP -->
+      <!-- شاشة إدخال الـ OTP (تظهر بعد إرسال الكود) -->
       <div id="verifyCodeSection" style="display:none;">
-        <p style="font-size:12px; color:#10b981; margin-bottom:10px;">تم إرسال كود التحقق (OTP) إلى بريدك الإلكتروني بنجاح! ادخل الكود هنا:</p>
+        <p style="font-size:12px; color:#10b981; margin-bottom:10px;">تم إرسال رسالة بها كود التحقق (OTP) إلى بريدك الإلكتروني! تفقد صندوق الوارد أو الـ Spam وادخل الكود هنا:</p>
         <input type="text" id="enteredOtpCode" class="custom-field" placeholder="أدخل الكود المكون من 4 أرقام" style="text-align:center; font-size:18px; letter-spacing:4px;" maxlength="4">
         <button type="button" class="primary-action-btn" style="background:#10b981;" onclick="verifyRealOtpCode()">تأكيد الكود وإنشاء الحساب ✨</button>
       </div>
@@ -225,6 +227,19 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
         <span>متابعة باستخدام حساب Google</span>
       </button>
     </div>
+  </div>
+
+  <div class="maintenance-gate" id="maintenanceScreen">
+    <div style="font-size:60px; color:#ef4444; margin-bottom:16px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+    <h2 style="font-size:22px; font-weight:900; margin-bottom:8px;">تنبيه الصيانة ⛔</h2>
+    <p style="font-size:13px; color:#cbd5e1; line-height:1.6;">تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير، نعتذر عن الإزعاج وسنعود قريباً لخدمتكم بشكل أفضل! 🛵</p>
+  </div>
+
+  <div class="force-update-gate" id="forceUpdateModal">
+    <img src="icon-512.png" style="width:110px; height:110px; border-radius:28px; margin-bottom:18px; border:2px solid var(--primary); object-fit:cover;">
+    <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
+    <p style="font-size:13px; color:#cbd5e1; margin-bottom:24px;">يرجى التحديث الآن لمواصلة استخدام التطبيق بأمان.</p>
+    <button id="btnDownloadApk" class="primary-action-btn" style="background:#0ea5e9;"><i class="fa-solid fa-cloud-arrow-down"></i> تحميل التحديث الآن ⚡</button>
   </div>
 
   <header class="top-nav-bar">
@@ -674,10 +689,9 @@ function submitParcelOrderAction() {
   sendDirectWhatsApp(`طلب إرسال طرد 📦🛵\nالمحتوى: ${d}\nمن: ${f}\nإلى: ${t}`);
 }
 
-// ========================================================
-// أكواد المصادقة وتوليد الـ OTP الاحترافي وإرساله كرسالة Inbox
-// ========================================================
-
+// -------------------------------------------------------------
+// أكواد المصادقة، التسجيل وإرسال الـ OTP عبر EmailJS
+// -------------------------------------------------------------
 let generatedOtpCode = "";
 let pendingUserData = {};
 
@@ -693,25 +707,10 @@ function switchAuthMode(mode) {
 }
 
 function processLoginAction() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass = document.getElementById('loginPassword').value.trim();
-  
-  if (email && pass) {
-     window.firebaseFns.signInWithEmailAndPassword(window.firebaseAuth, email, pass)
-     .then(() => {
-        localStorage.setItem('fly_user_name', email.split('@')[0]);
-        initializeUserSession();
-     })
-     .catch((error) => {
-        showAppModal("تنبيه", "بيانات الدخول غير صحيحة.");
-     });
-  } else {
-     localStorage.setItem('fly_user_name', document.getElementById('loginEmail').value.trim() || 'عميل');
-     initializeUserSession();
-  }
+  localStorage.setItem('fly_user_name', document.getElementById('loginUsername').value.trim() || 'عميل');
+  initializeUserSession();
 }
 
-// 1. توليد كود من 4 أرقام وإرساله فقط عبر EmailJS (لضمان وصوله للـ Inbox)
 function processSendRealOtp() {
   const name = document.getElementById('signupFullname').value.trim();
   const phone = document.getElementById('signupPhoneNum').value.trim();
@@ -728,93 +727,66 @@ function processSendRealOtp() {
   }
 
   pendingUserData = { name, phone, email, pass };
-  // توليد الكود
+  // توليد كود من 4 أرقام
   generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString(); 
 
   const btn = document.getElementById('btnSendOtp');
   btn.textContent = "جاري إرسال الكود لجيميلك... ⏳";
   btn.disabled = true;
 
-  // إرسال الكود عن طريق EmailJS
+  // تجهيز المتغيرات لقالب EmailJS
   const templateParams = {
     to_email: email,
     to_name: name,
     otp_code: generatedOtpCode
   };
 
+  // إرسال الإيميل باستخدام مفاتيحك
   emailjs.send("service_xylpe3a", "template_4ovzrts", templateParams)
     .then(function(response) {
        btn.textContent = "إرسال كود الـ OTP إلى إيميلك 📨";
        btn.disabled = false;
        document.getElementById('signupFormSection').style.display = 'none';
        document.getElementById('verifyCodeSection').style.display = 'block';
-       alert(`تم إرسال كود التحقق بنجاح إلى البريد (${email}). تفقد بريدك لتجد الكود.`);
+       alert(`تم إرسال كود التحقق بنجاح إلى البريد (${email}). تفقد بريدك (وصندوق الـ Spam) لنسخ الكود وإدخاله.`);
     }, function(error) {
        btn.textContent = "إرسال كود الـ OTP إلى إيميلك 📨";
        btn.disabled = false;
-       alert("حدث خطأ أثناء إرسال الإيميل. تأكد من إعدادات EmailJS.");
+       alert("حدث خطأ أثناء إرسال الإيميل. يرجى التأكد من إعدادات EmailJS.");
     });
 }
 
-// 2. التحقق من الكود المدخل وتسجيل الحساب صامتاً بدون إرسال روابط Firebase المزعجة
 function verifyRealOtpCode() {
   const enteredCode = document.getElementById('enteredOtpCode').value.trim();
   if (enteredCode === generatedOtpCode) {
-    
-    // الكود صحيح، نقوم الآن بإنشاء الحساب في Firebase بصمت ليتمكن من تسجيل الدخول لاحقاً
-    window.firebaseFns.createUserWithEmailAndPassword(window.firebaseAuth, pendingUserData.email, pendingUserData.pass)
-    .then((userCredential) => {
-        // تم الحفظ في فايربيز بنجاح (بدون إرسال رسالة الرابط المزعجة)
-        finalizeUserRegistration();
-    })
-    .catch((error) => {
-        // لو الحساب موجود مسبقاً، مفيش مشكلة هنفتحله التطبيق عادي
-        if(error.code === 'auth/email-already-in-use') {
-           finalizeUserRegistration();
-        } else {
-           alert("حدث خطأ في التسجيل: " + error.message);
-        }
-    });
-
-  } else {
-    alert("❌ كود التحقق غير صحيح، يرجى مراجعة بريدك وإعادة كتابة الكود بدقة.");
-  }
-}
-
-function finalizeUserRegistration() {
+    // الكود صحيح، نحفظ بيانات العميل ونسجل الدخول
     localStorage.setItem('fly_user_name', pendingUserData.name);
     localStorage.setItem('fly_user_phone', pendingUserData.phone);
     localStorage.setItem('fly_user_email', pendingUserData.email);
     
     // إرسال إشعار للإدارة بوجود تسجيل جديد
     const uid = getMyUid();
-    const adminMsg = `🚨 *عميل جديد سجل في التطبيق (تم تفعيله بـ OTP بنجاح)!*\n👤 الاسم: ${pendingUserData.name}\n📱 رقم الهاتف: ${pendingUserData.phone}\n📧 الإيميل: ${pendingUserData.email}\n🔑 كود العميل: ${uid}`;
+    const adminMsg = `🚨 *عميل جديد سجل في التطبيق (مفعل بـ OTP)!*\n👤 الاسم: ${pendingUserData.name}\n📱 رقم الهاتف: ${pendingUserData.phone}\n📧 الإيميل: ${pendingUserData.email}\n🔑 كود العميل: ${uid}`;
     const xhr = new XMLHttpRequest(); xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); xhr.send(adminMsg);
 
     initializeUserSession();
     showAppModal("أهلاً بك! ✨", "تم التحقق بنجاح وتفعيل حسابك في Fly Express!");
+  } else {
+    alert("❌ كود التحقق غير صحيح، يرجى مراجعة بريدك وإعادة كتابة الكود بدقة.");
+  }
 }
 
 function handleGoogleSignInDirect() {
-  try {
-    const provider = new window.firebaseFns.GoogleAuthProvider();
-    window.firebaseFns.signInWithPopup(window.firebaseAuth, provider).then(result => {
-        const user = result.user;
-        localStorage.setItem('fly_user_name', user.displayName || 'عميل Google');
-        localStorage.setItem('fly_user_email', user.email);
-        
-        const uid = getMyUid();
-        const adminMsg = `🚨 *عميل جديد سجل (عبر Google)!*\n👤 الاسم: ${user.displayName}\n📧 الإيميل: ${user.email}\n🔑 كود العميل: ${uid}`;
-        const xhr = new XMLHttpRequest(); xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); xhr.send(adminMsg);
+  const name = prompt("أدخل اسمك:") || "عميل Google";
+  const phone = prompt("أدخل رقم هاتفك:") || "010";
+  localStorage.setItem('fly_user_name', name);
+  localStorage.setItem('fly_user_phone', phone);
+  const uid = getMyUid();
+  const adminMsg = `🚨 *عميل جديد سجل (عبر Google)!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`;
+  const xhr = new XMLHttpRequest(); xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); xhr.send(adminMsg);
 
-        initializeUserSession();
-        showAppModal("تم الدخول بنجاح! 🚀", `أهلاً بك يا ${user.displayName || 'عميل'} بحساب Google!`);
-    }).catch(err => {
-        alert("خطأ في تسجيل Google: " + err.message);
-    });
-  } catch (error) {
-    alert("خطأ في تسجيل Google: " + error.message);
-  }
+  initializeUserSession();
+  showAppModal("تم الدخول بنجاح! 🚀", `أهلاً بك يا ${name} بحساب Google!`);
 }
 
 function initializeUserSession() {
