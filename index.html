@@ -76,18 +76,18 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .quick-service-label { font-size: 11px; font-weight: 800; color: #f8fafc; }
 .quick-service-sub { font-size: 9px; color: var(--text-sub); }
 
-.bg-food { background: linear-gradient(135deg, #f97316, #c2410c); }
-.bg-parcel { background: linear-gradient(135deg, #f59e0b, #d97706); }
-.bg-school { background: linear-gradient(135deg, #ef4444, #b91c1c); }
 .bg-rides { background: linear-gradient(135deg, #0284c7, #0369a1); }
-.bg-bringme { background: linear-gradient(135deg, #db2777, #be185d); }
-.bg-pharmacy { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-.bg-veggies { background: linear-gradient(135deg, #10b981, #047857); }
+.bg-school { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+.bg-parcel { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.bg-food { background: linear-gradient(135deg, #f97316, #c2410c); }
 .bg-grocery { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-.bg-clinics { background: linear-gradient(135deg, #38bdf8, #0284c7); }
-.bg-tech { background: linear-gradient(135deg, #fbbf24, #b45309); }
-.bg-bills { background: linear-gradient(135deg, #34d399, #059669); }
-.bg-gifts { background: linear-gradient(135deg, #f43f5e, #9f1239); }
+.bg-veggies { background: linear-gradient(135deg, #10b981, #047857); }
+.bg-pharmacy { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.bg-bringme { background: linear-gradient(135deg, #db2777, #be185d); }
+.bg-gifts { background: linear-gradient(135deg, #e11d48, #9f1239); }
+.bg-bills { background: linear-gradient(135deg, #059669, #047857); }
+.bg-tech { background: linear-gradient(135deg, #d97706, #b45309); }
+.bg-clinics { background: linear-gradient(135deg, #0284c7, #0369a1); }
 
 .floating-order-btn { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--primary-gradient); color: #fff; padding: 12px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(225,29,72,0.6); cursor: pointer; z-index: 90; border: 1px solid rgba(255,255,255,0.25); }
 
@@ -105,7 +105,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .tab-btn { background: transparent; border: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); font-size: 11px; font-weight: 800; font-family: inherit; cursor: pointer; flex: 1; }
 .tab-btn.active { color: var(--primary); }
 
-/* القائمة الجانبية (Drawer) الأصلية بشعارك وصورتك */
+/* القائمة الجانبية (Drawer) */
 .drawer-menu { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 10000; display: none; justify-content: flex-end; backdrop-filter: blur(5px); }
 .drawer-menu.show { display: flex; }
 .drawer-sheet { width: 82%; max-width: 320px; height: 100%; background: #0b0f19; color: #fff; padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border); overflow-y:auto; }
@@ -124,7 +124,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 <body>
 <div class="mobile-frame">
 
-  <!-- شريط الأخبار والـ RGB المتحرك (مرتبط بلوحة تحكم الأدمن) -->
+  <!-- شريط الـ RGB المتحرك (مرتبط بلوحة تحكم الأدمن) -->
   <div class="admin-promo-ticker">
     <div class="marquee-container">
       <div class="marquee-text">
@@ -135,7 +135,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </div>
 
-  <!-- شاشة تسجيل الدخول -->
+  <!-- شاشة الدخول والتسجيل -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" alt="Logo" class="auth-main-logo">
@@ -210,49 +210,48 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       <i class="fa-solid fa-angle-left"></i>
     </div>
 
-    <!-- شبكة الخدمات (12 خدمة متكاملة لا توجد أي خدمة فاضية) -->
+    <!-- شبكة الخدمات -->
     <div class="quick-services-grid">
-      <div class="quick-service-item" onclick="openServiceScreen('food')">
-        <div class="quick-service-icon bg-food"><i class="fa-solid fa-burger"></i></div><div class="quick-service-label">طلب أكل</div><div class="quick-service-sub">أشهر المطاعم</div>
-      </div>
-      <div class="quick-service-item" onclick="openServiceScreen('orders')">
-        <div class="quick-service-icon bg-parcel"><i class="fa-solid fa-box-open"></i></div><div class="quick-service-label">إرسال طرد</div><div class="quick-service-sub">شحن ونقل</div>
+      <div class="quick-service-item" onclick="openServiceScreen('rides')">
+        <div class="quick-service-icon bg-rides"><i class="fa-solid fa-car-side"></i></div><div class="quick-service-label">مشوار</div><div class="quick-service-sub">عادي ومتعدد</div>
       </div>
       <div class="quick-service-item" onclick="openServiceScreen('school')">
         <div class="quick-service-icon bg-school"><i class="fa-solid fa-bus"></i></div><div class="quick-service-label">توصيل طالب</div><div class="quick-service-sub">مدارس ودروس</div>
       </div>
-      <div class="quick-service-item" onclick="openServiceScreen('rides')">
-        <div class="quick-service-icon bg-rides"><i class="fa-solid fa-car-side"></i></div><div class="quick-service-label">مشوار</div><div class="quick-service-sub">عادي ومتعدد</div>
+      <div class="quick-service-item" onclick="openServiceScreen('orders')">
+        <div class="quick-service-icon bg-parcel"><i class="fa-solid fa-box-open"></i></div><div class="quick-service-label">إرسال طرد</div><div class="quick-service-sub">شحن ونقل</div>
+      </div>
+      <div class="quick-service-item" onclick="openServiceScreen('food')">
+        <div class="quick-service-icon bg-food"><i class="fa-solid fa-burger"></i></div><div class="quick-service-label">طلب أكل</div><div class="quick-service-sub">أشهر المطاعم</div>
       </div>
 
       <div class="quick-service-item" onclick="openServiceScreen('bringme')">
-        <div class="quick-service-icon bg-bringme"><i class="fa-solid fa-bag-shopping"></i></div><div class="quick-service-label">هاتلي أي حاجة</div><div class="quick-service-sub">من أي مكان</div>
+        <div class="quick-service-icon bg-grocery"><i class="fa-solid fa-basket-shopping"></i></div><div class="quick-service-label">بقالة</div><div class="quick-service-sub">سوبر ماركت</div>
+      </div>
+      <div class="quick-service-item" onclick="openServiceScreen('bringme')">
+        <div class="quick-service-icon bg-veggies"><i class="fa-solid fa-leaf"></i></div><div class="quick-service-label">خضار وفاكهة</div><div class="quick-service-sub">طازج من السوق</div>
       </div>
       <div class="quick-service-item" onclick="openServiceScreen('pharmacy')">
         <div class="quick-service-icon bg-pharmacy"><i class="fa-solid fa-capsules"></i></div><div class="quick-service-label">صيدلية</div><div class="quick-service-sub">روشتة وعلاج</div>
       </div>
       <div class="quick-service-item" onclick="openServiceScreen('bringme')">
-        <div class="quick-service-icon bg-veggies"><i class="fa-solid fa-leaf"></i></div><div class="quick-service-label">خضار وفاكهة</div><div class="quick-service-sub">طازج من السوق</div>
-      </div>
-      <div class="quick-service-item" onclick="openServiceScreen('bringme')">
-        <div class="quick-service-icon bg-grocery"><i class="fa-solid fa-basket-shopping"></i></div><div class="quick-service-label">بقالة</div><div class="quick-service-sub">سوبر ماركت</div>
+        <div class="quick-service-icon bg-bringme"><i class="fa-solid fa-bag-shopping"></i></div><div class="quick-service-label">هاتلي أي حاجة</div><div class="quick-service-sub">من أي مكان</div>
       </div>
 
-      <div class="quick-service-item" onclick="openServiceScreen('clinics')">
-        <div class="quick-service-icon bg-clinics"><i class="fa-solid fa-stethoscope"></i></div><div class="quick-service-label">حجز عيادات</div><div class="quick-service-sub">مواعيد الدكاترة</div>
-      </div>
-      <div class="quick-service-item" onclick="openServiceScreen('technician')">
-        <div class="quick-service-icon bg-tech"><i class="fa-solid fa-screwdriver-wrench"></i></div><div class="quick-service-label">طلب فني</div><div class="quick-service-sub">سباك، كهربائي</div>
+      <div class="quick-service-item" onclick="openServiceScreen('gifts')">
+        <div class="quick-service-icon bg-gifts"><i class="fa-solid fa-gift"></i></div><div class="quick-service-label">إرسال هدية</div><div class="quick-service-sub">مع رسالة خاصة</div>
       </div>
       <div class="quick-service-item" onclick="openServiceScreen('bills')">
         <div class="quick-service-icon bg-bills"><i class="fa-solid fa-file-invoice-dollar"></i></div><div class="quick-service-label">دفع فواتير</div><div class="quick-service-sub">شحن ورصيد</div>
       </div>
-      <div class="quick-service-item" onclick="openServiceScreen('gifts')">
-        <div class="quick-service-icon bg-gifts"><i class="fa-solid fa-gift"></i></div><div class="quick-service-label">إرسال هدية</div><div class="quick-service-sub">مع رسالة خاصة</div>
+      <div class="quick-service-item" onclick="openServiceScreen('technician')">
+        <div class="quick-service-icon bg-tech"><i class="fa-solid fa-screwdriver-wrench"></i></div><div class="quick-service-label">طلب فني</div><div class="quick-service-sub">سباك، كهربائي</div>
+      </div>
+      <div class="quick-service-item" onclick="openServiceScreen('clinics')">
+        <div class="quick-service-icon bg-clinics"><i class="fa-solid fa-stethoscope"></i></div><div class="quick-service-label">حجز عيادات</div><div class="quick-service-sub">مواعيد الدكاترة</div>
       </div>
     </div>
 
-    <!-- الكروت السفلية -->
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin: 12px 16px 0 16px;">
       <div class="ui-card" style="padding:12px; margin:0; cursor:pointer;" onclick="openServiceScreen('family')">
         <div style="display:flex; align-items:center; gap:8px;">
@@ -269,7 +268,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </main>
 
-  <!-- ================= الشاشات الفرعية والخدمات بكامل تفاصيلها ================= -->
+  <!-- ================= الشاشات الفرعية ================= -->
   
   <section id="view-orders" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">📍 تتبع الطلبات النشطة</h3></div>
@@ -315,12 +314,12 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
   <section id="view-family" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>👨‍👩‍👧 الحساب العائلي</h3></div><div class="ui-card"><p>أضف أفراد عائلتك للطلب باسمهم بسهولة.</p><input type="text" class="custom-field" placeholder="اسم الابن أو الزوجة"><button class="primary-action-btn" style="background:#0284c7;" onclick="sendDirectWhatsApp('إضافة فرد للعائلة الحساب العائلي')">حفظ الفرد</button></div></section>
   <section id="view-merchant" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🏪 بوابة التجار والمحلات</h3></div><div class="ui-card"><button class="primary-action-btn" style="background:#f59e0b;" onclick="sendDirectWhatsApp('تنبيه من التاجر: تم تجهيز الطلب لإرسال الكابتن 🛵')">تم تجهيز الطلب 🛵</button></div></section>
 
-  <!-- القائمة الجانبية (Drawer) الأصلية بشعارك وصورتك -->
+  <!-- القائمة الجانبية (Drawer) -->
   <div class="drawer-menu" id="profileDrawer" onclick="if(event.target===this) toggleDrawer(false)">
     <div class="drawer-sheet">
       <div>
         <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:12px;">
-          <img src="icon-512.png" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--primary); background:#0f172a;">
+          <img src="icon-512.png" id="drawerUserAvatarImg" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--primary); background:#0f172a;">
           <div><h4 style="font-size:14px; font-weight:900;" id="drawerUserName">عميل Fly Express</h4><span style="font-size:10px; color:#4ade80;">عضو VIP</span></div>
         </div>
         <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('wallet');"><i class="fa-solid fa-wallet" style="width:20px; color:#10b981;"></i> محفظة FLY والنقاط</div>
@@ -336,10 +335,10 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     <i class="fa-solid fa-bolt"></i> اطلب الآن سريعاً
   </div>
 
-  <!-- الناف بار السفلي المطابق -->
+  <!-- الناف بار السفلي -->
   <nav class="tab-bottom-nav">
     <button class="tab-btn active" onclick="switchNavTab('home', this)"><i class="fa-solid fa-house" style="font-size:18px;"></i><span>الرئيسية</span></button>
-    <button class="tab-btn" onclick="switchNavTab('orders', this)"><i class="fa-solid fa-box" style="font-size:18px;"></i><span>التتبع</span></button>
+    <button class="tab-btn" onclick="switchNavTab('orders', this)"><></i><span>التتبع</span></button>
     <button class="tab-btn" onclick="switchNavTab('wallet', this)"><i class="fa-solid fa-wallet" style="font-size:18px;"></i><span>المحفظة</span></button>
     <button class="tab-btn" onclick="toggleDrawer(true)"><i class="fa-solid fa-bars" style="font-size:18px;"></i><span>المزيد</span></button>
   </nav>
@@ -382,7 +381,7 @@ function confirmAppLogout() {
   document.getElementById('authGateScreen').style.display = 'flex';
 }
 
-// الاتصال بلوحة تحكم الأدمن عبر WebSockets لتحديث شريط الأخبار فورا
+// الاتصال المباشر بلوحة تحكم الأدمن لضمان تحديث الأوامر فوراً
 function applyMasterData(data) {
   if (!data) return;
   if (data.notice && document.getElementById("dailyPromoTickerTxt")) {
@@ -412,7 +411,8 @@ function switchAuthMode(mode) {
 }
 function processLoginAction() {
   const email = document.getElementById('loginEmail').value.trim();
-  localStorage.setItem('fly_user_name', email ? email.split('@')[0] : 'عميل');
+  const name = email ? email.split('@')[0] : 'عميل';
+  localStorage.setItem('fly_user_name', name);
   document.getElementById('authGateScreen').style.display = 'none';
   initializeUserSession();
 }
@@ -429,7 +429,8 @@ function processSendRealOtp() {
 }
 function verifyRealOtpCode() {
   if(document.getElementById('enteredOtpCode').value.trim() === generatedOtpCode) {
-    localStorage.setItem('fly_user_name', document.getElementById('signupFullname').value);
+    const name = document.getElementById('signupFullname').value;
+    localStorage.setItem('fly_user_name', name);
     document.getElementById('authGateScreen').style.display = 'none';
     initializeUserSession();
   } else alert("كود التحقق غير صحيح");
