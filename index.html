@@ -13,6 +13,35 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<!-- مكتبة EmailJS لإرسال كود الـ OTP الفعلي للإيميل -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function() {
+     emailjs.init("qCOA0R-3vwqk0fiJ1");
+  })();
+</script>
+
+<!-- ربط Firebase لتسجيل الدخول وحسابات Google -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyApqKjD46xobFTyBXY4lXRVZttnLGZxO98",
+    authDomain: "flyexpress-a0f5a.firebaseapp.com",
+    projectId: "flyexpress-a0f5a",
+    storageBucket: "flyexpress-a0f5a.firebasestorage.app",
+    messagingSenderId: "1053055752719",
+    appId: "1:1053055752719:web:97ae05aa117ffbf6e8617a",
+    measurementId: "G-G6HXPVWH6V"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  window.firebaseAuth = auth;
+  window.firebaseFns = { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup };
+</script>
+
 <style>
 :root {
   --primary: #e11d48;
@@ -41,7 +70,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .marquee-text { display: inline-block; white-space: nowrap; animation: scrollMarquee 15s linear infinite; }
 @keyframes scrollMarquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100vw); } }
 
-/* إشعار الأوردرات الحي */
 .live-toast-notification {
   position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
   background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border: 1px solid #10b981;
@@ -143,7 +171,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     <div class="marquee-container">
       <div class="marquee-text">
         <i class="fa-solid fa-bullhorn" style="color:#fcd34d; margin-left:8px;"></i>
-        <span id="dailyPromoTickerTxt">🔥 أهلاً بكم في Fly Express — معاك في كل طريق!</span>
+        <span id="dailyPromoTickerTxt">🔥 أهلاً بكم في Fly Express — نظام التحقق بالـ OTP مفعل!</span>
         <i class="fa-solid fa-bolt" style="color:#ffff00; margin-right:8px;"></i>
       </div>
     </div>
@@ -158,6 +186,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </div>
 
+  <!-- واجهة الدخول والتسجيل -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" alt="Fly Express Logo" class="auth-main-logo">
@@ -169,20 +198,31 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
         <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
       </div>
 
+      <!-- نموذج تسجيل الدخول -->
       <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();">
         <input type="text" id="loginUsername" class="custom-field" placeholder="اسم المستخدم أو الهاتف">
         <input type="password" id="loginPassword" class="custom-field" placeholder="كلمة المرور">
         <button type="submit" class="primary-action-btn">تسجيل الدخول 🚀</button>
       </form>
 
-      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSignupAction();">
+      <!-- نموذج التسجيل بالـ OTP -->
+      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSendRealOtp();">
         <input type="text" id="signupFullname" class="custom-field" placeholder="الاسم الكريم" required>
         <input type="tel" id="signupPhoneNum" class="custom-field" placeholder="رقم الهاتف للتواصل" required>
-        <input type="password" id="signupPasscode" class="custom-field" placeholder="كلمة المرور" required>
-        <button type="submit" class="primary-action-btn">تأكيد وإنشاء الحساب ✨</button>
+        <!-- تمت إضافة حقل الإيميل المطلوب لإرسال الكود -->
+        <input type="email" id="signupEmailVal" class="custom-field" placeholder="البريد الإلكتروني (Gmail لاستلام الكود)" required>
+        <input type="password" id="signupPasscode" class="custom-field" placeholder="كلمة المرور (6 أحرف فأكثر)" required>
+        <button type="submit" class="primary-action-btn" id="btnSendOtp">إرسال كود الـ OTP إلى إيميلك 📨</button>
       </form>
 
-      <button type="button" class="google-auth-btn" onclick="handleGoogleSignInDirect()">
+      <!-- شاشة إدخال الـ OTP (تظهر بعد إرسال الكود) -->
+      <div id="verifyCodeSection" style="display:none;">
+        <p style="font-size:12px; color:#10b981; margin-bottom:10px;">تم إرسال رسالة بها كود التحقق (OTP) إلى بريدك الإلكتروني! تفقد صندوق الوارد أو الـ Spam وادخل الكود هنا:</p>
+        <input type="text" id="enteredOtpCode" class="custom-field" placeholder="أدخل الكود المكون من 4 أرقام" style="text-align:center; font-size:18px; letter-spacing:4px;" maxlength="4">
+        <button type="button" class="primary-action-btn" style="background:#10b981;" onclick="verifyRealOtpCode()">تأكيد الكود وإنشاء الحساب ✨</button>
+      </div>
+
+      <button type="button" class="google-auth-btn" onclick="handleGoogleSignInDirect()" style="margin-top:14px;">
         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
         <span>متابعة باستخدام حساب Google</span>
       </button>
@@ -649,12 +689,21 @@ function submitParcelOrderAction() {
   sendDirectWhatsApp(`طلب إرسال طرد 📦🛵\nالمحتوى: ${d}\nمن: ${f}\nإلى: ${t}`);
 }
 
+// -------------------------------------------------------------
+// أكواد المصادقة، التسجيل وإرسال الـ OTP عبر EmailJS
+// -------------------------------------------------------------
+let generatedOtpCode = "";
+let pendingUserData = {};
+
 function switchAuthMode(mode) {
   const isLogin = mode === 'login';
   document.getElementById('btnTabLogin').classList.toggle('active', isLogin);
   document.getElementById('btnTabSignup').classList.toggle('active', !isLogin);
   document.getElementById('loginFormSection').style.display = isLogin ? 'block' : 'none';
   document.getElementById('signupFormSection').style.display = isLogin ? 'none' : 'block';
+  if(document.getElementById('verifyCodeSection')) {
+    document.getElementById('verifyCodeSection').style.display = 'none';
+  }
 }
 
 function processLoginAction() {
@@ -662,17 +711,69 @@ function processLoginAction() {
   initializeUserSession();
 }
 
-function processSignupAction() {
+function processSendRealOtp() {
   const name = document.getElementById('signupFullname').value.trim();
   const phone = document.getElementById('signupPhoneNum').value.trim();
-  localStorage.setItem('fly_user_name', name);
-  localStorage.setItem('fly_user_phone', phone);
-  const uid = getMyUid();
-  const adminMsg = `🚨 *عميل جديد سجل في التطبيق!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`;
-  const xhr = new XMLHttpRequest(); xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); xhr.send(adminMsg);
+  const email = document.getElementById('signupEmailVal').value.trim();
+  const pass = document.getElementById('signupPasscode').value.trim();
   
-  initializeUserSession();
-  showAppModal("أهلاً بك! ✨", "تم تفعيل حسابك في Fly Express بنجاح!");
+  if (!name || !phone || !email || !email.includes('@')) {
+    alert("يرجى كتابة كافة البيانات وإدخال بريد صحيح.");
+    return;
+  }
+  if (pass.length < 6) {
+    alert("كلمة المرور يجب ألا تقل عن 6 أحرف أو أرقام.");
+    return;
+  }
+
+  pendingUserData = { name, phone, email, pass };
+  // توليد كود من 4 أرقام
+  generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString(); 
+
+  const btn = document.getElementById('btnSendOtp');
+  btn.textContent = "جاري إرسال الكود لجيميلك... ⏳";
+  btn.disabled = true;
+
+  // تجهيز المتغيرات لقالب EmailJS
+  const templateParams = {
+    to_email: email,
+    to_name: name,
+    otp_code: generatedOtpCode
+  };
+
+  // إرسال الإيميل باستخدام مفاتيحك
+  emailjs.send("service_xylpe3a", "template_4ovzrts", templateParams)
+    .then(function(response) {
+       btn.textContent = "إرسال كود الـ OTP إلى إيميلك 📨";
+       btn.disabled = false;
+       document.getElementById('signupFormSection').style.display = 'none';
+       document.getElementById('verifyCodeSection').style.display = 'block';
+       alert(`تم إرسال كود التحقق بنجاح إلى البريد (${email}). تفقد بريدك (وصندوق الـ Spam) لنسخ الكود وإدخاله.`);
+    }, function(error) {
+       btn.textContent = "إرسال كود الـ OTP إلى إيميلك 📨";
+       btn.disabled = false;
+       alert("حدث خطأ أثناء إرسال الإيميل. يرجى التأكد من إعدادات EmailJS.");
+    });
+}
+
+function verifyRealOtpCode() {
+  const enteredCode = document.getElementById('enteredOtpCode').value.trim();
+  if (enteredCode === generatedOtpCode) {
+    // الكود صحيح، نحفظ بيانات العميل ونسجل الدخول
+    localStorage.setItem('fly_user_name', pendingUserData.name);
+    localStorage.setItem('fly_user_phone', pendingUserData.phone);
+    localStorage.setItem('fly_user_email', pendingUserData.email);
+    
+    // إرسال إشعار للإدارة بوجود تسجيل جديد
+    const uid = getMyUid();
+    const adminMsg = `🚨 *عميل جديد سجل في التطبيق (مفعل بـ OTP)!*\n👤 الاسم: ${pendingUserData.name}\n📱 رقم الهاتف: ${pendingUserData.phone}\n📧 الإيميل: ${pendingUserData.email}\n🔑 كود العميل: ${uid}`;
+    const xhr = new XMLHttpRequest(); xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); xhr.send(adminMsg);
+
+    initializeUserSession();
+    showAppModal("أهلاً بك! ✨", "تم التحقق بنجاح وتفعيل حسابك في Fly Express!");
+  } else {
+    alert("❌ كود التحقق غير صحيح، يرجى مراجعة بريدك وإعادة كتابة الكود بدقة.");
+  }
 }
 
 function handleGoogleSignInDirect() {
