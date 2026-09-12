@@ -76,18 +76,18 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .quick-service-label { font-size: 11px; font-weight: 800; color: #f8fafc; }
 .quick-service-sub { font-size: 9px; color: var(--text-sub); }
 
-.bg-rides { background: linear-gradient(135deg, #0284c7, #0369a1); }
-.bg-school { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-.bg-parcel { background: linear-gradient(135deg, #f59e0b, #d97706); }
 .bg-food { background: linear-gradient(135deg, #f97316, #c2410c); }
-.bg-grocery { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-.bg-veggies { background: linear-gradient(135deg, #10b981, #047857); }
-.bg-pharmacy { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.bg-parcel { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.bg-school { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+.bg-rides { background: linear-gradient(135deg, #0284c7, #0369a1); }
 .bg-bringme { background: linear-gradient(135deg, #db2777, #be185d); }
-.bg-gifts { background: linear-gradient(135deg, #e11d48, #9f1239); }
-.bg-bills { background: linear-gradient(135deg, #059669, #047857); }
-.bg-tech { background: linear-gradient(135deg, #d97706, #b45309); }
-.bg-clinics { background: linear-gradient(135deg, #0284c7, #0369a1); }
+.bg-pharmacy { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.bg-veggies { background: linear-gradient(135deg, #10b981, #047857); }
+.bg-grocery { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+.bg-clinics { background: linear-gradient(135deg, #38bdf8, #0284c7); }
+.bg-tech { background: linear-gradient(135deg, #fbbf24, #b45309); }
+.bg-bills { background: linear-gradient(135deg, #34d399, #059669); }
+.bg-gifts { background: linear-gradient(135deg, #f43f5e, #9f1239); }
 
 .floating-order-btn { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--primary-gradient); color: #fff; padding: 12px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(225,29,72,0.6); cursor: pointer; z-index: 90; border: 1px solid rgba(255,255,255,0.25); }
 
@@ -105,6 +105,13 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .tab-btn { background: transparent; border: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); font-size: 11px; font-weight: 800; font-family: inherit; cursor: pointer; flex: 1; }
 .tab-btn.active { color: var(--primary); }
 
+/* القائمة الجانبية (Drawer) الأصلية بشعارك وصورتك */
+.drawer-menu { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 10000; display: none; justify-content: flex-end; backdrop-filter: blur(5px); }
+.drawer-menu.show { display: flex; }
+.drawer-sheet { width: 82%; max-width: 320px; height: 100%; background: #0b0f19; color: #fff; padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border); overflow-y:auto; }
+.drawer-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #cbd5e1; cursor: pointer; text-decoration: none; margin-bottom: 6px; }
+.drawer-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
 .auth-overlay { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 20px; color: #fff; overflow-y: auto; }
 .auth-card-box { width: 100%; max-width: 360px; text-align: center; }
 .auth-main-logo { width: 110px; height: 110px; border-radius: 28px; box-shadow: 0 0 35px rgba(225, 29, 72, 0.6); margin-bottom: 12px; border: 2px solid var(--primary); object-fit: cover; background: #0b0f19; }
@@ -117,7 +124,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 <body>
 <div class="mobile-frame">
 
-  <!-- شريط الـ RGB المتحرك (مرتبط بلوحة تحكم الأدمن عبر WebSockets) -->
+  <!-- شريط الأخبار والـ RGB المتحرك (مرتبط بلوحة تحكم الأدمن) -->
   <div class="admin-promo-ticker">
     <div class="marquee-container">
       <div class="marquee-text">
@@ -128,7 +135,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </div>
 
-  <!-- شاشة الدخول والتسجيل -->
+  <!-- شاشة تسجيل الدخول -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" alt="Logo" class="auth-main-logo">
@@ -170,7 +177,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
         <div class="loc-title">نجع حمادي وقراها ▾</div>
       </div>
     </div>
-    <img src="icon-512.png" class="brand-user-avatar" onclick="openServiceScreen('wallet')">
+    <img src="icon-512.png" id="topHeaderUserAvatar" class="brand-user-avatar" onclick="toggleDrawer(true)">
   </header>
 
   <!-- الصفحة الرئيسية -->
@@ -203,48 +210,49 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       <i class="fa-solid fa-angle-left"></i>
     </div>
 
-    <!-- شبكة الخدمات -->
+    <!-- شبكة الخدمات (12 خدمة متكاملة لا توجد أي خدمة فاضية) -->
     <div class="quick-services-grid">
-      <div class="quick-service-item" onclick="openServiceScreen('rides')">
-        <div class="quick-service-icon bg-rides"><i class="fa-solid fa-car-side"></i></div><div class="quick-service-label">مشوار</div><div class="quick-service-sub">عادي ومتعدد</div>
-      </div>
-      <div class="quick-service-item" onclick="openServiceScreen('school')">
-        <div class="quick-service-icon bg-school"><i class="fa-solid fa-bus"></i></div><div class="quick-service-label">توصيل طالب</div><div class="quick-service-sub">مدارس ودروس</div>
+      <div class="quick-service-item" onclick="openServiceScreen('food')">
+        <div class="quick-service-icon bg-food"><i class="fa-solid fa-burger"></i></div><div class="quick-service-label">طلب أكل</div><div class="quick-service-sub">أشهر المطاعم</div>
       </div>
       <div class="quick-service-item" onclick="openServiceScreen('orders')">
         <div class="quick-service-icon bg-parcel"><i class="fa-solid fa-box-open"></i></div><div class="quick-service-label">إرسال طرد</div><div class="quick-service-sub">شحن ونقل</div>
       </div>
-      <div class="quick-service-item" onclick="openServiceScreen('food')">
-        <div class="quick-service-icon bg-food"><i class="fa-solid fa-burger"></i></div><div class="quick-service-label">طلب أكل</div><div class="quick-service-sub">أشهر المطاعم</div>
+      <div class="quick-service-item" onclick="openServiceScreen('school')">
+        <div class="quick-service-icon bg-school"><i class="fa-solid fa-bus"></i></div><div class="quick-service-label">توصيل طالب</div><div class="quick-service-sub">مدارس ودروس</div>
+      </div>
+      <div class="quick-service-item" onclick="openServiceScreen('rides')">
+        <div class="quick-service-icon bg-rides"><i class="fa-solid fa-car-side"></i></div><div class="quick-service-label">مشوار</div><div class="quick-service-sub">عادي ومتعدد</div>
       </div>
 
       <div class="quick-service-item" onclick="openServiceScreen('bringme')">
-        <div class="quick-service-icon bg-grocery"><i class="fa-solid fa-basket-shopping"></i></div><div class="quick-service-label">بقالة</div><div class="quick-service-sub">سوبر ماركت</div>
-      </div>
-      <div class="quick-service-item" onclick="openServiceScreen('bringme')">
-        <div class="quick-service-icon bg-veggies"><i class="fa-solid fa-leaf"></i></div><div class="quick-service-label">خضار وفاكهة</div><div class="quick-service-sub">طازج من السوق</div>
+        <div class="quick-service-icon bg-bringme"><i class="fa-solid fa-bag-shopping"></i></div><div class="quick-service-label">هاتلي أي حاجة</div><div class="quick-service-sub">من أي مكان</div>
       </div>
       <div class="quick-service-item" onclick="openServiceScreen('pharmacy')">
         <div class="quick-service-icon bg-pharmacy"><i class="fa-solid fa-capsules"></i></div><div class="quick-service-label">صيدلية</div><div class="quick-service-sub">روشتة وعلاج</div>
       </div>
       <div class="quick-service-item" onclick="openServiceScreen('bringme')">
-        <div class="quick-service-icon bg-bringme"><i class="fa-solid fa-bag-shopping"></i></div><div class="quick-service-label">هاتلي أي حاجة</div><div class="quick-service-sub">من أي مكان</div>
+        <div class="quick-service-icon bg-veggies"><i class="fa-solid fa-leaf"></i></div><div class="quick-service-label">خضار وفاكهة</div><div class="quick-service-sub">طازج من السوق</div>
+      </div>
+      <div class="quick-service-item" onclick="openServiceScreen('bringme')">
+        <div class="quick-service-icon bg-grocery"><i class="fa-solid fa-basket-shopping"></i></div><div class="quick-service-label">بقالة</div><div class="quick-service-sub">سوبر ماركت</div>
       </div>
 
-      <div class="quick-service-item" onclick="openServiceScreen('gifts')">
-        <div class="quick-service-icon bg-gifts"><i class="fa-solid fa-gift"></i></div><div class="quick-service-label">إرسال هدية</div><div class="quick-service-sub">مع رسالة خاصة</div>
-      </div>
-      <div class="quick-service-item" onclick="openServiceScreen('bills')">
-        <div class="quick-service-icon bg-bills"><i class="fa-solid fa-file-invoice-dollar"></i></div><div class="quick-service-label">دفع فواتير</div><div class="quick-service-sub">شحن ورصيد</div>
+      <div class="quick-service-item" onclick="openServiceScreen('clinics')">
+        <div class="quick-service-icon bg-clinics"><i class="fa-solid fa-stethoscope"></i></div><div class="quick-service-label">حجز عيادات</div><div class="quick-service-sub">مواعيد الدكاترة</div>
       </div>
       <div class="quick-service-item" onclick="openServiceScreen('technician')">
         <div class="quick-service-icon bg-tech"><i class="fa-solid fa-screwdriver-wrench"></i></div><div class="quick-service-label">طلب فني</div><div class="quick-service-sub">سباك، كهربائي</div>
       </div>
-      <div class="quick-service-item" onclick="openServiceScreen('clinics')">
-        <div class="quick-service-icon bg-clinics"><i class="fa-solid fa-stethoscope"></i></div><div class="quick-service-label">حجز عيادات</div><div class="quick-service-sub">مواعيد الدكاترة</div>
+      <div class="quick-service-item" onclick="openServiceScreen('bills')">
+        <div class="quick-service-icon bg-bills"><i class="fa-solid fa-file-invoice-dollar"></i></div><div class="quick-service-label">دفع فواتير</div><div class="quick-service-sub">شحن ورصيد</div>
+      </div>
+      <div class="quick-service-item" onclick="openServiceScreen('gifts')">
+        <div class="quick-service-icon bg-gifts"><i class="fa-solid fa-gift"></i></div><div class="quick-service-label">إرسال هدية</div><div class="quick-service-sub">مع رسالة خاصة</div>
       </div>
     </div>
 
+    <!-- الكروت السفلية -->
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin: 12px 16px 0 16px;">
       <div class="ui-card" style="padding:12px; margin:0; cursor:pointer;" onclick="openServiceScreen('family')">
         <div style="display:flex; align-items:center; gap:8px;">
@@ -261,20 +269,18 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </main>
 
-  <!-- ================= الشاشات الفرعية (تتبع ومحفظة والمزيد) ================= -->
+  <!-- ================= الشاشات الفرعية والخدمات بكامل تفاصيلها ================= -->
   
-  <!-- 1. شاشة التتبع -->
   <section id="view-orders" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">📍 تتبع الطلبات النشطة</h3></div>
     <div class="ui-card" style="text-align:center; padding:24px;">
       <div style="font-size:40px; color:#0ea5e9; margin-bottom:12px;"><i class="fa-solid fa-map-location-dot"></i></div>
       <h4 style="font-size:15px; font-weight:900; margin-bottom:6px;">لا توجد طلبات جارية حالياً</h4>
-      <p style="font-size:11px; color:var(--text-sub); margin-bottom:16px;">اطلب أي خدمة وسظهر لك خط سير الكابتن لحظة بلحظة هنا.</p>
+      <p style="font-size:11px; color:var(--text-sub); margin-bottom:16px;">اطلب أي خدمة وسيظهر لك خط سير الكابتن لحظة بلحظة هنا.</p>
       <button class="primary-action-btn" onclick="navigateToHome()">اطلب خدمة الآن 🚀</button>
     </div>
   </section>
 
-  <!-- 2. شاشة المحفظة -->
   <section id="view-wallet" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">💰 محفظة FLY ونقاط الولاء</h3></div>
     <div class="ui-card" style="background: linear-gradient(135deg, #0f172a, #1e293b); border-color:var(--primary); text-align:center;">
@@ -286,20 +292,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- 3. شاشة المزيد -->
-  <section id="view-more" class="sub-page-view">
-    <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">⚙️ المزيد والإعدادات</h3></div>
-    <div class="ui-card" onclick="openServiceScreen('flypass')" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
-      <div><h4 style="font-size:14px; font-weight:900;">👑 باقة FLY PASS</h4><p style="font-size:10px; color:var(--text-sub);">توصيل مجاني وخصومات</p></div>
-      <i class="fa-solid fa-angle-left"></i>
-    </div>
-    <div class="ui-card" onclick="sendDirectWhatsApp('طلب مساعدة من الدعم الفني')" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
-      <div><h4 style="font-size:14px; font-weight:900;">🎧 الدعم الفني والمساعدة</h4><p style="font-size:10px; color:var(--text-sub);">تواصل معنا عبر واتساب</p></div>
-      <i class="fa-solid fa-angle-left"></i>
-    </div>
-  </section>
-
-  <!-- باقة Fly Pass -->
   <section id="view-flypass" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">👑 باقة FLY PASS</h3></div>
     <div class="ui-card" style="background:linear-gradient(135deg, #1e1b4b, #0f172a); border-color:#a855f7; text-align:center;">
@@ -310,23 +302,46 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- بقية الشاشات الخدمية (عيادات، صنايعية، هدايا، فواتير، مشاوير) -->
   <section id="view-rides" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🚕 طلب مشوار</h3></div><div class="ui-card"><input type="text" class="custom-field" placeholder="موقعي الحالي"><input type="text" class="custom-field" placeholder="إلى أين؟"><button class="primary-action-btn" onclick="sendDirectWhatsApp('طلب مشوار توصيل 🚕')">اطلب الآن</button></div></section>
+  <section id="view-school" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🚌 توصيل طالب</h3></div><div class="ui-card"><input type="text" class="custom-field" placeholder="عنوان المنزل"><input type="text" class="custom-field" placeholder="اسم المدرسة أو السنتر"><button class="primary-action-btn" style="background:#ef4444;" onclick="sendDirectWhatsApp('طلب توصيل طالب للمدرسة 🚌')">تأكيد الحجز</button></div></section>
+  <section id="view-orders_parcel" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>📦 إرسال طرد</h3></div><div class="ui-card"><input type="text" class="custom-field" placeholder="محتوى الطرد"><input type="text" class="custom-field" placeholder="مكان الاستلام والتسليم"><button class="primary-action-btn" style="background:#f59e0b;" onclick="sendDirectWhatsApp('طلب إرسال طرد 📦')">تأكيد الشحن</button></div></section>
+  <section id="view-food" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🍔 طلب أكل ومطاعم</h3></div><div class="ui-card"><textarea class="custom-field" placeholder="اكتب طلبات الأكل واسم المطعم"></textarea><button class="primary-action-btn" style="background:#f97316;" onclick="sendDirectWhatsApp('طلب وجبة من مطعم 🍔')">اطلب الآن</button></div></section>
+  <section id="view-bringme" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🛍️ هاتلي أي حاجة</h3></div><div class="ui-card"><textarea class="custom-field" placeholder="اكتب كل ما تحتاجه بالتفصيل"></textarea><button class="primary-action-btn" style="background:#db2777;" onclick="sendDirectWhatsApp('طلب هاتلي أي حاجة 🛍️')">إرسال الطلب</button></div></section>
+  <section id="view-pharmacy" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>💊 صيدلية وعلاج</h3></div><div class="ui-card"><textarea class="custom-field" placeholder="اسم العلاج أو الروشتة"></textarea><button class="primary-action-btn" style="background:#8b5cf6;" onclick="sendDirectWhatsApp('طلب من الصيدلية 💊')">اطلب العلاج</button></div></section>
   <section id="view-clinics" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🩺 حجز عيادة</h3></div><div class="ui-card"><select class="custom-field"><option>باطنة</option><option>أطفال</option><option>عظام</option></select><input type="date" class="custom-field"><button class="primary-action-btn" style="background:#0284c7;" onclick="sendDirectWhatsApp('طلب حجز كشف عيادة 🩺')">تأكيد الحجز</button></div></section>
-  <section id="view-technician" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🛠️ طلب فني صيانة</h3></div><div class="ui-card"><select class="custom-field"><option>سباك</option><option>كهربائي</option><option>فني تكييف</option></select><textarea class="custom-field" placeholder="وصف المشكلة"></textarea><button class="primary-action-btn" style="background:#f59e0b;" onclick="sendDirectWhatsApp('طلب فني صيانة منزلية 🛠️')">اطلب الفني</button></div></section>
-  <section id="view-bills" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🧾 دفع فواتير وشحن</h3></div><div class="ui-card"><select class="custom-field"><option>شحن رصيد</option><option>فاتورة كهرباء</option><option>باقة نت</option></select><input type="tel" class="custom-field" placeholder="رقم الموبايل / المشترك"><button class="primary-action-btn" style="background:#10b981;" onclick="sendDirectWhatsApp('طلب دفع فواتير أو شحن 🧾')">تنفيذ الدفع</button></div></section>
+  <section id="view-technician" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🛠️ طلب فني صيانة</h3></div><div class="ui-card"><select class="custom-field"><option>سباك</option><option>كهربائي</option><option>فني تكييف</option></select><textarea class="custom-field" placeholder="وصف المشكلة"></textarea><button class="primary-action-btn" style="background:#d97706;" onclick="sendDirectWhatsApp('طلب فني صيانة منزلية 🛠️')">اطلب الفني</button></div></section>
+  <section id="view-bills" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🧾 دفع فواتير وشحن</h3></div><div class="ui-card"><select class="custom-field"><option>شحن رصيد</option><option>فاتورة كهرباء</option><option>باقة نت</option></select><input type="tel" class="custom-field" placeholder="رقم الموبايل / المشترك"><button class="primary-action-btn" style="background:#059669;" onclick="sendDirectWhatsApp('طلب دفع فواتير أو شحن 🧾')">تنفيذ الدفع</button></div></section>
   <section id="view-gifts" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🎁 إرسال هدية</h3></div><div class="ui-card"><textarea class="custom-field" placeholder="وصف الهدية (ورد، شيكولاتة...)"></textarea><input type="text" class="custom-field" placeholder="عنوان المستلم"><button class="primary-action-btn" style="background:#e11d48;" onclick="sendDirectWhatsApp('طلب إرسال هدية خاصة 🎁')">أرسل المفاجأة</button></div></section>
+  <section id="view-family" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>👨‍👩‍👧 الحساب العائلي</h3></div><div class="ui-card"><p>أضف أفراد عائلتك للطلب باسمهم بسهولة.</p><input type="text" class="custom-field" placeholder="اسم الابن أو الزوجة"><button class="primary-action-btn" style="background:#0284c7;" onclick="sendDirectWhatsApp('إضافة فرد للعائلة الحساب العائلي')">حفظ الفرد</button></div></section>
+  <section id="view-merchant" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🏪 بوابة التجار والمحلات</h3></div><div class="ui-card"><button class="primary-action-btn" style="background:#f59e0b;" onclick="sendDirectWhatsApp('تنبيه من التاجر: تم تجهيز الطلب لإرسال الكابتن 🛵')">تم تجهيز الطلب 🛵</button></div></section>
+
+  <!-- القائمة الجانبية (Drawer) الأصلية بشعارك وصورتك -->
+  <div class="drawer-menu" id="profileDrawer" onclick="if(event.target===this) toggleDrawer(false)">
+    <div class="drawer-sheet">
+      <div>
+        <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:12px;">
+          <img src="icon-512.png" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--primary); background:#0f172a;">
+          <div><h4 style="font-size:14px; font-weight:900;" id="drawerUserName">عميل Fly Express</h4><span style="font-size:10px; color:#4ade80;">عضو VIP</span></div>
+        </div>
+        <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('wallet');"><i class="fa-solid fa-wallet" style="width:20px; color:#10b981;"></i> محفظة FLY والنقاط</div>
+        <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('flypass');"><i class="fa-solid fa-crown" style="width:20px; color:#c084fc;"></i> اشتراك FLY PASS</div>
+        <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('orders');"><i class="fa-solid fa-map-location-dot" style="width:20px; color:#0ea5e9;"></i> تتبع الطلبات</div>
+        <div class="drawer-item" onclick="toggleDrawer(false); sendDirectWhatsApp('طلب مساعدة من الدعم الفني');"><i class="fa-solid fa-headset" style="width:20px; color:#f59e0b;"></i> الدعم والمساعدة</div>
+      </div>
+      <button onclick="confirmAppLogout()" style="width:100%; padding:12px; background:rgba(239,68,68,0.15); border:1px solid #ef4444; color:#ef4444; border-radius:8px; font-weight:800; cursor:pointer;">تسجيل الخروج 🚪</button>
+    </div>
+  </div>
 
   <div class="floating-order-btn" onclick="openServiceScreen('rides')">
     <i class="fa-solid fa-bolt"></i> اطلب الآن سريعاً
   </div>
 
-  <!-- الناف بار السفلي المطابق تماماً لصورتك -->
+  <!-- الناف بار السفلي المطابق -->
   <nav class="tab-bottom-nav">
     <button class="tab-btn active" onclick="switchNavTab('home', this)"><i class="fa-solid fa-house" style="font-size:18px;"></i><span>الرئيسية</span></button>
     <button class="tab-btn" onclick="switchNavTab('orders', this)"><i class="fa-solid fa-box" style="font-size:18px;"></i><span>التتبع</span></button>
     <button class="tab-btn" onclick="switchNavTab('wallet', this)"><i class="fa-solid fa-wallet" style="font-size:18px;"></i><span>المحفظة</span></button>
-    <button class="tab-btn" onclick="switchNavTab('more', this)"><i class="fa-solid fa-bars" style="font-size:18px;"></i><span>المزيد</span></button>
+    <button class="tab-btn" onclick="toggleDrawer(true)"><i class="fa-solid fa-bars" style="font-size:18px;"></i><span>المزيد</span></button>
   </nav>
 
 </div>
@@ -337,7 +352,8 @@ function sendDirectWhatsApp(text) { window.location.href = `https://wa.me/${ADMI
 
 function showView(viewId) { 
   document.querySelectorAll('.sub-page-view').forEach(v => v.classList.remove('active')); 
-  document.getElementById(viewId).classList.add('active'); 
+  const target = document.getElementById(viewId);
+  if(target) target.classList.add('active');
   window.scrollTo(0, 0); 
 }
 function navigateToHome() { 
@@ -347,12 +363,26 @@ function navigateToHome() {
 }
 function switchNavTab(tabName, btn) { 
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
-  btn.classList.add('active'); 
-  showView('view-' + tabName); 
+  if(btn) btn.classList.add('active'); 
+  if(tabName === 'home') showView('view-home');
+  else if(tabName === 'orders') showView('view-orders');
+  else if(tabName === 'wallet') showView('view-wallet');
 }
-function openServiceScreen(type) { showView('view-' + type); }
+function openServiceScreen(type) { 
+  if(type === 'orders') showView('view-orders_parcel');
+  else showView('view-' + type); 
+}
+function toggleDrawer(open) { 
+  const d = document.getElementById('profileDrawer'); 
+  if(open) d.classList.add('show'); else d.classList.remove('show'); 
+}
+function confirmAppLogout() {
+  toggleDrawer(false);
+  localStorage.removeItem('fly_user_name');
+  document.getElementById('authGateScreen').style.display = 'flex';
+}
 
-// الاتصال بلوحة تحكم الأدمن عبر WebSockets لتحديث شريط الأخبار فوراً
+// الاتصال بلوحة تحكم الأدمن عبر WebSockets لتحديث شريط الأخبار فورا
 function applyMasterData(data) {
   if (!data) return;
   if (data.notice && document.getElementById("dailyPromoTickerTxt")) {
@@ -372,27 +402,48 @@ function connectWebSocket() {
 connectWebSocket();
 
 let generatedOtpCode = "";
+function switchAuthMode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('btnTabLogin').classList.toggle('active', isLogin);
+  document.getElementById('btnTabSignup').classList.toggle('active', !isLogin);
+  document.getElementById('loginFormSection').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('signupFormSection').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('verifyCodeSection').style.display = 'none';
+}
 function processLoginAction() {
-  localStorage.setItem('fly_user_name', document.getElementById('loginEmail').value || 'عميل');
+  const email = document.getElementById('loginEmail').value.trim();
+  localStorage.setItem('fly_user_name', email ? email.split('@')[0] : 'عميل');
   document.getElementById('authGateScreen').style.display = 'none';
+  initializeUserSession();
 }
 function processSendRealOtp() {
-  const email = document.getElementById('signupEmailVal').value;
-  if(!email) return alert("اكتب الإيميل");
+  const email = document.getElementById('signupEmailVal').value.trim();
+  const name = document.getElementById('signupFullname').value.trim();
+  if(!email || !name) return alert("أدخل البيانات كاملة");
   generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString();
-  emailjs.send("service_xylpe3a", "template_4ovzrts", { to_email: email, otp_code: generatedOtpCode })
+  emailjs.send("service_xylpe3a", "template_4ovzrts", { to_email: email, to_name: name, otp_code: generatedOtpCode })
     .then(() => {
        document.getElementById('signupFormSection').style.display = 'none';
        document.getElementById('verifyCodeSection').style.display = 'block';
-    }).catch(() => alert("خطأ في الإرسال"));
+    }).catch(() => alert("خطأ في إرسال الكود"));
 }
 function verifyRealOtpCode() {
-  if(document.getElementById('enteredOtpCode').value === generatedOtpCode) {
+  if(document.getElementById('enteredOtpCode').value.trim() === generatedOtpCode) {
     localStorage.setItem('fly_user_name', document.getElementById('signupFullname').value);
     document.getElementById('authGateScreen').style.display = 'none';
-  } else alert("كود خاطئ");
+    initializeUserSession();
+  } else alert("كود التحقق غير صحيح");
 }
-window.addEventListener('load', () => { if (localStorage.getItem('fly_user_name')) document.getElementById('authGateScreen').style.display = 'none'; });
+function initializeUserSession() {
+  const name = localStorage.getItem('fly_user_name') || 'عميل Fly';
+  if(document.getElementById('drawerUserName')) document.getElementById('drawerUserName').textContent = name;
+}
+window.addEventListener('load', () => { 
+  if (localStorage.getItem('fly_user_name')) { 
+    document.getElementById('authGateScreen').style.display = 'none'; 
+    initializeUserSession();
+  } 
+});
 </script>
 </body>
 </html>
