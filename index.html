@@ -3,8 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta http-equiv="Cache-Control" content="max-age=0, no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
 <title>Fly Express — معاك في كل طريق</title>
 <meta name="theme-color" content="#070b12">
@@ -13,7 +11,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- ربط Firebase للمتابعة بحساب Google والتسجيل العادي -->
+<!-- مكتبة EmailJS لإرسال كود الـ OTP الفعلي للإيميل -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function() {
+     emailjs.init("qCOA0R-3vwqk0fiJ1");
+  })();
+</script>
+
+<!-- ربط Firebase لتسجيل الدخول وحسابات Google -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -56,58 +62,11 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
   min-height: 100vh; display: flex; flex-direction: column; position: relative; padding-bottom: 85px; overflow-x: hidden;
 }
 
-@keyframes glowingRGB { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-.admin-promo-ticker { background: linear-gradient(90deg, #ff0000, #ff8800, #e1ff00, #00ff00, #00c3ff, #0000ff, #8800ff, #ff0088, #ff0000); background-size: 300% 300%; animation: glowingRGB 4s linear infinite; color: #ffffff; padding: 10px 0; font-size: 13px; font-weight: 900; text-shadow: 1px 1px 3px rgba(0, 0, 0, 1), 0px 0px 8px rgba(0, 0, 0, 0.8); overflow: hidden; position: relative; z-index: 60; border-bottom: 2px solid rgba(255,255,255,0.3); }
-.marquee-container { width: 100%; overflow: hidden; white-space: nowrap; }
-.marquee-text { display: inline-block; white-space: nowrap; animation: scrollMarquee 15s linear infinite; }
-@keyframes scrollMarquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100vw); } }
-
-.live-toast-notification {
-  position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-  background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border: 1px solid #10b981;
-  padding: 10px 16px; border-radius: 30px; display: flex; align-items: center; gap: 10px;
-  color: #fff; font-size: 11px; font-weight: 800; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-  transition: top 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 9999;
-}
-.live-toast-notification.show { top: 60px; }
-
 .top-nav-bar { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
 .location-selector { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .loc-icon { color: var(--primary); font-size: 18px; }
 .loc-text { font-size: 10px; color: var(--text-sub); }
 .loc-title { font-size: 13px; font-weight: 800; color: #fff; }
-.brand-header-badge { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.brand-user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; background: #0b0f19; }
-
-.search-wrapper { padding: 10px 16px; background: transparent; }
-.search-bar { background: rgba(15, 23, 42, 0.8); border-radius: 14px; display: flex; align-items: center; padding: 10px 14px; gap: 10px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
-.search-bar:focus-within { border-color: var(--primary); }
-.search-bar input { border: 0; background: transparent; width: 100%; font-family: inherit; font-size: 13px; color: #fff; }
-
-.hero-slider-wrap { padding: 8px 16px 6px; }
-.hero-banner-card { background: linear-gradient(135deg, rgba(9,13,22,0.9) 0%, rgba(30,27,75,0.85) 60%, rgba(225,29,72,0.85) 100%); border-radius: 24px; padding: 18px; position: relative; overflow: hidden; color: #fff; min-height: 140px; display: flex; flex-direction: column; justify-content: center; border: 1px solid rgba(225,29,72,0.4); backdrop-filter: blur(8px); }
-.hero-tag { background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 20px; width: fit-content; margin-bottom: 6px; }
-.hero-banner-card img { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 88px; height: 88px; object-fit: cover; border-radius: 20px; border: 2px solid rgba(255,255,255,0.3); background: #0b0f19; }
-
-.fly-pass-card { margin: 8px 16px; background: linear-gradient(90deg, rgba(30,27,75,0.9), rgba(49,16,75,0.9)); border: 1.5px solid #a855f7; border-radius: 18px; padding: 12px 16px; color: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; backdrop-filter: blur(8px); }
-
-.quick-services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 8px; padding: 10px 16px; margin-bottom: 12px; }
-.quick-service-item { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.15s ease; }
-.quick-service-item:active { transform: scale(0.92); }
-.quick-service-icon { width: 58px; height: 58px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.12); }
-.quick-service-label { font-size: 11px; font-weight: 800; color: #f8fafc; }
-.quick-service-sub { font-size: 9px; color: var(--text-sub); }
-
-.bg-rides { background: linear-gradient(135deg, #0284c7, #0369a1); }
-.bg-school { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-.bg-parcel { background: linear-gradient(135deg, #f59e0b, #d97706); }
-.bg-food { background: linear-gradient(135deg, #ea580c, #c2410c); }
-.bg-grocery { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-.bg-veggies { background: linear-gradient(135deg, #10b981, #047857); }
-.bg-pharmacy { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-.bg-bringme { background: linear-gradient(135deg, #ec4899, #be185d); }
-
-.floating-order-btn { position: fixed; bottom: 78px; left: 50%; transform: translateX(-50%); background: var(--primary-gradient); color: #fff; padding: 12px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(225,29,72,0.6); cursor: pointer; z-index: 90; border: 1px solid rgba(255,255,255,0.25); }
 
 .ui-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 14px; backdrop-filter: blur(12px); }
 .custom-field { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: rgba(19, 27, 46, 0.9); font-family: inherit; font-size: 13px; margin-bottom: 10px; color: #fff; }
@@ -116,26 +75,9 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 .sub-page-view { display: none; padding: 16px; }
 .sub-page-view.active { display: block; }
-.page-top-back { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.back-circle-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; }
-
 .tab-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 430px; margin: 0 auto; height: 68px; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
 .tab-btn { background: transparent; border: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); font-size: 11px; font-weight: 800; font-family: inherit; cursor: pointer; flex: 1; }
 .tab-btn.active { color: var(--primary); }
-
-.drawer-menu { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 10000; display: none; justify-content: flex-end; }
-.drawer-menu.show { display: flex; }
-.drawer-sheet { width: 82%; max-width: 320px; height: 100%; background: #0b0f19; color: #fff; padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border); overflow-y:auto; }
-.drawer-links-box { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; }
-.drawer-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #cbd5e1; cursor: pointer; text-decoration: none; }
-.drawer-item.active { background: rgba(255,255,255,0.08); color: #fff; }
-
-.app-custom-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px; }
-.app-custom-modal-overlay.show { display: flex; }
-.app-custom-modal-card { background: #0f172a; border: 1.5px solid var(--primary); border-radius: 22px; width: 100%; max-width: 320px; padding: 22px; text-align: center; color: #fff; box-shadow: 0 10px 40px rgba(225,29,72,0.4); }
-
-.maintenance-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
-.force-update-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
 
 .auth-overlay { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 20px; color: #fff; overflow-y: auto; }
 .auth-card-box { position: relative; z-index: 2; width: 100%; max-width: 360px; text-align: center; }
@@ -151,31 +93,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 <div class="mobile-frame">
 
-  <div class="live-toast-notification" id="liveOrderToast">
-    <i class="fa-solid fa-motorcycle" style="color:#10b981; font-size:16px;"></i>
-    <span id="liveOrderToastTxt">كابتن أحمد استلم طرد متجه لقرية بركة 📦</span>
-  </div>
-
-  <div class="admin-promo-ticker" id="dailyPromoTicker">
-    <div class="marquee-container">
-      <div class="marquee-text">
-        <i class="fa-solid fa-bullhorn" style="color:#fcd34d; margin-left:8px;"></i>
-        <span id="dailyPromoTickerTxt">🔥 أهلاً بكم في Fly Express — معاك في كل طريق!</span>
-        <i class="fa-solid fa-bolt" style="color:#ffff00; margin-right:8px;"></i>
-      </div>
-    </div>
-  </div>
-
-  <div class="app-custom-modal-overlay" id="appCustomModal">
-    <div class="app-custom-modal-card">
-      <div id="customModalIcon" style="font-size:40px; color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-bell"></i></div>
-      <h3 style="font-size:16px; font-weight:900; margin-bottom:6px;" id="customModalTitle">تنبيه</h3>
-      <p style="font-size:13px; color:#cbd5e1; margin-bottom:18px;" id="customModalMessage">نص الرسالة</p>
-      <button class="primary-action-btn" onclick="closeAppModal()">حسناً فهمت ✅</button>
-    </div>
-  </div>
-
-  <!-- شاشة الدخول والتسجيل بنظام كود التحقق اليدوي (OTP) -->
+  <!-- شاشة المصادقة وتسجيل الحساب -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" alt="Fly Express Logo" class="auth-main-logo">
@@ -189,25 +107,25 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
       <!-- نموذج تسجيل الدخول -->
       <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();">
-        <input type="text" id="loginUsername" class="custom-field" placeholder="اسم المستخدم أو الهاتف">
+        <input type="text" id="loginUsername" class="custom-field" placeholder="اسم المستخدم أو البريد">
         <input type="password" id="loginPassword" class="custom-field" placeholder="كلمة المرور">
         <button type="submit" class="primary-action-btn">تسجيل الدخول 🚀</button>
       </form>
 
-      <!-- نموذج التسجيل وإرسال كود الـ OTP اليدوي -->
-      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSignupAction();">
+      <!-- نموذج التسجيل وإرسال كود الـ OTP الفعلي لجيميل المستخدم -->
+      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSendRealOtp();">
         <input type="text" id="signupFullname" class="custom-field" placeholder="الاسم الكريم" required>
         <input type="tel" id="signupPhoneNum" class="custom-field" placeholder="رقم الهاتف للتواصل" required>
-        <input type="email" id="signupEmailVal" class="custom-field" placeholder="البريد الإلكتروني (Gmail)" required>
+        <input type="email" id="signupEmailVal" class="custom-field" placeholder="البريد الإلكتروني (Gmail لاستلام الكود)" required>
         <input type="password" id="signupPasscode" class="custom-field" placeholder="كلمة المرور (6 أحرف فأكثر)" required>
-        <button type="submit" class="primary-action-btn">إرسال كود التحقق 📨</button>
+        <button type="submit" class="primary-action-btn" id="btnSendOtp">إرسال كود الـ OTP إلى إيميلك 📨</button>
       </form>
 
-      <!-- شاشة إدخال كود الـ OTP اليدوي لتأكيد الحساب -->
+      <!-- شاشة إدخال كود الـ OTP اليدوي المبعوث للإيميل -->
       <div id="verifyCodeSection" style="display:none;">
-        <p style="font-size:12px; color:#10b981; margin-bottom:10px;">تم إرسال كود التحقق بنجاح! أدخله أدناه لتفعيل حسابك:</p>
-        <input type="text" id="enteredOtpCode" class="custom-field" placeholder="أدخل كود الـ OTP" style="text-align:center; font-size:18px; letter-spacing:4px;" maxlength="4">
-        <button type="button" class="primary-action-btn" style="background:#10b981;" onclick="verifyOtpCodeAction()">تأكيد الكود وإنشاء الحساب ✨</button>
+        <p style="font-size:12px; color:#10b981; margin-bottom:10px;">تم إرسال رسالة بها كود التحقق (OTP) إلى بريدك الإلكتروني! تفقد صندوق الوارد أو الـ Spam وادخل الكود هنا:</p>
+        <input type="text" id="enteredOtpCode" class="custom-field" placeholder="أدخل الكود المكون من 4 أرقام" style="text-align:center; font-size:18px; letter-spacing:4px;" maxlength="4">
+        <button type="button" class="primary-action-btn" style="background:#10b981;" onclick="verifyRealOtpCode()">تأكيد الكود وإنشاء الحساب ✨</button>
       </div>
 
       <!-- زر متابعة بحساب Google -->
@@ -256,8 +174,8 @@ function processLoginAction() {
   initializeUserSession();
 }
 
-// الخطوة 1: توليد كود الـ OTP وإرساله لتطبيق الإدارة (وإظهاره للاختبار الفوري)
-function processSignupAction() {
+// توليد وإرسال الكود الفعلي عبر EmailJS للبريد المدخل
+function processSendRealOtp() {
   const name = document.getElementById('signupFullname').value.trim();
   const phone = document.getElementById('signupPhoneNum').value.trim();
   const email = document.getElementById('signupEmailVal').value.trim();
@@ -268,28 +186,40 @@ function processSignupAction() {
     return;
   }
   if (pass.length < 6) {
-    alert("كلمة المرور يجب أن تكون 6 أحرف أو أرقام على الأقل.");
+    alert("كلمة المرور يجب ألا تقل عن 6 أحرف أو أرقام.");
     return;
   }
 
   pendingUserData = { name, phone, email, pass };
-  generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString(); // توليد كود من 4 أرقام
+  generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString(); // كود عشوائي من 4 أرقام
 
-  // إرسال تفاصيل الكود للإدارة عبر النظام الإشعاري
-  const adminMsg = `🚨 *طلب كود تحقق جديد (OTP)!*\n👤 الاسم: ${name}\n📧 الجيميل: ${email}\n📱 الهاتف: ${phone}\n🔑 كود التحقق: ${generatedOtpCode}`;
-  const xhr = new XMLHttpRequest(); 
-  xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); 
-  xhr.send(adminMsg);
+  const btn = document.getElementById('btnSendOtp');
+  btn.textContent = "جاري إرسال الكود لجيميلك... ⏳";
+  btn.disabled = true;
 
-  // إخفاء نموذج التسجيل وإظهار خانة إدخال الكود اليدوي
-  document.getElementById('signupFormSection').style.display = 'none';
-  document.getElementById('verifyCodeSection').style.display = 'block';
-  
-  alert(`تم توليد كود التحقق! (كود الاختبار الخاص بك هو: [ ${generatedOtpCode} ]). يرجى إدخاله في الخانة المخصصة.`);
+  // إرسال البيانات باستخدام المفاتيح التي أمددتنا بها
+  const templateParams = {
+    to_email: email,
+    to_name: name,
+    otp_code: generatedOtpCode
+  };
+
+  emailjs.send("service_xylpe3a", "template_4ovzrts", templateParams)
+    .then(function(response) {
+       btn.textContent = "إرسال كود الـ OTP إلى إيميلك 📨";
+       btn.disabled = false;
+       document.getElementById('signupFormSection').style.display = 'none';
+       document.getElementById('verifyCodeSection').style.display = 'block';
+       alert(`تم إرسال كود التحقق بنجاح إلى البريد (${email}). تفقد بريدك (وصندوق الـ Spam) لنسخ الكود وإدخاله.`);
+    }, function(error) {
+       btn.textContent = "إرسال كود الـ OTP إلى إيميلك 📨";
+       btn.disabled = false;
+       alert("حدث خطأ أثناء إرسال الإيميل، يرجى التأكد من قالب EmailJS وأنه يحتوي على المتغير {{otp_code}}.");
+    });
 }
 
-// الخطوة 2: التحقق من الكود المدخل يدويًا
-function verifyOtpCodeAction() {
+// التحقق من الكود المدخل يدويًا
+function verifyRealOtpCode() {
   const enteredCode = document.getElementById('enteredOtpCode').value.trim();
   if (enteredCode === generatedOtpCode) {
     localStorage.setItem('fly_user_name', pendingUserData.name);
@@ -297,9 +227,9 @@ function verifyOtpCodeAction() {
     localStorage.setItem('fly_user_email', pendingUserData.email);
     
     initializeUserSession();
-    alert("✨ تم التحقق بنجاح وتفعيل حسابك في Fly Express!");
+    alert("✨ تم التحقق من الكود بنجاح وتفعيل حسابك في Fly Express!");
   } else {
-    alert("❌ كود التحقق غير صحيح، يرجى المحاولة مرة أخرى.");
+    alert("❌ كود التحقق غير صحيح، يرجى مراجعة بريدك وإعادة كتابة الكود بدقة.");
   }
 }
 
