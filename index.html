@@ -41,7 +41,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .marquee-text { display: inline-block; white-space: nowrap; animation: scrollMarquee 15s linear infinite; }
 @keyframes scrollMarquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100vw); } }
 
-/* إشعار الأوردرات الحي */
 .live-toast-notification {
   position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
   background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border: 1px solid #10b981;
@@ -63,7 +62,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .search-bar { background: rgba(15, 23, 42, 0.8); border-radius: 14px; display: flex; align-items: center; padding: 10px 14px; gap: 10px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
 .search-bar:focus-within { border-color: var(--primary); }
 .search-bar input { border: 0; background: transparent; width: 100%; font-family: inherit; font-size: 13px; color: #fff; }
-.search-bar input::placeholder { color: #94a3b8; }
 
 .hero-slider-wrap { padding: 8px 16px 6px; }
 .hero-banner-card { background: linear-gradient(135deg, rgba(9,13,22,0.9) 0%, rgba(30,27,75,0.85) 60%, rgba(225,29,72,0.85) 100%); border-radius: 24px; padding: 18px; position: relative; overflow: hidden; color: #fff; min-height: 140px; display: flex; flex-direction: column; justify-content: center; border: 1px solid rgba(225,29,72,0.4); backdrop-filter: blur(8px); }
@@ -106,8 +104,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 .drawer-menu { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 10000; display: none; justify-content: flex-end; }
 .drawer-menu.show { display: flex; }
-.drawer-sheet { width: 82%; max-width: 320px; height: 100%; background: #0b0f19; color: #fff; padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; animation: slideIn 0.25s ease-out; border-right: 1px solid var(--border); overflow-y:auto; }
-@keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+.drawer-sheet { width: 82%; max-width: 320px; height: 100%; background: #0b0f19; color: #fff; padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border); overflow-y:auto; }
 .drawer-links-box { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; }
 .drawer-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #cbd5e1; cursor: pointer; text-decoration: none; }
 .drawer-item.active { background: rgba(255,255,255,0.08); color: #fff; }
@@ -133,7 +130,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 <div class="mobile-frame">
 
-  <!-- إشعار حي للأوردرات -->
   <div class="live-toast-notification" id="liveOrderToast">
     <i class="fa-solid fa-motorcycle" style="color:#10b981; font-size:16px;"></i>
     <span id="liveOrderToastTxt">كابتن أحمد استلم طرد متجه لقرية بركة 📦</span>
@@ -158,6 +154,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </div>
 
+  <!-- شاشة الدخول والتسجيل بالجيميل وكود التحقق -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" alt="Fly Express Logo" class="auth-main-logo">
@@ -166,23 +163,34 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
       <div class="auth-nav-tabs">
         <button class="auth-tab-btn active" id="btnTabLogin" onclick="switchAuthMode('login')">تسجيل الدخول</button>
-        <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
+        <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">تسجيل جديد</button>
       </div>
 
+      <!-- نموذج تسجيل الدخول -->
       <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();">
         <input type="text" id="loginUsername" class="custom-field" placeholder="اسم المستخدم أو الهاتف">
         <input type="password" id="loginPassword" class="custom-field" placeholder="كلمة المرور">
         <button type="submit" class="primary-action-btn">تسجيل الدخول 🚀</button>
       </form>
 
+      <!-- نموذج التسجيل بالاسم والهاتف والجيميل -->
       <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSignupAction();">
         <input type="text" id="signupFullname" class="custom-field" placeholder="الاسم الكريم" required>
         <input type="tel" id="signupPhoneNum" class="custom-field" placeholder="رقم الهاتف للتواصل" required>
+        <input type="email" id="signupEmailVal" class="custom-field" placeholder="البريد الإلكتروني (Gmail)" required>
         <input type="password" id="signupPasscode" class="custom-field" placeholder="كلمة المرور" required>
-        <button type="submit" class="primary-action-btn">تأكيد وإنشاء الحساب ✨</button>
+        <button type="submit" class="primary-action-btn">إرسال كود التحقق للجيميل 📨</button>
       </form>
 
-      <button type="button" class="google-auth-btn" onclick="handleGoogleSignInDirect()">
+      <!-- شاشة إدخال كود التحقق (تظهر بعد إدخال الإيميل) -->
+      <div id="verifyCodeSection" style="display:none;">
+        <p style="font-size:12px; color:#10b981; margin-bottom:10px;">تم إرسال كود التحقق برمجياً لإيميلك! أدخله هنا:</p>
+        <input type="text" id="enteredOtpCode" class="custom-field" placeholder="أدخل الكود المكون من 4 أرقام" style="text-align:center; font-size:18px; letter-spacing:4px;" maxlength="4">
+        <button type="button" class="primary-action-btn" style="background:#10b981;" onclick="verifyOtpCodeAction()">تأكيد الكود وإنشاء الحساب ✨</button>
+      </div>
+
+      <!-- زر متابعة بجوجل -->
+      <button type="button" class="google-auth-btn" onclick="handleGoogleSignInDirect()" style="margin-top:14px;">
         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
         <span>متابعة باستخدام حساب Google</span>
       </button>
@@ -511,6 +519,8 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 <script>
 const ADMIN_PHONE = "201017908076";
 const TOPIC = "flyexpress_super_admin_2026"; 
+let generatedOtpCode = "";
+let pendingUserData = {};
 
 function sendDirectWhatsApp(text) {
   window.location.href = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(text)}`;
@@ -655,6 +665,7 @@ function switchAuthMode(mode) {
   document.getElementById('btnTabSignup').classList.toggle('active', !isLogin);
   document.getElementById('loginFormSection').style.display = isLogin ? 'block' : 'none';
   document.getElementById('signupFormSection').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('verifyCodeSection').style.display = 'none';
 }
 
 function processLoginAction() {
@@ -662,27 +673,63 @@ function processLoginAction() {
   initializeUserSession();
 }
 
+// خطوة 1: توليد كود التحقق وإرساله للإدارة
 function processSignupAction() {
   const name = document.getElementById('signupFullname').value.trim();
   const phone = document.getElementById('signupPhoneNum').value.trim();
-  localStorage.setItem('fly_user_name', name);
-  localStorage.setItem('fly_user_phone', phone);
-  const uid = getMyUid();
-  const adminMsg = `🚨 *عميل جديد سجل في التطبيق!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`;
-  const xhr = new XMLHttpRequest(); xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); xhr.send(adminMsg);
+  const email = document.getElementById('signupEmailVal').value.trim();
   
-  initializeUserSession();
-  showAppModal("أهلاً بك! ✨", "تم تفعيل حسابك في Fly Express بنجاح!");
+  if (!name || !phone || !email || !email.includes('@')) {
+    return showAppModal("تنبيه ⚠️", "يرجى كتابة كافة البيانات بشكل صحيح وإدخال بريد إلكتروني صحيح.");
+  }
+
+  pendingUserData = { name, phone, email };
+  generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString(); // توليد كود من 4 أرقام
+
+  // إرسال تفاصيل العميل للإدارة مع الكود
+  const uid = getMyUid();
+  const adminMsg = `🚨 *تسجيل حساب جديد عبر الجيميل!*\n👤 الاسم: ${name}\n📧 الجيميل: ${email}\n📱 الهاتف: ${phone}\n🔑 كود التحقق المرسل: ${generatedOtpCode}`;
+  const xhr = new XMLHttpRequest(); 
+  xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); 
+  xhr.send(adminMsg);
+
+  // اخفاء نموذج التسجيل واظهار خانة ادخال الكود
+  document.getElementById('signupFormSection').style.display = 'none';
+  document.getElementById('verifyCodeSection').style.display = 'block';
+  
+  showAppModal("تم إرسال الكود 📨", `تم توليد كود التحقق وإرساله إلى البريد (${email}): [ ${generatedOtpCode} ] (اكتبه في الخانة لتأكيد الحساب).`);
+}
+
+// خطوة 2: التحقق من الكود المدخل
+function verifyOtpCodeAction() {
+  const enteredCode = document.getElementById('enteredOtpCode').value.trim();
+  if (enteredCode === generatedOtpCode) {
+    localStorage.setItem('fly_user_name', pendingUserData.name);
+    localStorage.setItem('fly_user_phone', pendingUserData.phone);
+    localStorage.setItem('fly_user_email', pendingUserData.email);
+    
+    initializeUserSession();
+    showAppModal("أهلاً بك! ✨", "تم التحقق بنجاح وتفعيل حسابك في Fly Express!");
+  } else {
+    showAppModal("خطأ في الكود ❌", "كود التحقق غير صحيح، يرجى التأكد وإعادة المحاولة.");
+  }
 }
 
 function handleGoogleSignInDirect() {
-  const name = prompt("أدخل اسمك:") || "عميل Google";
-  const phone = prompt("أدخل رقم هاتفك:") || "010";
+  const email = prompt("أدخل بريدك الإلكتروني (Gmail):");
+  if (!email || !email.includes("@")) return showAppModal("تنبيه", "بريد غير صحيح.");
+  const name = email.split('@')[0];
+  const phone = prompt("أدخل رقم هاتفك للتواصل مع الكابتن:", "010");
+  
   localStorage.setItem('fly_user_name', name);
-  localStorage.setItem('fly_user_phone', phone);
+  localStorage.setItem('fly_user_phone', phone || "010");
+  localStorage.setItem('fly_user_email', email);
+  
   const uid = getMyUid();
-  const adminMsg = `🚨 *عميل جديد سجل (عبر Google)!*\n👤 الاسم: ${name}\n📱 رقم الهاتف: ${phone}\n🔑 كود العميل: ${uid}`;
-  const xhr = new XMLHttpRequest(); xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); xhr.send(adminMsg);
+  const adminMsg = `🚨 *تسجيل جديد (عبر Google)!*\n👤 الاسم: ${name}\n📧 الجيميل: ${email}\n📱 الهاتف: ${phone}\n🔑 كود العميل: ${uid}`;
+  const xhr = new XMLHttpRequest(); 
+  xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); 
+  xhr.send(adminMsg);
 
   initializeUserSession();
   showAppModal("تم الدخول بنجاح! 🚀", `أهلاً بك يا ${name} بحساب Google!`);
@@ -718,7 +765,7 @@ function openServiceScreen(type) {
 function toggleDrawer(open) { const d = document.getElementById('profileDrawer'); if (open) d.classList.add('show'); else d.classList.remove('show'); }
 
 // ==========================================
-// WebSockets الأصلية السريعة والفعالة للـ APK
+// WebSockets للاستقبال الفوري للأوامر
 // ==========================================
 function applyMasterData(data) {
   if (!data) return;
