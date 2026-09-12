@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- ربط Firebase الصحيح والموثق بالمفاتيح السليمة -->
+<!-- ربط Firebase بالإعدادات المحدثة الجديدة -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -24,8 +24,8 @@
     projectId: "flyexpress-a0f5a",
     storageBucket: "flyexpress-a0f5a.firebasestorage.app",
     messagingSenderId: "1053055752719",
-    appId: "1:1053055752719:web:8a6ff50aa52f0d6ae8617a",
-    measurementId: "G-KKYWM0TZYG"
+    appId: "1:1053055752719:web:97ae05aa117ffbf6e8617a",
+    measurementId: "G-G6HXPVWH6V"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -175,7 +175,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </div>
 
-  <!-- شاشة الدخول والتسجيل المرتبطة بـ Firebase Auth -->
+  <!-- شاشة الدخول والتسجيل عبر Firebase -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" alt="Fly Express Logo" class="auth-main-logo">
@@ -190,25 +190,38 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       <!-- نموذج تسجيل الدخول -->
       <form id="loginFormSection" onsubmit="event.preventDefault(); processFirebaseLogin();">
         <input type="email" id="loginEmail" class="custom-field" placeholder="البريد الإلكتروني (Gmail)" required>
-        <input type="password" id="loginPassword" class="custom-field" placeholder="كلمة المرور" required>
+        <input type="password" id="loginPassword" class="custom-field" placeholder="كلمة المرور (6 أحرف على الأقل)" required>
         <button type="submit" class="primary-action-btn">تسجيل الدخول 🚀</button>
       </form>
 
-      <!-- نموذج التسجيل وإرسال رابط/كود التحقق الحقيقي من جوجل -->
+      <!-- نموذج التسجيل وإرسال رابط التحقق للجيميل -->
       <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processFirebaseSignup();">
         <input type="text" id="signupFullname" class="custom-field" placeholder="الاسم الكريم" required>
         <input type="tel" id="signupPhoneNum" class="custom-field" placeholder="رقم الهاتف للتواصل" required>
         <input type="email" id="signupEmail" class="custom-field" placeholder="البريد الإلكتروني (Gmail)" required>
-        <input type="password" id="signupPassword" class="custom-field" placeholder="كلمة المرور" required>
+        <input type="password" id="signupPassword" class="custom-field" placeholder="كلمة المرور (6 أحرف على الأقل)" required>
         <button type="submit" class="primary-action-btn">إنشاء حساب وإرسال تفعيل للجيميل 📨</button>
       </form>
 
-      <!-- زر متابعة بحساب Google -->
+      <!-- زر متابعة باستخدام حساب Google -->
       <button type="button" class="google-auth-btn" onclick="processGoogleAuth()" style="margin-top:14px;">
         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
         <span>متابعة باستخدام حساب Google</span>
       </button>
     </div>
+  </div>
+
+  <div class="maintenance-gate" id="maintenanceScreen">
+    <div style="font-size:60px; color:#ef4444; margin-bottom:16px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+    <h2 style="font-size:22px; font-weight:900; margin-bottom:8px;">تنبيه الصيانة ⛔</h2>
+    <p style="font-size:13px; color:#cbd5e1; line-height:1.6;">تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير، نعتذر عن الإزعاج وسنعود قريباً لخدمتكم بشكل أفضل! 🛵</p>
+  </div>
+
+  <div class="force-update-gate" id="forceUpdateModal">
+    <img src="icon-512.png" style="width:110px; height:110px; border-radius:28px; margin-bottom:18px; border:2px solid var(--primary); object-fit:cover;">
+    <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
+    <p style="font-size:13px; color:#cbd5e1; margin-bottom:24px;">يرجى التحديث الآن لمواصلة استخدام التطبيق بأمان.</p>
+    <button id="btnDownloadApk" class="primary-action-btn" style="background:#0ea5e9;"><i class="fa-solid fa-cloud-arrow-down"></i> تحميل التحديث الآن ⚡</button>
   </div>
 
   <header class="top-nav-bar">
@@ -284,7 +297,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </main>
 
-  <!-- الصفحات الفرعية والخدمات -->
+  <!-- الصفحات والخدمات الأساسية -->
   <section id="view-school" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🚌 توصيل الطلاب للمدارس والدروس</h3></div>
     <div class="ui-card">
@@ -356,24 +369,9 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 <script>
 const ADMIN_PHONE = "201017908076";
-const TOPIC = "flyexpress_super_admin_2026"; 
 
 function sendDirectWhatsApp(text) {
   window.location.href = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(text)}`;
-}
-
-function getMyUid() {
-  let uid = localStorage.getItem("fly_uid");
-  if (!uid) {
-    const phone = localStorage.getItem("fly_user_phone") || "01X";
-    uid = "FLY-" + phone.substring(0,4) + "-" + Math.floor(Math.random() * 9000 + 1000);
-    localStorage.setItem("fly_uid", uid);
-  }
-  return uid;
-}
-
-function showAppModal(title, msg, iconClass = "fa-circle-info") {
-  // تفعيل المودال (التنبيهات)
 }
 
 function switchAuthMode(mode) {
@@ -389,7 +387,6 @@ window.processFirebaseLogin = async function() {
   const pass = document.getElementById('loginPassword').value.trim();
   try {
     await window.firebaseFns.signInWithEmailAndPassword(window.firebaseAuth, email, pass);
-    localStorage.setItem('fly_user_name', email.split('@')[0]);
     initializeUserSession();
     alert("تم تسجيل الدخول بنجاح! 🚀");
   } catch (error) {
@@ -403,6 +400,11 @@ window.processFirebaseSignup = async function() {
   const email = document.getElementById('signupEmail').value.trim();
   const pass = document.getElementById('signupPassword').value.trim();
 
+  if (pass.length < 6) {
+    alert("كلمة المرور قصيرة جداً! يجب ألا تقل عن 6 أحرف أو أرقام.");
+    return;
+  }
+
   try {
     const userCredential = await window.firebaseFns.createUserWithEmailAndPassword(window.firebaseAuth, email, pass);
     await window.firebaseFns.sendEmailVerification(userCredential.user);
@@ -414,7 +416,7 @@ window.processFirebaseSignup = async function() {
     const adminMsg = `🚨 *تسجيل عميل جديد عبر Firebase!*\n👤 الاسم: ${name}\n📧 الجيميل: ${email}\n📱 الهاتف: ${phone}`;
     const xhr = new XMLHttpRequest(); xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); xhr.send(adminMsg);
 
-    alert(`تم إرسال رابط التفعيل إلى بريدك (${email}). يرجى تأكيد الحساب.`);
+    alert(`تم إنشاء الحساب وإرسال رابط تحقق رسمي إلى بريدك (${email}).`);
     initializeUserSession();
   } catch (error) {
     alert("خطأ في التسجيل: " + error.message);
@@ -425,12 +427,8 @@ window.processGoogleAuth = async function() {
   try {
     const provider = new window.firebaseFns.GoogleAuthProvider();
     const result = await window.firebaseFns.signInWithPopup(window.firebaseAuth, provider);
-    const user = result.user;
-    
-    localStorage.setItem('fly_user_name', user.displayName || user.email.split('@')[0]);
-    localStorage.setItem('fly_user_email', user.email);
     initializeUserSession();
-    alert(`أهلاً بك يا ${user.displayName || 'عميل'} بحساب Google! 🚀`);
+    alert(`أهلاً بك يا ${result.user.displayName || 'عميل'} بحساب Google! 🚀`);
   } catch (error) {
     alert("خطأ في جوجل: " + error.message);
   }
@@ -441,10 +439,12 @@ function initializeUserSession() {
 }
 
 function showView(viewId) { document.querySelectorAll('.sub-page-view').forEach(v => v.classList.remove('active')); document.getElementById(viewId).classList.add('active'); window.scrollTo(0, 0); }
-function navigateToHome() { showView('view-home'); }
 function switchNavTab(tabName, btn) { showView('view-' + tabName); }
 function openServiceScreen(type) { showView('view-' + type); }
-function toggleDrawer(open) {}
+
+window.addEventListener('load', () => {
+  if (localStorage.getItem('fly_user_email')) initializeUserSession();
+});
 </script>
 </body>
 </html>
