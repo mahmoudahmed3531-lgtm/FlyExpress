@@ -154,7 +154,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </div>
 
-  <!-- شاشة الدخول والتسجيل بالجيميل وكود التحقق -->
+  <!-- شاشة الدخول والتسجيل بنظام كود التحقق (OTP) المتصل بالإدارة -->
   <div class="auth-overlay" id="authGateScreen">
     <div class="auth-card-box">
       <img src="icon-512.png" alt="Fly Express Logo" class="auth-main-logo">
@@ -166,14 +166,14 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
         <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">تسجيل جديد</button>
       </div>
 
-      <!-- نموذج تسجيل الدخول -->
+      <!-- نموذج تسجيل الدخول العادي -->
       <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();">
         <input type="text" id="loginUsername" class="custom-field" placeholder="اسم المستخدم أو الهاتف">
         <input type="password" id="loginPassword" class="custom-field" placeholder="كلمة المرور">
         <button type="submit" class="primary-action-btn">تسجيل الدخول 🚀</button>
       </form>
 
-      <!-- نموذج التسجيل بالاسم والهاتف والجيميل -->
+      <!-- نموذج التسجيل وإرسال كود التحقق (OTP) -->
       <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSignupAction();">
         <input type="text" id="signupFullname" class="custom-field" placeholder="الاسم الكريم" required>
         <input type="tel" id="signupPhoneNum" class="custom-field" placeholder="رقم الهاتف للتواصل" required>
@@ -182,14 +182,13 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
         <button type="submit" class="primary-action-btn">إرسال كود التحقق للجيميل 📨</button>
       </form>
 
-      <!-- شاشة إدخال كود التحقق (تظهر بعد إدخال الإيميل) -->
+      <!-- شاشة إدخال الكود لتأكيد الحساب -->
       <div id="verifyCodeSection" style="display:none;">
-        <p style="font-size:12px; color:#10b981; margin-bottom:10px;">تم إرسال كود التحقق برمجياً لإيميلك! أدخله هنا:</p>
-        <input type="text" id="enteredOtpCode" class="custom-field" placeholder="أدخل الكود المكون من 4 أرقام" style="text-align:center; font-size:18px; letter-spacing:4px;" maxlength="4">
+        <p style="font-size:12px; color:#10b981; margin-bottom:10px;">تم إرسال كود التحقق بنجاح! أدخله أدناه لتفعيل حسابك:</p>
+        <input type="text" id="enteredOtpCode" class="custom-field" placeholder="أدخل كود الـ OTP" style="text-align:center; font-size:18px; letter-spacing:4px;" maxlength="4">
         <button type="button" class="primary-action-btn" style="background:#10b981;" onclick="verifyOtpCodeAction()">تأكيد الكود وإنشاء الحساب ✨</button>
       </div>
 
-      <!-- زر متابعة بجوجل -->
       <button type="button" class="google-auth-btn" onclick="handleGoogleSignInDirect()" style="margin-top:14px;">
         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
         <span>متابعة باستخدام حساب Google</span>
@@ -686,21 +685,21 @@ function processSignupAction() {
   pendingUserData = { name, phone, email };
   generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString(); // توليد كود من 4 أرقام
 
-  // إرسال تفاصيل العميل للإدارة مع الكود
+  // إرسال تفاصيل العميل والكود المولد لتطبيق الإدارة الخاص بك
   const uid = getMyUid();
-  const adminMsg = `🚨 *تسجيل حساب جديد عبر الجيميل!*\n👤 الاسم: ${name}\n📧 الجيميل: ${email}\n📱 الهاتف: ${phone}\n🔑 كود التحقق المرسل: ${generatedOtpCode}`;
+  const adminMsg = `🚨 *تسجيل حساب جديد مع كود التحقق!*\n👤 الاسم: ${name}\n📧 الجيميل: ${email}\n📱 الهاتف: ${phone}\n🔑 كود التحقق (OTP): ${generatedOtpCode}`;
   const xhr = new XMLHttpRequest(); 
   xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); 
   xhr.send(adminMsg);
 
-  // اخفاء نموذج التسجيل واظهار خانة ادخال الكود
+  // إخفاء نموذج التسجيل وإظهار خانة إدخال الكود
   document.getElementById('signupFormSection').style.display = 'none';
   document.getElementById('verifyCodeSection').style.display = 'block';
   
-  showAppModal("تم إرسال الكود 📨", `تم توليد كود التحقق وإرساله إلى البريد (${email}): [ ${generatedOtpCode} ] (اكتبه في الخانة لتأكيد الحساب).`);
+  showAppModal("تم إرسال الكود 📨", `تم توليد كود التحقق وإرساله (كود الاختبار الخاص بك هو: [ ${generatedOtpCode} ]). يرجى إدخاله أدناه.`);
 }
 
-// خطوة 2: التحقق من الكود المدخل
+// خطوة 2: التحقق من الكود المدخل وإنشاء الحساب
 function verifyOtpCodeAction() {
   const enteredCode = document.getElementById('enteredOtpCode').value.trim();
   if (enteredCode === generatedOtpCode) {
@@ -799,7 +798,7 @@ function applyMasterData(data) {
     document.getElementById("dailyPromoTickerTxt").textContent = data.notice;
   }
   const mScreen = document.getElementById("maintenanceScreen");
-  if (data.service === "closed") { mScreen.style.display = "flex"; } else if (data.service === "open") { mScreen.style.display = "none"; }
+  if (data.service === "closed") { mScreen.style.display = "flex"; } else { mScreen.style.display = "none"; }
 }
 
 function connectWebSocket() {
