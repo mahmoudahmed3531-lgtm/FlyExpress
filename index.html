@@ -2,10 +2,28 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
+<meta http-equiv="Cache-Control" content="max-age=0, no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
-<title>Fly Express — Premium</title>
+<title>Fly Express — Super App</title>
+<meta name="theme-color" content="#050814">
+
+<link rel="icon" href="icon-512.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- مكتبة EmailJS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript"> (function() { emailjs.init("qCOA0R-3vwqk0fiJ1"); })(); </script>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  const firebaseConfig = { apiKey: "AIzaSyApqKjD46xobFTyBXY4lXRVZttnLGZxO98", authDomain: "flyexpress-a0f5a.firebaseapp.com", projectId: "flyexpress-a0f5a", storageBucket: "flyexpress-a0f5a.firebasestorage.app", messagingSenderId: "1053055752719", appId: "1:1053055752719:web:97ae05aa117ffbf6e8617a", measurementId: "G-G6HXPVWH6V" };
+  const app = initializeApp(firebaseConfig);
+  window.firebaseAuth = getAuth(app);
+  window.firebaseFns = { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup };
+</script>
 
 <style>
 :root {
@@ -19,27 +37,18 @@
   font-family: 'Cairo', system-ui, sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+input, textarea, select { user-select: auto; outline: none; }
 body { background-color: #000; display: flex; justify-content: center; min-height: 100vh; color: var(--text-main); }
 
-/* خلفية فخمة جداً مع إضاءات ناعمة */
-.mobile-frame {
-  width: 100%; max-width: 430px; 
-  background-color: var(--bg-dark);
-  background-image: 
-    radial-gradient(circle at 15% 50px, rgba(225, 29, 72, 0.15), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.1), transparent 25%);
-  min-height: 100vh; position: relative; padding-bottom: 85px; overflow-x: hidden;
-}
+.mobile-frame { width: 100%; max-width: 430px; background-color: var(--bg-dark); background-image: radial-gradient(circle at 15% 50px, rgba(225, 29, 72, 0.15), transparent 25%), radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.1), transparent 25%); min-height: 100vh; position: relative; padding-bottom: 85px; overflow-x: hidden; }
 
-/* تأثير الزجاج الفخم (Glassmorphism) */
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-}
+.glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
+
+/* المكونات العامة */
+.custom-field { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.4); font-family: inherit; font-size: 13px; margin-bottom: 12px; color: #fff; transition: 0.3s; }
+.custom-field:focus { border-color: var(--primary); background: rgba(225,29,72,0.05); }
+.custom-field::placeholder { color: #64748b; }
+.primary-action-btn { width: 100%; background: var(--primary); color: #fff; border: 0; padding: 14px; border-radius: 14px; font-size: 14px; font-weight: 900; font-family: inherit; cursor: pointer; box-shadow: 0 6px 20px var(--primary-glow); }
 
 .top-nav-bar { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; background: rgba(5, 8, 20, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border); }
 .loc-text { font-size: 10px; color: var(--text-sub); margin-bottom: 2px; }
@@ -47,161 +56,614 @@ body { background-color: #000; display: flex; justify-content: center; min-heigh
 .brand-user-avatar { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--glass-border); object-fit: cover; }
 
 .search-wrapper { padding: 12px 20px; }
-.search-bar { background: rgba(0,0,0,0.4); border-radius: 16px; display: flex; align-items: center; padding: 14px 16px; gap: 12px; border: 1px solid var(--glass-border); }
-.search-bar input { border: 0; background: transparent; width: 100%; font-family: inherit; font-size: 13px; color: #fff; outline: none; }
+.search-bar { display: flex; align-items: center; padding: 14px 16px; gap: 12px; }
+.search-bar input { border: 0; background: transparent; width: 100%; font-family: inherit; font-size: 13px; color: #fff; }
 
-/* بانر الإعلانات الفخم */
 .hero-slider-wrap { padding: 10px 20px; }
-.hero-banner-card { 
-  background: linear-gradient(135deg, rgba(225,29,72,0.1) 0%, rgba(0,0,0,0) 100%);
-  border-radius: 24px; padding: 22px; position: relative; overflow: hidden; 
-  border: 1px solid rgba(225,29,72,0.3); min-height: 140px; display: flex; flex-direction: column; justify-content: center;
-}
+.hero-banner-card { background: linear-gradient(135deg, rgba(225,29,72,0.1) 0%, rgba(0,0,0,0) 100%); padding: 22px; position: relative; overflow: hidden; border: 1px solid rgba(225,29,72,0.3); display: flex; flex-direction: column; justify-content: center; }
 .hero-banner-card::before { content: ''; position: absolute; top: 0; right: 0; width: 150px; height: 150px; background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%); filter: blur(30px); z-index: 0; }
 .hero-banner-card > * { position: relative; z-index: 1; }
 .hero-tag { background: rgba(225,29,72,0.2); color: #fda4af; font-size: 10px; font-weight: 800; padding: 6px 12px; border-radius: 20px; width: fit-content; margin-bottom: 8px; border: 1px solid rgba(225,29,72,0.3); }
 
-/* باقة FLY PASS الفخمة */
-.fly-pass-premium { margin: 10px 20px; background: linear-gradient(90deg, rgba(147, 51, 234, 0.1), rgba(0,0,0,0.4)); border: 1px solid rgba(147, 51, 234, 0.4); border-radius: 18px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; position: relative; overflow: hidden; }
+.fly-pass-premium { margin: 10px 20px; background: linear-gradient(90deg, rgba(147, 51, 234, 0.1), rgba(0,0,0,0.4)); border: 1px solid rgba(147, 51, 234, 0.4); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
 .fly-pass-premium i.crown-icon { font-size: 26px; color: #d8b4fe; text-shadow: 0 0 15px rgba(147, 51, 234, 0.8); }
 
-/* شبكة الخدمات الجديدة (فخمة وهادية) */
 .section-title { padding: 16px 20px 8px; font-size: 15px; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 8px; }
 .section-title i { color: var(--primary); font-size: 14px; }
 
 .services-grid-luxury { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 0 20px; margin-bottom: 10px; }
 .service-item-lux { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; gap: 8px; }
-.lux-icon-box { 
-  width: 62px; height: 62px; border-radius: 20px; 
-  background: var(--glass-bg); border: 1px solid var(--glass-border);
-  display: flex; align-items: center; justify-content: center; font-size: 24px; 
-  color: var(--text-sub); transition: all 0.2s ease;
-  box-shadow: inset 0 2px 10px rgba(255,255,255,0.02);
-}
+.lux-icon-box { width: 62px; height: 62px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--text-sub); transition: all 0.2s ease; box-shadow: inset 0 2px 10px rgba(255,255,255,0.02); }
 .service-item-lux:active .lux-icon-box { transform: scale(0.92); border-color: var(--primary); color: var(--primary); background: rgba(225,29,72,0.05); }
-/* تمييز أيقونات معينة بلون */
-.highlight-icon { color: #f43f5e; }
-.highlight-blue { color: #38bdf8; }
-.highlight-gold { color: #fbbf24; }
-.highlight-green { color: #34d399; }
-
+.highlight-icon { color: #f43f5e; } .highlight-blue { color: #38bdf8; } .highlight-gold { color: #fbbf24; } .highlight-green { color: #34d399; }
 .lux-label { font-size: 11px; font-weight: 800; color: #e2e8f0; }
 
-/* خدمات عريضة (نصف الشاشة) */
 .wide-services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 10px 20px; }
 .wide-service-card { padding: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
 .wide-service-card i { font-size: 24px; }
 
-.floating-order-btn { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 14px 32px; border-radius: 30px; font-weight: 900; font-size: 15px; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px var(--primary-glow); cursor: pointer; z-index: 90; }
+.floating-order-btn { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 14px 32px; border-radius: 30px; font-weight: 900; font-size: 15px; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px var(--primary-glow); cursor: pointer; z-index: 90; border: 1px solid rgba(255,255,255,0.2); }
 
 .tab-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 430px; margin: 0 auto; height: 72px; background: rgba(5, 8, 20, 0.9); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
 .tab-btn { background: transparent; border: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-sub); font-size: 11px; font-weight: 800; cursor: pointer; flex: 1; }
 .tab-btn.active { color: var(--primary); }
 .tab-btn.active i { transform: translateY(-3px); text-shadow: 0 4px 10px var(--primary-glow); }
+
+.sub-page-view { display: none; padding: 16px 20px; }
+.sub-page-view.active { display: block; }
+.page-top-back { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.back-circle-btn { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 14px; }
+
+/* القوائم والموديلز والمصادقة */
+.drawer-menu { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; display: none; justify-content: flex-end; backdrop-filter: blur(5px); }
+.drawer-menu.show { display: flex; }
+.drawer-sheet { width: 82%; max-width: 320px; height: 100%; background: var(--bg-dark); border-right: 1px solid var(--glass-border); padding: 24px 18px; display: flex; flex-direction: column; justify-content: space-between; overflow-y:auto; }
+.drawer-item { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 700; color: #cbd5e1; cursor: pointer; margin-bottom: 6px; }
+.drawer-item:hover { background: var(--glass-bg); color: #fff; }
+
+.auth-overlay { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 20px; color: #fff; overflow-y: auto; }
+.auth-card-box { width: 100%; max-width: 360px; text-align: center; }
+.auth-nav-tabs { display: flex; gap: 8px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 14px; padding: 6px; margin-bottom: 20px; }
+.auth-tab-btn { flex: 1; padding: 12px; border: 0; border-radius: 10px; background: transparent; color: #cbd5e1; font-weight: 800; cursor: pointer; font-family: inherit; font-size: 13px; transition: 0.3s; }
+.auth-tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 15px var(--primary-glow); }
+.google-auth-btn { width: 100%; padding: 14px; background: #fff; color: #1e293b; border: 0; border-radius: 14px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; }
+
+.app-custom-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
+.app-custom-modal-overlay.show { display: flex; }
+.app-custom-modal-card { width: 100%; max-width: 320px; padding: 24px; text-align: center; border-color: var(--primary); box-shadow: 0 10px 40px var(--primary-glow); }
+
+.live-toast-notification { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(5,8,20,0.95); border: 1px solid #10b981; padding: 12px 20px; border-radius: 30px; display: flex; align-items: center; gap: 10px; color: #fff; font-size: 11px; font-weight: 800; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4); transition: top 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 9999; }
+.live-toast-notification.show { top: 60px; }
 </style>
 </head>
 
 <body>
 <div class="mobile-frame">
 
+  <div class="live-toast-notification" id="liveOrderToast">
+    <i class="fa-solid fa-motorcycle" style="color:#10b981; font-size:16px;"></i>
+    <span id="liveOrderToastTxt">كابتن أحمد استلم طرد متجه لقرية بركة 📦</span>
+  </div>
+
+  <div class="app-custom-modal-overlay" id="appCustomModal">
+    <div class="app-custom-modal-card glass-card">
+      <div id="customModalIcon" style="font-size:44px; color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-bell"></i></div>
+      <h3 style="font-size:18px; font-weight:900; margin-bottom:8px;" id="customModalTitle">تنبيه</h3>
+      <p style="font-size:13px; color:var(--text-sub); margin-bottom:20px; line-height:1.6;" id="customModalMessage">نص الرسالة</p>
+      <button class="primary-action-btn" onclick="closeAppModal()">حسناً فهمت ✅</button>
+    </div>
+  </div>
+
+  <!-- شاشة المصادقة الفخمة -->
+  <div class="auth-overlay" id="authGateScreen">
+    <div class="auth-card-box">
+      <img src="icon-512.png" style="width:110px; height:110px; border-radius:30px; border:2px solid var(--glass-border); margin-bottom:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+      <h2 style="font-size:26px; font-weight:900; margin-bottom:4px;">FLY <span style="color:var(--primary);">EXPRESS</span></h2>
+      <p style="font-size:12px; color:var(--text-sub); margin-bottom:24px;">سوبر آب.. لحياة أسهل وأسرع 🚀</p>
+
+      <div class="auth-nav-tabs">
+        <button class="auth-tab-btn active" id="btnTabLogin" onclick="switchAuthMode('login')">تسجيل الدخول</button>
+        <button class="auth-tab-btn" id="btnTabSignup" onclick="switchAuthMode('signup')">حساب جديد</button>
+      </div>
+
+      <form id="loginFormSection" onsubmit="event.preventDefault(); processLoginAction();">
+        <input type="email" id="loginEmail" class="custom-field" placeholder="البريد الإلكتروني (Gmail)">
+        <input type="password" id="loginPassword" class="custom-field" placeholder="كلمة المرور">
+        <button type="submit" class="primary-action-btn">دخول 🚀</button>
+      </form>
+
+      <form id="signupFormSection" style="display:none;" onsubmit="event.preventDefault(); processSendRealOtp();">
+        <input type="text" id="signupFullname" class="custom-field" placeholder="الاسم الكريم" required>
+        <input type="tel" id="signupPhoneNum" class="custom-field" placeholder="رقم الهاتف" required>
+        <input type="email" id="signupEmailVal" class="custom-field" placeholder="البريد الإلكتروني (لاستلام الكود)" required>
+        <input type="password" id="signupPasscode" class="custom-field" placeholder="كلمة المرور" required>
+        <button type="submit" class="primary-action-btn" id="btnSendOtp">إرسال كود التحقق 📨</button>
+      </form>
+
+      <div id="verifyCodeSection" style="display:none;">
+        <p style="font-size:12px; color:#34d399; margin-bottom:14px;">تم إرسال كود (OTP) لبريدك الإلكتروني، يرجى إدخاله هنا:</p>
+        <input type="text" id="enteredOtpCode" class="custom-field" placeholder="----" style="text-align:center; font-size:24px; letter-spacing:8px; font-weight:900;" maxlength="4">
+        <button type="button" class="primary-action-btn" style="background:#10b981; box-shadow:0 6px 20px rgba(16, 185, 129, 0.3);" onclick="verifyRealOtpCode()">تأكيد الكود ✨</button>
+      </div>
+
+      <button type="button" class="google-auth-btn" onclick="handleGoogleSignInDirect()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span>متابعة باستخدام Google</span>
+      </button>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="top-nav-bar">
     <div>
       <div class="loc-text">موقعك الحالي</div>
-      <div class="loc-title"><i class="fa-solid fa-location-dot" style="color:var(--primary)"></i> نجع حمادي وقراها <i class="fa-solid fa-angle-down" style="font-size:10px; color:#94a3b8;"></i></div>
+      <div class="loc-title" onclick="alert('نجع حمادي والقرى المجاورة 📍')"><i class="fa-solid fa-location-dot" style="color:var(--primary)"></i> نجع حمادي وقراها <i class="fa-solid fa-angle-down" style="font-size:10px; color:#94a3b8;"></i></div>
     </div>
-    <img src="icon-512.png" class="brand-user-avatar">
+    <img src="icon-512.png" class="brand-user-avatar" onclick="toggleDrawer(true)">
   </header>
 
-  <!-- Search -->
-  <div class="search-wrapper">
-    <div class="search-bar glass-card">
-      <i class="fa-solid fa-magnifying-glass" style="color:#64748b;"></i>
-      <input type="text" placeholder="ابحث عن عيادة، أكلة، فني، مشوار...">
-    </div>
-  </div>
-
-  <!-- Hero Banner -->
-  <div class="hero-slider-wrap">
-    <div class="hero-banner-card glass-card">
-      <div class="hero-tag"><i class="fa-solid fa-bolt"></i> الأسرع دائماً</div>
-      <h2 style="font-size:22px; font-weight:900; margin-bottom:4px; color:#fff;">الكل في واحد</h2>
-      <p style="font-size:12px; color:#cbd5e1; max-width:70%;">مشاوير، أكل، عيادات وصنايعية.. حياتك أسهل معانا.</p>
-    </div>
-  </div>
-
-  <!-- Fly Pass Premium -->
-  <div class="fly-pass-premium glass-card">
-    <div style="display:flex; align-items:center; gap:12px;">
-      <i class="fa-solid fa-crown crown-icon"></i>
-      <div>
-        <h4 style="font-size:14px; font-weight:900; color:#fff;">باقة FLY PASS <span style="color:#34d399; font-size:11px;">(مفعلة ✅)</span></h4>
-        <p style="font-size:10px; color:#cbd5e1;">خصومات حصرية وتوصيل مجاني</p>
+  <!-- الصفحة الرئيسية -->
+  <main id="view-home" class="sub-page-view active" style="padding-top:0;">
+    <div class="search-wrapper">
+      <div class="search-bar glass-card">
+        <i class="fa-solid fa-magnifying-glass" style="color:#64748b;"></i>
+        <input type="text" placeholder="ابحث عن عيادة، أكلة، فني، مشوار...">
       </div>
     </div>
-    <i class="fa-solid fa-angle-left" style="color:#d8b4fe;"></i>
+
+    <div class="hero-slider-wrap">
+      <div class="hero-banner-card glass-card">
+        <div class="hero-tag"><i class="fa-solid fa-bolt"></i> الأسرع دائماً</div>
+        <h2 style="font-size:22px; font-weight:900; margin-bottom:4px; color:#fff;">الكل في واحد</h2>
+        <p style="font-size:12px; color:#cbd5e1; max-width:70%;">مشاوير، أكل، عيادات وصنايعية.. حياتك أسهل معانا.</p>
+      </div>
+    </div>
+
+    <div class="fly-pass-premium glass-card" onclick="openServiceScreen('flypass')">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <i class="fa-solid fa-crown crown-icon"></i>
+        <div>
+          <h4 style="font-size:14px; font-weight:900; color:#fff;" id="homeFlyPassTitleTxt">باقة FLY PASS</h4>
+          <p style="font-size:10px; color:#cbd5e1;">خصومات حصرية وتوصيل مجاني</p>
+        </div>
+      </div>
+      <i class="fa-solid fa-angle-left" style="color:#d8b4fe;"></i>
+    </div>
+
+    <div class="section-title"><i class="fa-solid fa-layer-group"></i> الأساسيات السريعة</div>
+    <div class="services-grid-luxury">
+      <div class="service-item-lux" onclick="openServiceScreen('food')">
+        <div class="lux-icon-box highlight-icon"><i class="fa-solid fa-burger"></i></div>
+        <div class="lux-label">طلب أكل</div>
+      </div>
+      <div class="service-item-lux" onclick="openServiceScreen('rides')">
+        <div class="lux-icon-box highlight-blue"><i class="fa-solid fa-car-side"></i></div>
+        <div class="lux-label">توصيلة</div>
+      </div>
+      <div class="service-item-lux" onclick="openServiceScreen('orders')">
+        <div class="lux-icon-box highlight-gold"><i class="fa-solid fa-box-open"></i></div>
+        <div class="lux-label">إرسال طرد</div>
+      </div>
+      <div class="service-item-lux" onclick="openServiceScreen('bringme')">
+        <div class="lux-icon-box highlight-green"><i class="fa-solid fa-basket-shopping"></i></div>
+        <div class="lux-label">بقالة وطلبات</div>
+      </div>
+    </div>
+
+    <div class="section-title"><i class="fa-solid fa-star"></i> خدمات السوبر آب</div>
+    <div class="wide-services-grid">
+      <div class="wide-service-card glass-card" onclick="openServiceScreen('clinics')">
+        <i class="fa-solid fa-stethoscope highlight-blue"></i>
+        <div><h4 style="font-size:13px; font-weight:800;">العيادات</h4><p style="font-size:9px; color:var(--text-sub);">احجز دكتورك الآن</p></div>
+      </div>
+      <div class="wide-service-card glass-card" onclick="openServiceScreen('technician')">
+        <i class="fa-solid fa-screwdriver-wrench highlight-gold"></i>
+        <div><h4 style="font-size:13px; font-weight:800;">طلب فني</h4><p style="font-size:9px; color:var(--text-sub);">سباك، كهربائي...</p></div>
+      </div>
+      <div class="wide-service-card glass-card" onclick="openServiceScreen('bills')">
+        <i class="fa-solid fa-file-invoice-dollar highlight-green"></i>
+        <div><h4 style="font-size:13px; font-weight:800;">فواتير ورصيد</h4><p style="font-size:9px; color:var(--text-sub);">شحن ودفع سريع</p></div>
+      </div>
+      <div class="wide-service-card glass-card" onclick="openServiceScreen('gifts')">
+        <i class="fa-solid fa-gift highlight-icon"></i>
+        <div><h4 style="font-size:13px; font-weight:800;">إرسال هدية</h4><p style="font-size:9px; color:var(--text-sub);">مع رسالة خاصة</p></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 1. شاشة المشاوير والتوصيل (تم التحديث بأنواع التوصيل والحجز المسبق) -->
+  <section id="view-rides" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🚕 مشاوير FLY (توصيلة)</h3></div>
+    <div class="glass-card" style="padding:20px;">
+      <label style="font-size:11px; color:var(--text-sub); margin-bottom:6px; display:block;">نوع التوصيلة:</label>
+      <select id="ride_type" class="custom-field">
+        <option value="عادية">توصيلة عادية (موتوسيكل/سكوتر)</option>
+        <option value="اقتصادية">توصيلة اقتصادية (توكتوك)</option>
+        <option value="مميزة">توصيلة مميزة (ملاكي مكيف)</option>
+      </select>
+      
+      <div id="multiStopInputsWrap">
+        <input type="text" class="custom-field" placeholder="نقطة الانطلاق (منين؟)" value="البيت">
+        <input type="text" class="custom-field" placeholder="الوجهة أو المحطة الأولى (رايح فين؟)">
+      </div>
+      <button type="button" style="background:transparent; border:0; color:#38bdf8; font-size:12px; font-weight:800; cursor:pointer; margin-bottom:14px;" onclick="addStopField()">+ إضافة محطة توقف أخرى</button>
+      
+      <label style="font-size:11px; color:var(--text-sub); margin-bottom:6px; display:block;">موعد الرحلة (اختياري للحجز المسبق):</label>
+      <input type="datetime-local" id="ride_time" class="custom-field">
+
+      <button class="primary-action-btn" onclick="submitRideAction()">طلب الكابتن الآن 🚀</button>
+    </div>
+  </section>
+
+  <!-- 2. شاشة حجز العيادات (جديد) -->
+  <section id="view-clinics" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🩺 حجز العيادات والمواعيد</h3></div>
+    <div class="glass-card" style="padding:20px;">
+      <select id="clinic_spec" class="custom-field">
+        <option value="" disabled selected>اختر التخصص المطلوب...</option>
+        <option value="باطنة">باطنة</option><option value="أطفال">أطفال</option>
+        <option value="أسنان">أسنان</option><option value="عظام">عظام</option>
+        <option value="جلدية">جلدية</option><option value="نساء وتوليد">نساء وتوليد</option>
+      </select>
+      <input type="date" id="clinic_date" class="custom-field">
+      <textarea id="clinic_note" class="custom-field" rows="3" placeholder="اسم الدكتور المفضل أو الأعراض (اختياري)"></textarea>
+      <button class="primary-action-btn" style="background:#0284c7;" onclick="submitClinicAction()">تأكيد حجز الكشف 🩺</button>
+    </div>
+  </section>
+
+  <!-- 3. شاشة طلب فني/صنايعي (جديد) -->
+  <section id="view-technician" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🛠️ طلب فني أو صنايعي</h3></div>
+    <div class="glass-card" style="padding:20px;">
+      <select id="tech_type" class="custom-field">
+        <option value="" disabled selected>محتاج فني إيه؟</option>
+        <option value="سباك">سباك</option><option value="كهربائي">كهربائي</option>
+        <option value="فني تكييف وتبريد">فني تكييف</option><option value="نجار">نجار</option>
+        <option value="دش وستالايت">دش وستالايت</option>
+      </select>
+      <textarea id="tech_problem" class="custom-field" rows="3" placeholder="اشرح العطل أو المشكلة اللي عندك..."></textarea>
+      <input type="text" id="tech_address" class="custom-field" placeholder="العنوان بالتفصيل">
+      <button class="primary-action-btn" style="background:#f59e0b;" onclick="submitTechAction()">اطلب الفني دلوقتي 🛠️</button>
+    </div>
+  </section>
+
+  <!-- 4. شاشة دفع الفواتير وشحن الرصيد (جديد) -->
+  <section id="view-bills" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🧾 دفع الفواتير وشحن الرصيد</h3></div>
+    <div class="glass-card" style="padding:20px;">
+      <select id="bill_type" class="custom-field">
+        <option value="شحن رصيد (فودافون/اتصالات/أورانج/وي)">شحن رصيد موبايل</option>
+        <option value="دفع باقة إنترنت منزلي">دفع باقة نت منزلي (We وغيرها)</option>
+        <option value="فاتورة كهرباء">فاتورة كهرباء / شحن كارت</option>
+        <option value="فاتورة مياه/غاز">مياه أو غاز</option>
+      </select>
+      <input type="tel" id="bill_number" class="custom-field" placeholder="رقم الموبايل أو الكود / رقم المشترك">
+      <input type="number" id="bill_amount" class="custom-field" placeholder="المبلغ المطلوب شحنه أو دفعه (ج.م)">
+      <button class="primary-action-btn" style="background:#10b981;" onclick="submitBillAction()">تنفيذ الدفع 💳</button>
+    </div>
+  </section>
+
+  <!-- 5. شاشة إرسال الهدايا (جديد) -->
+  <section id="view-gifts" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🎁 إرسال هدية</h3></div>
+    <div class="glass-card" style="padding:20px;">
+      <textarea id="gift_desc" class="custom-field" rows="2" placeholder="عاوز تبعت إيه؟ (بوكيه ورد، شيكولاتة، تورته...)"></textarea>
+      <input type="text" id="gift_receiver" class="custom-field" placeholder="اسم الشخص اللي هيستلم الهدية">
+      <input type="text" id="gift_address" class="custom-field" placeholder="عنوان المستلم بالتفصيل">
+      <textarea id="gift_msg" class="custom-field" rows="2" placeholder="حابب نكتبله كارت أو رسالة معاها؟ اكتبها هنا.."></textarea>
+      <button class="primary-action-btn" style="background:#e11d48;" onclick="submitGiftAction()">أرسل المفاجأة 🎉</button>
+    </div>
+  </section>
+
+  <!-- بقية الشاشات الأساسية (محدثة بتصميم Glassmorphism) -->
+  <section id="view-food" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🍔 طلب أكل ومطاعم</h3></div>
+    <div class="glass-card" style="padding:16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+      <div><strong>مشويات وكباب نجع حمادي</strong><div style="font-size:11px; color:#10b981;">+5 ج كاش باك</div></div>
+      <button class="primary-action-btn" style="width:auto; padding:8px 16px;" onclick="sendDirectWhatsApp('طلب وجبة من مشويات وكباب نجع حمادي 🍽️')">طلب</button>
+    </div>
+    <div class="glass-card" style="padding:16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+      <div><strong>بيتزا وفطائر السلطان</strong><div style="font-size:11px; color:#10b981;">خصم 10% لـ Fly Pass</div></div>
+      <button class="primary-action-btn" style="width:auto; padding:8px 16px;" onclick="sendDirectWhatsApp('طلب بيتزا وفطائر السلطان 🍕')">طلب</button>
+    </div>
+  </section>
+
+  <section id="view-orders" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">📦 إرسال طرد</h3></div>
+    <div class="glass-card" style="padding:20px;">
+      <input type="text" id="ord_details" class="custom-field" placeholder="محتوى الطرد (أوراق، ملابس، جهاز...)">
+      <input type="text" id="ord_from" class="custom-field" placeholder="هناخده منين؟">
+      <input type="text" id="ord_to" class="custom-field" placeholder="هنسلمه فين؟">
+      <button class="primary-action-btn" onclick="submitParcelOrderAction()">تأكيد طلب الشحن 🛵</button>
+    </div>
+  </section>
+
+  <section id="view-bringme" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">🛍️ هاتلي أي حاجة (بقالة وطلبات)</h3></div>
+    <div class="glass-card" style="padding:20px;">
+      <textarea id="bringme_text" class="custom-field" rows="3" placeholder="اكتب كل اللي محتاجه (عيش، جبنة، شاحن...)"></textarea>
+      <input type="text" id="bringme_store_addr" class="custom-field" placeholder="من أي محل أو سوبرماركت؟">
+      <input type="text" id="bringme_user_addr" class="custom-field" placeholder="هنوصلهولك فين؟">
+      <button class="primary-action-btn" style="background:#10b981;" onclick="submitBringMeOrderAction()">اطلب الكابتن فوراً 🛵</button>
+    </div>
+  </section>
+
+  <section id="view-wallet" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">💰 المحفظة والنقاط</h3></div>
+    <div class="glass-card" style="padding:24px; text-align:center;">
+      <div style="display:flex; justify-content:space-around; margin-bottom:20px;">
+        <div><span style="font-size:11px; color:var(--text-sub);">رصيد كاش</span><h3 style="font-size:28px; font-weight:900; color:#10b981;">0 ج</h3></div>
+        <div style="width:1px; background:var(--glass-border);"></div>
+        <div><span style="font-size:11px; color:var(--text-sub);">نقاط FLY ⭐</span><h3 style="font-size:28px; font-weight:900; color:#fbbf24;">0</h3></div>
+      </div>
+      <button class="primary-action-btn" style="background:#0284c7;" onclick="showAppModal('قريباً', 'استبدال النقاط سيكون متاحاً قريباً جداً')">استبدال النقاط 🔄</button>
+    </div>
+  </section>
+
+  <section id="view-flypass" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">👑 باقة FLY PASS</h3></div>
+    <div class="glass-card" style="padding:24px; text-align:center; border-color:#d8b4fe;" id="flyPassNotActiveCard">
+      <i class="fa-solid fa-crown" style="font-size:40px; color:#d8b4fe; margin-bottom:12px;"></i>
+      <h3 style="font-size:18px; font-weight:900; color:#fff; margin-bottom:16px;">اشترك بـ 99 ج شهرياً!</h3>
+      <p style="font-size:13px; color:var(--text-sub); margin-bottom:8px;">✅ توصيل مجاني</p>
+      <p style="font-size:13px; color:var(--text-sub); margin-bottom:8px;">✅ خصومات المطاعم والصيدلية</p>
+      <p style="font-size:13px; color:var(--text-sub); margin-bottom:20px;">✅ أولوية الاستجابة في الزحام</p>
+      <button class="primary-action-btn" style="background:#9333ea;" onclick="openServiceScreen('payment')">تفعيل الاشتراك والدفع 💳</button>
+    </div>
+  </section>
+
+  <section id="view-payment" class="sub-page-view">
+    <div class="page-top-back"><div class="back-circle-btn glass-card" onclick="openServiceScreen('flypass')"><i class="fa-solid fa-arrow-right"></i></div><h3 style="font-size:16px; font-weight:900;">💳 الدفع (فودافون كاش)</h3></div>
+    <div class="glass-card" style="padding:20px;">
+      <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">حول مبلغ <strong style="color:#10b981; font-size:14px;">99 ج.م</strong> للرقم ده لتفعيل الباقة:</p>
+      <div style="background:rgba(0,0,0,0.5); padding:16px; border-radius:12px; text-align:center; margin-bottom:16px; border:1px dashed var(--primary);">
+        <h2 style="font-size:26px; font-weight:900; color:#fff; letter-spacing:2px;">01017908076</h2>
+        <button style="background:transparent; border:0; color:#38bdf8; font-size:12px; margin-top:8px; cursor:pointer;" onclick="navigator.clipboard.writeText('01017908076'); showAppModal('نجاح','تم نسخ الرقم')"><i class="fa-solid fa-copy"></i> نسخ الرقم</button>
+      </div>
+      <input type="tel" id="senderPhoneNumber" class="custom-field" placeholder="رقم الموبايل اللي حولت منه...">
+      <button class="primary-action-btn" style="background:#10b981;" onclick="confirmSubscriptionPayment()">تأكيد الدفع 🚀</button>
+    </div>
+  </section>
+
+  <!-- القائمة الجانبية (Drawer) -->
+  <div class="drawer-menu" id="profileDrawer" onclick="if(event.target===this) toggleDrawer(false)">
+    <div class="drawer-sheet">
+      <div>
+        <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--glass-border); padding-bottom:20px; margin-bottom:10px;">
+          <img src="icon-512.png" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
+          <div><h4 style="font-size:15px; font-weight:900;" id="drawerUserName">عميل Fly</h4><span style="font-size:11px; color:var(--text-sub);" id="drawerUserPhone">VIP</span></div>
+        </div>
+        <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('wallet');"><i class="fa-solid fa-wallet" style="width:20px;"></i> محفظة FLY</div>
+        <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('flypass');"><i class="fa-solid fa-crown" style="width:20px; color:#d8b4fe;"></i> باقة FLY PASS</div>
+        <div class="drawer-item" style="background:var(--glass-bg); cursor:default; flex-direction:column; align-items:flex-start;">
+           <span style="font-size:10px; color:var(--text-sub);">كود حسابك (مضاد للغش):</span>
+           <strong style="color:#fbbf24; font-size:13px; letter-spacing:1px;" id="drawerUidTxt">--</strong>
+        </div>
+        <div class="drawer-item" onclick="toggleDrawer(false); sendDirectWhatsApp('طلب مساعدة من الدعم الفني');"><i class="fa-solid fa-headset" style="width:20px;"></i> الدعم والمساعدة</div>
+      </div>
+      <button onclick="confirmAppLogout()" style="width:100%; padding:14px; background:rgba(225,29,72,0.1); border:1px solid var(--primary); color:var(--primary); border-radius:12px; font-weight:800; cursor:pointer;">تسجيل الخروج 🚪</button>
+    </div>
   </div>
 
-  <!-- القسم الأول: الاحتياجات اليومية -->
-  <div class="section-title"><i class="fa-solid fa-layer-group"></i> الأساسيات السريعة</div>
-  <div class="services-grid-luxury">
-    <div class="service-item-lux">
-      <div class="lux-icon-box highlight-icon"><i class="fa-solid fa-burger"></i></div>
-      <div class="lux-label">طلب أكل</div>
-    </div>
-    <div class="service-item-lux">
-      <div class="lux-icon-box highlight-blue"><i class="fa-solid fa-car-side"></i></div>
-      <div class="lux-label">توصيلة</div>
-    </div>
-    <div class="service-item-lux">
-      <div class="lux-icon-box highlight-gold"><i class="fa-solid fa-box-open"></i></div>
-      <div class="lux-label">إرسال طرد</div>
-    </div>
-    <div class="service-item-lux">
-      <div class="lux-icon-box highlight-green"><i class="fa-solid fa-basket-shopping"></i></div>
-      <div class="lux-label">بقالة</div>
-    </div>
-  </div>
-
-  <!-- القسم الثاني: الخدمات الجديدة (السوبر آب) -->
-  <div class="section-title"><i class="fa-solid fa-star"></i> خدمات إضافية مميزة</div>
-  <div class="wide-services-grid">
-    
-    <div class="wide-service-card glass-card">
-      <i class="fa-solid fa-stethoscope highlight-blue"></i>
-      <div><h4 style="font-size:13px; font-weight:800;">عيادات ومواعيد</h4><p style="font-size:9px; color:var(--text-sub);">احجز دكتورك الآن</p></div>
-    </div>
-    
-    <div class="wide-service-card glass-card">
-      <i class="fa-solid fa-screwdriver-wrench highlight-gold"></i>
-      <div><h4 style="font-size:13px; font-weight:800;">طلب فني</h4><p style="font-size:9px; color:var(--text-sub);">سباك، كهربائي...</p></div>
-    </div>
-
-    <div class="wide-service-card glass-card">
-      <i class="fa-solid fa-file-invoice-dollar highlight-green"></i>
-      <div><h4 style="font-size:13px; font-weight:800;">دفع وشحن</h4><p style="font-size:9px; color:var(--text-sub);">رصيد وفواتير</p></div>
-    </div>
-
-    <div class="wide-service-card glass-card">
-      <i class="fa-solid fa-gift highlight-icon"></i>
-      <div><h4 style="font-size:13px; font-weight:800;">إرسال هدية</h4><p style="font-size:9px; color:var(--text-sub);">فاجئ اللي بتحبه</p></div>
-    </div>
-
-  </div>
-
-  <!-- Floating Button -->
-  <div class="floating-order-btn">
+  <div class="floating-order-btn" onclick="openServiceScreen('rides')">
     <i class="fa-solid fa-bolt"></i> اطلب الآن سريعاً
   </div>
 
-  <!-- Bottom Nav -->
   <nav class="tab-bottom-nav">
-    <button class="tab-btn active"><i class="fa-solid fa-house" style="font-size:18px;"></i><span>الرئيسية</span></button>
-    <button class="tab-btn"><i class="fa-solid fa-map-location-dot" style="font-size:18px;"></i><span>التتبع</span></button>
-    <button class="tab-btn"><i class="fa-solid fa-wallet" style="font-size:18px;"></i><span>المحفظة</span></button>
-    <button class="tab-btn"><i class="fa-solid fa-bars" style="font-size:18px;"></i><span>المزيد</span></button>
+    <button class="tab-btn active" onclick="switchNavTab('home', this)"><i class="fa-solid fa-house" style="font-size:18px;"></i><span>الرئيسية</span></button>
+    <button class="tab-btn" onclick="switchNavTab('orders', this)"><i class="fa-solid fa-box" style="font-size:18px;"></i><span>الطلبات</span></button>
+    <button class="tab-btn" onclick="switchNavTab('wallet', this)"><i class="fa-solid fa-wallet" style="font-size:18px;"></i><span>المحفظة</span></button>
+    <button class="tab-btn" onclick="toggleDrawer(true)"><i class="fa-solid fa-bars" style="font-size:18px;"></i><span>القائمة</span></button>
   </nav>
 
 </div>
+
+<script>
+// -------------------------------------------------------------
+// الأكواد البرمجية للـ Super App
+// -------------------------------------------------------------
+const ADMIN_PHONE = "201017908076";
+
+function sendDirectWhatsApp(text) {
+  window.location.href = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(text)}`;
+}
+
+function showAppModal(title, msg, iconClass = "fa-circle-info") {
+  document.getElementById('customModalTitle').textContent = title;
+  document.getElementById('customModalMessage').textContent = msg;
+  document.getElementById('customModalIcon').innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+  document.getElementById('appCustomModal').classList.add('show');
+}
+function closeAppModal() { document.getElementById('appCustomModal').classList.remove('show'); }
+
+function getMyUid() {
+  let uid = localStorage.getItem("fly_uid");
+  if (!uid) {
+    const phone = localStorage.getItem("fly_user_phone") || "01X";
+    uid = "FLY-" + phone.substring(0,4) + "-" + Math.floor(Math.random() * 9000 + 1000);
+    localStorage.setItem("fly_uid", uid);
+  }
+  return uid;
+}
+
+// -------------------------------------------------------------
+// وظائف الخدمات الجديدة والقديمة
+// -------------------------------------------------------------
+function submitRideAction() {
+  const type = document.getElementById('ride_type').value;
+  const time = document.getElementById('ride_time').value;
+  const stops = Array.from(document.getElementById('multiStopInputsWrap').querySelectorAll('input')).map(i => i.value.trim()).filter(v => v);
+  
+  if (stops.length < 2) return showAppModal("تنبيه", "أدخل نقطة الانطلاق والوجهة على الأقل.");
+  
+  let msg = `🚕 طلب مشوار (${type})\nالخط السير:\n` + stops.map((s, i) => `${i+1}. ${s}`).join("\n");
+  if (time) msg += `\n⏰ موعد الحجز المسبق: ${time.replace('T', ' ')}`;
+  
+  sendDirectWhatsApp(msg);
+}
+
+function addStopField() {
+  const wrap = document.getElementById('multiStopInputsWrap');
+  const count = wrap.querySelectorAll('input').length;
+  const input = document.createElement('input');
+  input.type = 'text'; input.className = 'custom-field'; input.placeholder = `محطة رقم ${count} (مثال: صيدلية)`;
+  wrap.appendChild(input);
+}
+
+function submitClinicAction() {
+  const spec = document.getElementById('clinic_spec').value;
+  const date = document.getElementById('clinic_date').value;
+  const note = document.getElementById('clinic_note').value.trim();
+  if (!spec || !date) return showAppModal("تنبيه", "يرجى تحديد التخصص والموعد المطلوب.");
+  sendDirectWhatsApp(`🏥 طلب حجز عيادة\nالتخصص: ${spec}\nالتاريخ: ${date}\nملاحظات: ${note || 'لا يوجد'}`);
+}
+
+function submitTechAction() {
+  const type = document.getElementById('tech_type').value;
+  const prob = document.getElementById('tech_problem').value.trim();
+  const addr = document.getElementById('tech_address').value.trim();
+  if (!type || !prob || !addr) return showAppModal("تنبيه", "أكمل بيانات الطلب لسرعة وصول الفني.");
+  sendDirectWhatsApp(`🛠️ طلب فني صنايعي\nالنوع: ${type}\nالعطل: ${prob}\nالعنوان: ${addr}`);
+}
+
+function submitBillAction() {
+  const type = document.getElementById('bill_type').value;
+  const num = document.getElementById('bill_number').value.trim();
+  const amt = document.getElementById('bill_amount').value.trim();
+  if (!num || !amt) return showAppModal("تنبيه", "أدخل الرقم والمبلغ بشكل صحيح.");
+  sendDirectWhatsApp(`🧾 طلب دفع فواتير/شحن\nالخدمة: ${type}\nالرقم: ${num}\nالمبلغ: ${amt} ج.م`);
+}
+
+function submitGiftAction() {
+  const desc = document.getElementById('gift_desc').value.trim();
+  const rec = document.getElementById('gift_receiver').value.trim();
+  const addr = document.getElementById('gift_address').value.trim();
+  const msg = document.getElementById('gift_msg').value.trim();
+  if (!desc || !addr) return showAppModal("تنبيه", "اكتب الهدية المطلوبة وعنوان المستلم.");
+  sendDirectWhatsApp(`🎁 طلب إرسال هدية\nالهدية: ${desc}\nلـ: ${rec || 'شخص عزيز'}\nالعنوان: ${addr}\nالرسالة المرفقة: ${msg || 'بدون كارت'}`);
+}
+
+function submitBringMeOrderAction() {
+  const txt = document.getElementById('bringme_text').value.trim();
+  const s = document.getElementById('bringme_store_addr').value.trim();
+  const u = document.getElementById('bringme_user_addr').value.trim();
+  if(!txt || !u) return showAppModal("تنبيه", "اكتب طلباتك وعنوان الاستلام.");
+  sendDirectWhatsApp(`🛍️ هاتلي أي حاجة\nالطلبات: ${txt}\nمن: ${s||'أي مكان'}\nإلى: ${u}`);
+}
+
+function submitParcelOrderAction() {
+  const d = document.getElementById('ord_details').value.trim();
+  const f = document.getElementById('ord_from').value.trim();
+  const t = document.getElementById('ord_to').value.trim();
+  if(!f || !t) return showAppModal("تنبيه", "اكمل بيانات الطرد");
+  sendDirectWhatsApp(`📦 إرسال طرد\nالمحتوى: ${d||'غير محدد'}\nمن: ${f}\nإلى: ${t}`);
+}
+
+function confirmSubscriptionPayment() {
+  const num = document.getElementById('senderPhoneNumber').value.trim();
+  if(!num || num.length < 10) return showAppModal("تنبيه", "ادخل الرقم المحول منه.");
+  sendDirectWhatsApp(`👑 طلب تفعيل FLY PASS\nالمبلغ: 99 ج.م\nمن رقم: ${num}\nكود التفعيل: ${getMyUid()}`);
+}
+
+// -------------------------------------------------------------
+// التنقل والواجهة (UI Navigation)
+// -------------------------------------------------------------
+function showView(viewId) { 
+  document.querySelectorAll('.sub-page-view').forEach(v => v.classList.remove('active')); 
+  document.getElementById(viewId).classList.add('active'); 
+  window.scrollTo(0, 0); 
+}
+function navigateToHome() { 
+  showView('view-home'); 
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
+  document.querySelectorAll('.tab-btn')[0].classList.add('active'); 
+}
+function switchNavTab(tabName, btn) { 
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
+  btn.classList.add('active'); 
+  showView('view-' + tabName); 
+}
+function openServiceScreen(type) { showView('view-' + type); }
+function toggleDrawer(open) { 
+  const d = document.getElementById('profileDrawer'); 
+  if (open) d.classList.add('show'); else d.classList.remove('show'); 
+}
+
+// -------------------------------------------------------------
+// المصادقة (Auth & EmailJS OTP)
+// -------------------------------------------------------------
+let generatedOtpCode = "";
+let pendingUserData = {};
+
+function switchAuthMode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('btnTabLogin').classList.toggle('active', isLogin);
+  document.getElementById('btnTabSignup').classList.toggle('active', !isLogin);
+  document.getElementById('loginFormSection').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('signupFormSection').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('verifyCodeSection').style.display = 'none';
+}
+
+function processLoginAction() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPassword').value.trim();
+  if (email && pass) {
+     window.firebaseFns.signInWithEmailAndPassword(window.firebaseAuth, email, pass)
+     .then(() => { localStorage.setItem('fly_user_name', email.split('@')[0]); initializeUserSession(); })
+     .catch((error) => { showAppModal("تنبيه", "بيانات الدخول غير صحيحة."); });
+  } else {
+     localStorage.setItem('fly_user_name', email || 'عميل');
+     initializeUserSession();
+  }
+}
+
+function processSendRealOtp() {
+  const name = document.getElementById('signupFullname').value.trim();
+  const phone = document.getElementById('signupPhoneNum').value.trim();
+  const email = document.getElementById('signupEmailVal').value.trim();
+  const pass = document.getElementById('signupPasscode').value.trim();
+  
+  if (!name || !phone || !email) return showAppModal("تنبيه", "يرجى ملء كافة البيانات");
+  
+  pendingUserData = { name, phone, email, pass };
+  generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString(); 
+
+  const btn = document.getElementById('btnSendOtp');
+  btn.textContent = "جاري الإرسال... ⏳"; btn.disabled = true;
+
+  emailjs.send("service_xylpe3a", "template_4ovzrts", { to_email: email, to_name: name, otp_code: generatedOtpCode })
+    .then(function() {
+       btn.textContent = "إرسال كود التحقق 📨"; btn.disabled = false;
+       document.getElementById('signupFormSection').style.display = 'none';
+       document.getElementById('verifyCodeSection').style.display = 'block';
+    }, function() {
+       btn.textContent = "إرسال كود التحقق 📨"; btn.disabled = false;
+       showAppModal("خطأ", "حدث خطأ في الإرسال، راجع إعدادات البريد.");
+    });
+}
+
+function verifyRealOtpCode() {
+  if (document.getElementById('enteredOtpCode').value.trim() === generatedOtpCode) {
+    window.firebaseFns.createUserWithEmailAndPassword(window.firebaseAuth, pendingUserData.email, pendingUserData.pass)
+    .then(() => { finalizeUserRegistration(); })
+    .catch((err) => { 
+        if(err.code === 'auth/email-already-in-use') finalizeUserRegistration(); 
+        else showAppModal("خطأ", err.message); 
+    });
+  } else { showAppModal("خطأ", "كود التحقق غير صحيح!"); }
+}
+
+function finalizeUserRegistration() {
+  localStorage.setItem('fly_user_name', pendingUserData.name);
+  localStorage.setItem('fly_user_phone', pendingUserData.phone);
+  localStorage.setItem('fly_user_email', pendingUserData.email);
+  const adminMsg = `🚨 *عميل جديد (Super App)*\n👤 ${pendingUserData.name}\n📱 ${pendingUserData.phone}\n🔑 ${getMyUid()}`;
+  const xhr = new XMLHttpRequest(); xhr.open("POST", `https://ntfy.sh/flyexpress_admin_notify_2026`, true); xhr.send(adminMsg);
+  initializeUserSession();
+}
+
+function handleGoogleSignInDirect() {
+  try {
+    const provider = new window.firebaseFns.GoogleAuthProvider();
+    window.firebaseFns.signInWithPopup(window.firebaseAuth, provider).then(result => {
+        const user = result.user;
+        localStorage.setItem('fly_user_name', user.displayName || 'عميل Google');
+        localStorage.setItem('fly_user_email', user.email);
+        initializeUserSession();
+    }).catch(err => alert("خطأ: " + err.message));
+  } catch (e) { alert(e.message); }
+}
+
+function initializeUserSession() {
+  document.getElementById('authGateScreen').style.display = 'none';
+  document.getElementById('drawerUserName').textContent = localStorage.getItem('fly_user_name') || 'عميل Fly';
+  document.getElementById('drawerUserPhone').textContent = localStorage.getItem('fly_user_phone') || '';
+  document.getElementById('drawerUidTxt').textContent = getMyUid();
+}
+
+function confirmAppLogout() { toggleDrawer(false); localStorage.removeItem('fly_user_name'); document.getElementById('authGateScreen').style.display = 'flex'; }
+
+window.addEventListener('load', () => { if (localStorage.getItem('fly_user_name')) initializeUserSession(); });
+</script>
 </body>
 </html>
