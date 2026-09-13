@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<!-- رقم الإصدار: غيّره هنا (مثلاً 1.1) لما ترفع أي تعديل جديد عشان التطبيق يحدّث عند كل الناس فوراً -->
+<!-- رقم الإصدار: غيّره هنا (مثلاً 1.2) لما ترفع أي تعديل جديد عشان التطبيق يحدّث عند كل الناس فوراً -->
 <meta name="app-version" content="1.1">
 
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -69,6 +69,10 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; }
 .marquee-text { display: inline-block; white-space: nowrap; animation: scrollMarquee 15s linear infinite; }
 @keyframes scrollMarquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100vw); } }
+
+/* شاشات تحكم الأدمن (صيانة وتحديث إجباري) */
+.maintenance-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
+.force-update-gate { position: fixed; inset: 0; max-width: 430px; margin: 0 auto; background: #090d16; z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; }
 
 .top-nav-bar { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
 .location-selector { display: flex; align-items: center; gap: 8px; cursor: pointer; }
@@ -163,6 +167,20 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </div>
 
+  <!-- شاشات تحكم الأدمن (صيانة وتحديث إجباري) -->
+  <div class="maintenance-gate" id="maintenanceScreen">
+    <div style="font-size:60px; color:#ef4444; margin-bottom:16px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+    <h2 style="font-size:22px; font-weight:900; margin-bottom:8px;">تنبيه الصيانة ⛔</h2>
+    <p style="font-size:13px; color:#cbd5e1; line-height:1.6;">تطبيق Fly Express مغلق مؤقتاً لأعمال الصيانة والتطوير، نعتذر عن الإزعاج وسنعود قريباً لخدمتكم بشكل أفضل! 🛵</p>
+  </div>
+
+  <div class="force-update-gate" id="forceUpdateModal">
+    <img src="icon-512.png" style="width:110px; height:110px; border-radius:28px; margin-bottom:18px; border:2px solid var(--primary); object-fit:cover;">
+    <h2 style="font-size:20px; font-weight:900; margin-bottom:8px;">يتوفر تحديث رسمي جديد! 🚀</h2>
+    <p style="font-size:13px; color:#cbd5e1; margin-bottom:24px;">يرجى التحديث الآن لمواصلة استخدام التطبيق بأمان.</p>
+    <button id="btnDownloadApk" class="primary-action-btn" style="background:#0ea5e9;"><i class="fa-solid fa-cloud-arrow-down"></i> تحميل التحديث الآن ⚡</button>
+  </div>
+
   <div class="app-custom-modal-overlay" id="appCustomModal">
     <div class="app-custom-modal-card">
       <div id="customModalIcon" style="font-size:40px; color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-bell"></i></div>
@@ -216,7 +234,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     <img src="icon-512.png" id="topHeaderUserAvatar" class="brand-user-avatar" onclick="toggleDrawer(true)">
   </header>
 
-  <!-- زر الطلب السريع العائم بدون أي تشويش -->
   <div class="floating-order-btn" onclick="openServiceScreen('rides')">
     <i class="fa-solid fa-bolt"></i> اطلب الآن سريعاً
   </div>
@@ -404,13 +421,19 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
   <section id="view-family" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>👨‍👩‍👧 الحساب العائلي</h3></div><div class="ui-card"><p>أضف أفراد عائلتك للطلب باسمهم بسهولة.</p><input type="text" class="custom-field" placeholder="اسم الابن أو الزوجة"><button class="primary-action-btn" style="background:#0284c7;" onclick="sendDirectWhatsApp('إضافة فرد للعائلة الحساب العائلي')">حفظ الفرد</button></div></section>
   <section id="view-merchant" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🏪 بوابة التجار والمحلات</h3></div><div class="ui-card"><button class="primary-action-btn" style="background:#f59e0b;" onclick="sendDirectWhatsApp('تنبيه من التاجر: تم تجهيز الطلب لإرسال الكابتن 🛵')">تم تجهيز الطلب 🛵</button></div></section>
 
-  <!-- القائمة الجانبية (Drawer) -->
+  <!-- القائمة الجانبية (Drawer) وأيقونة البروفايل -->
   <div class="drawer-menu" id="profileDrawer" onclick="if(event.target===this) toggleDrawer(false)">
     <div class="drawer-sheet">
       <div>
         <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:12px;">
           <img src="icon-512.png" id="drawerUserAvatarImg" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--primary); background:#0f172a;">
-          <div><h4 style="font-size:14px; font-weight:900;" id="drawerUserName">عميل Fly Express</h4><span style="font-size:10px; color:#4ade80;">عضو VIP</span></div>
+          <div>
+            <h4 style="font-size:14px; font-weight:900;" id="drawerUserName">عميل Fly Express</h4>
+            <span style="font-size:10px; color:#4ade80;">عضو VIP</span>
+            <br>
+            <!-- إظهار الـ UID هنا للعميل -->
+            <span style="font-size:9px; color:#fcd34d;" id="drawerUserUid"></span>
+          </div>
         </div>
         <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('wallet');"><i class="fa-solid fa-wallet" style="width:20px; color:#10b981;"></i> محفظة FLY والنقاط</div>
         <div class="drawer-item" onclick="toggleDrawer(false); openServiceScreen('flypass');"><i class="fa-solid fa-crown" style="width:20px; color:#c084fc;"></i> اشتراك FLY PASS</div>
@@ -434,6 +457,17 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 <script>
 const ADMIN_PHONE = "201017908076";
 function sendDirectWhatsApp(text) { window.location.href = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(text)}`; }
+
+// دالة إنشاء كود المستخدم (لربط أوامر الأدمن بيه)
+function getMyUid() {
+  let uid = localStorage.getItem("fly_uid");
+  if (!uid) {
+    const phone = localStorage.getItem("fly_user_phone") || "01X";
+    uid = "FLY-" + phone.substring(0,4) + "-" + Math.floor(Math.random() * 9000 + 1000);
+    localStorage.setItem("fly_uid", uid);
+  }
+  return uid;
+}
 
 function showView(viewId) { 
   document.querySelectorAll('.sub-page-view').forEach(v => v.classList.remove('active')); 
@@ -459,7 +493,12 @@ function openServiceScreen(type) {
 }
 function toggleDrawer(open) { 
   const d = document.getElementById('profileDrawer'); 
-  if(open) d.classList.add('show'); else d.classList.remove('show'); 
+  if(open) {
+    d.classList.add('show');
+    if(document.getElementById('drawerUserUid')) document.getElementById('drawerUserUid').textContent = "كود الحساب: " + getMyUid();
+  } else {
+    d.classList.remove('show'); 
+  }
 }
 function confirmAppLogout() {
   toggleDrawer(false);
@@ -482,32 +521,80 @@ async function checkAppVersion() {
     const match = html.match(/<meta name="app-version" content="([^"]+)">/);
     const currentMeta = document.querySelector('meta[name="app-version"]');
     if (match && currentMeta && match[1] !== currentMeta.content) {
-      window.location.replace(window.location.pathname + "?v=" + match[1]);
+      window.location.replace(window.location.pathname + "?v=" + match[1]); // تحديث إجباري للمستخدم عند تغيير الـ meta
     }
   } catch (e) {}
 }
-setInterval(checkAppVersion, 10000); // فحص التحديثات كل 10 ثواني
+setInterval(checkAppVersion, 10000); // يفحص كل 10 ثواني
 
-// ================= نظام تحديث لوحة الأدمن =================
-async function fetchAdminTickerUpdates() {
-  try {
-    const response = await fetch("https://ntfy.sh/flyexpress_super_admin_2026/json?poll=1&t=" + new Date().getTime(), { cache: "no-store" });
-    const textData = await response.text();
-    if (textData) {
-      const lines = textData.trim().split("\n");
-      for (let line of lines) {
-        const json = JSON.parse(line);
-        if (json.message) {
-          const parsed = JSON.parse(json.message);
-          if (parsed.notice && document.getElementById("dailyPromoTickerTxt")) {
-            document.getElementById("dailyPromoTickerTxt").textContent = parsed.notice;
-          }
-        }
-      }
-    }
-  } catch (e) {}
+// ================= نظام تحكم الأدمن الكامل (SSE Live Stream) =================
+function checkFlyPassStatus() {
+  const expire = localStorage.getItem("fly_pass_expire");
+  // يمكن إضافة لوجيك تغيير شكل البطاقة هنا إذا رغبت مستقبلاً
 }
-setInterval(fetchAdminTickerUpdates, 3000);
+
+function applyMasterData(data) {
+  if (!data) return;
+
+  // 1. استقبال رسالة مباشرة للعميل
+  if (data.action === "direct_msg" && data.target_uid === getMyUid()) {
+     showAppModal("🔔 إشعار من الإدارة", data.msg, "fa-bell");
+  }
+
+  // 2. تفعيل باقة فلاي باس من الأدمن
+  if (data.action === "activate_sub" && data.target_uid === getMyUid()) {
+    const currentExpire = localStorage.getItem("fly_pass_expire");
+    const baseTime = (currentExpire && parseInt(currentExpire) > Date.now()) ? parseInt(currentExpire) : Date.now();
+    localStorage.setItem("fly_pass_expire", baseTime + (data.days * 24 * 60 * 60 * 1000));
+    checkFlyPassStatus(); 
+    showAppModal("تهانينا! 🎉", `تم تفعيل باقة FLY PASS بنجاح لمدة ${data.days} يوم!`);
+  }
+
+  // 3. تحديث التطبيق إجبارياً للجميع (برقم إصدار يحدده الأدمن)
+  if (data.force_reload_id && localStorage.getItem('fly_reload_id') != data.force_reload_id) {
+    localStorage.setItem('fly_reload_id', data.force_reload_id);
+    window.location.replace(window.location.pathname + "?v=" + data.force_reload_id);
+    return; 
+  }
+
+  // 4. قفل التطبيق وإرسال رابط APK جديد
+  if (data.update_lock === true && data.apk_link) {
+    document.getElementById("forceUpdateModal").style.display = "flex";
+    document.getElementById("btnDownloadApk").onclick = () => window.open(data.apk_link, '_blank');
+  } else if (data.update_lock === false) {
+    document.getElementById("forceUpdateModal").style.display = "none";
+  }
+
+  // 5. قفل التطبيق للصيانة
+  const mScreen = document.getElementById("maintenanceScreen");
+  if (data.service === "closed") { 
+    mScreen.style.display = "flex"; 
+  } else if (data.service === "open") { 
+    mScreen.style.display = "none"; 
+  }
+
+  // 6. تغيير شريط الإعلانات
+  if (data.notice && document.getElementById("dailyPromoTickerTxt")) {
+    document.getElementById("dailyPromoTickerTxt").textContent = data.notice;
+  }
+}
+
+// استخدام EventSource لضمان استقرار الاتصال وسرعته مع الأدمن
+function connectAdminPanel() {
+  const eventSource = new EventSource("https://ntfy.sh/flyexpress_super_admin_2026/sse");
+  eventSource.onmessage = function(event) {
+    try {
+      const data = JSON.parse(event.data);
+      if (data.event === "message" && data.message) {
+        applyMasterData(JSON.parse(data.message));
+      }
+    } catch(e) {}
+  };
+  eventSource.onerror = function() {
+    console.log("جارِ إعادة الاتصال بسيرفر الأدمن...");
+  };
+}
+connectAdminPanel();
 
 // ================= نظام المايك والطلب الصوتي =================
 function startVoiceRecord(targetId) {
@@ -558,7 +645,11 @@ let generatedOtpCode = "";
 function processSendRealOtp() {
   const email = document.getElementById('signupEmailVal').value.trim();
   const name = document.getElementById('signupFullname').value.trim();
+  const phone = document.getElementById('signupPhoneNum').value.trim();
   if(!email || !name) return alert("أدخل البيانات كاملة");
+  
+  localStorage.setItem('fly_user_phone', phone); // حفظ الرقم لاستخدامه في إنشاء الـ UID
+  
   generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString();
   emailjs.send("service_xylpe3a", "template_4ovzrts", { to_email: email, to_name: name, otp_code: generatedOtpCode })
     .then(() => {
@@ -587,6 +678,9 @@ function initializeUserSession() {
     localStorage.setItem('fly_ref_code', myCode);
   }
   if(document.getElementById('referralCodeBox')) document.getElementById('referralCodeBox').textContent = myCode;
+  
+  // توليد הUID لو مش موجود
+  getMyUid();
 }
 window.addEventListener('load', () => { 
   if (localStorage.getItem('fly_user_name')) { 
