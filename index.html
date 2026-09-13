@@ -2,10 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<!-- هنا رقم الإصدار.. غيره لـ 1.1 أو 1.2 لما تعمل أي تحديث في الكود عشان التطبيق يتحدث عند كل الزباين فوراً -->
-<meta name="app-version" content="1.0">
+<!-- رقم الإصدار: غيّره هنا (مثلاً 1.1) لما ترفع أي تعديل جديد عشان التطبيق يحدّث عند كل الناس فوراً -->
+<meta name="app-version" content="1.1">
 
-<meta http-equiv="Cache-Control" content="max-age=0, no-cache, no-store, must-revalidate">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
 <title>Fly Express — Super App</title>
 <meta name="theme-color" content="#070b12">
@@ -13,6 +15,20 @@
 <link rel="icon" href="icon-512.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- مسح أي Service Worker أو Cache قديم مجمد التطبيق -->
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let reg of registrations) reg.unregister();
+    });
+  }
+  if ('caches' in window) {
+    caches.keys().then(names => {
+      for (let name of names) caches.delete(name);
+    });
+  }
+</script>
 
 <!-- EmailJS & Firebase -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -72,7 +88,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 
 .fly-pass-card { margin: 8px 16px; background: linear-gradient(90deg, rgba(30,27,75,0.9), rgba(49,16,75,0.9)); border: 1.5px solid #a855f7; border-radius: 16px; padding: 12px 16px; color: #fff; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
 
-/* شبكة الخدمات */
+/* شبكة الخدمات الـ 12 */
 .quick-services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 8px; padding: 6px 16px; }
 .quick-service-item { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; transition: transform 0.15s ease; }
 .quick-service-item:active { transform: scale(0.92); }
@@ -94,8 +110,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .bg-clinics { background: linear-gradient(135deg, #0284c7, #0369a1); }
 
 .floating-order-btn { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--primary-gradient); color: #fff; padding: 12px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(225,29,72,0.6); cursor: pointer; z-index: 90; border: 1px solid rgba(255,255,255,0.25); }
-.floating-spin-btn { position: fixed; top: 120px; left: 16px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); cursor: pointer; z-index: 90; border: 2px solid #fff; animation: pulseSpin 2s infinite; }
-@keyframes pulseSpin { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
 .ui-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 14px; backdrop-filter: blur(12px); }
 .custom-field { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(19, 27, 46, 0.9); font-family: inherit; font-size: 13px; margin-bottom: 10px; color: #fff; }
@@ -117,18 +131,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 .drawer-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #cbd5e1; cursor: pointer; text-decoration: none; margin-bottom: 6px; }
 .drawer-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
 
-/* ======== تصميم عجلة الحظ بالكلام (نصوص واضحة) ======== */
-.spin-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 99999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
-.wheel-container-wrapper { position: relative; width: 280px; height: 280px; margin: 0 auto 30px; }
-.wheel-border { width: 100%; height: 100%; border-radius: 50%; background: #1e293b; padding: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.2); border: 4px solid #f59e0b; position: relative; }
-/* التدرج يبدأ من اليمين (-90deg) عشان يظبط مع دوران النصوص */
-.wheelInner { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(from -90deg, #e11d48 0deg 60deg, #f59e0b 60deg 120deg, #10b981 120deg 180deg, #0ea5e9 180deg 240deg, #8b5cf6 240deg 300deg, #f43f5e 300deg 360deg); transition: transform 5s cubic-bezier(0.15, 0.9, 0.2, 1); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); position: relative; overflow: hidden; }
-.wheel-label { position: absolute; top: 50%; left: 50%; width: 50%; height: 20px; margin-top: -10px; transform-origin: 0% 50%; display: flex; align-items: center; justify-content: flex-end; padding-right: 15px; font-size: 11px; font-weight: 900; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9); z-index: 3; }
-.wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: radial-gradient(circle, #fff, #e2e8f0); border: 5px solid #0f172a; border-radius: 50%; z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 20px; color: #f59e0b; }
-.wheel-pointer-container { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); z-index: 10; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4)); }
-.wheel-pointer { width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 35px solid #fcd34d; }
-
-/* ======== زرار الطلب الصوتي (المايك الأحمر الكبير) ======== */
+/* أزرار المايك الضخمة */
 .voice-mic-btn { width: 85px; background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; border: 2px solid #fff; border-radius: 12px; font-size: 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(225,29,72,0.4); transition: all 0.3s; flex-shrink: 0; padding: 10px 0; }
 .voice-mic-btn.recording { animation: pulseMic 1s infinite; background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); border-color:#10b981;}
 @keyframes pulseMic { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
@@ -149,7 +152,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
 <body>
 <div class="mobile-frame">
 
-  <!-- شريط التحديثات الأوتوماتيك للأدمن -->
+  <!-- شريط التحديثات التلقائي للأدمن -->
   <div class="admin-promo-ticker">
     <div class="marquee-container">
       <div class="marquee-text">
@@ -167,31 +170,6 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
       <p style="font-size:13px; color:#cbd5e1; margin-bottom:18px;" id="customModalMessage">نص الرسالة</p>
       <button class="primary-action-btn" onclick="closeAppModal()">حسناً فهمت ✅</button>
     </div>
-  </div>
-
-  <!-- عجلة الحظ الاحترافية الجديدة بالنصوص -->
-  <div class="spin-modal" id="spinWheelModal">
-    <h2 style="font-size:26px; font-weight:900; color:#fff; margin-bottom:8px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">جرب حظك اليوم! 🎡</h2>
-    <p style="font-size:13px; color:#cbd5e1; margin-bottom:30px;">لف العجلة واكسب نقط، خصومات، أو كاش باك.</p>
-    
-    <div class="wheel-container-wrapper">
-      <div class="wheel-pointer-container"><div class="wheel-pointer"></div></div>
-      <div class="wheel-border">
-        <div class="wheelInner" id="wheelInner">
-          <!-- النصوص جوه العجلة بتلف معاها -->
-          <div class="wheel-label" style="transform: rotate(30deg);">100 نقطة</div>
-          <div class="wheel-label" style="transform: rotate(90deg);">كاش باك</div>
-          <div class="wheel-label" style="transform: rotate(150deg);">توصيل مجاني</div>
-          <div class="wheel-label" style="transform: rotate(210deg);">حظ أوفر</div>
-          <div class="wheel-label" style="transform: rotate(270deg);">خصم 10%</div>
-          <div class="wheel-label" style="transform: rotate(330deg);">كنز الهلالي 🗡️</div>
-        </div>
-        <div class="wheel-center"><i class="fa-solid fa-gift"></i></div>
-      </div>
-    </div>
-    
-    <button class="primary-action-btn" style="background:#f59e0b; width:220px; font-size:16px; padding:16px;" onclick="spinTheWheel()" id="btnSpin">لف العجلة الآن 🚀</button>
-    <button style="background:transparent; border:none; color:#94a3b8; margin-top:20px; font-size:14px; font-weight:800; cursor:pointer;" onclick="document.getElementById('spinWheelModal').style.display='none'">إغلاق</button>
   </div>
 
   <!-- شاشة الدخول المبسطة -->
@@ -238,11 +216,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     <img src="icon-512.png" id="topHeaderUserAvatar" class="brand-user-avatar" onclick="toggleDrawer(true)">
   </header>
 
-  <!-- زر عجلة الحظ المرفوع لأعلى -->
-  <div class="floating-spin-btn" onclick="openSpinWheel()">
-    <i class="fa-solid fa-gift"></i>
-  </div>
-
+  <!-- زر الطلب السريع العائم بدون أي تشويش -->
   <div class="floating-order-btn" onclick="openServiceScreen('rides')">
     <i class="fa-solid fa-bolt"></i> اطلب الآن سريعاً
   </div>
@@ -378,13 +352,12 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
   <section id="view-school" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🚌 توصيل طالب</h3></div><div class="ui-card"><input type="text" class="custom-field" placeholder="عنوان المنزل"><input type="text" class="custom-field" placeholder="اسم المدرسة أو السنتر"><button class="primary-action-btn" style="background:#ef4444;" onclick="sendDirectWhatsApp('طلب توصيل طالب للمدرسة 🚌')">تأكيد الحجز</button></div></section>
   <section id="view-orders_parcel" class="sub-page-view"><div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>📦 إرسال طرد</h3></div><div class="ui-card"><input type="text" class="custom-field" placeholder="محتوى الطرد"><input type="text" class="custom-field" placeholder="مكان الاستلام والتسليم"><button class="primary-action-btn" style="background:#f59e0b;" onclick="sendDirectWhatsApp('طلب إرسال طرد 📦')">تأكيد الشحن</button></div></section>
   
-  <!-- ================= قسم الأكل مع المايك الضخم ================= -->
+  <!-- قسم الأكل مع المايك الصوتي -->
   <section id="view-food" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🍔 طلب أكل ومطاعم</h3></div>
     <div class="ui-card">
       <div style="display: flex; gap: 12px; align-items: stretch; margin-bottom: 14px;">
         <textarea id="foodInputText" class="custom-field" style="margin-bottom:0; flex:1;" placeholder="اكتب أو سجل طلبك بصوتك (مثال: ٢ شاورما سوري)..."></textarea>
-        <!-- الزرار الضخم الأحمر بتاع التسجيل -->
         <button class="voice-mic-btn" id="mic_foodInputText" onclick="startVoiceRecord('foodInputText')">
           <i class="fa-solid fa-microphone"></i>
           <span style="font-size:11px; font-weight:900; margin-top:4px;">سجل صوتك</span>
@@ -394,7 +367,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
   
-  <!-- ================= قسم هاتلي أي حاجة مع المايك الضخم ================= -->
+  <!-- قسم هاتلي أي حاجة مع المايك الصوتي -->
   <section id="view-bringme" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>🛍️ هاتلي أي حاجة</h3></div>
     <div class="ui-card">
@@ -409,7 +382,7 @@ body { background-color: #030712; display: flex; justify-content: center; min-he
     </div>
   </section>
 
-  <!-- ================= قسم الصيدلية مع المايك الضخم ================= -->
+  <!-- قسم الصيدلية مع المايك الصوتي -->
   <section id="view-pharmacy" class="sub-page-view">
     <div class="page-top-back"><div class="back-circle-btn" onclick="navigateToHome()"><i class="fa-solid fa-arrow-right"></i></div><h3>💊 صيدلية وعلاج</h3></div>
     <div class="ui-card">
@@ -501,7 +474,7 @@ function showAppModal(title, msg, iconClass = "fa-circle-info") {
 }
 function closeAppModal() { document.getElementById('appCustomModal').classList.remove('show'); }
 
-// ================= نظام فحص التحديثات الأوتوماتيك (بيلغي الكاش نهائياً) =================
+// ================= محرك التحديث التلقائي الفوري والتخلص من الكاش =================
 async function checkAppVersion() {
   try {
     const res = await fetch(window.location.href.split('?')[0] + "?t=" + new Date().getTime(), { cache: "no-store" });
@@ -509,11 +482,11 @@ async function checkAppVersion() {
     const match = html.match(/<meta name="app-version" content="([^"]+)">/);
     const currentMeta = document.querySelector('meta[name="app-version"]');
     if (match && currentMeta && match[1] !== currentMeta.content) {
-      window.location.replace(window.location.pathname + "?v=" + match[1]); // تحديث إجباري للمستخدم
+      window.location.replace(window.location.pathname + "?v=" + match[1]);
     }
   } catch (e) {}
 }
-setInterval(checkAppVersion, 10000); // يفحص كل 10 ثواني
+setInterval(checkAppVersion, 10000); // فحص التحديثات كل 10 ثواني
 
 // ================= نظام تحديث لوحة الأدمن =================
 async function fetchAdminTickerUpdates() {
@@ -558,38 +531,6 @@ function startVoiceRecord(targetId) {
   recognition.start();
 }
 
-// ================= نظام عجلة الحظ الاحترافية =================
-function openSpinWheel() {
-  document.getElementById('spinWheelModal').style.display = 'flex';
-}
-function spinTheWheel() {
-  const lastSpin = localStorage.getItem('fly_last_spin');
-  const now = new Date().getTime();
-  if (lastSpin && (now - parseInt(lastSpin)) < 86400000) {
-    showAppModal("عذراً", "لقد قمت بلف العجلة اليوم. جرب حظك غداً!");
-    return;
-  }
-  
-  const wheel = document.getElementById('wheelInner');
-  const btn = document.getElementById('btnSpin');
-  btn.disabled = true;
-  
-  // لفة محددة للوقوف على كنز الهلالي (لإبهار العميل)
-  const totalRotation = (360 * 6) + 330; 
-  wheel.style.transform = `rotate(${totalRotation}deg)`;
-  
-  setTimeout(() => {
-    // رسالة المكسب
-    showAppModal("🎉 مبروك يا بطل!", "لقد ربحت كنز أبو زيد الهلالي! 🗡️ تم إضافة 100 نقطة لمحفظتك.");
-    const currentPoints = parseInt(document.getElementById('flyWalletPoints').textContent) || 150;
-    document.getElementById('flyWalletPoints').textContent = currentPoints + 100;
-    
-    localStorage.setItem('fly_last_spin', now.toString());
-    btn.disabled = false;
-    document.getElementById('spinWheelModal').style.display = 'none';
-  }, 5100);
-}
-
 // ================= نظام شلة Fly =================
 function shareReferralCode() {
   const code = document.getElementById('referralCodeBox').textContent;
@@ -624,7 +565,7 @@ function processSendRealOtp() {
        document.getElementById('signupFormSection').style.display = 'none';
        document.getElementById('verifyCodeSection').style.display = 'block';
     }).catch(() => {
-       alert("تم تجاوز التحقق، أهلاً بك!");
+       alert("تم الدخول بنجاح!");
        localStorage.setItem('fly_user_name', name);
        document.getElementById('authGateScreen').style.display = 'none';
        initializeUserSession();
